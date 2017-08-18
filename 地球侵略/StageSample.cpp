@@ -22,7 +22,6 @@ StageSample::StageSample() :
 	}
 }
 
-
 StageSample::~StageSample()
 {
 }

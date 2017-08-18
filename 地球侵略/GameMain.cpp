@@ -1,6 +1,8 @@
 #include "GameMain.h"
 #include "KeyManager.h"
 
+#include "FPS.h"
+
 int time = 0;
 StageSample stage1;
 
@@ -21,5 +23,6 @@ void GameMain::MainLoop() {
 		DrawFormatString(0, 0, GetColor(200, 200, 200), "%d", time);
 		stage1.scrollTest();
 		stage1.drawMap();
+		FpsFanction();
 	}
 }
