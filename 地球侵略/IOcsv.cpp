@@ -44,17 +44,17 @@ IOcsv::~IOcsv()
 
 
 
-int IOcsv::Readcsv(std::string file, int *data, int w, int h)
+int IOcsv::Readcsv(char *file, int *data, int w, int h)
 {
-	//std::ifstream ifs(file.c_str());
-	std::ifstream ifs("data/map/チュートリアルマップ.csv");
+	std::ifstream ifs(file);
+	//std::ifstream ifs("data/map/チュートリアルマップ.csv");
 
 	if (!ifs) {
 		return 1;
 	}
 
-	std::string str;
-	std::string buf;	//一時格納
+	std::string str;	//行を格納
+	std::string buf;	//値を一時格納
 	std::vector<int> vi;
 	int temp;
 	//1行のうち、文字列とコンマを分割する
@@ -67,7 +67,6 @@ int IOcsv::Readcsv(std::string file, int *data, int w, int h)
 			temp = std::stoi(buf);
 			//1次元に無理やり書き換え．これにより幅指定必須．
 			data[y*w+x] = temp;
-			//DrawFormatString(320 + 32 * x, 16 + 32 * y, GetColor(0, 255, 0), "%d", temp);
 		}
 	}
 	return 0;

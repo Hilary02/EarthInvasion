@@ -17,7 +17,11 @@ StageSample::StageSample() :
 	//どう定義するか迷走
 	//std::vector< std::vector<int> > map(MAP_HEIGHT, std::vector<int>(MAP_WIDTH));
 	//map = std::vector<std::vector<int>>(MAP_HEIGHT, std::vector<int>(MAP_WIDTH, 1));
-	map.reserve(MAP_WIDTH*MAP_HEIGHT);
+	vmap.resize(MAP_HEIGHT);		// ()内の数字が要素数
+	for (int i = 0; i<MAP_HEIGHT; i++) {
+		vmap[i].resize(MAP_WIDTH);
+	}
+	//map.reserve(MAP_WIDTH*MAP_HEIGHT);
 
 }
 
@@ -33,7 +37,8 @@ StageSample::~StageSample()
 
 int StageSample::initMap() {
 	p_map = &amap[0][0];
-	IOcsv::Readcsv("map02.csv", &amap[0][0], MAP_WIDTH, MAP_HEIGHT);
+	IOcsv::Readcsv("data/map/チュートリアルマップ.csv", &amap[0][0], MAP_WIDTH, MAP_HEIGHT);
+	//IOcsv::Readcsv("map02.csv", &vmap[0][0], MAP_WIDTH, MAP_HEIGHT);
 
 	LoadDivGraph("data/img/mapchip10.png", 10, 10, 1, 16, 16, chipImg);
 	return 0;
@@ -42,16 +47,16 @@ int StageSample::initMap() {
 
 
 void StageSample::drawMap() {
-	int CHIPSIZE = 16;
 	int setColor = GetColor(125, 125, 125);
 
-	//0810プレイヤー座標に応じた表示範囲の選択
-	scrollMap();
+	scrollMap();	//プレイヤー座標に応じた表示範囲の変更
+	
 
 	for (int i = 0; i < 10; i++) {
 		DrawGraph(100 + i * 16, 100, chipImg[i], true);
 	}
 
+	// -50はキャラ情報などを表示するための空間を確保するための値．50という値自体に意味はない．
 	for (int y = (drawY) / CHIPSIZE; y < ((drawY + window.WINDOW_HEIGHT-50) / CHIPSIZE); y++) {
 		for (int x = (drawX) / CHIPSIZE; x < ((drawX + window.WINDOW_WIDTH) / CHIPSIZE); x++) {
 			if (y <= MAP_HEIGHT && x <= MAP_WIDTH) {

@@ -17,8 +17,8 @@ private:
 	const int MAP_HEIGHT;	//縦方向マップチップ数
 	const int MAP_WIDTH;	//横方向マップチップ数
 	const int CHIPSIZE = 16;//マップチップの大きさ
-	//std::vector<std::vector <int>> map;
-	std::vector<int> map;
+	std::vector<std::vector <int>> vmap;
+	//std::vector<int> map;
 	//決めうち
 	int amap[60][234];
 	int* p_map;
