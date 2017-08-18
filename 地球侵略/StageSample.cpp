@@ -2,27 +2,18 @@
 #include "WindowData.h"
 #include "KeyManager.h"
 
-
 StageSample::StageSample() :
 	MAP_HEIGHT(60)
 	, MAP_WIDTH(234)
 	, playerX(100)
 	, playerY(800)
 {
-	//map.resize(MAP_HEIGHT);
-	//マップ配列要素用のメモリ確保
-	//for (int i = 0; i < MAP_HEIGHT; i++) {
-	//	map[i].resize(MAP_WIDTH);
-	//}
-	//どう定義するか迷走
-	//std::vector< std::vector<int> > map(MAP_HEIGHT, std::vector<int>(MAP_WIDTH));
-	//map = std::vector<std::vector<int>>(MAP_HEIGHT, std::vector<int>(MAP_WIDTH, 1));
-	vmap.resize(MAP_HEIGHT);		// ()内の数字が要素数
-	for (int i = 0; i<MAP_HEIGHT; i++) {
-		vmap[i].resize(MAP_WIDTH);
+	vmap.resize(MAP_HEIGHT);
+	for (int i = 0; i<MAP_HEIGHT; i++){
+		for (int j = 0; j<MAP_WIDTH; j++){
+			vmap[i].push_back(j);
+		}
 	}
-	//map.reserve(MAP_WIDTH*MAP_HEIGHT);
-
 }
 
 
@@ -30,15 +21,10 @@ StageSample::~StageSample()
 {
 }
 
-
-
-//DrawString(0, 0, "入力エラー", GetColor(255, 255, 255));
-
-
 int StageSample::initMap() {
 	p_map = &amap[0][0];
-	IOcsv::Readcsv("data/map/チュートリアルマップ.csv", &amap[0][0], MAP_WIDTH, MAP_HEIGHT);
-	//IOcsv::Readcsv("map02.csv", &vmap[0][0], MAP_WIDTH, MAP_HEIGHT);
+	IOcsv::ReadMap("data/map/チュートリアルマップ.csv", &amap[0][0], MAP_WIDTH, MAP_HEIGHT);
+	IOcsv::CSVtoVector("data/map/チュートリアルマップ.csv", vmap, MAP_WIDTH, MAP_HEIGHT);
 
 	LoadDivGraph("data/img/mapchip10.png", 10, 10, 1, 16, 16, chipImg);
 	return 0;
@@ -59,7 +45,7 @@ void StageSample::drawMap() {
 	// -50はキャラ情報などを表示するための空間を確保するための値．50という値自体に意味はない．
 	for (int y = (drawY) / CHIPSIZE; y < ((drawY + window.WINDOW_HEIGHT-50) / CHIPSIZE); y++) {
 		for (int x = (drawX) / CHIPSIZE; x < ((drawX + window.WINDOW_WIDTH) / CHIPSIZE); x++) {
-			if (y <= MAP_HEIGHT && x <= MAP_WIDTH) {
+			if (y < MAP_HEIGHT && x < MAP_WIDTH) {
 
 				int tempX = (x * CHIPSIZE) - drawX;
 				int tempY = (y * CHIPSIZE) - drawY;
@@ -67,7 +53,9 @@ void StageSample::drawMap() {
 				//マップチップ代わりの中抜き四角
 				//DrawBox(tempX, tempY, tempX + CHIPSIZE, tempY + CHIPSIZE, setColor, false);
 
-				if (1 <= amap[y][x] && amap[y][x] <= 7) DrawGraph(tempX, tempY, chipImg[amap[y][x]], TRUE);
+			//	if (1 <= amap[y][x] && amap[y][x] <= 7) DrawGraph(tempX, tempY, chipImg[amap[y][x]], TRUE);
+				if (1 <= vmap[y][x] && vmap[y][x] <= 7) DrawGraph(tempX, tempY, chipImg[vmap[y][x]], TRUE);
+				else DrawBox(tempX, tempY, tempX + CHIPSIZE, tempY + CHIPSIZE, GetColor(0, 255, 0), FALSE);
 			}
 			//主人公の代わりの赤四角
 			DrawBox(playerX - drawX, playerY - drawY, playerX + CHIPSIZE * 2 - drawX, playerY + CHIPSIZE * 4 - drawY, GetColor(255, 0, 0), true);

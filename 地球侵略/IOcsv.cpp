@@ -1,7 +1,5 @@
 #include "IOcsv.h"
 
-
-
 IOcsv::IOcsv()
 {
 }
@@ -12,61 +10,46 @@ IOcsv::~IOcsv()
 }
 
 
-//int IOcsv::Readcsv(std::string file, std::vector<std::vector <int>> *data, int w, int h)
-//{
-//	//std::ifstream ifs(file.c_str());
-//	std::ifstream ifs("map02.csv");
-//
-//	if (!ifs) {
-//		return 1;
-//	}
-//
-//	std::string str;
-//	std::string buf;	//一時格納
-//	std::vector<int> vi;
-//	int temp;
-//	//1行のうち、文字列とコンマを分割する
-//	for (int y = 0; y < h; y++) {
-//		//csvファイルを1行ずつ読み込む
-//		getline(ifs, str);
-//		std::istringstream stream(str);
-//		for (int x = 0; x < w; x++) {
-//			getline(stream, buf, ',');
-//			temp = std::stoi(buf);
-//			vi[x] = temp;
-//		}
-//		//data[y] = vi;
-//		data[y].push_back(vi);
-//	}
-//	return 0;
-//}
-//
-
-
-
-int IOcsv::Readcsv(char *file, int *data, int w, int h)
+int IOcsv::CSVtoVector(std::string file, std::vector<std::vector<int> >& vec, int w, int h)
 {
-	std::ifstream ifs(file);
-	//std::ifstream ifs("data/map/チュートリアルマップ.csv");
-
-	if (!ifs) {
-		return 1;
-	}
-
 	std::string str;	//行を格納
 	std::string buf;	//値を一時格納
-	std::vector<int> vi;
 	int temp;
-	//1行のうち、文字列とコンマを分割する
+	//ファイルのオープン
+	std::ifstream ifs(file);
+	if (!ifs) return 1;
+
 	for (int y = 0; y < h; y++) {
-		//csvファイルを1行ずつ読み込む
-		getline(ifs, str);
+		getline(ifs, str);				//csvファイルを1行読み込む
 		std::istringstream stream(str);
 		for (int x = 0; x < w; x++) {
-			getline(stream, buf, ',');
-			temp = std::stoi(buf);
-			//1次元に無理やり書き換え．これにより幅指定必須．
-			data[y*w+x] = temp;
+			getline(stream, buf, ',');	//カンマで区切る
+			temp = std::stoi(buf);		//int型に変更
+			vec[y][x] = temp;
+		}
+	}
+	return 0;
+}
+
+
+
+
+int IOcsv::ReadMap(char *file, int *data, int w, int h){
+	std::string str;	//行を格納
+	std::string buf;	//値を一時格納
+	int temp;
+	//ファイルのオープン
+	std::ifstream ifs(file);
+	if (!ifs) return 1;
+
+
+	for (int y = 0; y < h; y++) {		
+		getline(ifs, str);				//csvファイルを1行読み込む
+		std::istringstream stream(str);
+		for (int x = 0; x < w; x++) {
+			getline(stream, buf, ',');	//カンマで区切る
+			temp = std::stoi(buf);		//int型に変更
+			data[y*w+x] = temp;			//1次元とみなして代入．これにより幅指定必須．
 		}
 	}
 	return 0;

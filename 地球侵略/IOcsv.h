@@ -5,12 +5,12 @@
 #include<sstream> //文字ストリーム
 #include<vector>  //配列
 
-class IOcsv
-{
+class IOcsv{
 public:
 	IOcsv();
 	~IOcsv();
-	//static int Readcsv(std::string file, std::vector<std::vector <int>> *data,int w,int h);
-	static int Readcsv(char *file, int *data, int w, int h);
+	static int ReadMap(char *file, int *data, int w, int h);
+	
+	static int CSVtoVector(std::string file, std::vector<std::vector<int> >& vec,int w,int h);
 };
 

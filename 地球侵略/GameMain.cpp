@@ -22,5 +22,4 @@ void GameMain::MainLoop() {
 		stage1.scrollTest();
 		stage1.drawMap();
 	}
-
 }
