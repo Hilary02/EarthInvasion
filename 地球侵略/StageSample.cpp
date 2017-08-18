@@ -1,14 +1,13 @@
 #include "StageSample.h"
-#include"WindowData.h"
+#include "WindowData.h"
+#include "KeyManager.h"
 
 
 StageSample::StageSample() :
 	MAP_HEIGHT(60)
 	, MAP_WIDTH(234)
-	, relativeX(0)
-	, relativeY(0)
 	, playerX(100)
-	, playerY(300)
+	, playerY(800)
 {
 	//map.resize(MAP_HEIGHT);
 	//マップ配列要素用のメモリ確保
@@ -20,8 +19,6 @@ StageSample::StageSample() :
 	//map = std::vector<std::vector<int>>(MAP_HEIGHT, std::vector<int>(MAP_WIDTH, 1));
 	map.reserve(MAP_WIDTH*MAP_HEIGHT);
 
-	mapX = 0;
-	mapY = 0;
 }
 
 
@@ -44,59 +41,27 @@ int StageSample::initMap() {
 }
 
 
-void StageSample::drawStage() {
-	int drawX = 0;
-	int drawY = 0;
+void StageSample::drawMap() {
 	int CHIPSIZE = 16;
 	int setColor = GetColor(125, 125, 125);
 
 	//0810プレイヤー座標に応じた表示範囲の選択
-	if (playerX - 100 >= 0) drawX = playerX - 100;
-	else drawX = 0;
-	if (playerY - 300 >= 0) drawY = playerY - 300;
-	else drawY = 0;
+	scrollMap();
 
 	for (int i = 0; i < 10; i++) {
 		DrawGraph(100 + i * 16, 100, chipImg[i], true);
 	}
 
-	for (int y = (drawY) / CHIPSIZE; y < ((drawY + window.WINDOW_HEIGHT) / CHIPSIZE) ; y++) {
-		for (int x = (drawX) / CHIPSIZE; x < ((drawX + window.WINDOW_WIDTH) / CHIPSIZE) ; x++) {
+	for (int y = (drawY) / CHIPSIZE; y < ((drawY + window.WINDOW_HEIGHT-50) / CHIPSIZE); y++) {
+		for (int x = (drawX) / CHIPSIZE; x < ((drawX + window.WINDOW_WIDTH) / CHIPSIZE); x++) {
 			if (y <= MAP_HEIGHT && x <= MAP_WIDTH) {
-
-				switch (amap[y][x]) {
-				case 0:
-					setColor = GetColor(255, 255, 255);
-					break;
-				case 1:
-					setColor = GetColor(255, 255, 0);
-					break;
-				case 2:
-					setColor = GetColor(120, 120, 120);
-					break;
-				case 3:
-					setColor = GetColor(255, 183, 76);
-					break;
-				case 4:
-					setColor = GetColor(255, 0, 0);
-					break;
-				case 5:
-					setColor = GetColor(228, 212, 161);
-					break;
-				case 6:
-					setColor = GetColor(255, 0, 119);
-					break;
-				default:
-					setColor = GetColor(0, 0, 255);
-					break;
-				}
 
 				int tempX = (x * CHIPSIZE) - drawX;
 				int tempY = (y * CHIPSIZE) - drawY;
 
 				//マップチップ代わりの中抜き四角
 				//DrawBox(tempX, tempY, tempX + CHIPSIZE, tempY + CHIPSIZE, setColor, false);
-				
+
 				if (1 <= amap[y][x] && amap[y][x] <= 7) DrawGraph(tempX, tempY, chipImg[amap[y][x]], TRUE);
 			}
 			//主人公の代わりの赤四角
@@ -152,22 +117,24 @@ void StageSample::drawStage() {
 // 仮なのでいつかクラスに分離する
 void StageSample::scrollTest() {
 	int move = 5;
-	DrawBox(100, 100, 700, 500, GetColor(0, 255, 255), false);
-	GetHitKeyStateAll(key);
-	if (key[KEY_INPUT_UP] == 1 && playerY - move >= 0) {
+	if (keyM.GetKeyFrame(KEY_INPUT_UP) >= 1 && playerY - move >= 0) {
 		playerY -= move;
 	}
-	if (key[KEY_INPUT_DOWN] == 1 && playerY + move <= MAP_HEIGHT * 16) {
+	if (keyM.GetKeyFrame(KEY_INPUT_DOWN	) >= 1 && playerY + move <= MAP_HEIGHT * 16) {
 		playerY += move;
 	}
-	if (key[KEY_INPUT_LEFT] == 1 && playerX - move >= 0) {
+	if (keyM.GetKeyFrame(KEY_INPUT_LEFT) >= 1 && playerX - move >= 0) {
 		playerX -= move;
 	}
-	if (key[KEY_INPUT_RIGHT] == 1 && playerX + move <= MAP_WIDTH * 16) {
+	if (keyM.GetKeyFrame(KEY_INPUT_RIGHT) >= 1 && playerX + move <= MAP_WIDTH * 16) {
 		playerX += move;
 	}
 }
 
 // プレイヤーの座標から表示するマップの起点を決定する関数． 2017.8.11 Hilary
 void StageSample::scrollMap() {
+	if (playerX - 100 >= 0) drawX = playerX - 100;
+	else drawX = 0;
+	if (playerY - 300 >= 0) drawY = playerY - 300;
+	else drawY = 0;
 }

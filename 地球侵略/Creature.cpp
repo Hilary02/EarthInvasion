@@ -3,7 +3,7 @@
 
 
 Creature::Creature(){
-	hp = 0;
+	hp = 1;
 	attack = 0;
 }
 
