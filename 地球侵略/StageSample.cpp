@@ -8,6 +8,12 @@ StageSample::StageSample() :
 	, playerX(100)
 	, playerY(800)
 {
+	/*
+	//08.18　vectorのサイズを動的に変更できるようにした
+	//参考にしたところ
+	//http://d.hatena.ne.jp/tei3344/20130207/1360238838
+	*/
+
 	vmap.resize(MAP_HEIGHT);
 	for (int i = 0; i<MAP_HEIGHT; i++){
 		for (int j = 0; j<MAP_WIDTH; j++){
@@ -33,14 +39,11 @@ int StageSample::initMap() {
 
 
 void StageSample::drawMap() {
-	int setColor = GetColor(125, 125, 125);
+	//デバッグ用カウンタ
+	int drawPics = 0;
 
 	scrollMap();	//プレイヤー座標に応じた表示範囲の変更
-	
 
-	for (int i = 0; i < 10; i++) {
-		DrawGraph(100 + i * 16, 100, chipImg[i], true);
-	}
 
 	// -50はキャラ情報などを表示するための空間を確保するための値．50という値自体に意味はない．
 	for (int y = (drawY) / CHIPSIZE; y < ((drawY + window.WINDOW_HEIGHT-50) / CHIPSIZE); y++) {
@@ -54,56 +57,21 @@ void StageSample::drawMap() {
 				//DrawBox(tempX, tempY, tempX + CHIPSIZE, tempY + CHIPSIZE, setColor, false);
 
 			//	if (1 <= amap[y][x] && amap[y][x] <= 7) DrawGraph(tempX, tempY, chipImg[amap[y][x]], TRUE);
-				if (1 <= vmap[y][x] && vmap[y][x] <= 7) DrawGraph(tempX, tempY, chipImg[vmap[y][x]], TRUE);
-				else DrawBox(tempX, tempY, tempX + CHIPSIZE, tempY + CHIPSIZE, GetColor(0, 255, 0), FALSE);
+				if (1 <= vmap[y][x] && vmap[y][x] <= 7) {
+					DrawGraph(tempX, tempY, chipImg[vmap[y][x]], TRUE);
+					drawPics++;
+				}
+				//空白表示
+				//else DrawBox(tempX, tempY, tempX + CHIPSIZE, tempY + CHIPSIZE, GetColor(0, 255, 0), FALSE);
 			}
 			//主人公の代わりの赤四角
 			DrawBox(playerX - drawX, playerY - drawY, playerX + CHIPSIZE * 2 - drawX, playerY + CHIPSIZE * 4 - drawY, GetColor(255, 0, 0), true);
 		}
 	}
 
-
-
-
-
-	//for (int y = 0; y < MAP_HEIGHT; y++) {
-	//	for (int x = 0; x < MAP_WIDTH; x++) {
-	//		drawX = 16 + 16 * x - playerX;
-	//		drawY = 16 + 16 * y - playerY;
-
-	//		switch (amap[y][x]) {
-	//		case 0:
-	//			setColor = GetColor(255, 255, 255);
-	//			break;
-	//		case 1:
-	//			setColor = GetColor(255, 255, 0);
-	//			break;
-	//		case 2:
-	//			setColor = GetColor(120, 120, 120);
-	//			break;
-	//		case 3:
-	//			setColor = GetColor(255, 183, 76);
-	//			break;
-	//		case 4:
-	//			setColor = GetColor(255, 0, 0);
-	//			break;
-	//		case 5:
-	//			setColor = GetColor(228, 212, 161);
-	//			break;
-	//		case 6:
-	//			setColor = GetColor(255, 0, 119);
-	//			break;
-	//		default:
-	//			setColor = GetColor(0, 0, 255);
-	//			break;
-	//		}
-	//		if (50 <= drawX && drawX <= 750 && 50 <= drawY && drawY <= 550) {
-	//			DrawBox(drawX, drawY, drawX + 16, drawY + 16, setColor, false);
-	//		}
-	//	}
-	//}
-	DrawFormatString(0, 30, GetColor(255, 125, 255), "%d  ,%d", drawX, drawY);
-	DrawFormatString(0, 80, GetColor(255, 125, 255), "%d  ,%d", (drawX + window.WINDOW_WIDTH - 100), (drawY + window.WINDOW_HEIGHT - 100));
+	//デバッグ情報
+	DrawFormatString(0, 30, GetColor(255, 125, 255), "マップ表示原点：%d  ,%d", drawX, drawY);
+	DrawFormatString(0, 50, GetColor(255, 125, 255), "表示画像数：%d", drawPics);
 }
 
 
@@ -124,10 +92,14 @@ void StageSample::scrollTest() {
 	}
 }
 
-// プレイヤーの座標から表示するマップの起点を決定する関数． 2017.8.11 Hilary
+// プレイヤーの座標から表示するマップの起点を決定する関数．8.11 Hilary
 void StageSample::scrollMap() {
-	if (playerX - 100 >= 0) drawX = playerX - 100;
-	else drawX = 0;
+	//if (playerX - 150 >= 0) drawX = playerX - 100;
+	//else drawX = 0;
 	if (playerY - 300 >= 0) drawY = playerY - 300;
 	else drawY = 0;
+
+	drawX = (playerX - 100 >= 0) ? playerX - 100 : 0;
+	if(playerX + window.WINDOW_WIDTH -150 >= MAP_WIDTH * 16) drawX= MAP_WIDTH * 16 - window.WINDOW_WIDTH;
+	if (playerY + window.WINDOW_HEIGHT -450 >= MAP_HEIGHT * 16) drawY = MAP_HEIGHT* 16 - window.WINDOW_HEIGHT + 150;
 }
