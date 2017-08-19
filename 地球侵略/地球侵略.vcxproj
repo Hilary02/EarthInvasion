@@ -25,6 +25,7 @@
     <ClCompile Include="KeyManager.cpp" />
     <ClCompile Include="IOcsv.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Option.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Root.cpp" />
     <ClCompile Include="StageSample.cpp" />
@@ -37,6 +38,7 @@
     <ClInclude Include="KeyManager.h" />
     <ClInclude Include="IOcsv.h" />
     <ClInclude Include="Main.h" />
+    <ClInclude Include="Option.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Root.h" />
     <ClInclude Include="StageSample.h" />

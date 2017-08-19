@@ -3,7 +3,7 @@
 int counter = 0, FpsTime[2] = { 0, }, FpsTime_i = 0;
 double Fps = 0.0;
 
-void FpsFanction() {
+void FpsFunction() {
 	if (FpsTime_i == 0)
 		FpsTime[0] = GetNowCount();               //1Žü–Ú‚ÌŽžŠÔŽæ“¾
 	if (FpsTime_i == 49) {
