@@ -1,6 +1,9 @@
 #pragma once
-class KeyManager
-{
+/**
+キーボードの入力状況を管理する
+キーコンフィグ関係もここに組み込まれるはず
+*/
+class KeyManager{
 public:
 	KeyManager();
 	~KeyManager();

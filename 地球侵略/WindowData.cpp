@@ -14,6 +14,7 @@ WindowData::~WindowData()
 {
 }
 
+//ウィンドウの初期化処理を行う．
 int WindowData::Init() {
 	ChangeWindowMode(true);
 	SetGraphMode(WINDOW_WIDTH, WINDOW_HEIGHT, 32);

@@ -1,7 +1,10 @@
 #pragma once
 #include "DxLib.h"
 #include <string>
-
+/**
+ウィンドウそのものに関する情報を管理
+ウィンドウサイズもインスタンスから取得
+*/
 class WindowData {
 private:
 	const std::string TITLE;
@@ -13,6 +16,7 @@ public:
 
 	const int WINDOW_WIDTH;
 	const int WINDOW_HEIGHT;
+	
 	int Init();
 };
 

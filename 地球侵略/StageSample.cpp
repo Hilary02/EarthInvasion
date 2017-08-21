@@ -3,13 +3,15 @@
 #include "KeyManager.h"
 
 StageSample::StageSample() :
+	//マップサイズとプレイヤーの初期位置を指定
 	MAP_HEIGHT(60)
 	, MAP_WIDTH(234)
-	, playerX(100)
+	, playerX(3100)
 	, playerY(800)
 {
 	/*
 	//08.18　vectorのサイズを動的に変更できるようにした
+	//指定したマップサイズで配列を確保
 	//参考にしたところ
 	//http://d.hatena.ne.jp/tei3344/20130207/1360238838
 	*/
@@ -64,6 +66,7 @@ void StageSample::drawMap() {
 				//else DrawBox(tempX, tempY, tempX + CHIPSIZE, tempY + CHIPSIZE, GetColor(0, 255, 0), FALSE);
 			}
 			//主人公の代わりの赤四角
+			//マップ座標と描画原点から描画をしているため，カメラのみのスクロールも可能
 			DrawBox(playerX - drawX, playerY - drawY, playerX + CHIPSIZE * 2 - drawX, playerY + CHIPSIZE * 4 - drawY, GetColor(255, 0, 0), true);
 		}
 	}
@@ -92,13 +95,16 @@ void StageSample::scrollTest() {
 }
 
 // プレイヤーの座標から表示するマップの起点を決定する関数．8.11 Hilary
+//プレイヤーの表示位置もなんらかの変数に入れておきたい
 void StageSample::scrollMap() {
-	//if (playerX - 150 >= 0) drawX = playerX - 100;
-	//else drawX = 0;
-	if (playerY - 300 >= 0) drawY = playerY - 300;
-	else drawY = 0;
 
+
+	//左端
 	drawX = (playerX - 100 >= 0) ? playerX - 100 : 0;
-	if(playerX + window.WINDOW_WIDTH -150 >= MAP_WIDTH * 16) drawX= MAP_WIDTH * 16 - window.WINDOW_WIDTH;
+	//右端
+	if(playerX + window.WINDOW_WIDTH -100 >= MAP_WIDTH * 16) drawX= MAP_WIDTH * 16 -window.WINDOW_WIDTH;
+	//上端
+	drawY = (playerY - 300 >= 0) ? playerY - 300 : 0;
+	//下端
 	if (playerY + window.WINDOW_HEIGHT -450 >= MAP_HEIGHT * 16) drawY = MAP_HEIGHT* 16 - window.WINDOW_HEIGHT + 150;
 }

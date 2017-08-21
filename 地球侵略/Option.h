@@ -1,6 +1,9 @@
 #pragma once
 #define MENU_NUM 5
-
+/**
+オプション画面の処理を行う．
+オプションのセーブ機能がまだないのでやらなきゃいけない
+*/
 class Option {
 public:
 	Option();
@@ -16,13 +19,12 @@ private:
 	int bgmVolume;
 	int seVolume;
 	int *volume;
-	// フラグ
-	bool moveDown;
-	bool moveUp;
 
+	//どれが選択されているのか
 	enum OPTION_SELECT {
 		BGM, SE, KEY, PAD, EXIT
 	};
+	//メニューの描画場所と内容をまとめる
 	typedef struct {
 		int x, y;			// 座標格納用変数
 		char name[32];		// 項目名格納用変数

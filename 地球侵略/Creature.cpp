@@ -1,8 +1,7 @@
 #include "Creature.h"
 
-
-
 Creature::Creature(){
+
 	hp = 1;
 	attack = 0;
 }

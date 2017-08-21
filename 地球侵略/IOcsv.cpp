@@ -9,7 +9,8 @@ IOcsv::~IOcsv()
 {
 }
 
-
+//csvファイルの内容をマップ配列(vector)に読み込む処理
+//幅指定はvectorの要素数を読み取れればいいので不要になるかも
 int IOcsv::CSVtoVector(std::string file, std::vector<std::vector<int> >& vec, int w, int h)
 {
 	std::string str;	//行を格納
@@ -25,7 +26,7 @@ int IOcsv::CSVtoVector(std::string file, std::vector<std::vector<int> >& vec, in
 		for (int x = 0; x < w; x++) {
 			getline(stream, buf, ',');	//カンマで区切る
 			temp = std::stoi(buf);		//int型に変更
-			vec[y][x] = temp;
+			vec[y][x] = temp;			//vectorもアクセス方法は配列と同様に行える
 		}
 	}
 	return 0;

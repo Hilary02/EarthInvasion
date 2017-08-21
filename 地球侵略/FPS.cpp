@@ -1,19 +1,19 @@
 #include "DxLib.h"
+#include "WindowData.h"
 
-int counter = 0, FpsTime[2] = { 0, }, FpsTime_i = 0;
-double Fps = 0.0;
+int fpsTime[2] = { 0, }, count = 0;
+double fps = 0.0;
 
+//fpsを表示するだけ
 void FpsFunction() {
-	if (FpsTime_i == 0)
-		FpsTime[0] = GetNowCount();               //1周目の時間取得
-	if (FpsTime_i == 49) {
-		FpsTime[1] = GetNowCount();               //50周目の時間取得
-		Fps = 1000.0f / ((FpsTime[1] - FpsTime[0]) / 50.0f);//測定した値からfpsを計算
-		FpsTime_i = 0;//カウントを初期化
+	if (count == 0)
+		fpsTime[0] = GetNowCount();						    //1周目の時間取得
+	if (count == 59) {
+		fpsTime[1] = GetNowCount();							//60周目の時間取得
+		fps = 1000.0f / ((fpsTime[1] - fpsTime[0]) / 60.0f);//測定した値からfpsを計算
+		count = 0;										//カウントを初期化
 	}
-	else
-		FpsTime_i++;	//現在何周目かカウント
-	if (Fps != 0)
-		DrawFormatString(40, 0, GetColor(255, 125, 255), "FPS %.1f", Fps); //fpsを表示
+	else count++;	//現在何周目かカウント
+	if (fps != 0) DrawFormatString(window.WINDOW_WIDTH - 80, 0, GetColor(255, 125, 255), "fps %.1f", fps); //fpsを表示
 	return;
 }

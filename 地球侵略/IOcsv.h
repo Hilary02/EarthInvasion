@@ -5,6 +5,10 @@
 #include<sstream> //文字ストリーム
 #include<vector>  //配列
 
+/**
+csvファイルを読み出す処理を行う．
+IOcsvは適切でないかも
+*/
 class IOcsv{
 public:
 	IOcsv();
