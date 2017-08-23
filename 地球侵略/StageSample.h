@@ -34,7 +34,7 @@ public:
 private:
 	const int MAP_HEIGHT;	//縦方向マップチップ数
 	const int MAP_WIDTH;	//横方向マップチップ数
-	const int CHIPSIZE = 16;//マップチップの大きさ
+	const int CHIPSIZE = 32;//マップチップの大きさ
 	
 	int chipImg[10];		//マップチップ格納用配列
 

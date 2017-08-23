@@ -14,6 +14,14 @@ Root::~Root()
 {
 }
 
+void Root::Update()
+{
+}
+
+void Root::Draw()
+{
+}
+
 
 // マップにおいての絶対座標を指定するとその座標に設定
 void Root::setAbsolutePos(double modX, double modY){

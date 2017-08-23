@@ -24,6 +24,9 @@ private:
 	enum OPTION_SELECT {
 		BGM, SE, KEY, PAD, EXIT
 	};
+	enum OPTION_DRAW {
+		VOL_CON,KEY_CON,PAD_CON
+	};
 	//メニューの描画場所と内容をまとめる
 	typedef struct {
 		int x, y;			// 座標格納用変数
@@ -38,6 +41,8 @@ private:
 		{ 400, 400, "Back to Title" }
 	};
 	int nowSelect;
+	int nowDraw;
+	bool isKeyConfig=false;
 public:
 	// キー入力に応じてコンフィグ操作を行う関数
 	void MoveCursor();

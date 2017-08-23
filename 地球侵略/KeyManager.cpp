@@ -10,8 +10,22 @@ Inputだとファイルとかと紛らわしのでKeyに変更．
 KeyManager keyM;
 
 
-KeyManager::KeyManager()
-{
+KeyManager::KeyManager() {
+	int keyData[] = { KEY_INPUT_LEFT,	KEY_INPUT_RIGHT,  KEY_INPUT_UP,
+		KEY_INPUT_DOWN,	KEY_INPUT_A,	  KEY_INPUT_S,
+		KEY_INPUT_E,	KEY_INPUT_ESCAPE };
+
+	//FILE *fp = fopen("keyData.dat", "rb");			//バイナリファイルを開く
+
+	////ファイルに保存されていたキーコードを割り当て
+	//if (fp != NULL) {
+	//	fread(&keyData, sizeof(keyData), 1, fp);
+	//	fclose(fp);
+	//}
+	//キーコード
+	for (int i = 0; i < 8; i++) {
+		keyCodes[i] = keyData[i];
+	}
 }
 
 
@@ -33,3 +47,40 @@ void KeyManager::UpdateKeyState() {
 int KeyManager::GetKeyFrame(int keyCode) {
 	return keyFrame[keyCode];
 }
+
+
+void KeyManager::KeyConfig(int keyCode) {
+	//if(CheckHitKeyAll() == 0) return false;		// キーがすべて離されるまでfalseを返す
+
+
+	for (int i = 0; i<256; i++) {
+		if (GetKeyFrame(i) == 1) {
+			if (keyCode == keyInputAttack) {
+				if (!TabooKey(i)) {
+					SwapKey(keyInputAttack, i);
+					keyCodes[keyInputAttack] = i;
+				}
+			}
+		}
+	}
+
+
+
+
+}
+
+
+// 禁止キー
+bool KeyManager::TabooKey(int keyCode) {	// キー変更に使えないキーの場合trueを返す
+	switch (keyCode) {
+	case KEY_INPUT_UP:
+	case KEY_INPUT_DOWN:
+	case KEY_INPUT_RIGHT:
+	case KEY_INPUT_LEFT:
+		return true;
+	default:
+		return false;
+	}
+}
+
+void KeyManager::SwapKey(int roleKey, int keyCode) {};

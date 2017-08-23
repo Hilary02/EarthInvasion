@@ -1,11 +1,11 @@
 #pragma once
 #include "Creature.h"
-class Player :
+class Enemy :
 	public Creature
 {
 public:
-	Player();
-	~Player();
+	Enemy();
+	~Enemy();
 	void Update();
 	void Draw();
 };

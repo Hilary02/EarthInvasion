@@ -28,3 +28,13 @@ int Creature::setAtk() {
 int Creature::getHp() {
 	return this->hp;
 }
+
+
+void Creature::Update()
+{
+}
+
+
+void Creature::Draw()
+{
+}

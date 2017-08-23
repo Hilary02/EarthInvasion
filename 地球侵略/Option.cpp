@@ -19,6 +19,7 @@ void Option::init() {
 	bgmVolume = 255;
 	seVolume = 200;
 	nowSelect = BGM;
+	nowDraw = VOL_CON;
 }
 
 void Option::Update() {
@@ -33,7 +34,7 @@ void Option::Draw() {
 
 	for (int i = 0; i < MENU_NUM; i++) {
 		if (i == nowSelect) {
-			MenuElement[i].x = 380; // 座標を400にする
+			MenuElement[i].x = 380; // 座標を左にする
 		}
 		else {
 			MenuElement[i].x = 400;
@@ -43,21 +44,11 @@ void Option::Draw() {
 		DrawFormatString(MenuElement[i].x, MenuElement[i].y, 0xFFFFFF, MenuElement[i].name);
 	}
 
+	//音量を表示　関数に切り分けるかも
 	DrawFormatString(430, 280, GetColor(255, 255, 255), ": %d", bgmVolume);
 	DrawFormatString(430, 310, GetColor(255, 255, 255), ": %d", seVolume);
 
-	if (keyM.GetKeyFrame(KEY_INPUT_SPACE) == 1) {
-		if (CheckSoundMem(bgm) == 0) {
-			PlaySoundMem(bgm, DX_PLAYTYPE_LOOP, FALSE);
-		}
-		else {
-			StopSoundMem(bgm);
-		}
-	}
-	if (CheckSoundMem(bgm) == 0) {
-		DrawFormatString(0, 60, GetColor(255, 255, 255), "STOP");
-	}
-
+	
 
 }
 
@@ -75,7 +66,6 @@ void Option::MoveCursor() {
 	}
 	//ボリューム調節機能．同じ処理になるのでポインタを利用して圧縮を図った．
 	//配列でも問題ない気がしたが別段問題はないと思う．
-	//08.19 Hilary
 	if (nowSelect == BGM) {
 		volume = &bgmVolume;
 		music = &bgm;
@@ -89,15 +79,48 @@ void Option::MoveCursor() {
 		if (nowSelect == BGM || nowSelect == SE) {
 			*volume = ((*volume)++ < 255) ? (*volume)++ : 255;//音量を上げる.Max255
 			ChangeVolumeSoundMem(*volume, *music);				//メモリ上の音量変更
-			if(nowSelect == SE) PlaySoundMem(se, DX_PLAYTYPE_BACK, TRUE);
+			if (nowSelect == SE) PlaySoundMem(se, DX_PLAYTYPE_BACK, TRUE);
 		}
-	}
-
-	else if (keyM.GetKeyFrame(KEY_INPUT_LEFT) >= 1) {
+	}	else if (keyM.GetKeyFrame(KEY_INPUT_LEFT) >= 1) {
 		if (nowSelect == BGM || nowSelect == SE) {
 			*volume = ((*volume)-- > 0) ? (*volume)-- : 0;//音量を下げる.Min0
 			ChangeVolumeSoundMem(*volume, *music);
 			if (nowSelect == SE) PlaySoundMem(se, DX_PLAYTYPE_BACK, TRUE);
+		}
+	}
+
+	//音楽の再生・停止のサンプル．音量が変化しているか確かめるためにつけた
+	if (keyM.GetKeyFrame(KEY_INPUT_SPACE) == 1) {
+		if (CheckSoundMem(bgm) == 0) {
+			PlaySoundMem(bgm, DX_PLAYTYPE_LOOP, FALSE);
+		}
+		else {
+			StopSoundMem(bgm);
+		}
+	}
+	if (CheckSoundMem(bgm) == 0) {
+		DrawFormatString(0, 60, GetColor(255, 255, 255), "STOP");
+	}
+
+	if (keyM.GetKeyFrame(KEY_INPUT_Z) == 1) {
+		switch (nowSelect) {
+		case KEY:
+			isKeyConfig = true;
+			break;
+		case PAD:
+			break;
+		default:
+			break;
+		}
+	}
+	if (keyM.GetKeyFrame(KEY_INPUT_ESCAPE) == 1) {
+		switch (nowSelect) {
+		case KEY:
+		case PAD:
+			isKeyConfig = false;
+			break;
+		default:
+			break;
 		}
 	}
 }

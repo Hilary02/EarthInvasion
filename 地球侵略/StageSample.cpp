@@ -67,7 +67,7 @@ void StageSample::drawMap() {
 			}
 			//主人公の代わりの赤四角
 			//マップ座標と描画原点から描画をしているため，カメラのみのスクロールも可能
-			DrawBox(playerX - drawX, playerY - drawY, playerX + CHIPSIZE * 2 - drawX, playerY + CHIPSIZE * 4 - drawY, GetColor(255, 0, 0), true);
+			DrawBox(playerX - drawX, playerY - drawY, playerX + CHIPSIZE  - drawX, playerY + CHIPSIZE * 2 - drawY, GetColor(255, 0, 0), true);
 		}
 	}
 
@@ -83,13 +83,13 @@ void StageSample::scrollTest() {
 	if (keyM.GetKeyFrame(KEY_INPUT_UP) >= 1 && playerY - move >= 0) {
 		playerY -= move;
 	}
-	if (keyM.GetKeyFrame(KEY_INPUT_DOWN	) >= 1 && playerY + move <= MAP_HEIGHT * 16) {
+	if (keyM.GetKeyFrame(KEY_INPUT_DOWN	) >= 1 && playerY + move <= MAP_HEIGHT * CHIPSIZE) {
 		playerY += move;
 	}
 	if (keyM.GetKeyFrame(KEY_INPUT_LEFT) >= 1 && playerX - move >= 0) {
 		playerX -= move;
 	}
-	if (keyM.GetKeyFrame(KEY_INPUT_RIGHT) >= 1 && playerX + move <= MAP_WIDTH * 16) {
+	if (keyM.GetKeyFrame(KEY_INPUT_RIGHT) >= 1 && playerX + move <= MAP_WIDTH * CHIPSIZE) {
 		playerX += move;
 	}
 }
@@ -102,9 +102,9 @@ void StageSample::scrollMap() {
 	//左端
 	drawX = (playerX - 100 >= 0) ? playerX - 100 : 0;
 	//右端
-	if(playerX + window.WINDOW_WIDTH -100 >= MAP_WIDTH * 16) drawX= MAP_WIDTH * 16 -window.WINDOW_WIDTH;
+	if(playerX + window.WINDOW_WIDTH -100 >= MAP_WIDTH * CHIPSIZE) drawX= MAP_WIDTH * CHIPSIZE -window.WINDOW_WIDTH;
 	//上端
 	drawY = (playerY - 300 >= 0) ? playerY - 300 : 0;
 	//下端
-	if (playerY + window.WINDOW_HEIGHT -450 >= MAP_HEIGHT * 16) drawY = MAP_HEIGHT* 16 - window.WINDOW_HEIGHT + 150;
+	if (playerY + window.WINDOW_HEIGHT -450 >= MAP_HEIGHT * CHIPSIZE) drawY = MAP_HEIGHT* CHIPSIZE - window.WINDOW_HEIGHT + 150;
 }

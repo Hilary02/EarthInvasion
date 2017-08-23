@@ -19,5 +19,7 @@ public:
 	int setAtk();
 	// ‘Ì—Í‚ðŽæ“¾‚·‚é
 	int getHp();
+	void Update();
+	void Draw();
 };
 

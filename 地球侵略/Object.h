@@ -9,5 +9,7 @@ class Object :
 public:
 	Object();
 	~Object();
+	void Update();
+	void Draw();
 };
 
