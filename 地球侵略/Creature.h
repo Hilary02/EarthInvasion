@@ -9,7 +9,7 @@ class Creature :
 public:
 	Creature();
 	~Creature();
-private:
+protected:
 	int hp;
 	int attack;
 public:

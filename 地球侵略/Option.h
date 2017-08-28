@@ -1,5 +1,4 @@
 #pragma once
-#define MENU_NUM 5
 /**
 オプション画面の処理を行う．
 オプションのセーブ機能がまだないのでやらなきゃいけない
@@ -11,6 +10,7 @@ public:
 	void Update();
 	void Draw();
 private:
+	const static int MENU_NUM=5;
 	// 音楽ハンドル
 	int bgm;
 	int se;

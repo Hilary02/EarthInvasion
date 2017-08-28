@@ -15,7 +15,7 @@ public:
 	//ˆÚ“®—Ê‚ğİ’è‚·‚é‚Æˆø”‚Ì’l‚ğˆÚ“®‚µ‚½ˆÊ’u‚ÖˆÚ“®
 	void setRelativePos(double modX, double modY);
 
-private:
+protected:
 	//‰ŠúÀ•W
 	double defaultX;
 	double defaultY;

@@ -1,4 +1,5 @@
 #include "Enemy.h"
+#include "DxLib.h"
 
 
 
@@ -15,8 +16,9 @@ void Enemy::Update()
 {
 }
 
-void Enemy::Draw()
-{
+void Enemy::Draw(){
+
+
 }
 
 
