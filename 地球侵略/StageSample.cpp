@@ -2,6 +2,8 @@
 #include "WindowData.h"
 #include "KeyManager.h"
 
+#include "Player.h"
+
 StageSample::StageSample() :
 	//マップサイズとプレイヤーの初期位置を指定
 	MAP_HEIGHT(60)
@@ -22,6 +24,8 @@ StageSample::StageSample() :
 			vmap[i].push_back(j);
 		}
 	}
+
+	Player player(500,500);
 }
 
 StageSample::~StageSample()
@@ -51,7 +55,6 @@ int StageSample::initMap() {
 
 	chipImg[9] = LoadGraph("data/img/togetoge.png");
 	return 0;
-
 }
 
 
