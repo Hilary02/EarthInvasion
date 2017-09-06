@@ -17,7 +17,7 @@
 別ファイルでも管理もできるが，マップ座標をいちいち調べながら打たなければいけなくなる．
 
 
-*/
+*/ 
 class StageSample
 {
 public:
@@ -37,6 +37,9 @@ private:
 	const int CHIPSIZE = 32;//マップチップの大きさ
 	
 	int chipImg[10];		//マップチップ格納用配列
+
+	int lockdoor[3];        //ドア用格納配列
+	int moveground[2];      //動く床用配列
 
 	std::vector<std::vector <int>> vmap;	//マップデータ格納
 

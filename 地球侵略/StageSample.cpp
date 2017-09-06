@@ -33,7 +33,23 @@ int StageSample::initMap() {
 	IOcsv::ReadMap("data/map/チュートリアルマップ.csv", &amap[0][0], MAP_WIDTH, MAP_HEIGHT);
 	IOcsv::CSVtoVector("data/map/チュートリアルマップ.csv", vmap, MAP_WIDTH, MAP_HEIGHT);
 
-	LoadDivGraph("data/img/mapchip10.png", 10, 10, 1, 16, 16, chipImg);
+	//画像の設定
+	LoadDivGraph("data/img/20170823174821.png", 10, 10, 1, 32, 32, chipImg);
+	//chipImg[1] = LoadGraph("data/img/airFloor.png");
+	chipImg[2] = LoadGraph("data/img/groundFloor.png");
+	chipImg[5] = LoadGraph("data/img/healPot.png");
+
+	LoadDivGraph("data/img/lockDoor.png", 3, 1, 3, 32, 32, lockdoor);
+	chipImg[6] = lockdoor[0];
+	//chipImg[6] = LoadGraph("data/img/lockDoor.png");
+
+	chipImg[7] = LoadGraph("data/img/airFloor.png");
+
+	LoadDivGraph("data/img/moveGround.png", 2, 2, 1, 32, 32, moveground);
+	chipImg[8] = moveground[0];
+	//chipImg[8] = LoadGraph("data/img/moveGround.png");
+
+	chipImg[9] = LoadGraph("data/img/togetoge.png");
 	return 0;
 
 }
@@ -42,6 +58,9 @@ int StageSample::initMap() {
 void StageSample::drawMap() {
 	//デバッグ用カウンタ
 	int drawPics = 0;
+
+	int locknum = 0;  //lockdoorが何回描画されたかカウント
+	int movenum = 0;  //movegroundが何回描画されたかカウント
 
 	scrollMap();	//プレイヤー座標に応じた表示範囲の変更
 
@@ -58,8 +77,28 @@ void StageSample::drawMap() {
 				//DrawBox(tempX, tempY, tempX + CHIPSIZE, tempY + CHIPSIZE, setColor, false);
 
 			//	if (1 <= amap[y][x] && amap[y][x] <= 7) DrawGraph(tempX, tempY, chipImg[amap[y][x]], TRUE);
-				if (1 <= vmap[y][x] && vmap[y][x] <= 7) {
+				if (1 <= vmap[y][x] && vmap[y][x] <= 8) {
 					DrawGraph(tempX, tempY, chipImg[vmap[y][x]], TRUE);
+					drawPics++;
+					if (vmap[y][x] == 6 && locknum < 2){
+						chipImg[6] = lockdoor[locknum + 1];
+						locknum++;
+					}else{
+						chipImg[6] = lockdoor[0];
+						locknum = 0;
+					}
+
+					if (vmap[y][x] == 8 && movenum == 0){
+						chipImg[8] = moveground[1];
+						movenum = 1;
+					}else{
+						chipImg[8] = moveground[0];
+						movenum = 0;
+					}
+				}
+
+				if (vmap[y][x] == 9) {
+					DrawGraph(tempX, tempY + 16, chipImg[vmap[y][x]], TRUE);
 					drawPics++;
 				}
 				//空白表示
@@ -67,7 +106,7 @@ void StageSample::drawMap() {
 			}
 			//主人公の代わりの赤四角
 			//マップ座標と描画原点から描画をしているため，カメラのみのスクロールも可能
-			DrawBox(playerX - drawX, playerY - drawY, playerX + CHIPSIZE  - drawX, playerY + CHIPSIZE * 2 - drawY, GetColor(255, 0, 0), true);
+			DrawBox(playerX - drawX, playerY - drawY, playerX + CHIPSIZE * 2  - drawX, playerY + CHIPSIZE * 2 - drawY, GetColor(255, 0, 0), true);
 		}
 	}
 
