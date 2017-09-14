@@ -25,7 +25,17 @@ int IOcsv::CSVtoVector(std::string file, std::vector<std::vector<int> >& vec, in
 		std::istringstream stream(str);
 		for (int x = 0; x < w; x++) {
 			getline(stream, buf, ',');	//カンマで区切る
-			temp = std::stoi(buf);		//int型に変更
+
+			try {
+				temp = std::stoi(buf);		//int型に変更
+			}
+			catch (std::invalid_argument e) {
+				temp = 0;
+			}
+			catch (std::out_of_range e) {
+				temp = 0;
+			}
+			
 			vec[y][x] = temp;			//vectorもアクセス方法は配列と同様に行える
 		}
 	}
