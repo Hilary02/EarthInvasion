@@ -17,3 +17,6 @@ void FpsFunction() {
 	if (fps != 0) DrawFormatString(window.WINDOW_WIDTH - 80, 0, GetColor(255, 125, 255), "fps %.1f", fps); //fps‚ð•\Ž¦
 	return;
 }
+
+
+//hanoi
