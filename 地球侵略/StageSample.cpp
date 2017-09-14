@@ -33,8 +33,6 @@ StageSample::~StageSample()
 }
 
 int StageSample::initMap() {
-	p_map = &amap[0][0];
-//	IOcsv::ReadMap("data/map/tutrial-map‰ü—Ç”Å32.csv", &amap[0][0], MAP_WIDTH, MAP_HEIGHT);
 	IOcsv::CSVtoVector("data/map/tutrial-map‰ü—Ç”Å32.csv", vmap, MAP_WIDTH, MAP_HEIGHT);
 
 	//‰æ‘œ‚Ìİ’è

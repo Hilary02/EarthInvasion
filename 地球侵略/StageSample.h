@@ -43,16 +43,6 @@ private:
 
 	std::vector<std::vector <int>> vmap;	//マップデータ格納
 
-	//VectorMAP,ArrayMAPの意味でつけていた
-	//こちらは必要がなくなる
-	//決めうち
-	int amap[60][234];
-	int* p_map;
-
-	//削除予定　描画原点を探してた
-	int relativeX=0;
-	int relativeY=0;
-
 private:
 	//削除予定
 	int mapX;
