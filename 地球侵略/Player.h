@@ -8,11 +8,17 @@ public:
 	Player(int x, int y);
 	~Player();
 	void Update();
-	void Draw();
+	void Draw(int, int);
 private:
-	double jumpPower = 5.0;
+	void MapHitCheck();
+	void EnemyHitCheck();
+	double jumpPower = 10.0;
 	double speed = 10.0;
-	bool canJump;
-
+	bool jump = false;
+	bool liquid = false;
+	bool deadFlag = false;
+	int wait[5];
+	int move[5];
+	int attack[10];
+	int die[20];
 };
-
