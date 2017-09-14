@@ -6,9 +6,9 @@
 
 StageSample::StageSample() :
 	//マップサイズとプレイヤーの初期位置を指定
-	MAP_HEIGHT(60)
-	, MAP_WIDTH(234)
-	, playerX(3100)
+	MAP_HEIGHT(30)
+	, MAP_WIDTH(128)
+	, playerX(310)
 	, playerY(800)
 {
 	/*
@@ -34,25 +34,19 @@ StageSample::~StageSample()
 
 int StageSample::initMap() {
 	p_map = &amap[0][0];
-	IOcsv::ReadMap("data/map/チュートリアルマップ.csv", &amap[0][0], MAP_WIDTH, MAP_HEIGHT);
-	IOcsv::CSVtoVector("data/map/チュートリアルマップ.csv", vmap, MAP_WIDTH, MAP_HEIGHT);
+//	IOcsv::ReadMap("data/map/tutrial-map改良版32.csv", &amap[0][0], MAP_WIDTH, MAP_HEIGHT);
+	IOcsv::CSVtoVector("data/map/tutrial-map改良版32.csv", vmap, MAP_WIDTH, MAP_HEIGHT);
 
 	//画像の設定
 	LoadDivGraph("data/img/20170823174821.png", 10, 10, 1, 32, 32, chipImg);
 	//chipImg[1] = LoadGraph("data/img/airFloor.png");
 	chipImg[2] = LoadGraph("data/img/groundFloor.png");
+	chipImg[3] = LoadGraph("data/img/eeyanWait.png");
+	chipImg[4] = LoadGraph("data/img/enemy1Wait.png");
 	chipImg[5] = LoadGraph("data/img/healPot.png");
-
-	LoadDivGraph("data/img/lockDoor.png", 3, 1, 3, 32, 32, lockdoor);
-	chipImg[6] = lockdoor[0];
-	//chipImg[6] = LoadGraph("data/img/lockDoor.png");
-
+	chipImg[6] = LoadGraph("data/img/lockDoor.png");
 	chipImg[7] = LoadGraph("data/img/airFloor.png");
-
-	LoadDivGraph("data/img/moveGround.png", 2, 2, 1, 32, 32, moveground);
-	chipImg[8] = moveground[0];
-	//chipImg[8] = LoadGraph("data/img/moveGround.png");
-
+	chipImg[8] = LoadGraph("data/img/moveGround.png");
 	chipImg[9] = LoadGraph("data/img/togetoge.png");
 	return 0;
 }
@@ -69,8 +63,10 @@ void StageSample::drawMap() {
 
 
 	// -50はキャラ情報などを表示するための空間を確保するための値．50という値自体に意味はない．
-	for (int y = (drawY) / CHIPSIZE; y < ((drawY + window.WINDOW_HEIGHT-50) / CHIPSIZE); y++) {
-		for (int x = (drawX) / CHIPSIZE; x < ((drawX + window.WINDOW_WIDTH) / CHIPSIZE); x++) {
+	int ty = max(0, drawY - CHIPSIZE * 2);
+	int tx = max(0, drawX - CHIPSIZE * 2);
+	for (int y = ty / CHIPSIZE; y < ((drawY + window.WINDOW_HEIGHT-50) / CHIPSIZE); y++) {
+		for (int x = tx / CHIPSIZE; x < ((drawX + CHIPSIZE + window.WINDOW_WIDTH) / CHIPSIZE); x++) {
 			if (y < MAP_HEIGHT && x < MAP_WIDTH) {
 
 				int tempX = (x * CHIPSIZE) - drawX;
@@ -79,25 +75,9 @@ void StageSample::drawMap() {
 				//マップチップ代わりの中抜き四角
 				//DrawBox(tempX, tempY, tempX + CHIPSIZE, tempY + CHIPSIZE, setColor, false);
 
-			//	if (1 <= amap[y][x] && amap[y][x] <= 7) DrawGraph(tempX, tempY, chipImg[amap[y][x]], TRUE);
 				if (1 <= vmap[y][x] && vmap[y][x] <= 8) {
 					DrawGraph(tempX, tempY, chipImg[vmap[y][x]], TRUE);
 					drawPics++;
-					if (vmap[y][x] == 6 && locknum < 2){
-						chipImg[6] = lockdoor[locknum + 1];
-						locknum++;
-					}else{
-						chipImg[6] = lockdoor[0];
-						locknum = 0;
-					}
-
-					if (vmap[y][x] == 8 && movenum == 0){
-						chipImg[8] = moveground[1];
-						movenum = 1;
-					}else{
-						chipImg[8] = moveground[0];
-						movenum = 0;
-					}
 				}
 
 				if (vmap[y][x] == 9) {
