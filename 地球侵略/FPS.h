@@ -1,1 +1,1 @@
-void FpsFunction();
+void FpsFunction(int,int);

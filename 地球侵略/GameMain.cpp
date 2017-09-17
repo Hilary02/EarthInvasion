@@ -1,18 +1,14 @@
 #include "GameMain.h"
 #include "KeyManager.h"
 #include "FPS.h"
-
-#include "StageSample.h"
-#include "Option.h"
+#include "SceneManager.h"
+#include "WindowData.h"
 
 //現在は表示したいクラスをここで読みこんでしまっているが，ポインタを用いて必要分だけ読みこめるように
 int time = 0;
-StageSample stage1;
-Option option;
+
 
 GameMain::GameMain(){
-	stage1.initMap();
-	option.init();
 }
 
 
@@ -26,14 +22,12 @@ void GameMain::MainLoop() {
 
 		keyM.UpdateKeyState();	//キーの更新
 		time++;					//全体時間の更新
-		DrawFormatString(0, 0, GetColor(200, 200, 200), "%d", time);
-		FpsFunction();
 
-		stage1.scrollTest();
-		stage1.drawMap();
+		SceneM.Update();
+		SceneM.Draw();
 
-		//すべての描画系クラスを1つの親クラスから派生すればポインタで呼べるようになるはず
-		//option.Update();
-		//option.Draw();
+		//デバック表示
+		FpsFunction(window.WINDOW_WIDTH - 80,0);
+		DrawFormatString(window.WINDOW_WIDTH-120, 20, GetColor(255, 125, 255), "Frame:%d", time);
 	}
 }

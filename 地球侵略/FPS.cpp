@@ -5,7 +5,7 @@ int fpsTime[2] = { 0, }, count = 0;
 double fps = 0.0;
 
 //fpsを表示するだけ
-void FpsFunction() {
+void FpsFunction(int x,int y) {
 	if (count == 0)
 		fpsTime[0] = GetNowCount();						    //1周目の時間取得
 	if (count == 59) {
@@ -14,7 +14,7 @@ void FpsFunction() {
 		count = 0;										//カウントを初期化
 	}
 	else count++;	//現在何周目かカウント
-	if (fps != 0) DrawFormatString(window.WINDOW_WIDTH - 80, 0, GetColor(255, 125, 255), "fps %.1f", fps); //fpsを表示
+	if (fps != 0) DrawFormatString(x, y, GetColor(255, 125, 255), "fps %.1f", fps); //fpsを表示
 	return;
 }
 
