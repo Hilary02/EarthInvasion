@@ -7,10 +7,12 @@
 
 
 SceneManager SceneM;
+bool sceneFlag;
 
 SceneManager::SceneManager() :
 	nextScene(scene::None) {
 	nowScene = new Scene_Title();
+	sceneFlag = true;
 	//nowScene = (Scene_Frame*) new Scene_Title();
 }
 
@@ -25,10 +27,21 @@ void SceneManager::ChangeScene(scene next) {
 
 void SceneManager::Update() {
 	if (nextScene != scene::None) {
-		delete nowScene;
+		/*シーンがタイトルならばインスタンスを削除する代わりにタイトルフラグを折るだけ．
+		タイトルのカーソル位置を保持するようにするためこうしているが，
+		選択位置管理クラスを作るかでメモリ使用量を減らしてもいいかも
+		*/
+		if (sceneFlag == true) {
+			sceneFlag = false;
+		}
+		else {
+			delete nowScene;
+		}
+
 		switch (nextScene) {
 		case scene::Title:
 			nowScene = new Scene_Title();
+			sceneFlag = true;
 			break;
 		case scene::Game:
 			nowScene = new Scene_Game();

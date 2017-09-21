@@ -16,11 +16,7 @@ public:
 	void setRelativePos(double modX, double modY);
 
 protected:
-	//‰ŠúÀ•W
-	double defaultX;
-	double defaultY;
-	//Œ»İÀ•W
-	double x;
-	double y;
+	//À•W
+	double x,y;
 };
 
