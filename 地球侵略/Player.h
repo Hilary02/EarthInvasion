@@ -18,6 +18,7 @@ private:
 	bool jump = false;
 	bool liquid = false;
 	bool deadFlag = false;
+	char plState = 'N';
 	int wait[5];
 	int move[5];
 	int attack[10];
