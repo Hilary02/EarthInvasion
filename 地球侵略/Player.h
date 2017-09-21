@@ -14,6 +14,7 @@ private:
 	void EnemyHitCheck();
 	double jumpPower = 10.0;
 	double speed = 10.0;
+	bool right = true;
 	bool jump = false;
 	bool liquid = false;
 	bool deadFlag = false;
