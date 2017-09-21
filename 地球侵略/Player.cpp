@@ -33,9 +33,11 @@ void Player::Update()
 {
 	if (keyM.GetKeyFrame(KEY_INPUT_LEFT) >= 1) {
 		x -= MOVE;
+		right = false;
 	}
 	if (keyM.GetKeyFrame(KEY_INPUT_RIGHT) >= 1) {
 		x += MOVE;
+		right = true;
 	}
 	if (keyM.GetKeyFrame(KEY_INPUT_DOWN) >= 1 && !jump)
 		liquid = true;
@@ -46,7 +48,7 @@ void Player::Update()
 		jump = true;
 	}
 	if (keyM.GetKeyFrame(KEY_INPUT_A) >= 1) {
-
+		
 	}
 	if (keyM.GetKeyFrame(KEY_INPUT_S) >= 1) {
 
@@ -66,14 +68,54 @@ void Player::Update()
 
 void Player::Draw(int drawX,int drawY)
 {
+	int i;
+	int tempX = x - drawX , tempY = y - drawY;
 
+	if (right) {
+		if (jump) {
+
+		}
+		else if (liquid) {
+			i = keyM.GetKeyFrame(KEY_INPUT_DOWN) / 15 % 4;
+			DrawGraph(tempX, tempY, move[i], TRUE);//‰¼
+		}
+		else if (keyM.GetKeyFrame(KEY_INPUT_RIGHT) >= 1) {
+			i = keyM.GetKeyFrame(KEY_INPUT_RIGHT) / 15 % 4;
+			DrawGraph(tempX, tempY, move[i], TRUE);
+		}
+		else {
+			i = 0;
+			DrawGraph(tempX, tempY, wait[i / 15], TRUE);
+			if(i == 60) i = 0;
+		}
+	}
+	else {
+		if (jump) {
+
+		}
+		else if (liquid) {
+			i = keyM.GetKeyFrame(KEY_INPUT_DOWN) / 15 % 4;
+			DrawTurnGraph(tempX, tempY, move[i], TRUE);//‰¼
+		}
+		else if (keyM.GetKeyFrame(KEY_INPUT_LEFT) >= 1) {
+			i = keyM.GetKeyFrame(KEY_INPUT_LEFT) / 15 % 4;
+			DrawTurnGraph(tempX, tempY, move[i], TRUE);
+		}
+		else {
+			i = 0;
+			DrawTurnGraph(tempX, tempY, wait[i / 15], TRUE);
+			if (i == 60) i = 0;
+		}
+	}
 }
 
 void Player::MapHitCheck()
 {
+
 }
 
 void Player::EnemyHitCheck()
 {
+	//EnemyManeger();
 }
 
