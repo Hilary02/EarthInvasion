@@ -1,11 +1,12 @@
+#include "DxLib.h"
 #include "Player.h"
-#include "WindowData.h"
+//#include "WindowData.h"
 #include "KeyManager.h"
+//#include <vector>
 
 #define MOVE 1
 
-Player::Player()
-{
+Player::Player(){
 }
 
 Player::Player(int x,int y){
@@ -29,8 +30,7 @@ Player::~Player()
 }
 
 //åvéZèàóù
-void Player::Update()
-{
+void Player::Update(std::vector<std::vector <int>> const &vmap){
 	if (keyM.GetKeyFrame(KEY_INPUT_LEFT) >= 1) {
 		x -= MOVE;
 		right = false;
@@ -69,6 +69,7 @@ void Player::Update()
 void Player::Draw(int drawX,int drawY)
 {
 	int i;
+
 	int tempX = x - drawX , tempY = y - drawY;
 
 	if (right) {

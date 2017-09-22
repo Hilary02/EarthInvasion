@@ -1,5 +1,6 @@
 #pragma once
 #include "Creature.h"
+#include <vector>
 class Player :
 	public Creature
 {
@@ -7,7 +8,7 @@ public:
 	Player();
 	Player(int x, int y);
 	~Player();
-	void Update();
+	void Update(std::vector<std::vector <int>> const &vmap );
 	void Draw(int, int);
 private:
 	void MapHitCheck();

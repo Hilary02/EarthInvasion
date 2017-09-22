@@ -3,6 +3,7 @@
 #include <vector>
 #include "DxLib.h"
 #include "IOcsv.h"
+#include "Player.h"
 /**
 変更必要なところ多数．
 マップチップサイズの変更やクラス分け
@@ -42,6 +43,7 @@ private:
 	int moveground[2];      //動く床用配列
 
 	std::vector<std::vector <int>> vmap;	//マップデータ格納
+	Player player;
 
 private:
 	//削除予定

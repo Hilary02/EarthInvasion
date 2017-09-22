@@ -3,8 +3,6 @@
 
 
 Root::Root(){
-	defaultX = 0;
-	defaultY = 0;
 	x = 0.0;
 	y = 0.0;
 }
