@@ -9,7 +9,7 @@
 Player::Player(){
 }
 
-Player::Player(int x,int y){
+Player::Player(int x, int y) {
 	this->x = x;
 	this->y = y;
 	this->hp = 15;
@@ -48,7 +48,7 @@ void Player::Update(std::vector<std::vector <int>> const &vmap){
 		jump = true;
 	}
 	if (keyM.GetKeyFrame(KEY_INPUT_A) >= 1) {
-		
+
 	}
 	if (keyM.GetKeyFrame(KEY_INPUT_S) >= 1) {
 
@@ -56,7 +56,7 @@ void Player::Update(std::vector<std::vector <int>> const &vmap){
 	if (keyM.GetKeyFrame(KEY_INPUT_E) >= 1) {
 
 	}
-	
+
 	if (jump) {
 	}
 	if (hp <= 0) {
@@ -66,15 +66,17 @@ void Player::Update(std::vector<std::vector <int>> const &vmap){
 
 }
 
-void Player::Draw(int drawX,int drawY)
+void Player::Draw(int drawX, int drawY)
 {
 	int i;
-
-	int tempX = x - drawX , tempY = y - drawY;
+	int tempX = x - drawX, tempY = y - drawY;
 
 	if (right) {
 		if (jump) {
-
+			switch (plState) {
+			case 'N':
+				break;
+			}
 		}
 		else if (liquid) {
 			i = keyM.GetKeyFrame(KEY_INPUT_DOWN) / 15 % 4;
@@ -82,17 +84,28 @@ void Player::Draw(int drawX,int drawY)
 		}
 		else if (keyM.GetKeyFrame(KEY_INPUT_RIGHT) >= 1) {
 			i = keyM.GetKeyFrame(KEY_INPUT_RIGHT) / 15 % 4;
-			DrawGraph(tempX, tempY, move[i], TRUE);
+			switch (plState) {
+			case 'N':
+				DrawGraph(tempX, tempY, move[i], TRUE);
+				break;
+			}
 		}
 		else {
-			i = 0;
-			DrawGraph(tempX, tempY, wait[i / 15], TRUE);
-			if(i == 60) i = 0;
+			i = 0; 
+			switch (plState) {
+			case 'N':
+				DrawGraph(tempX, tempY, wait[i], TRUE);
+				break;
+			}
+			if (i == 60) i = 0;
 		}
 	}
 	else {
 		if (jump) {
-
+			switch (plState) {
+			case 'N':
+				break;
+			}
 		}
 		else if (liquid) {
 			i = keyM.GetKeyFrame(KEY_INPUT_DOWN) / 15 % 4;
@@ -100,11 +113,19 @@ void Player::Draw(int drawX,int drawY)
 		}
 		else if (keyM.GetKeyFrame(KEY_INPUT_LEFT) >= 1) {
 			i = keyM.GetKeyFrame(KEY_INPUT_LEFT) / 15 % 4;
-			DrawTurnGraph(tempX, tempY, move[i], TRUE);
+			switch (plState) {
+			case 'N':
+				DrawTurnGraph(tempX, tempY, move[i], TRUE);
+				break;
+			}
 		}
 		else {
 			i = 0;
-			DrawTurnGraph(tempX, tempY, wait[i / 15], TRUE);
+			switch (plState) {
+			case 'N':
+				DrawTurnGraph(tempX, tempY, wait[i], TRUE);
+				break;
+			}
 			if (i == 60) i = 0;
 		}
 	}
