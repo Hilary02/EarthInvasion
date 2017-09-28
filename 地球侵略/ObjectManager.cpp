@@ -10,6 +10,7 @@ ObjectManager::~ObjectManager(){
 
 void ObjectManager::Loadimg(){
 	img["enemy"] = LoadGraph("data/img/enemy1Wait.png");
-	img["ground"] = Load
+	img["ground"] = LoadGraph("data/img/groundFloor.png");
+	img[""];
 
 }
