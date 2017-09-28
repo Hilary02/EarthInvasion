@@ -8,8 +8,8 @@ StageSample::StageSample() :
 	//マップサイズとプレイヤーの初期位置を指定
 	MAP_HEIGHT(30)
 	, MAP_WIDTH(128)
-	, playerX(310)
-	, playerY(800)
+	, playerX(400)
+	, playerY(700)
 {
 	//08.18　vectorのサイズを動的に変更できるようにした
 	//指定したマップサイズで配列を確保
@@ -23,7 +23,7 @@ StageSample::StageSample() :
 		}
 	}
 
-	player.setAbsolutePos(500, 500);
+	player.setAbsolutePos(400, 700);
 }
 
 StageSample::~StageSample()
@@ -98,7 +98,6 @@ void StageSample::drawMap() {
 // 仮なのでいつかクラスに分離する
 void StageSample::scrollTest() {
 
-	player.Update(vmap);
 
 	int move = 5;
 	if (keyM.GetKeyFrame(KEY_INPUT_UP) >= 1 && playerY - move >= 0) {
@@ -113,6 +112,7 @@ void StageSample::scrollTest() {
 	if (keyM.GetKeyFrame(KEY_INPUT_RIGHT) >= 1 && playerX + move <= MAP_WIDTH * CHIPSIZE) {
 		playerX += move;
 	}
+	player.Update(vmap);
 }
 
 // プレイヤーの座標から表示するマップの起点を決定する関数．8.11 Hilary
@@ -128,4 +128,5 @@ void StageSample::scrollMap() {
 	drawY = (playerY - 300 >= 0) ? playerY - 300 : 0;
 	//下端
 	if (playerY + window.WINDOW_HEIGHT - 450 >= MAP_HEIGHT * CHIPSIZE) drawY = MAP_HEIGHT* CHIPSIZE - window.WINDOW_HEIGHT + 150;
+	player.Draw(drawX,drawY);
 }

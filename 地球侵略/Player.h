@@ -8,9 +8,10 @@ public:
 	Player();
 	Player(int x, int y);
 	~Player();
-	void Update(std::vector<std::vector <int>> const &vmap );
+	void Update(std::vector<std::vector <int>> const &vmap);
 	void Draw(int, int);
 private:
+	const int MOVE = 1;
 	void MapHitCheck();
 	void EnemyHitCheck();
 	double jumpPower = 10.0;

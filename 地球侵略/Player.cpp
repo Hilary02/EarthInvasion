@@ -1,10 +1,6 @@
 #include "DxLib.h"
 #include "Player.h"
-//#include "WindowData.h"
 #include "KeyManager.h"
-//#include <vector>
-
-#define MOVE 1
 
 Player::Player(){
 }
@@ -25,8 +21,8 @@ Player::Player(int x, int y) {
 	LoadDivGraph("data/img/eeyanDie.png", 16, 4, 4, 64, 64, attack);
 }
 
-Player::~Player()
-{
+Player::~Player(){
+
 }
 
 //åvéZèàóù
@@ -129,6 +125,8 @@ void Player::Draw(int drawX, int drawY)
 			if (i == 60) i = 0;
 		}
 	}
+	DrawFormatString(100, 100, 0xFFFFFF, "%d,%d", tempX, tempY);
+	DrawFormatString(100, 80, 0xFFFFFF, "%d,%d", (int)x, (int)y);
 }
 
 void Player::MapHitCheck()
