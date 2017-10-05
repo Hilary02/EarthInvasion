@@ -2,7 +2,7 @@
 #include "Player.h"
 #include "KeyManager.h"
 
-Player::Player(){
+Player::Player(std::vector<std::vector <int>> const &vmap){
 }
 
 Player::Player(int x, int y) {
@@ -26,7 +26,7 @@ Player::~Player(){
 }
 
 //åvéZèàóù
-void Player::Update(std::vector<std::vector <int>> const &vmap){
+void Player::Update(){
 	if (keyM.GetKeyFrame(KEY_INPUT_LEFT) >= 1) {
 		x -= MOVE;
 		right = false;
@@ -125,8 +125,8 @@ void Player::Draw(int drawX, int drawY)
 			if (i == 60) i = 0;
 		}
 	}
-	DrawFormatString(100, 100, 0xFFFFFF, "%d,%d", tempX, tempY);
-	DrawFormatString(100, 80, 0xFFFFFF, "%d,%d", (int)x, (int)y);
+	//DrawFormatString(100, 100, 0xFFFFFF, "%d,%d", tempX, tempY);
+	//DrawFormatString(100, 80, 0xFFFFFF, "%d,%d", (int)x, (int)y);
 }
 
 void Player::MapHitCheck()

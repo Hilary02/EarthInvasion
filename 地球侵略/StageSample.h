@@ -40,7 +40,7 @@ private:
 	int chipImg[10];		//マップチップ格納用配列
 
 	std::vector<std::vector <int>> vmap;	//マップデータ格納
-	Player player;
+	Player *player;
 
 private:
 	//削除予定

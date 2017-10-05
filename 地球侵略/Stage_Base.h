@@ -1,0 +1,51 @@
+#pragma once
+
+
+#include "DxLib.h"
+#include "Player.h"
+#include "WindowData.h"
+
+/**
+Stageクラスはまず地形を読み込む．
+Playerクラス，ObjectManagerクラスに主人公の移動とそれ以外の処理を投げるので
+このクラスはマップ座標と描画座標の変換をおもに担当する
+
+マップチップのデータが1-9で足りているため，20番以降を用いて敵情報の保存とかできるかもしれない．
+別ファイルでも管理もできるが，マップ座標をいちいち調べながら打たなければいけなくなる．
+*/
+class Stage_Base{
+public:
+	Stage_Base();
+	~Stage_Base();
+
+	void update();	//更新処理
+	void draw();	//描画処理
+
+					
+	void scrollTest();
+	void scrollMap();	// プレイヤーの座標から表示するマップの起点を決定する関数．
+
+private:
+	int readMap(std::string file);
+	int loadImg();
+	int debugInfo();
+
+
+	const int MAP_HEIGHT;	//縦方向マップチップ数
+	const int MAP_WIDTH;	//横方向マップチップ数
+	const int CHIPSIZE = 32;//マップチップの大きさ
+
+	int chipImg[10];		//マップチップ格納用配列
+	int bgHand;				//背景画像格納配列
+
+	int lockdoor[3];        //ドア用格納配列
+	int moveground[2];      //動く床用配列
+
+	std::vector<std::vector <int>> vmap;	//マップデータ格納
+	Player *player;
+
+	//描画する際の左上座標
+	int drawX,drawY;
+
+	int playerX, playerY;
+};

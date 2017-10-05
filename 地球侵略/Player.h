@@ -5,10 +5,10 @@ class Player :
 	public Creature
 {
 public:
-	Player();
+	Player(std::vector<std::vector <int>> const &vmap);
 	Player(int x, int y);
 	~Player();
-	void Update(std::vector<std::vector <int>> const &vmap);
+	void Update();
 	void Draw(int, int);
 private:
 	const int MOVE = 1;

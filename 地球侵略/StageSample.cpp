@@ -4,6 +4,10 @@
 
 #include "Player.h"
 
+#include <assert.h>
+
+int bgHand;
+
 StageSample::StageSample() :
 	//マップサイズとプレイヤーの初期位置を指定
 	MAP_HEIGHT(30)
@@ -16,14 +20,15 @@ StageSample::StageSample() :
 	//参考にしたところ
 	//http://d.hatena.ne.jp/tei3344/20130207/1360238838
 
+	assert(MAP_HEIGHT >= 0);
 	vmap.resize(MAP_HEIGHT);
 	for (int i = 0; i < MAP_HEIGHT; i++) {
 		for (int j = 0; j < MAP_WIDTH; j++) {
 			vmap[i].push_back(j);
 		}
 	}
-
-	player.setAbsolutePos(400, 700);
+	player = new Player(vmap);
+	player->setAbsolutePos(400, 700);
 }
 
 StageSample::~StageSample()
@@ -44,19 +49,18 @@ int StageSample::initMap() {
 	chipImg[7] = LoadGraph("data/img/airFloor.png");
 	chipImg[8] = LoadGraph("data/img/moveGround.png");
 	chipImg[9] = LoadGraph("data/img/togetoge.png");
+	bgHand = LoadGraph("data/img/bg01.jpg");
 	return 0;
 }
 
 
 void StageSample::drawMap() {
+	//背景
+	DrawGraph(0, 0, bgHand, false);
 	//デバッグ用カウンタ
 	int drawPics = 0;
 
-	int locknum = 0;  //lockdoorが何回描画されたかカウント
-	int movenum = 0;  //movegroundが何回描画されたかカウント
-
 	scrollMap();	//プレイヤー座標に応じた表示範囲の変更
-
 
 	// -50はキャラ情報などを表示するための空間を確保するための値．50という値自体に意味はない．
 	int ty = max(0, drawY - CHIPSIZE * 2);
@@ -92,13 +96,13 @@ void StageSample::drawMap() {
 	//デバッグ情報
 	DrawFormatString(0, 30, GetColor(255, 125, 255), "マップ表示原点：%d  ,%d", drawX, drawY);
 	DrawFormatString(0, 50, GetColor(255, 125, 255), "表示画像数：%d", drawPics);
+	player->Update();
+	player->Draw(drawX, drawY);
 }
 
 
 // 仮なのでいつかクラスに分離する
 void StageSample::scrollTest() {
-
-
 	int move = 5;
 	if (keyM.GetKeyFrame(KEY_INPUT_UP) >= 1 && playerY - move >= 0) {
 		playerY -= move;
@@ -112,21 +116,18 @@ void StageSample::scrollTest() {
 	if (keyM.GetKeyFrame(KEY_INPUT_RIGHT) >= 1 && playerX + move <= MAP_WIDTH * CHIPSIZE) {
 		playerX += move;
 	}
-	player.Update(vmap);
+
 }
 
 // プレイヤーの座標から表示するマップの起点を決定する関数．8.11 Hilary
 //プレイヤーの表示位置もなんらかの変数に入れておきたい
 void StageSample::scrollMap() {
+	//最適化してくれるはず
+	int baseDrawX = playerX - 100;
+	int baseDrawY = playerY - 300;
+	int limitDrawX = MAP_WIDTH * CHIPSIZE - window.WINDOW_WIDTH;
+	int limitDrawY = MAP_HEIGHT* CHIPSIZE - window.WINDOW_HEIGHT + 150;
 
-
-	//左端
-	drawX = (playerX - 100 >= 0) ? playerX - 100 : 0;
-	//右端
-	if (playerX + window.WINDOW_WIDTH - 100 >= MAP_WIDTH * CHIPSIZE) drawX = MAP_WIDTH * CHIPSIZE - window.WINDOW_WIDTH;
-	//上端
-	drawY = (playerY - 300 >= 0) ? playerY - 300 : 0;
-	//下端
-	if (playerY + window.WINDOW_HEIGHT - 450 >= MAP_HEIGHT * CHIPSIZE) drawY = MAP_HEIGHT* CHIPSIZE - window.WINDOW_HEIGHT + 150;
-	player.Draw(drawX,drawY);
+	drawX = min(max(0, baseDrawX), limitDrawX);
+	drawY = min(max(0, baseDrawY), limitDrawY);
 }
