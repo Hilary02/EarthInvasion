@@ -29,6 +29,7 @@
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="ObjectManager.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Rect.cpp" />
     <ClCompile Include="Root.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Scene_Config.cpp" />
@@ -49,6 +50,7 @@
     <ClInclude Include="Object.h" />
     <ClInclude Include="ObjectManager.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="Rect.h" />
     <ClInclude Include="Root.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Scene_Config.h" />
@@ -56,6 +58,7 @@
     <ClInclude Include="Scene_Game.h" />
     <ClInclude Include="Scene_Title.h" />
     <ClInclude Include="StageSample.h" />
+    <ClInclude Include="Stage_Base.h" />
     <ClInclude Include="WindowData.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
