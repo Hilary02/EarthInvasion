@@ -12,7 +12,7 @@ public:
 	void Loadimg();
 
 	
-	std::map<std::string, int> img;
+	std::map<int, int> img;
 
 private:
 	Object *objP;

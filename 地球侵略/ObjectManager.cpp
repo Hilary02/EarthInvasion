@@ -8,6 +8,7 @@ ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap) {
 				int x = i * 32;//x座標
 				int y = j * 32;//y座標
 				int path = 0;    //オブジェクトに合わせた画像のパス
+				path = img[vmap[i][j]];
 				Object obje(x, y, path);   //obje(x, y, path); 引数を入れるらしい
 				objects.push_back(obje);
 			}
@@ -20,8 +21,8 @@ ObjectManager::~ObjectManager() {
 }
 
 void ObjectManager::Loadimg() {
-	img["enemy"] = LoadGraph("data/img/enemy1Wait.png");
-	img["ground"] = LoadGraph("data/img/groundFloor.png");
-	img["heal"] = LoadGraph("data/img/healPot.png");
+	img[3] = LoadGraph("data/img/enemy1Wait.png");   //3は敵
+	img[4] = LoadGraph("data/img/groundFloor.png");  //4は動く床
+	img[6] = LoadGraph("data/img/healPot.png");    //６はアイテム
 
 }
