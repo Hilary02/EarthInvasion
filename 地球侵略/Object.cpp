@@ -1,6 +1,7 @@
 #include "Object.h"
 
-Object::Object(int x ,int y, char*) {
+Object::Object(int x ,int y, int imghandle) {
+
 }
 
 
