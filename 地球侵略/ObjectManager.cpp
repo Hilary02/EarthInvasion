@@ -25,3 +25,11 @@ void ObjectManager::Loadimg(){
 	img[""];
 
 }
+
+void ObjectManager::Update()
+{
+	for (auto obj : objects) {
+		obj.Update();
+	}
+}
+

@@ -11,6 +11,7 @@ public:
 
 	void Loadimg();
 
+	void Update();
 	
 	std::map<std::string, int> img;
 
