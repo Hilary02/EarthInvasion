@@ -8,7 +8,7 @@ ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap){
 				int x = i * 32;//x座標
 				int y = j * 32;//y座標
 				char* path;    //オブジェクトに合わせた画像のパス
-				Object obje;   //obje(x, y, path); 引数を入れるらしい
+				Object obje(x , y , path);   //obje(x, y, path); 引数を入れるらしい
 				objects.push_back(obje);
 			}
 		}
@@ -22,6 +22,6 @@ ObjectManager::~ObjectManager(){
 void ObjectManager::Loadimg(){
 	img["enemy"] = LoadGraph("data/img/enemy1Wait.png");
 	img["ground"] = LoadGraph("data/img/groundFloor.png");
-	img[""];
+	img["heal"] = LoadGraph("data/img/healPot.png");
 
 }

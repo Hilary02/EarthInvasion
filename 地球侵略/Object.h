@@ -7,7 +7,7 @@
 class Object :
 	public Root {
 public:
-	Object();
+	Object(int x, int y, char*);
 	~Object();
 	void Update();
 	void Draw();
