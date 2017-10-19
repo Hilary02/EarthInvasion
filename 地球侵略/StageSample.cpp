@@ -98,6 +98,7 @@ void StageSample::drawMap() {
 	DrawFormatString(0, 50, GetColor(255, 125, 255), "•\Ž¦‰æ‘œ”F%d", drawPics);
 	player->Update();
 	player->Draw(drawX, drawY);
+	DrawBox( 0, window.WINDOW_HEIGHT - 80,  window.WINDOW_WIDTH, window.WINDOW_HEIGHT, 0x00FF00, true);
 }
 
 
