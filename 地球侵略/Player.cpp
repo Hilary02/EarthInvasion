@@ -261,7 +261,12 @@ void Player::LoadImg()
 
 bool Player::MapHitCheck(int x, int y)
 {
-
+	if () {
+		return true;
+	}
+	else {
+		return false;
+	}
 }
 
 void Player::EnemyHitCheck()
