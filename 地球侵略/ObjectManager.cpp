@@ -27,3 +27,11 @@ void ObjectManager::Loadimg() {
 	img[6] = LoadGraph("data/img/healPot.png");    //‚U‚ÍƒAƒCƒeƒ€
 
 }
+
+void ObjectManager::Update()
+{
+	for (auto obj : objects) {
+		obj.Update();
+	}
+}
+
