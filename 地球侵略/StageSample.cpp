@@ -28,7 +28,7 @@ StageSample::StageSample() :
 		}
 	}
 	player = new Player(vmap);
-	player->setAbsolutePos(400, 700);
+	player->setAbsolutePos(playerX, playerY);
 }
 
 StageSample::~StageSample()
@@ -42,7 +42,7 @@ int StageSample::initMap() {
 	LoadDivGraph("data/img/20170823174821.png", 10, 10, 1, 32, 32, chipImg);
 	//chipImg[1] = LoadGraph("data/img/airFloor.png");
 	chipImg[2] = LoadGraph("data/img/groundFloor.png");
-	chipImg[3] = LoadGraph("data/img/eeyanWait.png");
+	//chipImg[3] = LoadGraph("data/img/eeyanWait.png");
 	chipImg[4] = LoadGraph("data/img/enemy1Wait.png");
 	chipImg[5] = LoadGraph("data/img/healPot.png");
 	chipImg[6] = LoadGraph("data/img/lockDoor.png");
@@ -50,14 +50,19 @@ int StageSample::initMap() {
 	chipImg[8] = LoadGraph("data/img/moveGround.png");
 	chipImg[9] = LoadGraph("data/img/togetoge.png");
 	bgHand = LoadGraph("data/img/bg01.jpg");
+
+	LoadDivGraph("data/img/eeyanWait.png", 4, 4, 1, 64, 64, eeyanImg);
+	debugCounter = 0;
+
 	return 0;
 }
 
 
 void StageSample::drawMap() {
+	debugCounter++;
 	//背景
 	DrawGraph(0, 0, bgHand, false);
-	//デバッグ用カウンタ
+	//デバッグ用画像のカウンタ
 	int drawPics = 0;
 
 	scrollMap();	//プレイヤー座標に応じた表示範囲の変更
@@ -84,20 +89,25 @@ void StageSample::drawMap() {
 					DrawGraph(tempX, tempY + 16, chipImg[vmap[y][x]], TRUE);
 					drawPics++;
 				}
+
 				//空白表示
 				//else DrawBox(tempX, tempY, tempX + CHIPSIZE, tempY + CHIPSIZE, GetColor(0, 255, 0), FALSE);
 			}
 			//主人公の代わりの赤四角
 			//マップ座標と描画原点から描画をしているため，カメラのみのスクロールも可能
-			DrawBox(playerX - drawX, playerY - drawY, playerX + CHIPSIZE * 2 - drawX, playerY + CHIPSIZE * 2 - drawY, GetColor(255, 0, 0), true);
+			//DrawBox(playerX - drawX, playerY - drawY, playerX + CHIPSIZE * 2 - drawX, playerY + CHIPSIZE * 2 - drawY, GetColor(255, 0, 0), true);
 		}
 	}
-
 	//デバッグ情報
 	DrawFormatString(0, 30, GetColor(255, 125, 255), "マップ表示原点：%d  ,%d", drawX, drawY);
 	DrawFormatString(0, 50, GetColor(255, 125, 255), "表示画像数：%d", drawPics);
 	player->Update();
 	player->Draw(drawX, drawY);
+
+	int img_id = (debugCounter / 15) % 4;
+//	DrawGraph(playerX - drawX, playerY - drawY, eeyanImg[img_id], true);
+
+
 	DrawBox( 0, window.WINDOW_HEIGHT - 80,  window.WINDOW_WIDTH, window.WINDOW_HEIGHT, 0x00FF00, true);
 }
 
