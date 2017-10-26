@@ -18,6 +18,7 @@ ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap) {
 
 
 ObjectManager::~ObjectManager() {
+
 }
 
 void ObjectManager::Loadimg() {

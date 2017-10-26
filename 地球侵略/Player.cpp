@@ -9,6 +9,7 @@ Player::Player(int x, int y) {
 	this->x = x;
 	this->y = y;
 	this->hp = 15;
+	LoadImg();
 }
 
 Player::~Player() {
@@ -238,7 +239,7 @@ void Player::Draw(int drawX, int drawY)
 		}
 	}
 	//DrawFormatString(100, 100, 0xFFFFFF, "%d,%d", tempX, tempY);
-	//DrawFormatString(100, 80, 0xFFFFFF, "%d,%d", (int)x, (int)y);
+	DrawFormatString(100, 80, 0xFFFFFF, "%d,%d", (int)x, (int)y);
 }
 //‰æ‘œ“Ç‚Ýž‚Ý
 void Player::LoadImg()
@@ -264,7 +265,10 @@ bool Player::MapHitCheck(int x, int y)
 	switch (vmap[(this->y + y) / 32][(this->x + x) / 32]) {
 	case 0:
 		break;
+	default:
+		break;
 	}
+	return false;
 }
 
 void Player::EnemyHitCheck()

@@ -37,6 +37,15 @@ int Rect::getHeight() {
 }
 
 bool Rect::isHit(Rect r) {
+	int MyLeftX = leftX;
+	int MyLeftY = leftY;
+	int MyRightX = leftX + width;
+	int MyRightY = leftY + height;
+	int OneLeftX = r.getLeftX();
+	int OneLeftY = r.getLeftY();
+	int OneRightX = r.getLeftX() + r.getWidth();
+	int OneRightY = r.getLeftY() + r.getHeight();
+
 	if ((r.getLeftX() < leftX + width) &&
 		(r.getLeftX() + r.getWidth() > leftX) &&
 		(r.getLeftY() < leftY + height) &&
