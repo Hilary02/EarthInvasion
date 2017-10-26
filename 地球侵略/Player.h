@@ -11,6 +11,7 @@ public:
 	void Update();
 	void Draw(int, int);
 private:
+	std::vector<std::vector <int>> const vmap;
 	const int MOVE = 1;
 	double cMove = 0;
 	void LoadImg();

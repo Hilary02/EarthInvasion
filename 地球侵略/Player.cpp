@@ -2,7 +2,7 @@
 #include "Player.h"
 #include "KeyManager.h"
 
-Player::Player(std::vector<std::vector <int>> const &vmap) {
+Player::Player(std::vector<std::vector <int>> const &vmap):vmap(vmap) {
 }
 
 Player::Player(int x, int y) {
@@ -254,18 +254,16 @@ void Player::LoadImg()
 	//ŽålŒöŽ€–S
 	LoadDivGraph("data/img/eeyanDie.png", 16, 4, 4, 64, 64, die);
 
-	//ˆê”Ê•ºA
+	//ˆê”Ê•ºAƒWƒƒƒ“ƒv
 	LoadDivGraph("data/img/enemy1JumpP.png", 4, 4, 1, 64, 64, &jump[10]);
 
 }
 
 bool Player::MapHitCheck(int x, int y)
 {
-	if () {
-		return true;
-	}
-	else {
-		return false;
+	switch (vmap[(this->y + y) / 32][(this->x + x) / 32]) {
+	case 0:
+		break;
 	}
 }
 
