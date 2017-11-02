@@ -33,7 +33,7 @@ void Player::Update() {
 			x += MOVE;
 		}
 		else {
-			x -= cMove;
+			x += cMove;
 		}
 	}
 	if (keyM.GetKeyFrame(KEY_INPUT_DOWN) >= 1 && !jumpFlag)
@@ -55,6 +55,7 @@ void Player::Update() {
 	}
 
 	if (jumpFlag) {
+
 	}
 	if (hp <= 0) {
 		deadFlag = true;
