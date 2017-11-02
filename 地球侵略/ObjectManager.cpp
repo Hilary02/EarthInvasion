@@ -17,7 +17,6 @@ ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap) {
 				default:
 					break;
 				}
-				Object obje(x, y, path);   //obje(x, y, path); ˆø”‚ğ“ü‚ê‚é‚ç‚µ‚¢
 				objects.push_back(obje);
 			}
 		}
