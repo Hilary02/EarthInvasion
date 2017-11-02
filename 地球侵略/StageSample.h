@@ -39,6 +39,8 @@ private:
 	
 	int chipImg[10];		//マップチップ格納用配列
 
+	int eeyanImg[4]; //仮
+
 	std::vector<std::vector <int>> vmap;	//マップデータ格納
 	Player *player;
 
@@ -56,5 +58,6 @@ private:
 	int drawX;
 	int drawY;
 	
+	int debugCounter;
 };
 

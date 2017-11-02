@@ -18,7 +18,7 @@ void Scene_Game::Update(){
 	if (keyM.GetKeyFrame(KEY_INPUT_ESCAPE) == 1) {
 		SceneM.ChangeScene(scene::Title);
 	}
-	nowStage->scrollTest();
+	//nowStage->scrollTest();
 }
 
 void Scene_Game::Draw(){

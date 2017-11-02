@@ -9,6 +9,7 @@ Player::Player(int x, int y) {
 	this->x = x;
 	this->y = y;
 	this->hp = 15;
+	LoadImg();
 }
 
 Player::~Player() {
@@ -32,7 +33,7 @@ void Player::Update() {
 			x += MOVE;
 		}
 		else {
-			x -= cMove;
+			x += cMove;
 		}
 	}
 	if (keyM.GetKeyFrame(KEY_INPUT_DOWN) >= 1 && !jumpFlag)
@@ -54,6 +55,7 @@ void Player::Update() {
 	}
 
 	if (jumpFlag) {
+
 	}
 	if (hp <= 0) {
 		deadFlag = true;
@@ -238,7 +240,7 @@ void Player::Draw(int drawX, int drawY)
 		}
 	}
 	//DrawFormatString(100, 100, 0xFFFFFF, "%d,%d", tempX, tempY);
-	//DrawFormatString(100, 80, 0xFFFFFF, "%d,%d", (int)x, (int)y);
+	DrawFormatString(100, 80, 0xFFFFFF, "%d,%d", (int)x, (int)y);
 }
 //‰æ‘œ“Ç‚Ýž‚Ý
 void Player::LoadImg()
@@ -259,12 +261,37 @@ void Player::LoadImg()
 
 }
 
-bool Player::MapHitCheck(int x, int y)
+bool Player::MapHitCheck(int moveX, int moveY)
 {
-	switch (vmap[(this->y + y) / 32][(this->x + x) / 32]) {
+	switch (vmap[(this->y + moveY) / 32][(this->x + moveX) / 32]) {
 	case 0:
+		return true;
+		break;
+	case 1:
+		if (x > 0)
+			cMove = moveX - ((int)this->x + moveX) % 32;
+		else
+			cMove = (int)this->x % 32;
+		return false;
+		break;
+	case 2:
+		if (x > 0)
+			cMove = moveX - ((int)this->x + moveX) % 32;
+		else
+			cMove = (int)this->x % 32;
+		return false;
+		break;
+	case 5:
+		return true;
+		break;
+	case 9:
+		return true;
+		break;
+	default:
+		return true;
 		break;
 	}
+	return false;
 }
 
 void Player::EnemyHitCheck()
