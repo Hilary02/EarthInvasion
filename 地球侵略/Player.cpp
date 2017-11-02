@@ -155,7 +155,7 @@ void Player::Draw(int drawX, int drawY)
 		}
 	}
 	//¶Œü‚«
-	else {
+	else if(!right) {
 		switch (plState) {
 			
 		case 'N':	//ålŒö
