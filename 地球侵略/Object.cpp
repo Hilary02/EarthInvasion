@@ -1,12 +1,7 @@
 #include "Object.h"
 
-Object::Object(int x ,int y, int imghandle) {
+Object::Object(int x ,int y, int handle) {
 
-}
-
-
-Object::Object(int x, int y, int handle)
-{
 }
 
 Object::~Object()
