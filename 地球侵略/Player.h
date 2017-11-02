@@ -15,7 +15,7 @@ private:
 	const int MOVE = 1;
 	double cMove = 0;
 	void LoadImg();
-	void MapHitCheck(int , int);
+	bool MapHitCheck(int , int);
 	void EnemyHitCheck();
 	double jumpPower = 10.0;
 	double speed = 10.0;

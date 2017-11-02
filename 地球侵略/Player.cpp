@@ -289,8 +289,6 @@ bool Player::MapHitCheck(int moveX, int moveY)
 	default:
 		return true;
 		break;
-	default:
-		break;
 	}
 	return false;
 }
