@@ -134,8 +134,8 @@ void StageSample::scrollTest() {
 //プレイヤーの表示位置もなんらかの変数に入れておきたい
 void StageSample::scrollMap() {
 	//最適化してくれるはず
-	int baseDrawX = playerX - 100;
-	int baseDrawY = playerY - 300;
+	int baseDrawX = playerX - 500;
+	int baseDrawY = playerY - 100;
 	int limitDrawX = MAP_WIDTH * CHIPSIZE - window.WINDOW_WIDTH;
 	int limitDrawY = MAP_HEIGHT* CHIPSIZE - window.WINDOW_HEIGHT + 150;
 
