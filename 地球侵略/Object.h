@@ -7,9 +7,14 @@
 class Object :
 	public Root {
 public:
+	Object();
 	Object(int x, int y, int handle);
 	~Object();
 	void Update();
 	void Draw();
+
+private:
+	int x, y;
+	int imgHundle;
 };
 

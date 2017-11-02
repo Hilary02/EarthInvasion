@@ -5,10 +5,18 @@ ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap) {
 	for (int i = 0; i < vmap.size(); i++) {
 		for (int j = 0; j < vmap[i].size(); j++) {
 			if (vmap[i][j] == 3 || vmap[i][j] == 4 || vmap[i][j] == 6) {
+				Object obje;
 				int x = i * 32;//x座標
 				int y = j * 32;//y座標
 				int path = 0;    //オブジェクトに合わせた画像のパス
 				path = img[vmap[i][j]];
+				switch (vmap[i][j])
+				{
+				case 6:
+					obje = HealItem(x, y, img[6]);
+				default:
+					break;
+				}
 				Object obje(x, y, path);   //obje(x, y, path); 引数を入れるらしい
 				objects.push_back(obje);
 			}
