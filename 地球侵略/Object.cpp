@@ -3,8 +3,9 @@
 Object::Object(int x ,int y, int imghandle) {
 
 }
-
-Object::Object()
+
+
+Object::Object(int x, int y, int handle)
 {
 }
 
