@@ -22,13 +22,11 @@ public:
 	void draw();	//描画処理
 
 					
-	void scrollTest();
 	void scrollMap();	// プレイヤーの座標から表示するマップの起点を決定する関数．
 
 private:
 	int readMap(std::string file);
 	int loadImg();
-	int debugInfo();
 
 
 	const int MAP_HEIGHT;	//縦方向マップチップ数
@@ -47,5 +45,8 @@ private:
 	//描画する際の左上座標
 	int drawX,drawY;
 
-	int playerX, playerY;
+
+	//デバッグ用データ
+	int totalFrame = 0;
+	int drawChipNum = 0;
 };

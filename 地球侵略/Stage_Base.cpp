@@ -24,30 +24,63 @@ Stage_Base::Stage_Base() :
 			vmap[i].push_back(j);
 		}
 	}
-	readMap("data/map/tutrial-map改良版32.csv");	//マップ地形の読み込み
+	//マップ地形の読み込み
+	readMap("data/map/tutrial-map改良版32.csv");
+	//プレイヤー呼び出し
 	player = new Player(vmap);
 	player->setAbsolutePos(400, 700);
+	//地形画像の読み込み
+	//TODO:引数をつける
 	loadImg();
 }
 
 
 Stage_Base::~Stage_Base() {
-	free(player);
+	delete player;
 }
 
 void Stage_Base::update() {
-
+	totalFrame++;
+	drawChipNum = 0;
+	player->Update();
+	scrollMap();	//プレイヤー座標に応じた表示範囲の変更
 }
 
 void Stage_Base::draw() {
 	DrawGraph(0, 0, bgHand, false);	//背景の描画
+	int baseChipY = max(0, drawY - CHIPSIZE * 2);
+	int baseChipX = max(0, drawX - CHIPSIZE * 2);
+	for (int y = baseChipY / CHIPSIZE; y < ((drawY + window.WINDOW_HEIGHT - 50) / CHIPSIZE); y++) {
+		for (int x = baseChipX / CHIPSIZE; x < ((drawX + CHIPSIZE + window.WINDOW_WIDTH) / CHIPSIZE); x++) {
+
+			if (y < MAP_HEIGHT && x < MAP_WIDTH) {
+				int tempX = (x * CHIPSIZE) - drawX;
+				int tempY = (y * CHIPSIZE) - drawY;
+
+				if (1 <= vmap[y][x] && vmap[y][x] <= 9) {
+					DrawGraph(tempX, tempY, chipImg[vmap[y][x]], TRUE);
+					drawChipNum++;
+				}
+
+				//if (vmap[y][x] == 9) {
+				//	DrawGraph(tempX, tempY + 16, chipImg[vmap[y][x]], TRUE);
+				//	drawChipNum++;
+				//}
+			}
+		}
+	}
+	
+	player->Draw(drawX, drawY);
+	//デバッグ情報
+	DrawFormatString(0, 30, GetColor(255, 125, 255), "マップ表示原点：%d  ,%d", drawX, drawY);
+	DrawFormatString(0, 50, GetColor(255, 125, 255), "表示画像数：%d", drawChipNum);
 }
 
 
 void Stage_Base::scrollMap() {
-	//最適化してくれるはず
-	int baseDrawX = playerX - 100;
-	int baseDrawY = playerY - 300;
+	//TODO:数字はいずれconst変数にする
+	int baseDrawX = player->getX - 100;
+	int baseDrawY = player->getY - 300;
 	int limitDrawX = MAP_WIDTH * CHIPSIZE - window.WINDOW_WIDTH;
 	int limitDrawY = MAP_HEIGHT* CHIPSIZE - window.WINDOW_HEIGHT + 150;
 
@@ -68,7 +101,7 @@ int Stage_Base::readMap(std::string file) {
 		std::istringstream stream(str);
 		for (int x = 0; x < this->MAP_WIDTH; x++) {
 			getline(stream, buf, ',');	//カンマで区切る
-			if (buf.size() == 1) {
+			if (buf.size() != 0) {
 				temp = std::stoi(buf);		//int型に変更
 			}
 			else {
@@ -87,7 +120,7 @@ int Stage_Base::loadImg() {
 	LoadDivGraph("data/img/20170823174821.png", 10, 10, 1, 32, 32, chipImg);
 	//chipImg[1] = LoadGraph("data/img/airFloor.png");
 	chipImg[2] = LoadGraph("data/img/groundFloor.png");
-	chipImg[3] = LoadGraph("data/img/eeyanWait.png");
+	//chipImg[3] = LoadGraph("data/img/eeyanWait.png");
 	chipImg[4] = LoadGraph("data/img/enemy1Wait.png");
 	chipImg[5] = LoadGraph("data/img/healPot.png");
 	chipImg[6] = LoadGraph("data/img/lockDoor.png");
@@ -96,10 +129,4 @@ int Stage_Base::loadImg() {
 	chipImg[9] = LoadGraph("data/img/togetoge.png");
 	bgHand = LoadGraph("data/img/bg01.jpg");
 	return 1;
-}
-
-int Stage_Base::debugInfo() {
-	int drawPics = 0;
-
-	return 0;
 }
