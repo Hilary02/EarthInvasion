@@ -31,7 +31,6 @@
     <ClCompile Include="ObjectManager.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Rect.cpp" />
-    <ClCompile Include="Root.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Scene_Config.cpp" />
     <ClCompile Include="Scene_Frame.cpp" />
@@ -53,7 +52,6 @@
     <ClInclude Include="ObjectManager.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Rect.h" />
-    <ClInclude Include="Root.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Scene_Config.h" />
     <ClInclude Include="Scene_Frame.h" />

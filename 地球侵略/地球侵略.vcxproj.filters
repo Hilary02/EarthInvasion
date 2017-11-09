@@ -33,9 +33,6 @@
     <ClCompile Include="WindowData.cpp">
       <Filter>ソース ファイル\Data</Filter>
     </ClCompile>
-    <ClCompile Include="Root.cpp">
-      <Filter>ソース ファイル\Data</Filter>
-    </ClCompile>
     <ClCompile Include="GameMain.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -84,6 +81,9 @@
     <ClCompile Include="Rect.cpp">
       <Filter>ヘッダー ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="HealItem.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h">
@@ -93,9 +93,6 @@
       <Filter>ヘッダー ファイル\Data</Filter>
     </ClInclude>
     <ClInclude Include="Creature.h">
-      <Filter>ヘッダー ファイル\Data</Filter>
-    </ClInclude>
-    <ClInclude Include="Root.h">
       <Filter>ヘッダー ファイル\Data</Filter>
     </ClInclude>
     <ClInclude Include="GameMain.h">
@@ -141,6 +138,9 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Rect.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="HealItem.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
