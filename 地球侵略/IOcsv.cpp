@@ -25,17 +25,14 @@ int IOcsv::CSVtoVector(std::string file, std::vector<std::vector<int> >& vec, in
 		std::istringstream stream(str);
 		for (int x = 0; x < w; x++) {
 			getline(stream, buf, ',');	//カンマで区切る
-
-			try {
+			if (buf.empty()) {
+				temp = 0;
+			}
+			else {
 				temp = std::stoi(buf);		//int型に変更
 			}
-			catch (std::invalid_argument e) {
-				temp = 0;
-			}
-			catch (std::out_of_range e) {
-				temp = 0;
-			}
-			
+
+
 			vec[y][x] = temp;			//vectorもアクセス方法は配列と同様に行える
 		}
 	}
@@ -45,7 +42,7 @@ int IOcsv::CSVtoVector(std::string file, std::vector<std::vector<int> >& vec, in
 
 
 
-int IOcsv::ReadMap(char *file, int *data, int w, int h){
+int IOcsv::ReadMap(char *file, int *data, int w, int h) {
 	std::string str;	//行を格納
 	std::string buf;	//値を一時格納
 	int temp;
@@ -54,13 +51,13 @@ int IOcsv::ReadMap(char *file, int *data, int w, int h){
 	if (!ifs) return 1;
 
 
-	for (int y = 0; y < h; y++) {		
+	for (int y = 0; y < h; y++) {
 		getline(ifs, str);				//csvファイルを1行読み込む
 		std::istringstream stream(str);
 		for (int x = 0; x < w; x++) {
 			getline(stream, buf, ',');	//カンマで区切る
 			temp = std::stoi(buf);		//int型に変更
-			data[y*w+x] = temp;			//1次元とみなして代入．これにより幅指定必須．
+			data[y*w + x] = temp;			//1次元とみなして代入．これにより幅指定必須．
 		}
 	}
 	return 0;

@@ -1,11 +1,10 @@
 #include "Stage_Base.h"
 #include <assert.h>
-#include<fstream>
-#include<iostream>//ファイル入出力
-#include<string>
-#include<sstream> //文字ストリーム
-#include<vector>
-
+#include <fstream>
+#include <iostream>//ファイル入出力
+#include <string>
+#include <sstream> //文字ストリーム
+#include <vector>
 
 Stage_Base::Stage_Base() :
 	//コンストラクタの引数に設定されないといけない
@@ -16,8 +15,9 @@ Stage_Base::Stage_Base() :
 	//参考にしたところ
 	//http://d.hatena.ne.jp/tei3344/20130207/1360238838
 
-	//マップの要素の確保
+	//マップの領域の確保
 	assert(MAP_HEIGHT >= 0);
+	assert(MAP_WIDTH >= 0);
 	vmap.resize(MAP_HEIGHT);
 	for (int i = 0; i < MAP_HEIGHT; i++) {
 		for (int j = 0; j < MAP_WIDTH; j++) {
@@ -25,24 +25,26 @@ Stage_Base::Stage_Base() :
 		}
 	}
 	readMap("data/map/tutrial-map改良版32.csv");	//マップ地形の読み込み
+	player = new Player(vmap);
+	player->setAbsolutePos(400, 700);
 	loadImg();
-	player.setAbsolutePos(400, 700);
 }
 
 
 Stage_Base::~Stage_Base() {
+	free(player);
 }
 
-void Stage_Base::update(){
+void Stage_Base::update() {
 
 }
 
-void Stage_Base::draw(){
+void Stage_Base::draw() {
 	DrawGraph(0, 0, bgHand, false);	//背景の描画
 }
 
 
-void Stage_Base::scrollMap(){
+void Stage_Base::scrollMap() {
 	//最適化してくれるはず
 	int baseDrawX = playerX - 100;
 	int baseDrawY = playerY - 300;
@@ -66,14 +68,10 @@ int Stage_Base::readMap(std::string file) {
 		std::istringstream stream(str);
 		for (int x = 0; x < this->MAP_WIDTH; x++) {
 			getline(stream, buf, ',');	//カンマで区切る
-
-			try {
+			if (buf.size() == 1) {
 				temp = std::stoi(buf);		//int型に変更
 			}
-			catch (std::invalid_argument e) {
-				temp = 0;
-			}
-			catch (std::out_of_range e) {
+			else {
 				temp = 0;
 			}
 
@@ -84,7 +82,7 @@ int Stage_Base::readMap(std::string file) {
 }
 
 //仮も仮なので後で分離
-int Stage_Base::loadImg(){
+int Stage_Base::loadImg() {
 	//画像の設定
 	LoadDivGraph("data/img/20170823174821.png", 10, 10, 1, 32, 32, chipImg);
 	//chipImg[1] = LoadGraph("data/img/airFloor.png");
@@ -100,7 +98,7 @@ int Stage_Base::loadImg(){
 	return 1;
 }
 
-int Stage_Base::debugInfo(){
+int Stage_Base::debugInfo() {
 	int drawPics = 0;
 
 	return 0;

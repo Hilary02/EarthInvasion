@@ -23,6 +23,7 @@
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="FPS.cpp" />
     <ClCompile Include="GameMain.cpp" />
+    <ClCompile Include="HealItem.cpp" />
     <ClCompile Include="KeyManager.cpp" />
     <ClCompile Include="IOcsv.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -37,6 +38,7 @@
     <ClCompile Include="Scene_Game.cpp" />
     <ClCompile Include="Scene_Title.cpp" />
     <ClCompile Include="StageSample.cpp" />
+    <ClCompile Include="Stage_Base.cpp" />
     <ClCompile Include="WindowData.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -44,6 +46,7 @@
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="FPS.h" />
     <ClInclude Include="GameMain.h" />
+    <ClInclude Include="HealItem.h" />
     <ClInclude Include="KeyManager.h" />
     <ClInclude Include="IOcsv.h" />
     <ClInclude Include="Main.h" />
@@ -58,6 +61,7 @@
     <ClInclude Include="Scene_Game.h" />
     <ClInclude Include="Scene_Title.h" />
     <ClInclude Include="StageSample.h" />
+    <ClInclude Include="Stage_Base.h" />
     <ClInclude Include="WindowData.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

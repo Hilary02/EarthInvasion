@@ -2,7 +2,8 @@
 #include "Player.h"
 #include "KeyManager.h"
 
-Player::Player(std::vector<std::vector <int>> const &vmap):vmap(vmap) {
+Player::Player(const std::vector<std::vector <int>> &vmap) :vmap(vmap) {
+	(this->vmap) = vmap;
 	this->hp = 15;
 	LoadImg();
 }
@@ -75,7 +76,7 @@ void Player::Draw(int drawX, int drawY)
 	//‰EŒü‚«
 	if (right) {
 		switch (plState) {
-			
+
 		case 'N':	//ŽålŒö
 			if (jumpFlag) {
 			}
@@ -94,7 +95,7 @@ void Player::Draw(int drawX, int drawY)
 				if (i == 60) i = 0;
 			}
 			break;
-			
+
 		case 'A':	//ˆê”Ê•ºA
 			if (jumpFlag) {
 
@@ -110,7 +111,7 @@ void Player::Draw(int drawX, int drawY)
 				if (i == 60) i = 0;
 			}
 			break;
-			
+
 		case'B':	//ˆê”Ê•ºB
 			if (jumpFlag) {
 
@@ -126,7 +127,7 @@ void Player::Draw(int drawX, int drawY)
 				if (i == 60) i = 0;
 			}
 			break;
-			
+
 		case'C':	//ˆê”Ê•ºC
 			if (jumpFlag) {
 
@@ -142,7 +143,7 @@ void Player::Draw(int drawX, int drawY)
 				if (i == 60) i = 0;
 			}
 			break;
-			
+
 		case'W':	//–‚—
 			if (keyM.GetKeyFrame(KEY_INPUT_RIGHT) >= 1) {
 				i = keyM.GetKeyFrame(KEY_INPUT_RIGHT) / 15 % 4;
@@ -158,9 +159,9 @@ void Player::Draw(int drawX, int drawY)
 		}
 	}
 	//¶Œü‚«
-	else if(!right) {
+	else if (!right) {
 		switch (plState) {
-			
+
 		case 'N':	//ŽålŒö
 			if (jumpFlag) {
 			}
@@ -179,7 +180,7 @@ void Player::Draw(int drawX, int drawY)
 				if (i == 60) i = 0;
 			}
 			break;
-			
+
 		case 'A':	//ˆê”Ê•ºA
 			if (jumpFlag) {
 
@@ -195,7 +196,7 @@ void Player::Draw(int drawX, int drawY)
 				if (i == 60) i = 0;
 			}
 			break;
-			
+
 		case'B':	//ˆê”Ê•ºB
 			if (jumpFlag) {
 
@@ -211,7 +212,7 @@ void Player::Draw(int drawX, int drawY)
 				if (i == 60) i = 0;
 			}
 			break;
-			
+
 		case'C':	//ˆê”Ê•ºC
 			if (jumpFlag) {
 
@@ -227,7 +228,7 @@ void Player::Draw(int drawX, int drawY)
 				if (i == 60) i = 0;
 			}
 			break;
-			
+
 		case'W':	//–‚—
 			if (keyM.GetKeyFrame(KEY_INPUT_RIGHT) >= 1) {
 				i = keyM.GetKeyFrame(KEY_INPUT_RIGHT) / 15 % 4;
@@ -244,6 +245,14 @@ void Player::Draw(int drawX, int drawY)
 	}
 	//DrawFormatString(100, 100, 0xFFFFFF, "%d,%d", tempX, tempY);
 	DrawFormatString(100, 80, 0xFFFFFF, "%d,%d", (int)x, (int)y);
+}
+int Player::getX()
+{
+	return x;
+}
+int Player::getY()
+{
+	return y;
 }
 //‰æ‘œ“Ç‚Ýž‚Ý
 void Player::LoadImg()
@@ -271,10 +280,12 @@ bool Player::MapHitCheck(int moveX, int moveY)
 		return true;
 		break;
 	case 1:
-		if (x > 0)
+		if (x > 0) {
 			cMove = moveX - ((int)this->x + moveX) % 32;
-		else
+		}
+		else {
 			cMove = (int)this->x % 32;
+		}
 		return false;
 		break;
 	case 2:
