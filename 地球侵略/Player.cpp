@@ -46,8 +46,9 @@ void Player::Update() {
 
 	if (keyM.GetKeyFrame(KEY_INPUT_UP) == 1 && !liquidFlag && !attackFlag) {
 		jumpFlag = true;
+		jumpPower = -10;
 	}
-	if (keyM.GetKeyFrame(KEY_INPUT_A) == 1) {
+	if (keyM.GetKeyFrame(KEY_INPUT_A) == 1 && !attackFlag) {
 		attackFlag = true;
 		//rect();
 		drawCount = 0;
@@ -59,10 +60,21 @@ void Player::Update() {
 
 	}
 
-	/*if (MapHitCheck(0, 1) && MapHitCheck(0, 1)) {
+	if (MapHitCheck(0, 1) && MapHitCheck(0, 1)) {
 		jumpFlag = true;
-	}*/
+	}
+	else {
+		jumpFlag = false;
+	}
+
 	if (jumpFlag) {
+		if (MapHitCheck(0, jumpPower)) {
+			y += jumpPower;
+			jumpPower += 1;
+		}
+		else {
+			y += cMove;
+		}
 
 	}
 	if (hp <= 0) {
@@ -70,6 +82,49 @@ void Player::Update() {
 		//GameOver();
 	}
 
+}
+
+bool Player::MapHitCheck(int moveX, int moveY)
+{
+	//DrawFormatString(100, 100, 0x00, "%d,%d", ((int)this->y + moveY)/32, ((int)this->x + moveX)/32);
+	//DrawFormatString(100, 120, 0x00, "%d", vmap[((int)this->y + moveY) / 32][((int)this->x + moveX) / 32]);
+	switch (vmap[((int)this->y + moveY) / 32 + 4][((int)this->x + moveX) / 32+5]) {
+	case 0:
+		return true;
+		break;
+	case 1:
+		if (moveX > 0)
+			cMove = moveX - ((int)this->x + moveX) % 32;
+		else if (moveX < 0)
+			cMove = (int)this->x % 32;
+		return false;
+		break;
+	case 2:
+		if (moveX > 0)
+			cMove = moveX - ((int)this->x + moveX) % 32;
+		else if (moveX < 0)
+			cMove = (int)this->x % 32;
+
+		if (moveY > 0)
+			cMove = moveY - ((int)this->y + moveY) % 32;
+		else if (moveY < 0) {
+			cMove = (int)this->y % 32;
+			jumpPower = 0;
+		}
+			return false;
+		break;
+	case 5:
+		return true;
+		break;
+	case 9:
+		cMove = moveY - ((int)this->y + moveY) % 32;
+		return false;
+		break;
+	default:
+		return true;
+		break;
+	}
+	return false;
 }
 
 void Player::Draw(int drawX, int drawY)
@@ -82,6 +137,12 @@ void Player::Draw(int drawX, int drawY)
 
 		case 'N':	//éÂêlåˆ
 			if (jumpFlag) {
+				if (jumpPower <= 1 && jumpPower >= -1)
+					DrawGraph(tempX, tempY, jump[1], TRUE);
+				else if (jumpPower > 1)
+					DrawGraph(tempX, tempY, jump[0], TRUE);
+				else if (jumpPower < -1)
+					DrawGraph(tempX, tempY, jump[2], TRUE);
 			}
 			else if (liquidFlag) {
 				drawCount = keyM.GetKeyFrame(KEY_INPUT_DOWN) / 15 % 4;
@@ -171,6 +232,12 @@ void Player::Draw(int drawX, int drawY)
 
 		case 'N':	//éÂêlåˆ
 			if (jumpFlag) {
+				if (jumpPower <= 1 && jumpPower >= -1)
+					DrawTurnGraph(tempX, tempY, jump[1], TRUE);
+				else if (jumpPower > 1)
+					DrawTurnGraph(tempX, tempY, jump[0], TRUE);
+				else if (jumpPower < -1)
+					DrawTurnGraph(tempX, tempY, jump[2], TRUE);
 			}
 			else if (liquidFlag) {
 				drawCount = keyM.GetKeyFrame(KEY_INPUT_DOWN) / 15 % 4;
@@ -279,6 +346,8 @@ void Player::LoadImg()
 	LoadDivGraph("data/img/enemy1JumpP.png", 4, 4, 1, 64, 64, &jump[10]);
 
 }
+<<<<<<< HEAD
+=======
 
 bool Player::MapHitCheck(int moveX, int moveY)
 {
@@ -322,3 +391,4 @@ void Player::EnemyHitCheck()
 	//EnemyManeger();
 }
 
+>>>>>>> 4c6003a687ec86e208861537b0aa7fee482b198d
