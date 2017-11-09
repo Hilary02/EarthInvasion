@@ -11,17 +11,19 @@ public:
 	void Update();
 	void Draw(int, int);
 private:
-	std::vector<std::vector <int>> const vmap;
+	std::vector<std::vector <int>> vmap;
 	const int MOVE = 1;
+	int drawCount = 0;
 	double cMove = 0;
 	void LoadImg();
 	bool MapHitCheck(int , int);
 	void EnemyHitCheck();
-	double jumpPower = 10.0;
+	double jumpPower = 0;
 	double speed = 10.0;
 	bool right = true;
 	bool jumpFlag = false;
 	bool liquidFlag = false;
+	bool attackFlag = false;
 	bool deadFlag = false;
 	char plState = 'N';
 	int wait[5];

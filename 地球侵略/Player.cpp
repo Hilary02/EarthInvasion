@@ -2,7 +2,8 @@
 #include "Player.h"
 #include "KeyManager.h"
 
-Player::Player(std::vector<std::vector <int>> const &vmap):vmap(vmap) {
+Player::Player(std::vector<std::vector <int>> const &vmap) {
+	this->vmap = vmap;
 	this->hp = 15;
 	LoadImg();
 }
@@ -21,7 +22,7 @@ Player::~Player() {
 
 //ŒvŽZˆ—
 void Player::Update() {
-	if (keyM.GetKeyFrame(KEY_INPUT_LEFT) >= 1) {
+	if (keyM.GetKeyFrame(KEY_INPUT_LEFT) >= 1 && !attackFlag) {
 		right = false;
 		if (MapHitCheck(-MOVE, 0)) {
 			x -= MOVE;
@@ -30,7 +31,7 @@ void Player::Update() {
 			x -= cMove;
 		}
 	}
-	if (keyM.GetKeyFrame(KEY_INPUT_RIGHT) >= 1) {
+	if (keyM.GetKeyFrame(KEY_INPUT_RIGHT) >= 1 && !attackFlag) {
 		right = true;
 		if (MapHitCheck(MOVE, 0)) {
 			x += MOVE;
@@ -39,16 +40,18 @@ void Player::Update() {
 			x += cMove;
 		}
 	}
-	if (keyM.GetKeyFrame(KEY_INPUT_DOWN) >= 1 && !jumpFlag)
+	if (keyM.GetKeyFrame(KEY_INPUT_DOWN) >= 1 && !jumpFlag && !attackFlag)
 		liquidFlag = true;
 	else if (keyM.GetKeyFrame(KEY_INPUT_DOWN) == 0)
 		liquidFlag = false;
 
-	if (keyM.GetKeyFrame(KEY_INPUT_UP) == 1 && !liquidFlag) {
+	if (keyM.GetKeyFrame(KEY_INPUT_UP) == 1 && !liquidFlag && !attackFlag) {
 		jumpFlag = true;
 	}
-	if (keyM.GetKeyFrame(KEY_INPUT_A) >= 1) {
-
+	if (keyM.GetKeyFrame(KEY_INPUT_A) == 1) {
+		attackFlag = true;
+		//rect();
+		drawCount = 0;
 	}
 	if (keyM.GetKeyFrame(KEY_INPUT_S) >= 1) {
 
@@ -57,6 +60,9 @@ void Player::Update() {
 
 	}
 
+	/*if (MapHitCheck(0, 1) && MapHitCheck(0, 1)) {
+		jumpFlag = true;
+	}*/
 	if (jumpFlag) {
 
 	}
@@ -69,7 +75,6 @@ void Player::Update() {
 
 void Player::Draw(int drawX, int drawY)
 {
-	int i;
 	int tempX = x - drawX, tempY = y - drawY;
 
 	//‰EŒü‚«
@@ -80,18 +85,22 @@ void Player::Draw(int drawX, int drawY)
 			if (jumpFlag) {
 			}
 			else if (liquidFlag) {
-				i = keyM.GetKeyFrame(KEY_INPUT_DOWN) / 15 % 4;
-				DrawGraph(tempX, tempY, move[i], TRUE);//‰¼
+				drawCount = keyM.GetKeyFrame(KEY_INPUT_DOWN) / 15 % 4;
+				DrawGraph(tempX, tempY, wait[drawCount], TRUE);//‰¼
+			}
+			else if (attackFlag) {
+				DrawGraph(tempX, tempY, attack[drawCount / 8 % 8], true);
+				drawCount++;
+				if(drawCount >= 64) attackFlag = false;
 			}
 			else if (keyM.GetKeyFrame(KEY_INPUT_RIGHT) >= 1) {
-				i = keyM.GetKeyFrame(KEY_INPUT_RIGHT) / 15 % 4;
-				DrawGraph(tempX, tempY, move[i], TRUE);
+				drawCount = keyM.GetKeyFrame(KEY_INPUT_RIGHT) / 15 % 4;
+				DrawGraph(tempX, tempY, move[drawCount], TRUE);
 			}
 			else {
-				i = 0;
-				DrawGraph(tempX, tempY, wait[i % 4], TRUE);
-				i++;
-				if (i == 60) i = 0;
+				if (drawCount > 60) drawCount = 0;
+				DrawGraph(tempX, tempY, wait[drawCount /15 % 4], TRUE);
+				drawCount++;
 			}
 			break;
 			
@@ -100,14 +109,14 @@ void Player::Draw(int drawX, int drawY)
 
 			}
 			else if (keyM.GetKeyFrame(KEY_INPUT_RIGHT) >= 1) {
-				i = keyM.GetKeyFrame(KEY_INPUT_RIGHT) / 15 % 4;
-				DrawGraph(tempX, tempY, move[i], TRUE);
+				drawCount = keyM.GetKeyFrame(KEY_INPUT_RIGHT) / 15 % 4;
+				DrawGraph(tempX, tempY, move[drawCount], TRUE);
 			}
 			else {
-				i = 0;
-				DrawGraph(tempX, tempY, wait[i % 4], TRUE);
-				i++;
-				if (i == 60) i = 0;
+				drawCount = 0;
+				DrawGraph(tempX, tempY, wait[drawCount % 4], TRUE);
+				drawCount++;
+				if (drawCount == 60) drawCount = 0;
 			}
 			break;
 			
@@ -116,14 +125,14 @@ void Player::Draw(int drawX, int drawY)
 
 			}
 			else if (keyM.GetKeyFrame(KEY_INPUT_RIGHT) >= 1) {
-				i = keyM.GetKeyFrame(KEY_INPUT_RIGHT) / 15 % 4;
-				DrawGraph(tempX, tempY, move[i], TRUE);
+				drawCount = keyM.GetKeyFrame(KEY_INPUT_RIGHT) / 15 % 4;
+				DrawGraph(tempX, tempY, move[drawCount], TRUE);
 			}
 			else {
-				i = 0;
-				DrawGraph(tempX, tempY, wait[i % 4], TRUE);
-				i++;
-				if (i == 60) i = 0;
+				drawCount = 0;
+				DrawGraph(tempX, tempY, wait[drawCount % 4], TRUE);
+				drawCount++;
+				if (drawCount == 60) drawCount = 0;
 			}
 			break;
 			
@@ -132,27 +141,27 @@ void Player::Draw(int drawX, int drawY)
 
 			}
 			else if (keyM.GetKeyFrame(KEY_INPUT_RIGHT) >= 1) {
-				i = keyM.GetKeyFrame(KEY_INPUT_RIGHT) / 15 % 4;
-				DrawGraph(tempX, tempY, move[i], TRUE);
+				drawCount = keyM.GetKeyFrame(KEY_INPUT_RIGHT) / 15 % 4;
+				DrawGraph(tempX, tempY, move[drawCount], TRUE);
 			}
 			else {
-				i = 0;
-				DrawGraph(tempX, tempY, wait[i % 4], TRUE);
-				i++;
-				if (i == 60) i = 0;
+				drawCount = 0;
+				DrawGraph(tempX, tempY, wait[drawCount % 4], TRUE);
+				drawCount++;
+				if (drawCount == 60) drawCount = 0;
 			}
 			break;
 			
 		case'W':	//–‚—
 			if (keyM.GetKeyFrame(KEY_INPUT_RIGHT) >= 1) {
-				i = keyM.GetKeyFrame(KEY_INPUT_RIGHT) / 15 % 4;
-				DrawGraph(tempX, tempY, move[i], TRUE);
+				drawCount = keyM.GetKeyFrame(KEY_INPUT_RIGHT) / 15 % 4;
+				DrawGraph(tempX, tempY, move[drawCount], TRUE);
 			}
 			else {
-				i = 0;
-				DrawGraph(tempX, tempY, wait[i % 4], TRUE);
-				i++;
-				if (i == 60) i = 0;
+				drawCount = 0;
+				DrawGraph(tempX, tempY, wait[drawCount % 4], TRUE);
+				drawCount++;
+				if (drawCount == 60) drawCount = 0;
 			}
 			break;
 		}
@@ -165,18 +174,22 @@ void Player::Draw(int drawX, int drawY)
 			if (jumpFlag) {
 			}
 			else if (liquidFlag) {
-				i = keyM.GetKeyFrame(KEY_INPUT_DOWN) / 15 % 4;
-				DrawGraph(tempX, tempY, move[i], TRUE);//‰¼
+				drawCount = keyM.GetKeyFrame(KEY_INPUT_DOWN) / 15 % 4;
+				DrawTurnGraph(tempX, tempY, wait[drawCount], TRUE);//‰¼
 			}
-			else if (keyM.GetKeyFrame(KEY_INPUT_RIGHT) >= 1) {
-				i = keyM.GetKeyFrame(KEY_INPUT_RIGHT) / 15 % 4;
-				DrawGraph(tempX, tempY, move[i], TRUE);
+			else if (attackFlag) {
+				DrawTurnGraph(tempX, tempY, attack[drawCount / 8 % 8], true);
+				drawCount++;
+				if (drawCount >= 64) attackFlag = false;
+			}
+			else if (keyM.GetKeyFrame(KEY_INPUT_LEFT) >= 1) {
+				drawCount = keyM.GetKeyFrame(KEY_INPUT_LEFT) / 15 % 4;
+				DrawTurnGraph(tempX, tempY, move[drawCount], TRUE);
 			}
 			else {
-				i = 0;
-				DrawGraph(tempX, tempY, wait[i % 4], TRUE);
-				i++;
-				if (i == 60) i = 0;
+				if (drawCount > 60) drawCount = 0;
+				DrawTurnGraph(tempX, tempY, wait[drawCount / 15 % 4], TRUE);
+				drawCount++;
 			}
 			break;
 			
@@ -184,15 +197,14 @@ void Player::Draw(int drawX, int drawY)
 			if (jumpFlag) {
 
 			}
-			else if (keyM.GetKeyFrame(KEY_INPUT_RIGHT) >= 1) {
-				i = keyM.GetKeyFrame(KEY_INPUT_RIGHT) / 15 % 4;
-				DrawGraph(tempX, tempY, move[i], TRUE);
+			else if (keyM.GetKeyFrame(KEY_INPUT_LEFT) >= 1) {
+				drawCount = keyM.GetKeyFrame(KEY_INPUT_LEFT) / 15 % 4;
+				DrawTurnGraph(tempX, tempY, move[drawCount], TRUE);
 			}
 			else {
-				i = 0;
-				DrawGraph(tempX, tempY, wait[i % 4], TRUE);
-				i++;
-				if (i == 60) i = 0;
+				if (drawCount == 60) drawCount = 0;
+				DrawTurnGraph(tempX, tempY, wait[drawCount % 4], TRUE);
+				drawCount++;
 			}
 			break;
 			
@@ -200,15 +212,14 @@ void Player::Draw(int drawX, int drawY)
 			if (jumpFlag) {
 
 			}
-			else if (keyM.GetKeyFrame(KEY_INPUT_RIGHT) >= 1) {
-				i = keyM.GetKeyFrame(KEY_INPUT_RIGHT) / 15 % 4;
-				DrawGraph(tempX, tempY, move[i], TRUE);
+			else if (keyM.GetKeyFrame(KEY_INPUT_LEFT) >= 1) {
+				drawCount = keyM.GetKeyFrame(KEY_INPUT_LEFT) / 15 % 4;
+				DrawTurnGraph(tempX, tempY, move[drawCount], TRUE);
 			}
 			else {
-				i = 0;
-				DrawGraph(tempX, tempY, wait[i % 4], TRUE);
-				i++;
-				if (i == 60) i = 0;
+				if (drawCount == 60) drawCount = 0;
+				DrawTurnGraph(tempX, tempY, wait[drawCount % 4], TRUE);
+				drawCount++;
 			}
 			break;
 			
@@ -216,28 +227,26 @@ void Player::Draw(int drawX, int drawY)
 			if (jumpFlag) {
 
 			}
-			else if (keyM.GetKeyFrame(KEY_INPUT_RIGHT) >= 1) {
-				i = keyM.GetKeyFrame(KEY_INPUT_RIGHT) / 15 % 4;
-				DrawGraph(tempX, tempY, move[i], TRUE);
+			else if (keyM.GetKeyFrame(KEY_INPUT_LEFT) >= 1) {
+				drawCount = keyM.GetKeyFrame(KEY_INPUT_LEFT) / 15 % 4;
+				DrawTurnGraph(tempX, tempY, move[drawCount], TRUE);
 			}
 			else {
-				i = 0;
-				DrawGraph(tempX, tempY, wait[i % 4], TRUE);
-				i++;
-				if (i == 60) i = 0;
+				if (drawCount == 60) drawCount = 0;
+				DrawTurnGraph(tempX, tempY, wait[drawCount % 4], TRUE);
+				drawCount++;
 			}
 			break;
 			
 		case'W':	//–‚—
-			if (keyM.GetKeyFrame(KEY_INPUT_RIGHT) >= 1) {
-				i = keyM.GetKeyFrame(KEY_INPUT_RIGHT) / 15 % 4;
-				DrawGraph(tempX, tempY, move[i], TRUE);
+			if (keyM.GetKeyFrame(KEY_INPUT_LEFT) >= 1) {
+				drawCount = keyM.GetKeyFrame(KEY_INPUT_LEFT) / 15 % 4;
+				DrawTurnGraph(tempX, tempY, move[drawCount], TRUE);
 			}
 			else {
-				i = 0;
-				DrawGraph(tempX, tempY, wait[i % 4], TRUE);
-				i++;
-				if (i == 60) i = 0;
+				if (drawCount == 60) drawCount = 0;
+				DrawTurnGraph(tempX, tempY, wait[drawCount % 4], TRUE);
+				drawCount++;
 			}
 			break;
 		}
@@ -266,24 +275,26 @@ void Player::LoadImg()
 
 bool Player::MapHitCheck(int moveX, int moveY)
 {
-	switch (vmap[(this->y + moveY) / 32][(this->x + moveX) / 32]) {
+	DrawFormatString(100, 100, 0x00, "%d,%d", ((int)this->y + moveY)/32, ((int)this->x + moveX)/32);
+	DrawFormatString(100, 120, 0x00, "%d", vmap[((int)this->y + moveY) / 32][((int)this->x + moveX) / 32]);
+	switch (vmap[((int)this->y + moveY) / 32][((int)this->x + moveX) / 32]) {
 	case 0:
 		return true;
 		break;
 	case 1:
-		if (x > 0)
+		if (moveX > 0)
 			cMove = moveX - ((int)this->x + moveX) % 32;
 		else
 			cMove = (int)this->x % 32;
 		return false;
 		break;
-	case 2:
-		if (x > 0)
+	/*case 2:
+		if (moveX > 0)
 			cMove = moveX - ((int)this->x + moveX) % 32;
 		else
 			cMove = (int)this->x % 32;
 		return false;
-		break;
+		break;*/
 	case 5:
 		return true;
 		break;
