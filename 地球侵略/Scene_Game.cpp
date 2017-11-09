@@ -1,8 +1,4 @@
 #include "Scene_Game.h"
-#include "StageSample.h"
-#include "Stage_Base.h"
-
-
 
 Scene_Game::Scene_Game(){
 	nowStage = new Stage_Base;

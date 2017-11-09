@@ -1,5 +1,6 @@
 #pragma once
 #include "Scene_Frame.h"
+#include "Stage_Base.h"
 class Scene_Game :
 	public Scene_Frame
 {
