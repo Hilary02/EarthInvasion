@@ -3,7 +3,6 @@
 #include "KeyManager.h"
 
 Player::Player(const std::vector<std::vector <int>> &vmap) :vmap(vmap) {
-	(this->vmap) = vmap;
 	this->hp = 15;
 	LoadImg();
 }

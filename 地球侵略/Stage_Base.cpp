@@ -28,7 +28,7 @@ Stage_Base::Stage_Base() :
 	readMap("data/map/tutrial-map改良版32.csv");
 	//プレイヤー呼び出し
 	player = new Player(vmap);
-	player->setAbsolutePos(400, 700);
+	player->setAbsolutePos(400, 800);
 	//地形画像の読み込み
 	//TODO:引数をつける
 	loadImg();
@@ -79,8 +79,8 @@ void Stage_Base::draw() {
 
 void Stage_Base::scrollMap() {
 	//TODO:数字はいずれconst変数にする
-	int baseDrawX = player->getX - 100;
-	int baseDrawY = player->getY - 300;
+	int baseDrawX = player->getX() - 100;
+	int baseDrawY = player->getY() - 300;
 	int limitDrawX = MAP_WIDTH * CHIPSIZE - window.WINDOW_WIDTH;
 	int limitDrawY = MAP_HEIGHT* CHIPSIZE - window.WINDOW_HEIGHT + 150;
 
