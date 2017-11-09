@@ -1,0 +1,9 @@
+diff a/地球侵略/地球侵略.vcxproj b/地球侵略/地球侵略.vcxproj	(rejected hunks)
+@@ -23,7 +23,6 @@
+     <ClCompile Include="Enemy.cpp" />
+     <ClCompile Include="FPS.cpp" />
+     <ClCompile Include="GameMain.cpp" />
+-    <ClCompile Include="HealItem.cpp" />
+     <ClCompile Include="KeyManager.cpp" />
+     <ClCompile Include="IOcsv.cpp" />
+     <ClCompile Include="Main.cpp" />

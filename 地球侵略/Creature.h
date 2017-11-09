@@ -1,11 +1,11 @@
 #pragma once
-#include "Root.h"
+#include "Object.h"
 /**
 敵や主人公など，キャラクターを管理する．
 体力や攻撃力などステータス管理をできるように．
 */
 class Creature :
-	public Root {
+	public Object {
 public:
 	Creature();
 	~Creature();
