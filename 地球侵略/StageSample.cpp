@@ -90,6 +90,7 @@ void StageSample::drawMap() {
 					DrawGraph(tempX, tempY + 16, chipImg[vmap[y][x]], TRUE);
 					drawPics++;
 				}
+				//DrawFormatString(tempX + 2, tempY + 2, 0x000000, "%d", vmap[y][x]);
 
 				//空白表示
 				//else DrawBox(tempX, tempY, tempX + CHIPSIZE, tempY + CHIPSIZE, GetColor(0, 255, 0), FALSE);
@@ -135,8 +136,8 @@ void StageSample::scrollTest() {
 //プレイヤーの表示位置もなんらかの変数に入れておきたい
 void StageSample::scrollMap() {
 	//最適化してくれるはず
-	int baseDrawX = playerX - 500;
-	int baseDrawY = playerY - 100;
+	int baseDrawX = player->getX() - 500;
+	int baseDrawY = player->getY() - 100;
 	int limitDrawX = MAP_WIDTH * CHIPSIZE - window.WINDOW_WIDTH;
 	int limitDrawY = MAP_HEIGHT* CHIPSIZE - window.WINDOW_HEIGHT + 150;
 

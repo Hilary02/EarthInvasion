@@ -37,6 +37,7 @@
     <ClCompile Include="Scene_Game.cpp" />
     <ClCompile Include="Scene_Title.cpp" />
     <ClCompile Include="StageSample.cpp" />
+    <ClCompile Include="Stage_Base.cpp" />
     <ClCompile Include="WindowData.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -58,6 +59,7 @@
     <ClInclude Include="Scene_Game.h" />
     <ClInclude Include="Scene_Title.h" />
     <ClInclude Include="StageSample.h" />
+    <ClInclude Include="Stage_Base.h" />
     <ClInclude Include="WindowData.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

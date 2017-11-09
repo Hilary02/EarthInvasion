@@ -1,6 +1,6 @@
 #pragma once
 #include "DxLib.h"
-#include "Object.h"
+//#include "Object.h"
 #include "HealItem.h"
 #include <map>
 #include <vector>
