@@ -6,7 +6,7 @@ StageSample* nowStage;
 
 Scene_Game::Scene_Game(){
 	nowStage = new StageSample;
-	nowStage->initMap();
+
 }
 
 

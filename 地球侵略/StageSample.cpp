@@ -27,6 +27,7 @@ StageSample::StageSample() :
 			vmap[i].push_back(j);
 		}
 	}
+	initMap();
 	player = new Player(vmap);
 	player->setAbsolutePos(playerX, playerY);
 }
