@@ -17,7 +17,6 @@ private:
 	double cMove = 0;
 	void LoadImg();
 	bool MapHitCheck(int , int);
-	void EnemyHitCheck();
 	double jumpPower = 0;
 	double speed = 10.0;
 	bool right = true;
