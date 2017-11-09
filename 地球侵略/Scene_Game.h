@@ -8,5 +8,7 @@ public:
 	~Scene_Game();
 	void Update();
 	void Draw();
+private:
+	Stage_Base* nowStage;
 };
 

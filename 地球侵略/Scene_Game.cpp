@@ -2,8 +2,7 @@
 #include "StageSample.h"
 #include "Stage_Base.h"
 
-//StageSample stage1;
-Stage_Base* nowStage;
+
 
 Scene_Game::Scene_Game(){
 	nowStage = new Stage_Base;
@@ -23,6 +22,5 @@ void Scene_Game::Update(){
 }
 
 void Scene_Game::Draw(){
-	//DrawString(0, 0, "ゲーム(デバッグ表示）", 0xFFFFFF);
 	nowStage->draw();
 }
