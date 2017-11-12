@@ -8,7 +8,14 @@ class Enemy :
 public:
 	Enemy();
 	~Enemy();
+	Enemy(int x, int y, int img, int id);
 	void Update();
-	void Draw();
+	void Draw(int x, int y);
+	int enemyID;
+
+
+private:
+	int moveRange;
+	const int MOVE = 2;
 };
 

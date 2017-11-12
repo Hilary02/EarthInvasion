@@ -2,6 +2,7 @@
 #include "DxLib.h"
 //#include "Object.h"
 #include "HealItem.h"
+#include "Enemy.h"
 #include <map>
 #include <vector>
 
