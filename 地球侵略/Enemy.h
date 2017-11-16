@@ -13,7 +13,6 @@ public:
 	void Draw(int x, int y);
 	int enemyID;
 
-
 private:
 	int moveRange;
 	const int MOVE = 2;
