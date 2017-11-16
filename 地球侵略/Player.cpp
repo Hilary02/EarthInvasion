@@ -321,6 +321,14 @@ void Player::Draw(int drawX, int drawY)
 	//DrawFormatString(100, 100, 0xFFFFFF, "%d,%d", tempX, tempY);
 	DrawFormatString(100, 80, 0xFFFFFF, "%d,%d", (int)x, (int)y);
 }
+int Player::getX()
+{
+	return x;
+}
+int Player::getY()
+{
+	return y;
+}
 //‰æ‘œ“Ç‚İ‚İ
 void Player::LoadImg()
 {

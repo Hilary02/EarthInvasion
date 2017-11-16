@@ -16,10 +16,10 @@ private:
 	std::vector<std::vector <int>> vmap;
 	const int MOVE = 2;
 	int drawCount = 0;
-	double cMove = 0;
+	int cMove = 0;
 	void LoadImg();
 	bool MapHitCheck(int , int);
-	double jumpPower = 0;
+	int jumpPower = 0;
 	double speed = 10.0;
 	bool right = true;
 	bool jumpFlag = false;
