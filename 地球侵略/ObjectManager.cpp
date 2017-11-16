@@ -2,8 +2,8 @@
 
 ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap) {
 	Loadimg();
-	for (int i = 0; i < vmap.size(); i++) {
-		for (int j = 0; j < vmap[i].size(); j++) {
+	for (unsigned int i = 0; i < vmap.size(); i++) {
+		for (unsigned int j = 0; j < vmap[i].size(); j++) {
 			if (vmap[i][j] == 3 || vmap[i][j] == 4 || vmap[i][j] == 6) {
 				Object obje;
 				int x = i * 32;//xÀ•W
