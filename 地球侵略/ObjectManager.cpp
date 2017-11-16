@@ -12,8 +12,15 @@ ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap) {
 				path = img[vmap[i][j]];
 				switch (vmap[i][j])
 				{
-				case 6:
-					obje = HealItem(x, y, img[6]);
+				/*case 3:
+					obje = GroundFloor(x, y, img[3]);
+					break;
+				case 10:
+					obje = Enemy(x, y, img[4]);
+					break;*/
+				case 20:
+					obje = HealItem(x, y, img[20]);
+					break;
 				default:
 					break;
 				}
@@ -29,10 +36,15 @@ ObjectManager::~ObjectManager() {
 }
 
 void ObjectManager::Loadimg() {
-	img[3] = LoadGraph("data/img/enemy1Wait.png");   //3は敵
-	img[4] = LoadGraph("data/img/groundFloor.png");  //4は動く床
-	img[6] = LoadGraph("data/img/healPot.png");    //６はアイテム
-
+	img[3] = LoadGraph("data/img/groundFloor.png");  //3は動く床
+	img[10] = LoadGraph("data/img/enemy1Wait.png");   //10は一般兵
+	img[11] = LoadGraph("data/img/");   //11はベテラン兵
+	img[12] = LoadGraph("data/img/");   //12は大佐
+	img[13] = LoadGraph("data/img/");   //13は棒人間
+	img[14] = LoadGraph("data/img/");   //14は魔法使い
+	img[20] = LoadGraph("data/img/healPot.png");    //20は回復薬
+	img[21] = LoadGraph("data/img/curePod.png"); //21は回復薬
+	
 }
 
 void ObjectManager::Update()
