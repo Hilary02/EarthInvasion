@@ -2,12 +2,14 @@
 
 
 
-Rect::Rect(int x, int y, int w, int h) {
-	leftX = x;
-	leftY = y;
-	width = w;
-	height = h;
+Rect::Rect(int w,int h,double amp) {
+	//leftX = x;
+	//leftY = y;
+	width = (int)(w*amp);
+	height = (int)(h*amp);
 }
+
+
 
 Rect::Rect()
 {

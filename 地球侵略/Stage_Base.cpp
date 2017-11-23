@@ -28,7 +28,7 @@ Stage_Base::Stage_Base() :
 	readMap("data/map/tutrial-map‰ü—Ç”Å32.csv");
 	//ƒvƒŒƒCƒ„[ŒÄ‚Ño‚µ
 	player = new Player(vmap);
-	player->setAbsolutePos(400, 800);
+	player->setAbsolutePos(360, 600);
 	//’nŒ`‰æ‘œ‚Ì“Ç‚İ‚İ
 	//TODO:ˆø”‚ğ‚Â‚¯‚é
 	loadImg();
@@ -47,7 +47,7 @@ void Stage_Base::update() {
 }
 
 void Stage_Base::draw() {
-	DrawGraph(0, 0, bgHand, false);	//”wŒi‚Ì•`‰æ
+	//DrawGraph(0, 0, bgHand, false);	//”wŒi‚Ì•`‰æ
 	int baseChipY = max(0, drawY - CHIPSIZE * 2);
 	int baseChipX = max(0, drawX - CHIPSIZE * 2);
 	for (int y = baseChipY / CHIPSIZE; y < ((drawY + window.WINDOW_HEIGHT - 50) / CHIPSIZE); y++) {
@@ -129,4 +129,5 @@ int Stage_Base::loadImg() {
 	chipImg[9] = LoadGraph("data/img/togetoge.png");
 	bgHand = LoadGraph("data/img/bg01.jpg");
 	return 1;
+
 }
