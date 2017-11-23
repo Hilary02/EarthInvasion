@@ -11,10 +11,11 @@ public:
 	Enemy(int x, int y, int img, int id);
 	void Update();
 	void Draw(int x, int y);
+	void MoveCommon();
 	int enemyID;
 
 private:
-	int moveRange;
+	int moveRange  = 5;
 	const int MOVE = 2;
 };
 

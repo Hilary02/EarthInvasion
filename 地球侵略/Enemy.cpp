@@ -22,12 +22,16 @@ Enemy::Enemy(int x, int y, int img, int id)
 
 void Enemy::Update()
 {
-
+	MoveCommon();
 }
 
 void Enemy::Draw(int x , int y){
+	DrawGraph(x, y, imgHundle, true);
+}
 
-
+void Enemy::MoveCommon()
+{
+	x += moveRange;
 }
 
 
