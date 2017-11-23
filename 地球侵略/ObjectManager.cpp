@@ -42,3 +42,8 @@ void ObjectManager::Update()
 	}
 }
 
+void ObjectManager::Draw(){
+	for (auto obj : objects) {
+		obj.Draw();
+	}
+}

@@ -4,6 +4,7 @@
 #include "DxLib.h"
 #include "Player.h"
 #include "WindowData.h"
+#include "ObjectManager.h"
 
 /**
 Stageクラスはまず地形を読み込む．
@@ -20,8 +21,6 @@ public:
 
 	void update();	//更新処理
 	void draw();	//描画処理
-
-					
 	void scrollMap();	// プレイヤーの座標から表示するマップの起点を決定する関数．
 
 private:
@@ -41,6 +40,7 @@ private:
 
 	std::vector<std::vector <int>> vmap;	//マップデータ格納
 	Player *player;
+	ObjectManager *objectMgr;
 
 	//描画する際の左上座標
 	int drawX,drawY;

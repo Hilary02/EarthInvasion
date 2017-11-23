@@ -13,6 +13,7 @@ public:
 	void Loadimg();
 
 	void Update();
+	void Draw();
 	
 	std::map<int, int> img;
 

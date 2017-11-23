@@ -13,14 +13,13 @@ Creature::~Creature()
 
 
 // ‘Ì—Í‚ğ•ÏX
-void Creature::setHp()
-{
+void Creature::setHp(){
 }
 
 
 // UŒ‚—Í‚ğİ’è
-int Creature::setAtk() {
-	return 0;
+void Creature::setAtk() {
+
 }
 
 

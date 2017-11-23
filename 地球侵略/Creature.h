@@ -16,7 +16,7 @@ public:
 	// ‘Ì—Í‚ğ•ÏX
 	void setHp();
 	// UŒ‚—Í‚ğİ’è
-	int setAtk();
+	void setAtk();
 	// ‘Ì—Í‚ğæ“¾‚·‚é
 	int getHp();
 	void Update();
