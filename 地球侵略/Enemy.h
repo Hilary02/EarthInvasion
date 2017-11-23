@@ -15,6 +15,8 @@ public:
 	int enemyID;
 
 private:
+	int drawcount = 0;
+	int walk[8];
 	int moveRange  = 5;
 	const int MOVE = 2;
 };

@@ -18,6 +18,7 @@ Enemy::Enemy(int x, int y, int img, int id)
 	this->y = y;
 	this->imgHundle = img;
 	this->enemyID = id;
+	LoadDivGraph("data/img/enemy1Walk.png", 8, 4, 2, 64, 64, walk);
 }
 
 void Enemy::Update()
@@ -30,8 +31,10 @@ void Enemy::Draw(int x , int y){
 }
 
 void Enemy::MoveCommon()
-{
+{	
 	x += moveRange;
+	DrawGraph(x, y, walk[drawcount%8],true);
+	drawcount++;
 }
 
 
