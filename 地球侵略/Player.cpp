@@ -67,7 +67,7 @@ void Player::Update() {
 	if (MapHitCheck(x, y + 64, xyCheck) && MapHitCheck(x + 63, y + 64, xyCheck)) {
 		isJumping = true;
 	}
-	else {
+	else if(jumpPower > 0) {
 		isJumping = false;
 		jumpPower = 0;
 	}
@@ -168,9 +168,9 @@ void Player::Draw(int drawX, int drawY) {
 				if (jumpPower <= 1 && jumpPower >= -1)
 					DrawGraph(tempX, tempY, jump[1], TRUE);
 				else if (jumpPower > 1)
-					DrawGraph(tempX, tempY, jump[0], TRUE);
-				else if (jumpPower < -1)
 					DrawGraph(tempX, tempY, jump[2], TRUE);
+				else if (jumpPower < -1)
+					DrawGraph(tempX, tempY, jump[0], TRUE);
 			}
 			else if (isLiquid) {
 				drawCount = keyM.GetKeyFrame(KEY_INPUT_DOWN) / 15 % 4;
@@ -263,9 +263,9 @@ void Player::Draw(int drawX, int drawY) {
 				if (jumpPower <= 1 && jumpPower >= -1)
 					DrawTurnGraph(tempX, tempY, jump[1], TRUE);
 				else if (jumpPower > 1)
-					DrawTurnGraph(tempX, tempY, jump[0], TRUE);
-				else if (jumpPower < -1)
 					DrawTurnGraph(tempX, tempY, jump[2], TRUE);
+				else if (jumpPower < -1)
+					DrawTurnGraph(tempX, tempY, jump[0], TRUE);
 			}
 			else if (isLiquid) {
 				drawCount = keyM.GetKeyFrame(KEY_INPUT_DOWN) / 15 % 4;
