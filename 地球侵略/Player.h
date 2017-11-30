@@ -22,7 +22,7 @@ private:
 	int jumpPower = 0;
 	double speed = 10.0;
 	bool right = true;
-	bool jumpFlag = false;
+	bool isJumping = false;
 	bool liquidFlag = false;
 	bool attackFlag = false;
 	bool deadFlag = false;
