@@ -14,12 +14,12 @@ ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap) {
 				{
 				/*case 3:
 					obje = GroundFloor(x, y, img[3]);
-					break;
-				case 10:
+					break;*/
+				/*case 10:
 					obje = Enemy(x, y, img[4]);
 					break;*/
 				case 20:
-					obje = HealItem(x, y, img[20]);
+					obje = Item(x, y, img[20]);
 					break;
 				default:
 					break;
