@@ -20,7 +20,8 @@ private:
 	int drawCount = 0;
 	int cMove = 0;
 	void LoadImg();
-	bool MapHitCheck(int , int , bool);
+	bool MapHitCheck(int , int , char);
+	void MyDraw(int, int, int, bool);
 	int jumpPower = 0;
 	double speed = 10.0;
 	bool right = true;
@@ -34,5 +35,6 @@ private:
 	int move[5];
 	int attack[10];
 	int jump[20];
+	int liquid[10];
 	int die[20];
 };

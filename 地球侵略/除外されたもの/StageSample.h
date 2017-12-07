@@ -4,6 +4,7 @@
 #include "DxLib.h"
 #include "IOcsv.h"
 #include "Player.h"
+#include "objectManager.h"
 /**
 変更必要なところ多数．
 マップチップサイズの変更やクラス分け
@@ -43,6 +44,7 @@ private:
 
 	std::vector<std::vector <int>> vmap;	//マップデータ格納
 	Player *player;
+	ObjectManager *objectMgr;
 
 private:
 	//削除予定

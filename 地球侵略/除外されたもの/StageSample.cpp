@@ -2,7 +2,8 @@
 #include "WindowData.h"
 #include "KeyManager.h"
 
-#include "Player.h"
+//#include "Player.h"
+
 
 #include <assert.h>
 
@@ -30,6 +31,8 @@ StageSample::StageSample() :
 	initMap();
 	player = new Player(vmap);
 	player->setAbsolutePos(playerX, playerY);
+
+	objectMgr = new ObjectManager(vmap);
 }
 
 StageSample::~StageSample()
@@ -105,6 +108,8 @@ void StageSample::drawMap() {
 	DrawFormatString(0, 50, GetColor(255, 125, 255), "•\Ž¦‰æ‘œ”F%d", drawPics);
 	player->Update();
 	player->Draw(drawX, drawY);
+
+	objectMgr->Update();
 
 	int img_id = (debugCounter / 15) % 4;
 //	DrawGraph(playerX - drawX, playerY - drawY, eeyanImg[img_id], true);
