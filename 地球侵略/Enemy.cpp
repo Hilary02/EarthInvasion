@@ -21,4 +21,7 @@ void Enemy::Draw(){
 
 }
 
+void Enemy::onHit() {
+
+}
 

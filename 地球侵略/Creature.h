@@ -14,7 +14,8 @@ protected:
 	int attack;
 public:
 	// ‘Ì—Í‚ğ•ÏX
-	void setHp();
+	void setHp(int newHp);
+	void modHp(int mod);
 	// UŒ‚—Í‚ğİ’è
 	void setAtk();
 	// ‘Ì—Í‚ğæ“¾‚·‚é

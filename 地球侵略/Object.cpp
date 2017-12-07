@@ -51,18 +51,19 @@ int Object::hitCheck(Object target) {
 
 	if ((tX1 < mX2) && (tX2 > mX1) &&
 		(tY1 < mY2) && (tY2 > mY1)) {
-		/*当たっている場合に実行*/
+		/*当たっていた場合に実行*/
+		onHit(target);
 		return 1;
-	}
-	else {
+	}else {
 		return 0;
 
 	}
 }
 
 
-void Object::onContact() {
+void Object::onHit(Object target) {
 	//プレイヤーと当たったときの動作を記述
+	
 }
 
 

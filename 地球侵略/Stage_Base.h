@@ -5,7 +5,9 @@
 #include "Player.h"
 #include "WindowData.h"
 #include "ObjectManager.h"
-
+#include "InfoArea.h"
+#include <vector>
+#include <array>
 /**
 Stageクラスはまず地形を読み込む．
 Playerクラス，ObjectManagerクラスに主人公の移動とそれ以外の処理を投げるので
@@ -39,8 +41,10 @@ private:
 	int moveground[2];      //動く床用配列
 
 	std::vector<std::vector <int>> vmap;	//マップデータ格納
+
 	Player *player;
 	ObjectManager *objectMgr;
+	InfoArea *infoArea;
 
 	//描画する際の左上座標
 	int drawX,drawY;

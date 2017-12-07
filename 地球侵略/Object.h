@@ -18,7 +18,7 @@ public:
 	void setRelativePos(int modX, int modY);
 
 	/*
-	引数として渡されたObjectと接触判定をとる．
+	引数として渡されたPlayerと接触判定をとる．
 	何らかと接触したときに1を返し，接触しなかった場合に0を返す．
 	判定の際に利用する値はx,y,
 	*/
@@ -26,9 +26,12 @@ public:
 	
 
 protected:
-	void onContact();
+	/*
+	何かと接触をしたときに実行される処理
+	*/
+	void onHit(Object target);
 
 	int x, y;
 	int imgHundle;
-	int collisionSize = 0.8;
+	double collisionSize = 0.8;
 };

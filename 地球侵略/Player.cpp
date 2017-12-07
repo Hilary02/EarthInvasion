@@ -122,6 +122,8 @@ bool Player::MapHitCheck(int movedX, int movedY, bool check)
 		return false;
 		break;
 	case 2:
+		/*
+		
 		DrawFormatString(200, 140, 0xFFFFFF, "•Ç‚¾I");
 		if (check == 'x') {
 			if (movedX - x > 0)
@@ -136,7 +138,8 @@ bool Player::MapHitCheck(int movedX, int movedY, bool check)
 			else if (movedY - y < 0) {
 				cMove = y % 32;
 			}
-		}
+		}*/
+		
 		return false;
 		break;
 	case 5:
@@ -360,6 +363,10 @@ int Player::getX()
 int Player::getY()
 {
 	return y;
+}
+int Player::getHp()
+{
+	return this->hp;
 }
 //‰æ‘œ“Ç‚İ‚İ
 void Player::LoadImg()

@@ -4,7 +4,7 @@
 #include <iostream>//ファイル入出力
 #include <string>
 #include <sstream> //文字ストリーム
-#include <vector>
+#include "KeyManager.h";
 
 Stage_Base::Stage_Base() :
 	//コンストラクタの引数に設定されないといけない
@@ -28,8 +28,9 @@ Stage_Base::Stage_Base() :
 	readMap("data/map/tutrial-map改良版32.csv");
 	//プレイヤー呼び出し
 	player = new Player(vmap);
-	player->setAbsolutePos(360, 600);
-	objectMgr = new ObjectManager(vmap);
+	player->setAbsolutePos(3560, 600);
+	objectMgr = new ObjectManager(vmap,player);
+	infoArea = new InfoArea(player);
 	//地形画像の読み込み
 	//TODO:引数をつける
 	loadImg();
@@ -45,7 +46,18 @@ void Stage_Base::update() {
 	drawChipNum = 0;
 	player->Update();
 	objectMgr->Update();
+	infoArea->update();
 	scrollMap();	//プレイヤー座標に応じた表示範囲の変更
+
+
+	//Debug
+	if (keyM.GetKeyFrame(KEY_INPUT_Q) == 1) {
+		player->modHp(1);
+	}
+	if (keyM.GetKeyFrame(KEY_INPUT_W) == 1) {
+		player->modHp(-1);
+	}
+
 }
 
 void Stage_Base::draw() {
@@ -73,7 +85,8 @@ void Stage_Base::draw() {
 	}
 	objectMgr->Draw();
 	player->Draw(drawX, drawY);
-	
+	infoArea->draw();
+
 	//デバッグ情報
 	DrawFormatString(0, 30, GetColor(255, 125, 255), "マップ表示原点：%d  ,%d", drawX, drawY);
 	DrawFormatString(0, 50, GetColor(255, 125, 255), "表示画像数：%d", drawChipNum);
