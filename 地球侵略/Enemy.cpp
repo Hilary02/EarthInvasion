@@ -26,9 +26,10 @@ void Enemy::Update()
 	MoveCommon();
 }
 
-void Enemy::Draw(int x , int y){
+void Enemy::Draw() {
 	DrawGraph(x, y, imgHundle, true);
 }
+
 
 void Enemy::MoveCommon()
 {	

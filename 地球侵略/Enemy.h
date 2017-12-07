@@ -8,9 +8,10 @@ class Enemy :
 public:
 	Enemy();
 	~Enemy();
+
 	Enemy(int x, int y, int img, int id);
 	void Update();
-	void Draw(int x, int y);
+	void Draw();
 	void MoveCommon();
 	int enemyID;
 
