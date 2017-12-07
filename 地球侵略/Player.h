@@ -19,7 +19,7 @@ private:
 	int drawCount = 0;
 	int cMove = 0;
 	void LoadImg();
-	bool MapHitCheck(int , int , bool);
+	bool MapHitCheck(int , int , char);
 	void MyDraw(int, int, int, bool);
 	int jumpPower = 0;
 	double speed = 10.0;

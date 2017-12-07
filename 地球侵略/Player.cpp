@@ -96,7 +96,7 @@ void Player::Update() {
 
 }
 
-bool Player::MapHitCheck(int movedX, int movedY, bool check)
+bool Player::MapHitCheck(int movedX, int movedY, char check)
 {
 	DrawFormatString(100, 120, 0xFFFFFF, "Seeing:%d,%d", movedX / 32, movedY / 32);
 	//DrawFormatString(100, 120, 0x00, "%d", vmap[((int)this->y + moveY) / 32][((int)this->x + moveX) / 32]);
@@ -177,6 +177,13 @@ void Player::Draw(int drawX, int drawY) {
 			}
 			else if (keyM.GetKeyFrame(KEY_INPUT_LEFT) >= 1) {
 				drawCount = keyM.GetKeyFrame(KEY_INPUT_LEFT) / 15 % 4 + 5;
+				MyDraw(tempX, tempY, liquid[drawCount], right);
+			}
+			else {
+				if(keyM.GetKeyFrame(KEY_INPUT_DOWN) < 60)
+					drawCount = keyM.GetKeyFrame(KEY_INPUT_DOWN) / 15 % 4;
+				else 
+					drawCount = keyM.GetKeyFrame(KEY_INPUT_DOWN) / 15 % 4 + 5;
 				MyDraw(tempX, tempY, liquid[drawCount], right);
 			}
 		}

@@ -11,6 +11,6 @@ Item::~Item()
 {
 }
 
-Item::Item(int x, int y, std::map<int, int> imag)
+Item::Item(int x, int y, int img)
 {
 }

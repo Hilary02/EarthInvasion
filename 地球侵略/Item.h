@@ -7,5 +7,5 @@ class Item :
 public:
 	Item();
 	~Item();
-	Item(int x, int y, std::map<int, int> imag);
+	Item(int x, int y, int img);
 };
