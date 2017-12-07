@@ -12,6 +12,7 @@ ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap) {
 				path = img[vmap[i][j]];
 				switch (vmap[i][j])
 				{
+
 				/*case 3:
 					obje = GroundFloor(x, y, img[3]);
 					break;*/
@@ -21,6 +22,7 @@ ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap) {
 				case 20:
 					obje = Item(x, y, img[20]);
 					break;
+
 				default:
 					break;
 				}

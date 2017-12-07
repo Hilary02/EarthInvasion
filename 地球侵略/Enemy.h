@@ -8,7 +8,16 @@ class Enemy :
 public:
 	Enemy();
 	~Enemy();
+	Enemy(int x, int y, int img, int id);
 	void Update();
-	void Draw();
+	void Draw(int x, int y);
+	void MoveCommon();
+	int enemyID;
+
+private:
+	int drawcount = 0;
+	int walk[8];
+	int moveRange  = 5;
+	const int MOVE = 2;
 };
 
