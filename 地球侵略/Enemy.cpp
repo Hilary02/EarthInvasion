@@ -34,7 +34,8 @@ void Enemy::Draw() {
 void Enemy::MoveCommon()
 {	
 	x += moveRange;
-	DrawGraph(x, y, walk[drawcount%8],true);
+	imgHundle = walk[drawcount % 8];
+	//DrawGraph(x, y, walk[drawcount%8],true);
 	drawcount++;
 }
 

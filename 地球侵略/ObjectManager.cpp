@@ -19,6 +19,11 @@ ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap) {
 				case 10:
 					obje = Enemy(x, y, img[4]);
 					break;*/
+
+				case 4:
+					obje = Enemy(x, y, img[10],vmap[i][j]);
+					break;
+
 				case 20:
 					obje = HealItem(x, y, img[20]);
 					break;
