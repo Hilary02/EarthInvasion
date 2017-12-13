@@ -34,7 +34,7 @@ void Creature::Update()
 {
 }
 
-
-void Creature::Draw()
+void Creature::Draw(int, int)
 {
 }
+

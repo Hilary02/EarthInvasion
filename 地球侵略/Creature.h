@@ -19,7 +19,7 @@ public:
 	int setAtk();
 	// ‘Ì—Í‚ðŽæ“¾‚·‚é
 	int getHp();
-	void Update();
-	void Draw();
+	virtual void Update() override;
+	virtual void Draw(int ,int) override;
 };
 

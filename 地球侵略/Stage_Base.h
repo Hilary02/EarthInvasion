@@ -3,6 +3,7 @@
 
 #include "DxLib.h"
 #include "Player.h"
+#include "ObjectManager.h"
 #include "WindowData.h"
 
 /**
@@ -41,6 +42,7 @@ private:
 
 	std::vector<std::vector <int>> vmap;	//マップデータ格納
 	Player *player;
+	ObjectManager *objectMgr;
 
 	//描画する際の左上座標
 	int drawX,drawY;

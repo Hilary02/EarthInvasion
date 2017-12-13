@@ -26,17 +26,49 @@ void Enemy::Update()
 	MoveCommon();
 }
 
-void Enemy::Draw() {
-	DrawGraph(x, y, imgHundle, true);
+void Enemy::Draw(int drawX, int drawY) 
+{
+	isRight = IsRangeCheck();
+	if (isRight) 
+	{
+		DrawTurnGraph(x - drawX, y - drawY, imgHundle, true);
+	}
+	else
+	{
+		DrawGraph(x - drawX, y - drawY, imgHundle, true);
+	}
+	
+
 }
 
 
 void Enemy::MoveCommon()
 {	
-	x += moveRange;
-	imgHundle = walk[drawcount % 8];
-	//DrawGraph(x, y, walk[drawcount%8],true);
+	if (isRight)
+	{
+		x += MOVE;
+	}
+	else
+	{
+		x -= MOVE;
+	}
+	imgHundle = walk[(drawcount/8) % 8];
 	drawcount++;
 }
+
+bool Enemy::IsRangeCheck()
+{
+	dis += MOVE;
+	if (moveRange < dis)
+	{
+		dis = 0;
+		return !isRight;
+	}
+	else
+	{
+		return isRight;
+	}
+}
+
 
 

@@ -29,6 +29,7 @@ Stage_Base::Stage_Base() :
 	//プレイヤー呼び出し
 	player = new Player(vmap);
 	player->setAbsolutePos(400, 800);
+	objectMgr = new ObjectManager(vmap);
 	//地形画像の読み込み
 	//TODO:引数をつける
 	loadImg();
@@ -43,6 +44,7 @@ void Stage_Base::update() {
 	totalFrame++;
 	drawChipNum = 0;
 	player->Update();
+	objectMgr->Update();
 	scrollMap();	//プレイヤー座標に応じた表示範囲の変更
 }
 
@@ -71,6 +73,7 @@ void Stage_Base::draw() {
 	}
 	
 	player->Draw(drawX, drawY);
+	objectMgr->Draw(drawX, drawY);
 	//デバッグ情報
 	DrawFormatString(0, 30, GetColor(255, 125, 255), "マップ表示原点：%d  ,%d", drawX, drawY);
 	DrawFormatString(0, 50, GetColor(255, 125, 255), "表示画像数：%d", drawChipNum);

@@ -12,12 +12,12 @@ Object::~Object()
 {
 }
 
-void Object::Update()
+void Object::Update() 
 {
 }
 
 
-void Object::Draw()
+void Object::Draw(int drawX, int drawY)
 {
 }
 

@@ -8,8 +8,8 @@ public:
 	Object();
 	Object(int x, int y, int handle);
 	~Object();
-	void Update();
-	void Draw();
+	virtual void Update();
+	virtual void Draw(int drawX, int drawY);
 
 	// マップにおいての絶対座標を指定するとその座標に設定
 	void setAbsolutePos(int modX, int modY);

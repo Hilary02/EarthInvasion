@@ -14,12 +14,13 @@ public:
 	void Loadimg();
 
 	void Update();
+	void Draw(int drawX, int drawY);
 	
 	std::map<int, int> img;
 
 private:
 	Object *objP;
-	std::vector<Object> objects;
+	std::vector<Object*> objects;
 };
 
 
