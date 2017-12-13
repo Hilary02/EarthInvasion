@@ -87,7 +87,6 @@ void Stage_Base::draw() {
 			}
 		}
 	}
-	objectMgr->Draw();
 	player->Draw(drawX, drawY);
 	objectMgr->Draw(drawX, drawY);
 	infoArea->draw();
