@@ -2,7 +2,7 @@
 class Rect
 {
 public:
-	Rect(int, int, int, int);
+	Rect(int w,int h,double amp);
 	Rect();
 	~Rect();
 	//¶ãÀ•WX‚Ìæ“¾

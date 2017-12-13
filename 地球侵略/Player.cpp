@@ -22,36 +22,38 @@ Player::~Player() {
 
 //計算処理
 void Player::Update() {
-	if (keyM.GetKeyFrame(KEY_INPUT_LEFT) >= 1 && !attackFlag) {
+	if (keyM.GetKeyFrame(KEY_INPUT_LEFT) >= 1 && !isAttack) {
 		right = false;
-		if (MapHitCheck(-MOVE, 0)) {
+		xyCheck = 'x';
+		if (MapHitCheck(x - MOVE, y, xyCheck) && MapHitCheck(x - MOVE, y + 63, xyCheck)) {
 			x -= MOVE;
 		}
 		else {
 			x -= cMove;
 		}
 	}
-	if (keyM.GetKeyFrame(KEY_INPUT_RIGHT) >= 1 && !attackFlag) {
+	if (keyM.GetKeyFrame(KEY_INPUT_RIGHT) >= 1 && !isAttack) {
 		right = true;
-		if (MapHitCheck(MOVE, 0)) {
+		xyCheck = 'x';
+		if (MapHitCheck(x + MOVE + 63, y, xyCheck) && MapHitCheck(x + MOVE + 63, y + 63, xyCheck)) {
 			x += MOVE;
 		}
 		else {
 			x += cMove;
 		}
 	}
-	if (keyM.GetKeyFrame(KEY_INPUT_DOWN) >= 1 && !jumpFlag && !attackFlag)
-		liquidFlag = true;
-	else if (keyM.GetKeyFrame(KEY_INPUT_DOWN) == 0)
-		liquidFlag = false;
-
-	if (keyM.GetKeyFrame(KEY_INPUT_UP) == 1 && !liquidFlag && !attackFlag) {
-		jumpFlag = true;
-		jumpPower = -10;
+	if (keyM.GetKeyFrame(KEY_INPUT_DOWN) >= 1 && !isJumping && !isAttack && !isLiquid) {
+		isLiquid = true;
 	}
-	if (keyM.GetKeyFrame(KEY_INPUT_A) == 1 && !attackFlag) {
-		attackFlag = true;
-		//rect();
+	else if (keyM.GetKeyFrame(KEY_INPUT_DOWN) == 0)
+		isLiquid = false;
+
+	if (keyM.GetKeyFrame(KEY_INPUT_UP) == 1 && !isLiquid && !isAttack) {
+		isJumping = true;
+		jumpPower = -5;
+	}
+	if (keyM.GetKeyFrame(KEY_INPUT_A) == 1 && !isAttack && !isJumping && isLiquid) {
+		isAttack = true;
 		drawCount = 0;
 	}
 	if (keyM.GetKeyFrame(KEY_INPUT_S) >= 1) {
@@ -61,64 +63,93 @@ void Player::Update() {
 
 	}
 
-	if (MapHitCheck(0, 1) && MapHitCheck(0, 1)) {
-		jumpFlag = true;
-	}
-	else {
-		jumpFlag = false;
-	}
-
-	if (jumpFlag) {
-		if (MapHitCheck(0, jumpPower)) {
+	if (isJumping) {
+		xyCheck = 'y';
+		if (MapHitCheck(x, y + jumpPower + 63, xyCheck) && MapHitCheck(x + 63, y + jumpPower + 63, xyCheck)) {
 			y += jumpPower;
-			jumpPower += 1;
+			clock++;
+			if (clock >= 5) {
+				if (jumpPower <= 4)
+					jumpPower += 1;
+				clock = 0;
+			}
 		}
 		else {
 			y += cMove;
 		}
 
 	}
+
+	xyCheck = 'y';
+	if (MapHitCheck(x, y + 64, xyCheck) && MapHitCheck(x + 63, y + 64, xyCheck)) {
+		isJumping = true;
+	}
+	else if (jumpPower > 0) {
+		isJumping = false;
+		jumpPower = 0;
+	}
+
 	if (hp <= 0) {
-		deadFlag = true;
+		isDead = true;
 		//GameOver();
 	}
 
 }
 
-bool Player::MapHitCheck(int moveX, int moveY)
+bool Player::MapHitCheck(int movedX, int movedY, char check)
 {
-	//DrawFormatString(100, 100, 0x00, "%d,%d", ((int)this->y + moveY)/32, ((int)this->x + moveX)/32);
+	DrawFormatString(100, 120, 0xFFFFFF, "Seeing:%d,%d", movedX / 32, movedY / 32);
 	//DrawFormatString(100, 120, 0x00, "%d", vmap[((int)this->y + moveY) / 32][((int)this->x + moveX) / 32]);
-	switch (vmap[((int)this->y + moveY) / 32 + 4][((int)this->x + moveX) / 32+5]) {
+	switch (vmap[movedY / 32][movedX / 32]) {
 	case 0:
 		return true;
 		break;
 	case 1:
-		if (moveX > 0)
-			cMove = moveX - ((int)this->x + moveX) % 32;
-		else if (moveX < 0)
-			cMove = (int)this->x % 32;
+		DrawFormatString(200, 140, 0xFFFFFF, "見えない壁だ！");
+		if (check == 'x') {
+			if (movedX - x > 0)
+				cMove = (movedX - x) - (movedX % 32 + 1);
+			else if (movedX - x < 0)
+				cMove = x % 32;
+		}
+		if (check == 'y') {
+			if (movedY - (y + 63) > 0) {
+				cMove = (movedY - (y + 63)) - (movedY % 32 + 1);
+			}
+			else if (movedY - y < 0) {
+				cMove = y % 32;
+			}
+		}
 		return false;
 		break;
 	case 2:
-		if (moveX > 0)
-			cMove = moveX - ((int)this->x + moveX) % 32;
-		else if (moveX < 0)
-			cMove = (int)this->x % 32;
-
-		if (moveY > 0)
-			cMove = moveY - ((int)this->y + moveY) % 32;
-		else if (moveY < 0) {
-			cMove = (int)this->y % 32;
-			jumpPower = 0;
+		/*
+		
+		DrawFormatString(200, 140, 0xFFFFFF, "壁だ！");
+		if (check == 'x') {
+			if (movedX - x > 0)
+				cMove = movedX - x - (movedX % 32 + 1);
+			else if (movedX - x < 0)
+				cMove = x % 32;
 		}
-			return false;
+		if (check == 'y') {
+			if (movedY - (y + 63) > 0) {
+				cMove = (movedY - (y + 63)) - (movedY % 32 + 1);
+			}
+			else if (movedY - y < 0) {
+				cMove = y % 32;
+			}
+		}*/
+		
+		return false;
 		break;
 	case 5:
 		return true;
 		break;
 	case 9:
-		cMove = moveY - ((int)this->y + moveY) % 32;
+		if (movedY - (y + 63) > 0) {
+			cMove = (movedY - (y + 63)) - (movedY % 32 + 1);
+		}
 		return false;
 		break;
 	default:
@@ -128,199 +159,138 @@ bool Player::MapHitCheck(int moveX, int moveY)
 	return false;
 }
 
-void Player::Draw(int drawX, int drawY)
-{
-	int tempX = x - drawX, tempY = y - drawY;
+void Player::Draw(int drawX, int drawY) {
+	int tempX = x - drawX;
+	int tempY = y - drawY;
 
-	//右向き
-	if (right) {
-		switch (plState) {
-			
-		case 'N':	//主人公
-			if (jumpFlag) {
-				if (jumpPower <= 1 && jumpPower >= -1)
-					DrawGraph(tempX, tempY, jump[1], TRUE);
-				else if (jumpPower > 1)
-					DrawGraph(tempX, tempY, jump[0], TRUE);
-				else if (jumpPower < -1)
-					DrawGraph(tempX, tempY, jump[2], TRUE);
-			}
-			else if (liquidFlag) {
-				drawCount = keyM.GetKeyFrame(KEY_INPUT_DOWN) / 15 % 4;
-				DrawGraph(tempX, tempY, wait[drawCount], TRUE);//仮
-			}
-			else if (attackFlag) {
-				DrawGraph(tempX, tempY, attack[drawCount / 8 % 8], true);
-				drawCount++;
-				if(drawCount >= 64) attackFlag = false;
-			}
-			else if (keyM.GetKeyFrame(KEY_INPUT_RIGHT) >= 1) {
-				drawCount = keyM.GetKeyFrame(KEY_INPUT_RIGHT) / 15 % 4;
-				DrawGraph(tempX, tempY, move[drawCount], TRUE);
-			}
-			else {
-				if (drawCount > 60) drawCount = 0;
-				DrawGraph(tempX, tempY, wait[drawCount /15 % 4], TRUE);
-				drawCount++;
-			}
-			break;
-			
-		case 'A':	//一般兵A
-			if (jumpFlag) {
-
-			}
-			else if (keyM.GetKeyFrame(KEY_INPUT_RIGHT) >= 1) {
-				drawCount = keyM.GetKeyFrame(KEY_INPUT_RIGHT) / 15 % 4;
-				DrawGraph(tempX, tempY, move[drawCount], TRUE);
-			}
-			else {
-				drawCount = 0;
-				DrawGraph(tempX, tempY, wait[drawCount % 4], TRUE);
-				drawCount++;
-				if (drawCount == 60) drawCount = 0;
-			}
-			break;
-			
-		case'B':	//一般兵B
-			if (jumpFlag) {
-
-			}
-			else if (keyM.GetKeyFrame(KEY_INPUT_RIGHT) >= 1) {
-				drawCount = keyM.GetKeyFrame(KEY_INPUT_RIGHT) / 15 % 4;
-				DrawGraph(tempX, tempY, move[drawCount], TRUE);
-			}
-			else {
-				drawCount = 0;
-				DrawGraph(tempX, tempY, wait[drawCount % 4], TRUE);
-				drawCount++;
-				if (drawCount == 60) drawCount = 0;
-			}
-			break;
-			
-		case'C':	//一般兵C
-			if (jumpFlag) {
-
-			}
-			else if (keyM.GetKeyFrame(KEY_INPUT_RIGHT) >= 1) {
-				drawCount = keyM.GetKeyFrame(KEY_INPUT_RIGHT) / 15 % 4;
-				DrawGraph(tempX, tempY, move[drawCount], TRUE);
-			}
-			else {
-				drawCount = 0;
-				DrawGraph(tempX, tempY, wait[drawCount % 4], TRUE);
-				drawCount++;
-				if (drawCount == 60) drawCount = 0;
-			}
-			break;
-			
-		case'W':	//魔女
+	switch (plState) {
+	case 'N':	//主人公
+		if (isJumping) {
+			if (jumpPower <= 1 && jumpPower >= -1)
+				MyDraw(tempX, tempY, jump[1], right);
+			else if (jumpPower > 1)
+				MyDraw(tempX, tempY, jump[2], right);
+			else if (jumpPower < -1)
+				MyDraw(tempX, tempY, jump[0], right);
+		}
+		else if (isLiquid) {
 			if (keyM.GetKeyFrame(KEY_INPUT_RIGHT) >= 1) {
-				drawCount = keyM.GetKeyFrame(KEY_INPUT_RIGHT) / 15 % 4;
-				DrawGraph(tempX, tempY, move[drawCount], TRUE);
+				drawCount = keyM.GetKeyFrame(KEY_INPUT_RIGHT) / 15 % 4 + 5;
+				MyDraw(tempX, tempY, liquid[drawCount], right);
+			}
+			else if (keyM.GetKeyFrame(KEY_INPUT_LEFT) >= 1) {
+				drawCount = keyM.GetKeyFrame(KEY_INPUT_LEFT) / 15 % 4 + 5;
+				MyDraw(tempX, tempY, liquid[drawCount], right);
 			}
 			else {
-				drawCount = 0;
-				DrawGraph(tempX, tempY, wait[drawCount % 4], TRUE);
-				drawCount++;
-				if (drawCount == 60) drawCount = 0;
+				if(keyM.GetKeyFrame(KEY_INPUT_DOWN) < 60)
+					drawCount = keyM.GetKeyFrame(KEY_INPUT_DOWN) / 15 % 4;
+				else 
+					drawCount = keyM.GetKeyFrame(KEY_INPUT_DOWN) / 15 % 4 + 5;
+				MyDraw(tempX, tempY, liquid[drawCount], right);
 			}
-			break;
 		}
-	}
-	//左向き
-	else if(!right) {
-		switch (plState) {
-			
-		case 'N':	//主人公
-			if (jumpFlag) {
-				if (jumpPower <= 1 && jumpPower >= -1)
-					DrawTurnGraph(tempX, tempY, jump[1], TRUE);
-				else if (jumpPower > 1)
-					DrawTurnGraph(tempX, tempY, jump[0], TRUE);
-				else if (jumpPower < -1)
-					DrawTurnGraph(tempX, tempY, jump[2], TRUE);
-			}
-			else if (liquidFlag) {
-				drawCount = keyM.GetKeyFrame(KEY_INPUT_DOWN) / 15 % 4;
-				DrawTurnGraph(tempX, tempY, wait[drawCount], TRUE);//仮
-			}
-			else if (attackFlag) {
-				DrawTurnGraph(tempX, tempY, attack[drawCount / 8 % 8], true);
-				drawCount++;
-				if (drawCount >= 64) attackFlag = false;
-			}
-			else if (keyM.GetKeyFrame(KEY_INPUT_LEFT) >= 1) {
-				drawCount = keyM.GetKeyFrame(KEY_INPUT_LEFT) / 15 % 4;
-				DrawTurnGraph(tempX, tempY, move[drawCount], TRUE);
-			}
-			else {
-				if (drawCount > 60) drawCount = 0;
-				DrawTurnGraph(tempX, tempY, wait[drawCount / 15 % 4], TRUE);
-				drawCount++;
-			}
-			break;
-			
-		case 'A':	//一般兵A
-			if (jumpFlag) {
-
-			}
-			else if (keyM.GetKeyFrame(KEY_INPUT_LEFT) >= 1) {
-				drawCount = keyM.GetKeyFrame(KEY_INPUT_LEFT) / 15 % 4;
-				DrawTurnGraph(tempX, tempY, move[drawCount], TRUE);
-			}
-			else {
-				if (drawCount == 60) drawCount = 0;
-				DrawTurnGraph(tempX, tempY, wait[drawCount % 4], TRUE);
-				drawCount++;
-			}
-			break;
-			
-		case'B':	//一般兵B
-			if (jumpFlag) {
-
-			}
-			else if (keyM.GetKeyFrame(KEY_INPUT_LEFT) >= 1) {
-				drawCount = keyM.GetKeyFrame(KEY_INPUT_LEFT) / 15 % 4;
-				DrawTurnGraph(tempX, tempY, move[drawCount], TRUE);
-			}
-			else {
-				if (drawCount == 60) drawCount = 0;
-				DrawTurnGraph(tempX, tempY, wait[drawCount % 4], TRUE);
-				drawCount++;
-			}
-			break;
-			
-		case'C':	//一般兵C
-			if (jumpFlag) {
-
-			}
-			else if (keyM.GetKeyFrame(KEY_INPUT_LEFT) >= 1) {
-				drawCount = keyM.GetKeyFrame(KEY_INPUT_LEFT) / 15 % 4;
-				DrawTurnGraph(tempX, tempY, move[drawCount], TRUE);
-			}
-			else {
-				if (drawCount == 60) drawCount = 0;
-				DrawTurnGraph(tempX, tempY, wait[drawCount % 4], TRUE);
-				drawCount++;
-			}
-			break;
-			
-		case'W':	//魔女
-			if (keyM.GetKeyFrame(KEY_INPUT_LEFT) >= 1) {
-				drawCount = keyM.GetKeyFrame(KEY_INPUT_LEFT) / 15 % 4;
-				DrawTurnGraph(tempX, tempY, move[drawCount], TRUE);
-			}
-			else {
-				if (drawCount == 60) drawCount = 0;
-				DrawTurnGraph(tempX, tempY, wait[drawCount % 4], TRUE);
-				drawCount++;
-			}
-			break;
+		else if (isAttack) {
+			MyDraw(tempX, tempY, attack[drawCount / 8 % 8], right);
+			drawCount++;
+			if (drawCount >= 64) isAttack = false;
 		}
+		else if (keyM.GetKeyFrame(KEY_INPUT_RIGHT) >= 1) {
+			drawCount = keyM.GetKeyFrame(KEY_INPUT_RIGHT) / 15 % 4;
+			MyDraw(tempX, tempY, move[drawCount], right);
+		}
+		else if (keyM.GetKeyFrame(KEY_INPUT_LEFT) >= 1) {
+			drawCount = keyM.GetKeyFrame(KEY_INPUT_LEFT) / 15 % 4;
+			MyDraw(tempX, tempY, move[drawCount], right);
+		}
+		else {
+			if (drawCount > 60) drawCount = 0;
+			MyDraw(tempX, tempY, wait[drawCount / 15 % 4], right);
+			drawCount++;
+		}
+		break;
+
+	case 'A':	//一般兵A
+		if (isJumping) {
+
+		}
+		else if (keyM.GetKeyFrame(KEY_INPUT_RIGHT) >= 1) {
+			drawCount = keyM.GetKeyFrame(KEY_INPUT_RIGHT) / 15 % 4;
+			DrawGraph(tempX, tempY, move[drawCount], TRUE);
+		}
+		else {
+			drawCount = 0;
+			DrawGraph(tempX, tempY, wait[drawCount % 4], TRUE);
+			drawCount++;
+			if (drawCount == 60) drawCount = 0;
+		}
+		break;
+
+	case'B':	//一般兵B
+		if (isJumping) {
+
+		}
+		else if (keyM.GetKeyFrame(KEY_INPUT_RIGHT) >= 1) {
+			drawCount = keyM.GetKeyFrame(KEY_INPUT_RIGHT) / 15 % 4;
+			DrawGraph(tempX, tempY, move[drawCount], TRUE);
+		}
+		else {
+			drawCount = 0;
+			DrawGraph(tempX, tempY, wait[drawCount % 4], TRUE);
+			drawCount++;
+			if (drawCount == 60) drawCount = 0;
+		}
+		break;
+
+	case'C':	//一般兵C
+		if (isJumping) {
+
+		}
+		else if (keyM.GetKeyFrame(KEY_INPUT_RIGHT) >= 1) {
+			drawCount = keyM.GetKeyFrame(KEY_INPUT_RIGHT) / 15 % 4;
+			DrawGraph(tempX, tempY, move[drawCount], TRUE);
+		}
+		else {
+			drawCount = 0;
+			DrawGraph(tempX, tempY, wait[drawCount % 4], TRUE);
+			drawCount++;
+			if (drawCount == 60) drawCount = 0;
+		}
+		break;
+
+	case'W':	//魔女
+		if (keyM.GetKeyFrame(KEY_INPUT_RIGHT) >= 1) {
+			drawCount = keyM.GetKeyFrame(KEY_INPUT_RIGHT) / 15 % 4;
+			DrawGraph(tempX, tempY, move[drawCount], TRUE);
+		}
+		else {
+			drawCount = 0;
+			DrawGraph(tempX, tempY, wait[drawCount % 4], TRUE);
+			drawCount++;
+			if (drawCount == 60) drawCount = 0;
+		}
+		break;
 	}
+
+
 	//DrawFormatString(100, 100, 0xFFFFFF, "%d,%d", tempX, tempY);
-	DrawFormatString(100, 80, 0xFFFFFF, "%d,%d", (int)x, (int)y);
+	DrawFormatString(100, 80, 0xFFFFFF, "Player:%d,%d", (int)x, (int)y);
+	DrawFormatString(100, 100, 0xFFFFFF, "MapChip:%d,%d", (int)(x / 32), (int)(y / 32));
+	if (isJumping) DrawFormatString(300, 80, 0xFFFFFF, "ジャンプ中,%d",jumpPower);
+	if (isAttack) DrawFormatString(300, 100, 0xFFFFFF, "アタック中");
+	if (isDead) DrawFormatString(300, 120, 0xFFFFFF, "死んだ");
+
 }
+
+void Player::MyDraw(int tempX, int tempY, int movement, bool lrFlag) {
+	if (lrFlag) {
+		DrawGraph(tempX, tempY, movement, TRUE);
+	}
+	else {
+		DrawTurnGraph(tempX, tempY, movement, TRUE);
+	}
+}
+
 int Player::getX()
 {
 	return x;
@@ -328,6 +298,10 @@ int Player::getX()
 int Player::getY()
 {
 	return y;
+}
+int Player::getHp()
+{
+	return this->hp;
 }
 //画像読み込み
 void Player::LoadImg()
@@ -338,6 +312,9 @@ void Player::LoadImg()
 	LoadDivGraph("data/img/eeyanMove.png", 4, 4, 1, 64, 64, move);
 	//主人公ジャンプ
 	LoadDivGraph("data/img/eeyanJump.png", 4, 4, 1, 64, 64, jump);
+	//主人公液状化
+	LoadDivGraph("data/img/eeyanEkijouka.png", 4, 4, 1, 64, 64, liquid);
+	LoadDivGraph("data/img/eeyanEkijoukaMove.png", 4, 4, 1, 64, 64, &liquid[5]);
 	//主人公攻撃
 	LoadDivGraph("data/img/eeyanAttack.png", 8, 4, 2, 64, 64, attack);
 	//主人公死亡

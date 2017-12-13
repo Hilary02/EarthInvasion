@@ -4,7 +4,7 @@
 #include <iostream>//ファイル入出力
 #include <string>
 #include <sstream> //文字ストリーム
-#include <vector>
+#include "KeyManager.h";
 
 Stage_Base::Stage_Base() :
 	//コンストラクタの引数に設定されないといけない
@@ -30,6 +30,11 @@ Stage_Base::Stage_Base() :
 	player = new Player(vmap);
 	player->setAbsolutePos(400, 800);
 	objectMgr = new ObjectManager(vmap);
+
+	//どちらかを使う
+	//objectMgr = new ObjectManager(vmap,player);
+	
+	infoArea = new InfoArea(player);
 	//地形画像の読み込み
 	//TODO:引数をつける
 	loadImg();
@@ -45,11 +50,22 @@ void Stage_Base::update() {
 	drawChipNum = 0;
 	player->Update();
 	objectMgr->Update();
+	infoArea->update();
 	scrollMap();	//プレイヤー座標に応じた表示範囲の変更
+
+
+	//Debug
+	if (keyM.GetKeyFrame(KEY_INPUT_Q) == 1) {
+		player->modHp(1);
+	}
+	if (keyM.GetKeyFrame(KEY_INPUT_W) == 1) {
+		player->modHp(-1);
+	}
+
 }
 
 void Stage_Base::draw() {
-	DrawGraph(0, 0, bgHand, false);	//背景の描画
+	//DrawGraph(0, 0, bgHand, false);	//背景の描画
 	int baseChipY = max(0, drawY - CHIPSIZE * 2);
 	int baseChipX = max(0, drawX - CHIPSIZE * 2);
 	for (int y = baseChipY / CHIPSIZE; y < ((drawY + window.WINDOW_HEIGHT - 50) / CHIPSIZE); y++) {
@@ -71,9 +87,11 @@ void Stage_Base::draw() {
 			}
 		}
 	}
-	
+	objectMgr->Draw();
 	player->Draw(drawX, drawY);
 	objectMgr->Draw(drawX, drawY);
+	infoArea->draw();
+
 	//デバッグ情報
 	DrawFormatString(0, 30, GetColor(255, 125, 255), "マップ表示原点：%d  ,%d", drawX, drawY);
 	DrawFormatString(0, 50, GetColor(255, 125, 255), "表示画像数：%d", drawChipNum);
@@ -132,4 +150,5 @@ int Stage_Base::loadImg() {
 	chipImg[9] = LoadGraph("data/img/togetoge.png");
 	bgHand = LoadGraph("data/img/bg01.jpg");
 	return 1;
+
 }

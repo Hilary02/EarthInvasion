@@ -70,5 +70,3 @@ bool Enemy::IsRangeCheck()
 	}
 }
 
-
-

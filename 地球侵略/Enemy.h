@@ -3,7 +3,7 @@
 
 class Enemy :
 	public Creature
-	
+
 {
 public:
 	Enemy();
