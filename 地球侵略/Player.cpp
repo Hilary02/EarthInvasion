@@ -40,14 +40,14 @@ void Player::Update() {
 			x += cMove;
 		}
 	}
-	if (keyM.GetKeyFrame(KEY_INPUT_DOWN) >= 1 && !jumpFlag && !attackFlag)
+	if (keyM.GetKeyFrame(KEY_INPUT_DOWN) >= 1 && !isJumping && !attackFlag)
 		liquidFlag = true;
 	else if (keyM.GetKeyFrame(KEY_INPUT_DOWN) == 0)
 		liquidFlag = false;
 
 	if (keyM.GetKeyFrame(KEY_INPUT_UP) == 1 && !liquidFlag && !attackFlag) {
-		jumpFlag = true;
-		jumpPower = -10;
+		isJumping = true;
+		jumpPower = -20;
 	}
 	if (keyM.GetKeyFrame(KEY_INPUT_A) == 1 && !attackFlag) {
 		attackFlag = true;
@@ -61,14 +61,14 @@ void Player::Update() {
 
 	}
 
-	if (MapHitCheck(0, 1) && MapHitCheck(0, 1)) {
-		jumpFlag = true;
+	if (MapHitCheck(0, 1)) {
+		isJumping = true;
 	}
 	else {
-		jumpFlag = false;
+		isJumping = false;
 	}
 
-	if (jumpFlag) {
+	if (isJumping) {
 		if (MapHitCheck(0, jumpPower)) {
 			y += jumpPower;
 			jumpPower += 1;
@@ -87,13 +87,14 @@ void Player::Update() {
 
 bool Player::MapHitCheck(int moveX, int moveY)
 {
-	//DrawFormatString(100, 100, 0x00, "%d,%d", ((int)this->y + moveY)/32, ((int)this->x + moveX)/32);
+	DrawFormatString(100, 120, 0xFFFFFF, "Seeing:%d,%d",  ((int)this->x + moveX)/32,((int)this->y + moveY) / 32 );
 	//DrawFormatString(100, 120, 0x00, "%d", vmap[((int)this->y + moveY) / 32][((int)this->x + moveX) / 32]);
-	switch (vmap[((int)this->y + moveY) / 32 + 4][((int)this->x + moveX) / 32+5]) {
+	switch (vmap[((int)this->y + moveY) / 32+1 ][((int)this->x + moveX) / 32+1] ) {
 	case 0:
 		return true;
 		break;
 	case 1:
+		DrawFormatString(200, 140, 0xFFFFFF, "見えない壁だ！");
 		if (moveX > 0)
 			cMove = moveX - ((int)this->x + moveX) % 32;
 		else if (moveX < 0)
@@ -101,6 +102,7 @@ bool Player::MapHitCheck(int moveX, int moveY)
 		return false;
 		break;
 	case 2:
+		DrawFormatString(200, 140, 0xFFFFFF, "壁だ！");
 		if (moveX > 0)
 			cMove = moveX - ((int)this->x + moveX) % 32;
 		else if (moveX < 0)
@@ -112,7 +114,7 @@ bool Player::MapHitCheck(int moveX, int moveY)
 			cMove = (int)this->y % 32;
 			jumpPower = 0;
 		}
-			return false;
+		return false;
 		break;
 	case 5:
 		return true;
@@ -128,16 +130,16 @@ bool Player::MapHitCheck(int moveX, int moveY)
 	return false;
 }
 
-void Player::Draw(int drawX, int drawY)
-{
-	int tempX = x - drawX, tempY = y - drawY;
+void Player::Draw(int drawX, int drawY) {
+	int tempX = x - drawX;
+	int tempY = y - drawY;
 
 	//右向き
 	if (right) {
 		switch (plState) {
-			
+
 		case 'N':	//主人公
-			if (jumpFlag) {
+			if (isJumping) {
 				if (jumpPower <= 1 && jumpPower >= -1)
 					DrawGraph(tempX, tempY, jump[1], TRUE);
 				else if (jumpPower > 1)
@@ -152,7 +154,7 @@ void Player::Draw(int drawX, int drawY)
 			else if (attackFlag) {
 				DrawGraph(tempX, tempY, attack[drawCount / 8 % 8], true);
 				drawCount++;
-				if(drawCount >= 64) attackFlag = false;
+				if (drawCount >= 64) attackFlag = false;
 			}
 			else if (keyM.GetKeyFrame(KEY_INPUT_RIGHT) >= 1) {
 				drawCount = keyM.GetKeyFrame(KEY_INPUT_RIGHT) / 15 % 4;
@@ -160,13 +162,13 @@ void Player::Draw(int drawX, int drawY)
 			}
 			else {
 				if (drawCount > 60) drawCount = 0;
-				DrawGraph(tempX, tempY, wait[drawCount /15 % 4], TRUE);
+				DrawGraph(tempX, tempY, wait[drawCount / 15 % 4], TRUE);
 				drawCount++;
 			}
 			break;
-			
+
 		case 'A':	//一般兵A
-			if (jumpFlag) {
+			if (isJumping) {
 
 			}
 			else if (keyM.GetKeyFrame(KEY_INPUT_RIGHT) >= 1) {
@@ -180,9 +182,9 @@ void Player::Draw(int drawX, int drawY)
 				if (drawCount == 60) drawCount = 0;
 			}
 			break;
-			
+
 		case'B':	//一般兵B
-			if (jumpFlag) {
+			if (isJumping) {
 
 			}
 			else if (keyM.GetKeyFrame(KEY_INPUT_RIGHT) >= 1) {
@@ -196,9 +198,9 @@ void Player::Draw(int drawX, int drawY)
 				if (drawCount == 60) drawCount = 0;
 			}
 			break;
-			
+
 		case'C':	//一般兵C
-			if (jumpFlag) {
+			if (isJumping) {
 
 			}
 			else if (keyM.GetKeyFrame(KEY_INPUT_RIGHT) >= 1) {
@@ -212,7 +214,7 @@ void Player::Draw(int drawX, int drawY)
 				if (drawCount == 60) drawCount = 0;
 			}
 			break;
-			
+
 		case'W':	//魔女
 			if (keyM.GetKeyFrame(KEY_INPUT_RIGHT) >= 1) {
 				drawCount = keyM.GetKeyFrame(KEY_INPUT_RIGHT) / 15 % 4;
@@ -228,11 +230,11 @@ void Player::Draw(int drawX, int drawY)
 		}
 	}
 	//左向き
-	else if(!right) {
+	else if (!right) {
 		switch (plState) {
-			
+
 		case 'N':	//主人公
-			if (jumpFlag) {
+			if (isJumping) {
 				if (jumpPower <= 1 && jumpPower >= -1)
 					DrawTurnGraph(tempX, tempY, jump[1], TRUE);
 				else if (jumpPower > 1)
@@ -259,9 +261,9 @@ void Player::Draw(int drawX, int drawY)
 				drawCount++;
 			}
 			break;
-			
+
 		case 'A':	//一般兵A
-			if (jumpFlag) {
+			if (isJumping) {
 
 			}
 			else if (keyM.GetKeyFrame(KEY_INPUT_LEFT) >= 1) {
@@ -274,9 +276,9 @@ void Player::Draw(int drawX, int drawY)
 				drawCount++;
 			}
 			break;
-			
+
 		case'B':	//一般兵B
-			if (jumpFlag) {
+			if (isJumping) {
 
 			}
 			else if (keyM.GetKeyFrame(KEY_INPUT_LEFT) >= 1) {
@@ -289,9 +291,9 @@ void Player::Draw(int drawX, int drawY)
 				drawCount++;
 			}
 			break;
-			
+
 		case'C':	//一般兵C
-			if (jumpFlag) {
+			if (isJumping) {
 
 			}
 			else if (keyM.GetKeyFrame(KEY_INPUT_LEFT) >= 1) {
@@ -304,7 +306,7 @@ void Player::Draw(int drawX, int drawY)
 				drawCount++;
 			}
 			break;
-			
+
 		case'W':	//魔女
 			if (keyM.GetKeyFrame(KEY_INPUT_LEFT) >= 1) {
 				drawCount = keyM.GetKeyFrame(KEY_INPUT_LEFT) / 15 % 4;
@@ -319,7 +321,12 @@ void Player::Draw(int drawX, int drawY)
 		}
 	}
 	//DrawFormatString(100, 100, 0xFFFFFF, "%d,%d", tempX, tempY);
-	DrawFormatString(100, 80, 0xFFFFFF, "%d,%d", (int)x, (int)y);
+	DrawFormatString(100, 80, 0xFFFFFF, "Player:%d,%d", (int)x, (int)y);
+	DrawFormatString(100, 100, 0xFFFFFF, "MapChip:%d,%d", (int)(x/32), (int)(y/32));
+	if(isJumping) DrawFormatString(300, 80, 0xFFFFFF, "ジャンプ中");
+	if (attackFlag) DrawFormatString(300, 100, 0xFFFFFF, "アタック中");
+	if (deadFlag) DrawFormatString(300, 120, 0xFFFFFF, "死んだ");
+
 }
 int Player::getX()
 {

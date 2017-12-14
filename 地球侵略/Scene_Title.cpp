@@ -2,6 +2,7 @@
 
 #include "KeyManager.h"
 
+
 typedef struct {
 	char name[16];
 	char explanation[32];
@@ -21,6 +22,7 @@ RootmenuElement TitleMenu[TITLE_NUM] = {	//実際の値の設定
 
 Scene_Title::Scene_Title()
 {
+	SoundM.SetSound(LoadSoundMem("data/mc/メニュー画面.wav"));	
 }
 
 
@@ -51,6 +53,7 @@ void Scene_Title::Update(){
 }
 
 void Scene_Title::Draw(){
+	SoundM.SoundPlayer();
 	DrawString(0, 0, "タイトル(デバッグ表示）", 0xFFFFFF);
 	for (int i = 0; i < TITLE_NUM; i++) {
 		if (i == nowSelect) {

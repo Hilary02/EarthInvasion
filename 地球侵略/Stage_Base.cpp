@@ -5,11 +5,13 @@
 #include <string>
 #include <sstream> //文字ストリーム
 #include <vector>
+#include "SoundManager.h"
 
 Stage_Base::Stage_Base() :
 	//コンストラクタの引数に設定されないといけない
 	MAP_HEIGHT(30)
 	, MAP_WIDTH(128) {
+	SoundM.SetSound(LoadSoundMem("data/mc/ビルの屋上、危険伴わず.wav"));
 	//08.18　vectorのサイズを動的に変更できるようにした
 	//指定したマップサイズで配列を確保
 	//参考にしたところ
@@ -28,7 +30,7 @@ Stage_Base::Stage_Base() :
 	readMap("data/map/tutrial-map改良版32.csv");
 	//プレイヤー呼び出し
 	player = new Player(vmap);
-	player->setAbsolutePos(400, 800);
+	player->setAbsolutePos(360, 600);
 	//地形画像の読み込み
 	//TODO:引数をつける
 	loadImg();
@@ -47,7 +49,7 @@ void Stage_Base::update() {
 }
 
 void Stage_Base::draw() {
-	DrawGraph(0, 0, bgHand, false);	//背景の描画
+	//DrawGraph(0, 0, bgHand, false);	//背景の描画
 	int baseChipY = max(0, drawY - CHIPSIZE * 2);
 	int baseChipX = max(0, drawX - CHIPSIZE * 2);
 	for (int y = baseChipY / CHIPSIZE; y < ((drawY + window.WINDOW_HEIGHT - 50) / CHIPSIZE); y++) {
@@ -129,4 +131,5 @@ int Stage_Base::loadImg() {
 	chipImg[9] = LoadGraph("data/img/togetoge.png");
 	bgHand = LoadGraph("data/img/bg01.jpg");
 	return 1;
+
 }

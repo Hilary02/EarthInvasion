@@ -9,6 +9,7 @@ int time = 0;
 
 
 GameMain::GameMain(){
+	SoundM.SetSound(LoadSoundMem("data/mc/メニュー画面.wav"));
 }
 
 
@@ -23,9 +24,11 @@ void GameMain::MainLoop() {
 		keyM.UpdateKeyState();	//キーの更新
 		time++;					//全体時間の更新
 
+		SoundM.SoundPlayer();
+
 		SceneM.Update();
 		SceneM.Draw();
-
+		
 		//デバック表示
 		FpsFunction(window.WINDOW_WIDTH - 80,0);
 		DrawFormatString(window.WINDOW_WIDTH-120, 20, GetColor(255, 125, 255), "Frame:%d", time);
