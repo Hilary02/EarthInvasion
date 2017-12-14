@@ -131,8 +131,6 @@ bool Player::MapHitCheck(int movedX, int movedY, char check)
 		return false;
 		break;
 	case 2:
-		/*
-		
 		DrawFormatString(200, 140, 0xFFFFFF, "•Ç‚¾I");
 		if (check == 'x') {
 			if (movedX - x > 0)
@@ -148,7 +146,7 @@ bool Player::MapHitCheck(int movedX, int movedY, char check)
 				cMove = y % 32;
 				jumpPower = 0;
 			}
-		}*/
+		}
 		
 		return false;
 		break;
@@ -306,6 +304,11 @@ int Player::getX()
 int Player::getY()
 {
 	return y;
+}
+
+int Player::getHp()
+{
+	return hp;
 }
 
 void Player::PerDecision()
