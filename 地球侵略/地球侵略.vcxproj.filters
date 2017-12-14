@@ -75,16 +75,21 @@
     <ClCompile Include="Rect.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="HealItem.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="Stage_Base.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="Item.cpp">
+      <Filter>ソース ファイル\Data</Filter>
+    </ClCompile>
     <ClCompile Include="HealItem.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="SoundManager.cpp">
+=======
+    <ClCompile Include="InfoArea.cpp">
+    <ClCompile Include="Rect.cpp">
+>>>>>>> 34299c6a5ddc4cc350fb591abd289530af70cfb1
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -137,10 +142,16 @@
     <ClInclude Include="Rect.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="HealItem.h">
+    <ClInclude Include="Stage_Base.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Item.h">
       <Filter>ヘッダー ファイル\Data</Filter>
     </ClInclude>
-    <ClInclude Include="Stage_Base.h">
+    <ClInclude Include="HealItem.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="InfoArea.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="SoundManager.h">

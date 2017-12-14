@@ -4,7 +4,7 @@
 #include <iostream>//ファイル入出力
 #include <string>
 #include <sstream> //文字ストリーム
-#include <vector>
+#include "KeyManager.h";
 #include "SoundManager.h"
 
 Stage_Base::Stage_Base() :
@@ -30,7 +30,13 @@ Stage_Base::Stage_Base() :
 	readMap("data/map/tutrial-map改良版32.csv");
 	//プレイヤー呼び出し
 	player = new Player(vmap);
-	player->setAbsolutePos(360, 600);
+	player->setAbsolutePos(400, 800);
+	objectMgr = new ObjectManager(vmap);
+
+	//どちらかを使う
+	//objectMgr = new ObjectManager(vmap,player);
+	
+	infoArea = new InfoArea(player);
 	//地形画像の読み込み
 	//TODO:引数をつける
 	loadImg();
@@ -45,7 +51,19 @@ void Stage_Base::update() {
 	totalFrame++;
 	drawChipNum = 0;
 	player->Update();
+	objectMgr->Update();
+	infoArea->update();
 	scrollMap();	//プレイヤー座標に応じた表示範囲の変更
+
+
+	//Debug
+	if (keyM.GetKeyFrame(KEY_INPUT_Q) == 1) {
+		player->modHp(1);
+	}
+	if (keyM.GetKeyFrame(KEY_INPUT_W) == 1) {
+		player->modHp(-1);
+	}
+
 }
 
 void Stage_Base::draw() {
@@ -71,8 +89,10 @@ void Stage_Base::draw() {
 			}
 		}
 	}
-	
 	player->Draw(drawX, drawY);
+	objectMgr->Draw(drawX, drawY);
+	infoArea->draw();
+
 	//デバッグ情報
 	DrawFormatString(0, 30, GetColor(255, 125, 255), "マップ表示原点：%d  ,%d", drawX, drawY);
 	DrawFormatString(0, 50, GetColor(255, 125, 255), "表示画像数：%d", drawChipNum);
@@ -123,7 +143,7 @@ int Stage_Base::loadImg() {
 	//chipImg[1] = LoadGraph("data/img/airFloor.png");
 	chipImg[2] = LoadGraph("data/img/groundFloor.png");
 	//chipImg[3] = LoadGraph("data/img/eeyanWait.png");
-	chipImg[4] = LoadGraph("data/img/enemy1Wait.png");
+	//chipImg[4] = LoadGraph("data/img/enemy1Wait.png");
 	chipImg[5] = LoadGraph("data/img/healPot.png");
 	chipImg[6] = LoadGraph("data/img/lockDoor.png");
 	chipImg[7] = LoadGraph("data/img/airFloor.png");

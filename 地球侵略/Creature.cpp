@@ -13,14 +13,18 @@ Creature::~Creature()
 
 
 // ‘Ì—Í‚ğ•ÏX
-void Creature::setHp()
-{
+void Creature::setHp(int newHp){
+	hp = newHp;
 }
 
 
+void Creature::modHp(int mod){
+	hp += mod;
+}
+
 // UŒ‚—Í‚ğİ’è
-int Creature::setAtk() {
-	return 0;
+void Creature::setAtk() {
+
 }
 
 
@@ -34,7 +38,7 @@ void Creature::Update()
 {
 }
 
-
-void Creature::Draw()
+void Creature::Draw(int, int)
 {
 }
+
