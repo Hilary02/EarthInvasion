@@ -12,6 +12,7 @@ public:
 	void Draw(int, int);
 	int getX();
 	int getY();
+	int getHp();
 private:
 	std::vector<std::vector <int>> vmap;
 	int clock = 0;

@@ -47,11 +47,13 @@ void Player::Update() {
 	if (keyM.GetKeyFrame(KEY_INPUT_DOWN) >= 1 && !isJumping && !isAttack && !isLiquid) {
 		isLiquid = true;
 	}
+
 	else if (keyM.GetKeyFrame(KEY_INPUT_DOWN) == 0) {
 		xyCheck = 'y';
 		if (MapHitCheck(x1, y, xyCheck) && MapHitCheck(x2, y, xyCheck))
 			isLiquid = false;
 	}
+
 	if (keyM.GetKeyFrame(KEY_INPUT_UP) == 1 && !isLiquid && !isAttack) {
 		isJumping = true;
 		jumpPower = -6;
@@ -129,6 +131,8 @@ bool Player::MapHitCheck(int movedX, int movedY, char check)
 		return false;
 		break;
 	case 2:
+		/*
+		
 		DrawFormatString(200, 140, 0xFFFFFF, "•Ç‚¾I");
 		if (check == 'x') {
 			if (movedX - x > 0)
@@ -144,7 +148,8 @@ bool Player::MapHitCheck(int movedX, int movedY, char check)
 				cMove = y % 32;
 				jumpPower = 0;
 			}
-		}
+		}*/
+		
 		return false;
 		break;
 	case 5:
@@ -188,8 +193,10 @@ void Player::Draw(int drawX, int drawY) {
 				MyDraw(tempX, tempY, liquid[drawCount], right);
 			}
 			else {
+
 				if(keyM.GetKeyFrame(KEY_INPUT_DOWN) < 20)
 					drawCount = keyM.GetKeyFrame(KEY_INPUT_DOWN) / 5 % 4;
+
 				else 
 					drawCount = keyM.GetKeyFrame(KEY_INPUT_DOWN) / 15 % 4 + 5;
 				MyDraw(tempX, tempY, liquid[drawCount], right);
@@ -314,6 +321,7 @@ void Player::PerDecision()
 	y1 = y + sizeY1;
 	x2 = x + sizeX2;
 	y2 = y + sizeY2;
+
 }
 //‰æ‘œ“Ç‚Ýž‚Ý
 void Player::LoadImg()

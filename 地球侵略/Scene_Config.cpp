@@ -2,21 +2,17 @@
 
 
 
+
 Scene_Config::Scene_Config() {
 	//仮で音源を利用しています．
 	//BGMはセルリアン，SEはhttp://dova-s.jp/se/play278.htmlから拝借．
-	bgm = LoadSoundMem("data/mc/cell.mp3");
-	se = LoadSoundMem("data/mc/se_Z.mp3");
-	bgmVolume = 255;
-	seVolume = 200;
+
 	nowSelect = BGM;
 	nowDraw = VOL_CON;
 }
 
 
 Scene_Config::~Scene_Config() {
-	DeleteSoundMem(bgm);
-	DeleteSoundMem(se);
 }
 
 void Scene_Config::Update() {
@@ -44,8 +40,8 @@ void Scene_Config::Draw()
 	}
 
 	//音量を表示　関数に切り分けるかも
-	DrawFormatString(430, 280, GetColor(255, 255, 255), ": %d", bgmVolume);
-	DrawFormatString(430, 310, GetColor(255, 255, 255), ": %d", seVolume);
+	DrawFormatString(430, 280, GetColor(255, 255, 255), ": %d", SoundM.Volume(0));
+	DrawFormatString(430, 310, GetColor(255, 255, 255), ": %d", SoundM.Volume(1));
 
 
 
@@ -66,44 +62,11 @@ void Scene_Config::MoveCursor() {
 	//ボリューム調節機能．同じ処理になるのでポインタを利用して圧縮を図った．
 	//配列でも問題ない気がしたが別段問題はないと思う．
 	if (nowSelect == BGM) {
-		volume = &bgmVolume;
-		sound = &bgm;
+		SoundM.SoundVolume(0);
 	}
 	if (nowSelect == SE) {
-		volume = &seVolume;
-		sound = &se;
+		SoundM.SoundVolume(1);
 	}
-
-	if (nowSelect == BGM || nowSelect == SE) {
-		bool isVolChanged = false;
-		if (keyM.GetKeyFrame(KEY_INPUT_RIGHT) >= 1) {
-			*volume = ((*volume)++ < 255) ? (*volume)++ : 255;//音量を上げる.Max255
-			isVolChanged = true;
-		}
-		else if (keyM.GetKeyFrame(KEY_INPUT_LEFT) >= 1) {
-			*volume = ((*volume)-- > 0) ? (*volume)-- : 0;//音量を下げる.Min0
-			isVolChanged = true;
-		}
-		if (isVolChanged) {
-			ChangeVolumeSoundMem(*volume, *sound);				//メモリ上の音量変更
-			if (nowSelect == SE) PlaySoundMem(se, DX_PLAYTYPE_BACK, TRUE);
-			isVolChanged = false;
-		}
-	}
-
-	//音楽の再生・停止のサンプル．音量が変化しているか確かめるためにつけた
-	if (keyM.GetKeyFrame(KEY_INPUT_SPACE) == 1) {
-		if (CheckSoundMem(bgm) == 0) {
-			PlaySoundMem(bgm, DX_PLAYTYPE_LOOP, FALSE);
-		}
-		else {
-			StopSoundMem(bgm);
-		}
-	}
-	if (CheckSoundMem(bgm) == 0) {
-		DrawFormatString(0, 60, GetColor(255, 255, 255), "STOP");
-	}
-
 	if (keyM.GetKeyFrame(KEY_INPUT_Z) == 1) {
 		switch (nowSelect) {
 		case KEY:

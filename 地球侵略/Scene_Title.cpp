@@ -2,6 +2,7 @@
 
 #include "KeyManager.h"
 
+
 typedef struct {
 	char name[16];
 	char explanation[32];
@@ -21,6 +22,7 @@ RootmenuElement TitleMenu[TITLE_NUM] = {	//実際の値の設定
 
 Scene_Title::Scene_Title()
 {
+	SoundM.SetSound(LoadSoundMem("data/mc/メニュー画面.wav"));	
 }
 
 
@@ -31,9 +33,11 @@ Scene_Title::~Scene_Title()
 void Scene_Title::Update(){
 	if (keyM.GetKeyFrame(KEY_INPUT_DOWN) == 1 || (keyM.GetKeyFrame(KEY_INPUT_DOWN) >= 15 && keyM.GetKeyFrame(KEY_INPUT_DOWN) % 4 == 0)) {	//下キーが押されていたら
 		nowSelect = (nowSelect + 1) % TITLE_NUM;				//選択状態を一つ下げる
+		SoundM.Se(LoadSoundMem("data/mc/se_Z.mp3"));
 	}
 	if (keyM.GetKeyFrame(KEY_INPUT_UP) == 1 || (keyM.GetKeyFrame(KEY_INPUT_UP) >= 15 && keyM.GetKeyFrame(KEY_INPUT_UP) % 4 == 0)) {		//上キーが押されていたら
 		nowSelect = (nowSelect + (TITLE_NUM - 1)) % TITLE_NUM;	//選択状態を一つ上げる
+		SoundM.Se(LoadSoundMem("data/mc/se_Z.mp3"));
 	}
 	if (keyM.GetKeyFrame(KEY_INPUT_Z) == 1) {
 		switch (nowSelect) {
@@ -51,6 +55,7 @@ void Scene_Title::Update(){
 }
 
 void Scene_Title::Draw(){
+	SoundM.SoundPlayer();
 	DrawString(0, 0, "タイトル(デバッグ表示）", 0xFFFFFF);
 	for (int i = 0; i < TITLE_NUM; i++) {
 		if (i == nowSelect) {
