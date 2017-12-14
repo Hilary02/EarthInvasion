@@ -52,6 +52,5 @@ private:
 
 
 	//デバッグ用データ
-	int totalFrame = 0;
 	int drawChipNum = 0;
 };

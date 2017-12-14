@@ -29,7 +29,7 @@ Stage_Base::Stage_Base() :
 	//プレイヤー呼び出し
 	player = new Player(vmap);
 	player->setAbsolutePos(400, 800);
-	objectMgr = new ObjectManager(vmap);
+	objectMgr = new ObjectManager(vmap,player);
 
 	//どちらかを使う
 	//objectMgr = new ObjectManager(vmap,player);
@@ -46,7 +46,6 @@ Stage_Base::~Stage_Base() {
 }
 
 void Stage_Base::update() {
-	totalFrame++;
 	drawChipNum = 0;
 	player->Update();
 	objectMgr->Update();

@@ -1,154 +1,48 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="ソース ファイル">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="ヘッダー ファイル">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
-    <Filter Include="リソース ファイル">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\Data">
-      <UniqueIdentifier>{afade7da-f913-466f-b71c-f8dfd93614d7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\Data">
-      <UniqueIdentifier>{293c3cdb-ddea-4a32-b52f-e110287df1f7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\Scene">
-      <UniqueIdentifier>{9e11fb75-8a95-40ea-b3ad-5a0221f76771}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\Scene">
-      <UniqueIdentifier>{d3901cdb-6e02-45e5-932e-324b07b74e9d}</UniqueIdentifier>
-    </Filter>
+    <ClCompile Include="Creature.cpp" />
+    <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="FPS.cpp" />
+    <ClCompile Include="GameMain.cpp" />
+    <ClCompile Include="HealItem.cpp" />
+    <ClCompile Include="InfoArea.cpp" />
+    <ClCompile Include="Item.cpp" />
+    <ClCompile Include="KeyManager.cpp" />
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Object.cpp" />
+    <ClCompile Include="ObjectManager.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Rect.cpp" />
+    <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="Scene_Config.cpp" />
+    <ClCompile Include="Scene_Frame.cpp" />
+    <ClCompile Include="Scene_Game.cpp" />
+    <ClCompile Include="Scene_Title.cpp" />
+    <ClCompile Include="Stage_Base.cpp" />
+    <ClCompile Include="WindowData.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Main.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="WindowData.cpp">
-      <Filter>ソース ファイル\Data</Filter>
-    </ClCompile>
-    <ClCompile Include="GameMain.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>ソース ファイル\Data</Filter>
-    </ClCompile>
-    <ClCompile Include="KeyManager.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="FPS.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Creature.cpp">
-      <Filter>ソース ファイル\Data</Filter>
-    </ClCompile>
-    <ClCompile Include="Object.cpp">
-      <Filter>ソース ファイル\Data</Filter>
-    </ClCompile>
-    <ClCompile Include="Enemy.cpp">
-      <Filter>ソース ファイル\Data</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene_Config.cpp">
-      <Filter>ソース ファイル\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene_Frame.cpp">
-      <Filter>ソース ファイル\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene_Game.cpp">
-      <Filter>ソース ファイル\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene_Title.cpp">
-      <Filter>ソース ファイル\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneManager.cpp">
-      <Filter>ソース ファイル\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="ObjectManager.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Rect.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Stage_Base.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Item.cpp">
-      <Filter>ソース ファイル\Data</Filter>
-    </ClCompile>
-    <ClCompile Include="HealItem.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="InfoArea.cpp">
-    <ClCompile Include="Rect.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Main.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="WindowData.h">
-      <Filter>ヘッダー ファイル\Data</Filter>
-    </ClInclude>
-    <ClInclude Include="Creature.h">
-      <Filter>ヘッダー ファイル\Data</Filter>
-    </ClInclude>
-    <ClInclude Include="GameMain.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>ヘッダー ファイル\Data</Filter>
-    </ClInclude>
-    <ClInclude Include="KeyManager.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="FPS.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Object.h">
-      <Filter>ヘッダー ファイル\Data</Filter>
-    </ClInclude>
-    <ClInclude Include="Enemy.h">
-      <Filter>ヘッダー ファイル\Data</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneManager.h">
-      <Filter>ヘッダー ファイル\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene_Config.h">
-      <Filter>ヘッダー ファイル\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene_Frame.h">
-      <Filter>ヘッダー ファイル\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene_Game.h">
-      <Filter>ヘッダー ファイル\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene_Title.h">
-      <Filter>ヘッダー ファイル\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="ObjectManager.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Rect.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Stage_Base.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Item.h">
-      <Filter>ヘッダー ファイル\Data</Filter>
-    </ClInclude>
-    <ClInclude Include="HealItem.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="InfoArea.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
+    <ClInclude Include="Creature.h" />
+    <ClInclude Include="Enemy.h" />
+    <ClInclude Include="FPS.h" />
+    <ClInclude Include="GameMain.h" />
+    <ClInclude Include="HealItem.h" />
+    <ClInclude Include="InfoArea.h" />
+    <ClInclude Include="Item.h" />
+    <ClInclude Include="KeyManager.h" />
+    <ClInclude Include="Main.h" />
+    <ClInclude Include="Object.h" />
+    <ClInclude Include="ObjectManager.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="Rect.h" />
+    <ClInclude Include="SceneManager.h" />
+    <ClInclude Include="Scene_Config.h" />
+    <ClInclude Include="Scene_Frame.h" />
+    <ClInclude Include="Scene_Game.h" />
+    <ClInclude Include="Scene_Title.h" />
+    <ClInclude Include="Stage_Base.h" />
+    <ClInclude Include="WindowData.h" />
+    <ClInclude Include="iHitAction.h" />
   </ItemGroup>
 </Project>

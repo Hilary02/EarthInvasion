@@ -46,6 +46,7 @@
     <ClInclude Include="FPS.h" />
     <ClInclude Include="GameMain.h" />
     <ClInclude Include="HealItem.h" />
+    <ClInclude Include="iHitAction.h" />
     <ClInclude Include="InfoArea.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="KeyManager.h" />

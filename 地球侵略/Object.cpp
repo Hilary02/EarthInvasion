@@ -8,6 +8,10 @@ Object::Object(int x, int y, int handle) {
 
 }
 
+Object::Object(int x, int y, int handle, iHitAction * hit){
+
+}
+
 Object::~Object()
 {
 }
@@ -34,15 +38,15 @@ void Object::setRelativePos(int modX, int modY) {
 }
 
 
-int Object::hitCheck(Object target) {
+int Object::hitCheck(Object* target) {
 	const int size = 64;
-	float tMargin = (1 - target.collisionSize) / 2;
+	float tMargin = (1 - target->collisionSize) / 2;
 	float mMargin = (1 - collisionSize) / 2;
 
-	int tX1 = target.x*(1 + tMargin);
-	int tX2 = target.x + size* target.collisionSize;
-	int tY1 = target.y*(1 + tMargin);
-	int tY2 = target.y + size* target.collisionSize;
+	int tX1 = target->x*(1 + tMargin);
+	int tX2 = target->x + size* target->collisionSize;
+	int tY1 = target->y*(1 + tMargin);
+	int tY2 = target->y + size* target->collisionSize;
 
 	int mX1 = x*(1 + mMargin);
 	int mX2 = x + size* collisionSize;
@@ -52,7 +56,7 @@ int Object::hitCheck(Object target) {
 	if ((tX1 < mX2) && (tX2 > mX1) &&
 		(tY1 < mY2) && (tY2 > mY1)) {
 		/*“–‚½‚Á‚Ä‚¢‚½ê‡‚ÉÀs*/
-		onHit(target);
+		//onHit(target);
 		return 1;
 	}else {
 		return 0;

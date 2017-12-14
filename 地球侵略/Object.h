@@ -1,5 +1,6 @@
 #pragma once
 #include <DxLib.h>
+#include "iHitAction.h"
 /**
 動く床やアイテムなど，ステージ上に配置されるモノを管理
 詳細未定
@@ -8,6 +9,7 @@ class Object {
 public:
 	Object();
 	Object(int x, int y, int handle);
+	Object(int x, int y, int handle,iHitAction* hit);
 	~Object();
 	virtual void Update();
 	virtual void Draw(int drawX, int drawY);
@@ -22,10 +24,10 @@ public:
 	何らかと接触したときに1を返し，接触しなかった場合に0を返す．
 	判定の際に利用する値はx,y,
 	*/
-	int hitCheck(Object target);
+	virtual int hitCheck(Object* target);
 	
 
-protected:
+
 	/*
 	何かと接触をしたときに実行される処理
 	*/
@@ -33,5 +35,7 @@ protected:
 
 	int x, y;
 	int imgHundle;
-	double collisionSize = 0.8;
+	float collisionSize = 0.8;
+
+	iHitAction* HitAction;
 };

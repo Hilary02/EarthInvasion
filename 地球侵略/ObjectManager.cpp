@@ -6,7 +6,7 @@ ObjectManager::ObjectManager()
 }
 
 //íœ—\’è
-ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap) {
+ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap, Player * player) {
 	Loadimg();
 	for (unsigned int i = 0; i < vmap.size(); i++) {
 		for (unsigned int j = 0; j < vmap[i].size(); j++) {
@@ -29,7 +29,8 @@ ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap) {
 						break;*/
 
 				case 4:
-					obje = new Enemy(x, y, img[10], vmap[i][j]);
+					//obje = new Enemy(x, y, img[10], vmap[i][j]);
+					obje = new Enemy(x, y, img[10], vmap[i][j],this);
 
 		/*		case 3:
 					obje = GroundFloor(x, y, img[3]);
@@ -64,6 +65,7 @@ ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap) {
 			}
 		}
 	}
+	this->player = player;
 }
 //
 //ObjectManager::ObjectManager(std::vector<std::vector<int>> vmap, Player * player){
@@ -109,7 +111,9 @@ void ObjectManager::Update()
 {
 	for (auto &obj : objects) {
 		obj->Update();
+		obj->hitCheck(player);
 	}
+	
 }
 
 void ObjectManager::Draw(int drawX, int drawY)
@@ -120,13 +124,22 @@ void ObjectManager::Draw(int drawX, int drawY)
 	}
 }
 
+void ObjectManager::HitCheck(Object* target){
+	for (auto obj : objects) {
+		obj->hitCheck(target);
+	}
+}
 
-//void ObjectManager::HitCheck(Object target){
-//	for (auto obj : objects) {
-//		obj.hitCheck(target);
-//	}
-//}
+int ObjectManager::doHitAction(int id){
+	player->modHp(-1);
+	DrawBox(20, 40, 100, 200, 0xFF0000, true);
+	return 0;
+}
 
 void ObjectManager::damage_player(){
 	player->modHp(-1);
 }
+
+
+
+
