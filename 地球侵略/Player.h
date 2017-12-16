@@ -13,6 +13,7 @@ public:
 	int getX();
 	int getY();
 	int getHp();
+	void modHp(int mod) override;
 private:
 	std::vector<std::vector <int>> vmap;
 	int clock = 0;
@@ -37,4 +38,6 @@ private:
 	int jump[20];
 	int liquid[10];
 	int die[20];
+
+	int invalidDamageTime=60;
 };

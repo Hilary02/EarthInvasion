@@ -97,6 +97,8 @@ void Player::Update() {
 		//GameOver();
 	}
 
+	if (invalidDamageTime < 60) invalidDamageTime++;
+
 }
 
 bool Player::MapHitCheck(int movedX, int movedY, char check)
@@ -305,6 +307,19 @@ int Player::getY()
 int Player::getHp()
 {
 	return this->hp;
+}
+void Player::modHp(int mod){
+	//•Ï‰»—Ê‚ª•‰‚Ìê‡‚Ì‚İC–³“GŠÔ‚ğ‹N“®
+	if (mod < 0) {
+		if (invalidDamageTime == 60) {
+			invalidDamageTime = 0;
+			hp += mod;
+		}
+	}
+	else {
+		//•Ï‰»—Ê‚ª³‚È‚ç–³“GŠÔŠÖŒW‚È‚­•ÏX
+		hp += mod;
+	}
 }
 //‰æ‘œ“Ç‚İ‚İ
 void Player::LoadImg()
