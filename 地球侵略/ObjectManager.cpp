@@ -30,7 +30,7 @@ ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap, Player * playe
 
 				case 4:
 					//obje = new Enemy(x, y, img[10], vmap[i][j]);
-					obje = new Enemy(x, y, img[10], vmap[i][j],this);
+					obje = new Enemy(x, y, img[10], vmap[i][j]);
 
 		/*		case 3:
 					obje = GroundFloor(x, y, img[3]);
@@ -111,7 +111,6 @@ void ObjectManager::Update()
 {
 	for (auto &obj : objects) {
 		obj->Update();
-		obj->hitCheck(player);
 	}
 	
 }
@@ -121,12 +120,6 @@ void ObjectManager::Draw(int drawX, int drawY)
 	for (auto obj : objects)
 	{
 		obj->Draw(drawX, drawY);
-	}
-}
-
-void ObjectManager::HitCheck(Object* target){
-	for (auto obj : objects) {
-		obj->hitCheck(target);
 	}
 }
 

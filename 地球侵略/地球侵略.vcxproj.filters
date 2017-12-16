@@ -13,7 +13,6 @@
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="ObjectManager.cpp" />
     <ClCompile Include="Player.cpp" />
-    <ClCompile Include="Rect.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Scene_Config.cpp" />
     <ClCompile Include="Scene_Frame.cpp" />
@@ -37,7 +36,6 @@
     <ClInclude Include="Object.h" />
     <ClInclude Include="ObjectManager.h" />
     <ClInclude Include="Player.h" />
-    <ClInclude Include="Rect.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Scene_Config.h" />
     <ClInclude Include="Scene_Frame.h" />
@@ -45,7 +43,6 @@
     <ClInclude Include="Scene_Title.h" />
     <ClInclude Include="Stage_Base.h" />
     <ClInclude Include="WindowData.h" />
-    <ClInclude Include="iHitAction.h" />
     <ClInclude Include="Collision.h" />
     <ClInclude Include="ICollisionManager.h" />
     <ClInclude Include="CollisionManager.h" />

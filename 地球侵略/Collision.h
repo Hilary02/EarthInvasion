@@ -1,5 +1,5 @@
 #pragma once
-#include "ICollisionManager.h"
+
 /*
 Offsetには画像原点から判定の始点をずらす値を，
 SizeにはOffsetを起点とした値を入れる．
@@ -17,6 +17,7 @@ public:
 class Collision
 {
 public:
+	Collision();
 	Collision(int xOffset,int yOffset,int xSize,int ySize);
 	~Collision();
 	HitRange* hitRange;

@@ -4,7 +4,7 @@
 #include <iostream>//ファイル入出力
 #include <string>
 #include <sstream> //文字ストリーム
-#include "KeyManager.h";
+#include "KeyManager.h"
 
 Stage_Base::Stage_Base() :
 	//コンストラクタの引数に設定されないといけない

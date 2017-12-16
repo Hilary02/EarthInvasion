@@ -10,11 +10,11 @@ public:
 	~Enemy();
 
 	Enemy(int x, int y, int img, int id);
-	Enemy(int x, int y, int img, int id, iHitAction* hit);
+	//Enemy(int x, int y, int img, int id, iHitAction* hit);
 	
 	void Update() override;
 	void Draw(int drawX, int drawY) override;
-	int hitCheck(Object* target) override;
+	void collisionCheck(const HitRange& target);
 	void MoveCommon();
 	bool IsRangeCheck();
 	int enemyID;
@@ -26,5 +26,7 @@ private:
 	int dis = 150;
 	bool isRight = false;
 	const int MOVE = 1;
+
+	Collision* collision;
 };
 

@@ -1,7 +1,5 @@
 #include "Collision.h"
 
-
-
 Collision::Collision(int xOffset, int yOffset, int xSize, int ySize) {
 	HitRange range;
 	range.xOffset = xOffset;
@@ -10,7 +8,6 @@ Collision::Collision(int xOffset, int yOffset, int xSize, int ySize) {
 	range.ySize = ySize;
 	hitRange = &range;
 }
-
 
 Collision::~Collision()
 {
