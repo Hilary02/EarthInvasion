@@ -12,7 +12,7 @@ public:
 	//Object(int x, int y, int handle);
 	Object(int x, int y, int handle,ICollisionManager* IcolMgr);
 	~Object();
-	virtual void Update(Collision playerCol);
+	virtual void Update(const Collision & playerCol);
 	virtual void Draw(int drawX, int drawY);
 	void collisionCheck();
 

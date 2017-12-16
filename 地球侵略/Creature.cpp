@@ -34,7 +34,7 @@ int Creature::getHp() {
 }
 
 
-void Creature::Update(Collision player_col)
+void Creature::Update(const Collision & playerCol)
 {
 }
 

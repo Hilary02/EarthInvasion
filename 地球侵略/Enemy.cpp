@@ -29,7 +29,7 @@ Enemy::Enemy(int x, int y, int img, int id, ICollisionManager* IcolMgr){
 //	HitAction = hit;
 //}
 
-void Enemy::Update(Collision playerCol)
+void Enemy::Update(const Collision & playerCol)
 {
 	MoveCommon();
 	collision->updatePos(x, y);

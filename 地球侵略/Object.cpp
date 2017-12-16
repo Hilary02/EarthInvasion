@@ -12,10 +12,9 @@ Object::~Object()
 {
 }
 
-void Object::Update(Collision playerCol)
+void Object::Update(const Collision & playerCol)
 {
 }
-
 
 void Object::Draw(int drawX, int drawY)
 {
