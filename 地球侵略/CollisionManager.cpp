@@ -11,12 +11,12 @@ CollisionManager::~CollisionManager()
 {
 }
 
-void CollisionManager::requestAction(ColAction act){
+void CollisionManager::requestAction(Action act){
 	switch (act) {
-	case ColAction::DmgPlayer:
+	case Action::DmgPlayer:
 		damagePlayer();
 		break;
-	case ColAction::KillPlayer:
+	case Action::KillPlayer:
 		killPlayer();
 		break;
 	default:

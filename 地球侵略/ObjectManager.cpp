@@ -6,8 +6,9 @@ ObjectManager::ObjectManager()
 }
 
 //íœ—\’è
-ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap, Player * player) {
+ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap, Player * player, ICollisionManager* colMgr) {
 	Loadimg();
+	IcolMgr = colMgr;
 	for (unsigned int i = 0; i < vmap.size(); i++) {
 		for (unsigned int j = 0; j < vmap[i].size(); j++) {
 			//if (vmap[i][j] == 3 || vmap[i][j] == 4 || vmap[i][j] == 6) {
@@ -30,7 +31,7 @@ ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap, Player * playe
 
 				case 4:
 					//obje = new Enemy(x, y, img[10], vmap[i][j]);
-					obje = new Enemy(x, y, img[10], vmap[i][j]);
+					obje = new Enemy(x, y, img[10], vmap[i][j],IcolMgr);
 
 		/*		case 3:
 					obje = GroundFloor(x, y, img[3]);

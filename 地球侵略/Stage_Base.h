@@ -9,6 +9,7 @@
 #include "InfoArea.h"
 #include <vector>
 #include <array>
+#include "CollisionManager.h"
 /**
 Stageクラスはまず地形を読み込む．
 Playerクラス，ObjectManagerクラスに主人公の移動とそれ以外の処理を投げるので
@@ -45,6 +46,7 @@ private:
 
 	Player *player;
 	ObjectManager *objectMgr;
+	CollisionManager *colMgr;
 	InfoArea *infoArea;
 
 	//描画する際の左上座標

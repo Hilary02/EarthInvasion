@@ -9,8 +9,8 @@
 class Object {
 public:
 	Object();
-	Object(int x, int y, int handle);
-	//Object(int x, int y, int handle,iHitAction* hit);
+	//Object(int x, int y, int handle);
+	Object(int x, int y, int handle,ICollisionManager* IcolMgr);
 	~Object();
 	virtual void Update(Collision playerCol);
 	virtual void Draw(int drawX, int drawY);
@@ -33,4 +33,5 @@ protected:
 	int x, y;
 
 	int imgHandle;
+	ICollisionManager* IcolMgr;
 };

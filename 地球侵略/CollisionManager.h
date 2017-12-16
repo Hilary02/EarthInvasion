@@ -8,7 +8,7 @@ class CollisionManager :
 public:
 	CollisionManager(Player* player);
 	~CollisionManager();
-	void requestAction(ColAction act) override;
+	void requestAction(Action act) override;
 
 private:
 	Player* player;

@@ -10,13 +10,14 @@ Enemy::~Enemy()
 {
 }
 
-Enemy::Enemy(int x, int y, int img, int id){
+Enemy::Enemy(int x, int y, int img, int id, ICollisionManager* IcolMgr){
 	this->x = x;
 	this->y = y;
 	this->imgHandle = img;
 	this->enemyID = id;
 	LoadDivGraph("data/img/enemy1Walk.png", 8, 4, 2, 64, 64, walk);
 	collision = new Collision(colXOffset, colYOffset, colXSize, colYSize);
+	this->IcolMgr = IcolMgr;
 }
 
 //Enemy::Enemy(int x, int y, int img, int id,) {
@@ -53,6 +54,7 @@ void Enemy::collisionCheck(const Collision & target) {
 	int isCol = collision->doCollisonCheck((target.hitRange));
 	if (isCol) {
 		DrawBox(10, 20, 100, 200, 0xFF0000, true);
+		IcolMgr->requestAction(Action::DmgPlayer);
 	}
 	else {
 		DrawBox(10, 20, 100, 200, 0xFF0000, false);

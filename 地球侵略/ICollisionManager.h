@@ -1,6 +1,6 @@
 #pragma once
 
-enum class ColAction{
+enum class Action{
 	DmgPlayer,
 	KillPlayer,
 };
@@ -11,5 +11,5 @@ class ICollisionManager
 	//private:
 	//	virtual ~iHitAction() {}
 public:
-	virtual void requestAction(ColAction act) = 0;
+	virtual void requestAction(Action act) = 0;
 };

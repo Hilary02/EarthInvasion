@@ -11,7 +11,7 @@ class ObjectManager{
 public:
 	ObjectManager();
 	//ObjectManager(std::vector<std::vector <int>> vmap);
-	ObjectManager(std::vector<std::vector <int>> vmap,Player* player);
+	ObjectManager(std::vector<std::vector <int>> vmap,Player* player, ICollisionManager* colMgr);
 	~ObjectManager();
 
 	void Loadimg();
@@ -26,8 +26,7 @@ private:
 	std::vector<Object*> objects;
 
 	Player *player;
-
-	void damage_player();
+	ICollisionManager* IcolMgr;
 
 };
 

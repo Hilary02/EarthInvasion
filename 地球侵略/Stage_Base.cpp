@@ -29,7 +29,8 @@ Stage_Base::Stage_Base() :
 	//プレイヤー呼び出し
 	player = new Player(vmap);
 	player->setAbsolutePos(400, 800);
-	objectMgr = new ObjectManager(vmap,player);
+	colMgr = new CollisionManager(player);
+	objectMgr = new ObjectManager(vmap,player,colMgr);
 
 	//どちらかを使う
 	//objectMgr = new ObjectManager(vmap,player);
@@ -43,6 +44,8 @@ Stage_Base::Stage_Base() :
 
 Stage_Base::~Stage_Base() {
 	delete player;
+	delete colMgr;
+	delete objectMgr;
 }
 
 void Stage_Base::update() {
