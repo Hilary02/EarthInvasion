@@ -19,6 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Collision.cpp" />
+    <ClCompile Include="CollisionManager.cpp" />
     <ClCompile Include="Creature.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="FPS.cpp" />
@@ -41,11 +43,14 @@
     <ClCompile Include="WindowData.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Collision.h" />
+    <ClInclude Include="CollisionManager.h" />
     <ClInclude Include="Creature.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="FPS.h" />
     <ClInclude Include="GameMain.h" />
     <ClInclude Include="HealItem.h" />
+    <ClInclude Include="ICollisionManager.h" />
     <ClInclude Include="iHitAction.h" />
     <ClInclude Include="InfoArea.h" />
     <ClInclude Include="Item.h" />

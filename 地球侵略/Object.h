@@ -35,7 +35,7 @@ public:
 
 	int x, y;
 	int imgHundle;
-	float collisionSize = 0.8;
+//	float collisionSize = 0.8;
 
 	iHitAction* HitAction;
 };

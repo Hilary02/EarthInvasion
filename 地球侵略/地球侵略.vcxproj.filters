@@ -21,6 +21,8 @@
     <ClCompile Include="Scene_Title.cpp" />
     <ClCompile Include="Stage_Base.cpp" />
     <ClCompile Include="WindowData.cpp" />
+    <ClCompile Include="Collision.cpp" />
+    <ClCompile Include="CollisionManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Creature.h" />
@@ -44,5 +46,8 @@
     <ClInclude Include="Stage_Base.h" />
     <ClInclude Include="WindowData.h" />
     <ClInclude Include="iHitAction.h" />
+    <ClInclude Include="Collision.h" />
+    <ClInclude Include="ICollisionManager.h" />
+    <ClInclude Include="CollisionManager.h" />
   </ItemGroup>
 </Project>
