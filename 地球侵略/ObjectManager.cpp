@@ -107,32 +107,14 @@ void ObjectManager::Loadimg() {
 	img[21] = LoadGraph("data/img/curePod.png"); //21‚Í“ÅÁ‚µ
 }
 
-void ObjectManager::Update()
-{
+void ObjectManager::Update(){
 	for (auto &obj : objects) {
-		obj->Update();
+		obj->Update(*(player->collision));
 	}
-	
 }
 
-void ObjectManager::Draw(int drawX, int drawY)
-{
-	for (auto obj : objects)
-	{
+void ObjectManager::Draw(int drawX, int drawY){
+	for (auto obj : objects){
 		obj->Draw(drawX, drawY);
 	}
 }
-
-int ObjectManager::doHitAction(int id){
-	player->modHp(-1);
-	DrawBox(20, 40, 100, 200, 0xFF0000, true);
-	return 0;
-}
-
-void ObjectManager::damage_player(){
-	player->modHp(-1);
-}
-
-
-
-

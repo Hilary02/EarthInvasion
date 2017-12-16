@@ -12,7 +12,7 @@ Object::~Object()
 {
 }
 
-void Object::Update() 
+void Object::Update(Collision playerCol)
 {
 }
 

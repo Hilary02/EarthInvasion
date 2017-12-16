@@ -6,10 +6,8 @@
 #include "Enemy.h"
 #include <map>
 #include <vector>
-#include "iHitAction.h"
 
-
-class ObjectManager:public iHitAction{
+class ObjectManager{
 public:
 	ObjectManager();
 	//ObjectManager(std::vector<std::vector <int>> vmap);
@@ -20,10 +18,6 @@ public:
 
 	void Update();
 	void Draw(int drawX, int drawY);
-	void HitCheck(Object* target);
-
-	//“–‚½‚è”»’è‚Ìˆ—‚ğÀs
-	int doHitAction(int id) override;
 	
 	std::map<int, int> img;
 

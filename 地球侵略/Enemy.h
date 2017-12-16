@@ -12,9 +12,9 @@ public:
 	Enemy(int x, int y, int img, int id);
 	//Enemy(int x, int y, int img, int id, iHitAction* hit);
 	
-	void Update() override;
+	void Update(Collision playerCol) override;
 	void Draw(int drawX, int drawY) override;
-	void collisionCheck(const HitRange& target);
+	void collisionCheck(const Collision& target);
 	void MoveCommon();
 	bool IsRangeCheck();
 	int enemyID;

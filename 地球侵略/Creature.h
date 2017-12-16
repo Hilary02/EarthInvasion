@@ -20,7 +20,7 @@ public:
 	void setAtk();
 	// ‘Ì—Í‚ðŽæ“¾‚·‚é
 	int getHp();
-	virtual void Update() override;
+	virtual void Update(Collision player_col) override;
 	virtual void Draw(int ,int) override;
 };
 

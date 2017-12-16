@@ -6,15 +6,16 @@ Player::Player(std::vector<std::vector <int>> const &vmap) {
 	this->vmap = vmap;
 	this->hp = 15;
 	LoadImg();
+	collision = new Collision(colXOffset, colYOffset, colXSize, colYSize);
 }
 
 
-Player::Player(int x, int y) {
-	this->x = x;
-	this->y = y;
-	this->hp = 15;
-	LoadImg();
-}
+//Player::Player(int x, int y) {
+//	this->x = x;
+//	this->y = y;
+//	this->hp = 15;
+//	LoadImg();
+//}
 
 Player::~Player() {
 
@@ -88,6 +89,8 @@ void Player::Update() {
 		isJumping = false;
 		jumpPower = 0;
 	}
+
+	collision->updatePos(x,y);
 
 	if (hp <= 0) {
 		isDead = true;

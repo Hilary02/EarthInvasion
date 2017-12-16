@@ -6,7 +6,7 @@ class Player :
 {
 public:
 	Player(const std::vector<std::vector <int>>  &vmap);
-	Player(int x, int y);
+	//Player(int x, int y);
 	~Player();
 	void Update();
 	void Draw(int, int);

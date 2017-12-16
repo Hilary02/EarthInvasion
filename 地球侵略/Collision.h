@@ -23,4 +23,5 @@ public:
 	HitRange* hitRange;
 	void updatePos(int x, int y);
 	int doCollisonCheck(const HitRange& target);
+	int id;
 };

@@ -28,10 +28,11 @@ Enemy::Enemy(int x, int y, int img, int id){
 //	HitAction = hit;
 //}
 
-void Enemy::Update()
+void Enemy::Update(Collision playerCol)
 {
 	MoveCommon();
-
+	collision->updatePos(x, y);
+	collisionCheck(playerCol);
 }
 
 void Enemy::Draw(int drawX, int drawY)
@@ -46,12 +47,10 @@ void Enemy::Draw(int drawX, int drawY)
 	{
 		DrawGraph(x - drawX, y - drawY, imgHandle, true);
 	}
-
-
 }
 
-void Enemy::collisionCheck(const HitRange & target) {
-	int isCol = collision->doCollisonCheck(target);
+void Enemy::collisionCheck(const Collision & target) {
+	int isCol = collision->doCollisonCheck(*(target.hitRange));
 	if (isCol) {
 		DrawBox(10, 20, 100, 200, 0xFF0000, true);
 	}
