@@ -7,12 +7,10 @@ Collision::Collision()
 }
 
 Collision::Collision(int xOffset, int yOffset, int xSize, int ySize) {
-	HitRange range;
-	range.xOffset = xOffset;
-	range.yOffset = yOffset;
-	range.xSize = xSize;
-	range.ySize = ySize;
-	hitRange = &range;
+	hitRange.xOffset = xOffset;
+	hitRange.yOffset = yOffset;
+	hitRange.xSize = xSize;
+	hitRange.ySize = ySize;
 }
 
 Collision::~Collision()
@@ -20,8 +18,8 @@ Collision::~Collision()
 }
 
 void Collision::updatePos(int x, int y) {
-	hitRange->xPos = x;
-	hitRange->yPos = y;
+	hitRange.xPos = x;
+	hitRange.yPos = y;
 }
 
 int Collision::doCollisonCheck(const HitRange& target) {
@@ -30,10 +28,10 @@ int Collision::doCollisonCheck(const HitRange& target) {
 	int tY1 = target.yPos + target.yOffset;
 	int tY2 = target.yPos + target.yOffset + target.ySize;
 
-	int mX1 = hitRange->xPos + hitRange->xOffset;
-	int mX2 = hitRange->xPos + hitRange->xOffset + hitRange->xSize;
-	int mY1 = hitRange->yPos + hitRange->yOffset;
-	int mY2 = hitRange->yPos + hitRange->yOffset + hitRange->ySize;
+	int mX1 = hitRange.xPos + hitRange.xOffset;
+	int mX2 = hitRange.xPos + hitRange.xOffset + hitRange.xSize;
+	int mY1 = hitRange.yPos + hitRange.yOffset;
+	int mY2 = hitRange.yPos + hitRange.yOffset + hitRange.ySize;
 
 
 	DrawFormatString(0, 200, 0xFFFFFF, "Enemy:%d,%d     Player:%d,%d",mX1,mX2, tX1, tY1);

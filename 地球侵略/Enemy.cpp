@@ -50,7 +50,7 @@ void Enemy::Draw(int drawX, int drawY)
 }
 
 void Enemy::collisionCheck(const Collision & target) {
-	int isCol = collision->doCollisonCheck(*(target.hitRange));
+	int isCol = collision->doCollisonCheck((target.hitRange));
 	if (isCol) {
 		DrawBox(10, 20, 100, 200, 0xFF0000, true);
 	}
