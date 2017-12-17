@@ -17,9 +17,14 @@ public:
 private:
 	std::vector<std::vector <int>> vmap;
 	int clock = 0;
+	int x1 = 0;
+	int x2 = 0;
+	int y1 = 0;
+	int y2 = 0;
 	const int MOVE = 2;
 	int drawCount = 0;
 	int cMove = 0;
+	void PerDecision();
 	void LoadImg();
 	bool MapHitCheck(int , int , char);
 	void MyDraw(int, int, int, bool);

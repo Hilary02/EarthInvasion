@@ -1,5 +1,6 @@
 #pragma once
 #include "Scene_Frame.h"
+#include "SoundManager.h"
 class Scene_Config :
 	public Scene_Frame
 {
@@ -10,15 +11,6 @@ public:
 	void Draw();
 private:
 	const static int MENU_NUM = 5;
-	// 音楽ハンドル
-	int bgm;
-	int se;
-	int *sound;
-	// 音量
-	int bgmVolume;
-	int seVolume;
-	int *volume;
-
 	//どれが選択されているのか
 	enum OPTION_SELECT {
 		BGM, SE, KEY, PAD, EXIT
@@ -45,6 +37,5 @@ private:
 public:
 	// キー入力に応じてコンフィグ操作を行う関数
 	void MoveCursor();
-	void init();
 };
 

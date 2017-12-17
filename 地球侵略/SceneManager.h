@@ -1,5 +1,6 @@
 #pragma once
 #include "Scene_Frame.h"
+#include "SoundManager.h"
 
 
 enum class scene : unsigned char {

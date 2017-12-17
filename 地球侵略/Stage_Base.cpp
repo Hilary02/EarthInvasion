@@ -5,11 +5,13 @@
 #include <string>
 #include <sstream> //文字ストリーム
 #include "KeyManager.h"
+#include "SoundManager.h"
 
 Stage_Base::Stage_Base() :
 	//コンストラクタの引数に設定されないといけない
 	MAP_HEIGHT(30)
 	, MAP_WIDTH(128) {
+	SoundM.SetSound(LoadSoundMem("data/mc/ビルの屋上、危険伴わず.wav"));
 	//08.18　vectorのサイズを動的に変更できるようにした
 	//指定したマップサイズで配列を確保
 	//参考にしたところ
@@ -34,7 +36,7 @@ Stage_Base::Stage_Base() :
 
 	//どちらかを使う
 	//objectMgr = new ObjectManager(vmap,player);
-	
+
 	infoArea = new InfoArea(player);
 	//地形画像の読み込み
 	//TODO:引数をつける

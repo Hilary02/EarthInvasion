@@ -18,10 +18,11 @@
     <ClCompile Include="Scene_Frame.cpp" />
     <ClCompile Include="Scene_Game.cpp" />
     <ClCompile Include="Scene_Title.cpp" />
-    <ClCompile Include="Stage_Base.cpp" />
-    <ClCompile Include="WindowData.cpp" />
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="CollisionManager.cpp" />
+    <ClCompile Include="SoundManager.cpp" />
+    <ClCompile Include="Stage_Base.cpp" />
+    <ClCompile Include="WindowData.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Creature.h" />
@@ -41,10 +42,11 @@
     <ClInclude Include="Scene_Frame.h" />
     <ClInclude Include="Scene_Game.h" />
     <ClInclude Include="Scene_Title.h" />
-    <ClInclude Include="Stage_Base.h" />
-    <ClInclude Include="WindowData.h" />
     <ClInclude Include="Collision.h" />
     <ClInclude Include="ICollisionManager.h" />
     <ClInclude Include="CollisionManager.h" />
+    <ClInclude Include="SoundManager.h" />
+    <ClInclude Include="Stage_Base.h" />
+    <ClInclude Include="WindowData.h" />
   </ItemGroup>
 </Project>
