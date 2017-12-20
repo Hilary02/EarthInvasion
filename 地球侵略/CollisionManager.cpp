@@ -19,6 +19,9 @@ void CollisionManager::requestAction(Action act){
 	case Action::KillPlayer:
 		killPlayer();
 		break;
+	case Action::HealPlayer:
+		healPlayer();
+		break;
 	default:
 		break;
 	}
@@ -30,4 +33,8 @@ void CollisionManager::damagePlayer(){
 
 void CollisionManager::killPlayer(){
 	player->modHp(-20);
+}
+
+void CollisionManager::healPlayer(){
+	player->modHp(1);
 }

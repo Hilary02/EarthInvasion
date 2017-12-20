@@ -7,5 +7,8 @@ class Item :
 public:
 	Item();
 	~Item();
-	Item(int x, int y, int img);
+	Item(int x, int y, int img, ICollisionManager* IcolMgr);
+	void Update(const Collision & playerCol) override;
+	void Draw(int drawX, int drawY) override;
+	void collisionCheck(const Collision& target);
 };

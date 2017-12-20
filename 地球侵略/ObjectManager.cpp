@@ -1,4 +1,5 @@
 #include "ObjectManager.h"
+#include "Item.h"
 #include<memory>
 
 ObjectManager::ObjectManager()
@@ -12,7 +13,7 @@ ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap, Player * playe
 	for (unsigned int i = 0; i < vmap.size(); i++) {
 		for (unsigned int j = 0; j < vmap[i].size(); j++) {
 			//if (vmap[i][j] == 3 || vmap[i][j] == 4 || vmap[i][j] == 6) {
-			if (vmap[i][j] == 4) {
+			if (vmap[i][j] == 4 || vmap[i][j] == 5) {
 
 				Object* obje;
 				int y = i * 32;//yÀ•W
@@ -32,7 +33,10 @@ ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap, Player * playe
 				case 4:
 					//obje = new Enemy(x, y, img[10], vmap[i][j]);
 					obje = new Enemy(x, y, img[10], vmap[i][j],IcolMgr);
-
+					break;
+				case 5:
+					obje = new Item(x, y, img[20],IcolMgr);
+					break;
 		/*		case 3:
 					obje = GroundFloor(x, y, img[3]);
 					break;
