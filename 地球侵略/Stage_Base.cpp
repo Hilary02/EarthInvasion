@@ -52,8 +52,8 @@ Stage_Base::~Stage_Base() {
 
 void Stage_Base::update() {
 	drawChipNum = 0;
-	player->Update();
-	objectMgr->Update();
+	player->update();
+	objectMgr->update();
 	infoArea->update();
 	scrollMap();	//プレイヤー座標に応じた表示範囲の変更
 

@@ -13,10 +13,10 @@ enum class scene : unsigned char {
 
 /*
 シーン遷移機能を提供する．
-Scene_Frameを継承したクラスのポインタをもち，そこからUpdateとDraw処理を行う．
+Scene_Frameを継承したクラスのポインタをもち，そこからupdateとDraw処理を行う．
 シーン変更を要求したい場合は，ChangeScene関数を用いて予約をする
-次のUpdate処理が実行されるときにシーン変更が実行される．
-シーンを追加したい際にはscene列挙体に列挙子を追加して，Update処理にも追加を行うこと．
+次のupdate処理が実行されるときにシーン変更が実行される．
+シーンを追加したい際にはscene列挙体に列挙子を追加して，update処理にも追加を行うこと．
 ※現在それ以外のクラスも呼ぶことができてしまう．インターフェイスに変更を行う予定
 
 */
@@ -25,7 +25,7 @@ public:
 	SceneManager();
 	~SceneManager();
 	void ChangeScene(scene);
-	void Update();
+	void update();
 	void Draw();
 
 private:

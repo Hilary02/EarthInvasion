@@ -22,7 +22,7 @@ Player::~Player() {
 }
 
 //ŒvŽZˆ—
-void Player::Update() {
+int Player::update() {
 	PerDecision();
 
 	if (keyM.GetKeyFrame(KEY_INPUT_LEFT) >= 1 && !isAttack) {
@@ -107,7 +107,7 @@ void Player::Update() {
 	}
 
 	if (invalidDamageTime < 60) invalidDamageTime++;
-
+	return 0;
 }
 
 bool Player::MapHitCheck(int movedX, int movedY, char check)

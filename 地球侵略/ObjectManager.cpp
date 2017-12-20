@@ -112,9 +112,15 @@ void ObjectManager::Loadimg() {
 	img[21] = LoadGraph("data/img/curePod.png"); //21‚Í“ÅÁ‚µ
 }
 
-void ObjectManager::Update(){
+void ObjectManager::update(){
+	DrawFormatString(90,90,0x000000,0xFFFFFF,"%d",)
+	int i = 0;
 	for (auto &obj : objects) {
-		obj->Update(*(player->collision));
+		i++;
+		int n=obj->update(*(player->collision));
+		if (n == -1) {
+			objects.erase(objects.begin() +i);
+		}
 	}
 }
 

@@ -16,7 +16,7 @@ public:
 
 	void Loadimg();
 
-	void Update();
+	void update();
 	void Draw(int drawX, int drawY);
 	
 	std::map<int, int> img;
@@ -27,7 +27,7 @@ private:
 
 	Player *player;
 	ICollisionManager* IcolMgr;
-
+	
 };
 
 

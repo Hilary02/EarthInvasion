@@ -7,7 +7,7 @@ class HealItem :
 public:
 	HealItem(int x,int y ,int img);
 	~HealItem();
-	void Update();
+	int update();
 	void Draw();
 };
 

@@ -12,17 +12,15 @@ Object::~Object()
 {
 }
 
-void Object::Update(const Collision & playerCol)
+int Object::update(const Collision & playerCol)
 {
+	return 0;
 }
 
 void Object::Draw(int drawX, int drawY)
 {
 }
 
-void Object::collisionCheck()
-{
-}
 
 // マップにおいての絶対座標を指定するとその座標に設定
 void Object::setAbsolutePos(int modX, int modY) {

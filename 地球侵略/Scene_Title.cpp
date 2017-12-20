@@ -30,7 +30,7 @@ Scene_Title::~Scene_Title()
 {
 }
 
-void Scene_Title::Update(){
+void Scene_Title::update(){
 	if (keyM.GetKeyFrame(KEY_INPUT_DOWN) == 1 || (keyM.GetKeyFrame(KEY_INPUT_DOWN) >= 15 && keyM.GetKeyFrame(KEY_INPUT_DOWN) % 4 == 0)) {	//‰ºƒL[‚ª‰Ÿ‚³‚ê‚Ä‚¢‚½‚ç
 		nowSelect = (nowSelect + 1) % TITLE_NUM;				//‘I‘ğó‘Ô‚ğˆê‚Â‰º‚°‚é
 		SoundM.Se(LoadSoundMem("data/mc/se_Z.mp3"));

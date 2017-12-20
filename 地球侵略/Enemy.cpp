@@ -29,11 +29,12 @@ Enemy::Enemy(int x, int y, int img, int id, ICollisionManager* IcolMgr){
 //	HitAction = hit;
 //}
 
-void Enemy::Update(const Collision & playerCol)
+int Enemy::update(const Collision & playerCol)
 {
 	MoveCommon();
 	collision->updatePos(x, y);
 	collisionCheck(playerCol);
+	return 0;
 }
 
 void Enemy::Draw(int drawX, int drawY)

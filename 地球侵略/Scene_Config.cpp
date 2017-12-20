@@ -15,7 +15,7 @@ Scene_Config::Scene_Config() {
 Scene_Config::~Scene_Config() {
 }
 
-void Scene_Config::Update() {
+void Scene_Config::update() {
 	if (keyM.GetKeyFrame(KEY_INPUT_ESCAPE) == 1) {
 		SceneM.ChangeScene(scene::Title);
 	}

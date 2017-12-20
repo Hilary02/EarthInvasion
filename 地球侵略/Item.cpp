@@ -20,10 +20,11 @@ Item::Item(int x, int y, int img, ICollisionManager* IcolMgr)
 	this->IcolMgr = IcolMgr;
 }
 
-void Item::Update(const Collision & playerCol)
+int Item::update(const Collision & playerCol)
 {
 	collision->updatePos(x, y);
-	collisionCheck(playerCol);
+	int n = collisionCheck(playerCol);
+	return n;
 }
 
 void Item::Draw(int drawX, int drawY)
@@ -32,15 +33,17 @@ void Item::Draw(int drawX, int drawY)
 	DrawGraph(x - drawX, y - drawY, imgHandle, true);
 }
 
-void Item::collisionCheck(const Collision & target) {
+int Item::collisionCheck(const Collision & target) {
 	int isCol = collision->doCollisonCheck((target.hitRange));
 	if (isCol) {
 		
 		IcolMgr->requestAction(Action::HealPlayer);
 		//•Û—¯
 		//delete this;
+		return -1;
 	}
 	else {
 		DrawBox(10, 20, 100, 200, 0xFF0000, false);
+		return 0;
 	}
 }
