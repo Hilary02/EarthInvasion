@@ -25,55 +25,65 @@ Player::~Player() {
 void Player::Update() {
 	PerDecision();
 
-	if (keyM.GetKeyFrame(KEY_INPUT_LEFT) >= 1 && !isAttack) {
+	if (keyM.GetKeyFrame(KEY_INPUT_LEFT) >= 1 && !isAttack && isMoving == 'N') {
 		right = false;
 		xyCheck = 'x';
-		if (MapHitCheck(x1 - MOVE, y1, xyCheck) && MapHitCheck(x1 - MOVE, y2, xyCheck)) {
+		if (MapHitCheck(x1 - MOVE, y1, xyCheck) && MapHitCheck(x1 - MOVE, y2, xyCheck) && MapHitCheck(x1 - MOVE, y3, xyCheck)) {
 			x -= MOVE;
 		}
 		else {
 			x -= cMove;
 		}
 	}
-	if (keyM.GetKeyFrame(KEY_INPUT_RIGHT) >= 1 && !isAttack) {
+	if (keyM.GetKeyFrame(KEY_INPUT_RIGHT) >= 1 && !isAttack && isMoving == 'N') {
 		right = true;
 		xyCheck = 'x';
-		if (MapHitCheck(x2 + MOVE, y1, xyCheck) && MapHitCheck(x2 + MOVE, y2, xyCheck)) {
+		if (MapHitCheck(x2 + MOVE, y1, xyCheck) && MapHitCheck(x2 + MOVE, y2, xyCheck) && MapHitCheck(x2 + MOVE, y3, xyCheck)) {
 			x += MOVE;
 		}
 		else {
 			x += cMove;
 		}
 	}
-	if (keyM.GetKeyFrame(KEY_INPUT_DOWN) >= 1 && !isJumping && !isAttack && !isLiquid) {
+	if (keyM.GetKeyFrame(KEY_INPUT_DOWN) >= 1 && !isJumping && !isAttack && !isLiquid && isMoving == 'N') {
 		isLiquid = true;
+		isMoving = 'L';
+		drawCount = 0;
 	}
 
-	else if (keyM.GetKeyFrame(KEY_INPUT_DOWN) == 0) {
-		xyCheck = 'y';
-		if (MapHitCheck(x1, y, xyCheck) && MapHitCheck(x2, y, xyCheck))
+	if (keyM.GetKeyFrame(KEY_INPUT_DOWN) == 0 && isLiquid) {
+		xyCheck = 'N';
+		if (MapHitCheck(x1, y, xyCheck) && MapHitCheck(x2, y, xyCheck) && MapHitCheck(x3, y, xyCheck)) {
 			isLiquid = false;
+			isMoving = 'R';
+		}
 	}
 
-	if (keyM.GetKeyFrame(KEY_INPUT_UP) == 1 && !isLiquid && !isAttack) {
+	if (keyM.GetKeyFrame(KEY_INPUT_UP) == 1 && !isLiquid && !isAttack && isMoving == 'N' && !isJumping) {
 		isJumping = true;
 		jumpPower = -6;
 	}
-	if (keyM.GetKeyFrame(KEY_INPUT_A) == 1 && !isAttack && !isJumping && !isLiquid) {
+	if (keyM.GetKeyFrame(KEY_INPUT_A) == 1 && !isAttack && !isJumping && !isLiquid && isMoving == 'N') {
 		isAttack = true;
 		drawCount = 0;
 	}
-	if (keyM.GetKeyFrame(KEY_INPUT_S) >= 1) {
-		//ObjectManager.aaaa(x,y);
+	if (keyM.GetKeyFrame(KEY_INPUT_S) >= 1 && !isAttack && !isJumping && !isLiquid && isMoving == 'N') {
+		if (1) {
+			isMoving = 'I';
+			drawCount = 0;
+		}
 	}
-	if (keyM.GetKeyFrame(KEY_INPUT_E) >= 1) {
-
+	if (keyM.GetKeyFrame(KEY_INPUT_E) >= 1 && !isAttack && !isJumping && !isLiquid && isMoving == 'N') {
+		if (plState != 'N') {
+			isMoving = 'O';
+			drawCount = 0;
+		}
 	}
 
 	if (isJumping) {
 		xyCheck = 'y';
-		if ((MapHitCheck(x1, y2 + jumpPower, xyCheck) && MapHitCheck(x2, y2 + jumpPower, xyCheck))
-		&& (MapHitCheck(x1, y1 + jumpPower, xyCheck) && MapHitCheck(x2, y1 + jumpPower, xyCheck))) {
+		if ((MapHitCheck(x1, y2 + jumpPower, xyCheck) && MapHitCheck(x2, y2 + jumpPower, xyCheck) && MapHitCheck(x3, y2 + jumpPower, xyCheck))
+		&& (MapHitCheck(x1, y1 + jumpPower, xyCheck) && MapHitCheck(x2, y1 + jumpPower, xyCheck) && MapHitCheck(x3, y1 + jumpPower, xyCheck))) {
 			y += jumpPower;
 			clock++;
 			if (clock >= 5) {
@@ -91,7 +101,7 @@ void Player::Update() {
 	}
 
 	xyCheck = 'y';
-	if (MapHitCheck(x1, y2 + 1, xyCheck) && MapHitCheck(x2, y2 + 1, xyCheck)) {
+	if (MapHitCheck(x1, y2 + 1, xyCheck) && MapHitCheck(x2, y2 + 1, xyCheck) && MapHitCheck(x3, y2 + 1, xyCheck)) {
 		isJumping = true;
 	}
 	else if (jumpPower > 0) {
@@ -117,19 +127,18 @@ bool Player::MapHitCheck(int movedX, int movedY, char check)
 		return true;
 		break;
 	case 1:
-		DrawFormatString(200, 140, 0xFFFFFF, "見えない壁だ！");
 		if (check == 'x') {
-			if (movedX - x > 0)
-				cMove = movedX - (x + 63) - (movedX % 32 + 1);
-			else if (movedX - x < 0)
-				cMove = x % 32;
+			if (movedX - x2 > 0)
+				cMove = movedX - x2 - (movedX % 32 + 1);
+			else if (movedX - x1 < 0)
+				cMove = x1 % 32;
 		}
 		if (check == 'y') {
-			if (movedY - (y + 63) > 0) {
-				cMove = (movedY - (y + 63)) - (movedY % 32 + 1);
+			if (movedY - y2 > 0) {
+				cMove = (movedY - y2) - (movedY % 32 + 1);
 			}
-			else if (movedY - y < 0) {
-				cMove = y % 32;
+			else if (movedY - y1 < 0) {
+				cMove = y1 % 32;
 				jumpPower = 0;
 			}
 		}
@@ -138,17 +147,17 @@ bool Player::MapHitCheck(int movedX, int movedY, char check)
 	case 2:
 		DrawFormatString(200, 140, 0xFFFFFF, "壁だ！");
 		if (check == 'x') {
-			if (movedX - x > 0)
-				cMove = movedX - (x + 63) - (movedX % 32 + 1);
-			else if (movedX - x < 0)
-				cMove = x % 32;
+			if (movedX - x2 > 0)
+				cMove = movedX - x2 - (movedX % 32 + 1);
+			else if (movedX - x1 < 0)
+				cMove = x1 % 32;
 		}
 		if (check == 'y') {
-			if (movedY - (y + 63) > 0) {
-				cMove = (movedY - (y + 63)) - (movedY % 32 + 1);
+			if (movedY - y2 > 0) {
+				cMove = (movedY - (y+63)) - (movedY % 32 + 1);
 			}
-			else if (movedY - y < 0) {
-				cMove = y % 32;
+			else if (movedY - y1 < 0) {
+				cMove = y1 % 32;
 				jumpPower = 0;
 			}
 		}
@@ -159,8 +168,8 @@ bool Player::MapHitCheck(int movedX, int movedY, char check)
 		return true;
 		break;
 	case 9:
-		if (movedY - (y + 63) > 0) {
-			cMove = (movedY - (y + 63)) - (movedY % 32 + 1);
+		if (movedY - (y2) > 0) {
+			cMove = (movedY - (y2)) - (movedY % 32 + 1);
 		}
 		return false;
 		break;
@@ -186,6 +195,16 @@ void Player::Draw(int drawX, int drawY) {
 			else if (jumpPower < -1)
 				MyDraw(tempX, tempY, jump[0], right);
 		}
+		else if (isMoving == 'L') {
+			MyDraw(tempX, tempY, liquid[drawCount / 5 % 4], right);
+			drawCount++;
+			if (drawCount >= 20) isMoving = 'N';
+		}
+		else if (isMoving == 'R') {
+			MyDraw(tempX, tempY, liquid[3 - drawCount / 5 % 4], right);
+			drawCount++;
+			if (drawCount >= 20) isMoving = 'N';
+		}
 		else if (isLiquid) {
 			if (keyM.GetKeyFrame(KEY_INPUT_RIGHT) >= 1) {
 				drawCount = keyM.GetKeyFrame(KEY_INPUT_RIGHT) / 15 % 4 + 5;
@@ -196,19 +215,24 @@ void Player::Draw(int drawX, int drawY) {
 				MyDraw(tempX, tempY, liquid[drawCount], right);
 			}
 			else {
-
-				if(keyM.GetKeyFrame(KEY_INPUT_DOWN) < 20)
-					drawCount = keyM.GetKeyFrame(KEY_INPUT_DOWN) / 5 % 4;
-
-				else 
-					drawCount = keyM.GetKeyFrame(KEY_INPUT_DOWN) / 15 % 4 + 5;
+				drawCount = keyM.GetKeyFrame(KEY_INPUT_DOWN) / 15 % 4 + 5;
 				MyDraw(tempX, tempY, liquid[drawCount], right);
 			}
 		}
-		else if (isAttack) {
+		else if (isAttack) { 
 			MyDraw(tempX, tempY, attack[drawCount / 8 % 8], right);
 			drawCount++;
 			if (drawCount >= 64) isAttack = false;
+		}
+		else if (isMoving == 'I') {
+			MyDraw(tempX, tempY, parasite[drawCount / 8 % 8], right);
+			drawCount++;
+			if (drawCount >= 64) isMoving = 'N';
+		}
+		else if (isMoving == 'O') {
+			MyDraw(tempX, tempY, parasite[drawCount / 8 % 8 + 10], right);
+			drawCount++;
+			if (drawCount >= 64) isMoving = 'N';
 		}
 		else if (keyM.GetKeyFrame(KEY_INPUT_RIGHT) >= 1) {
 			drawCount = keyM.GetKeyFrame(KEY_INPUT_RIGHT) / 15 % 4;
@@ -318,9 +342,9 @@ int Player::getHp()
 
 void Player::PerDecision()
 {
-	int sizeX1 = 0;
-	int sizeX2 = 63;
-	int sizeY1 = 0;
+	int sizeX1 = 16;
+	int sizeX2 = 46;
+	int sizeY1 = 23;
 	int sizeY2 = 63;
 	if (isLiquid) {
 		sizeY1 = 32;
@@ -329,7 +353,8 @@ void Player::PerDecision()
 	y1 = y + sizeY1;
 	x2 = x + sizeX2;
 	y2 = y + sizeY2;
-
+	x3 = x + ((sizeX1 + sizeX2) / 2);
+	y3 = y + ((sizeY1 + sizeY2) / 2);
 }
 void Player::modHp(int mod){
 	//変化量が負の場合のみ，無敵時間を起動
@@ -358,10 +383,21 @@ void Player::LoadImg()
 	LoadDivGraph("data/img/eeyanEkijoukaMove.png", 4, 4, 1, 64, 64, &liquid[5]);
 	//主人公攻撃
 	LoadDivGraph("data/img/eeyanAttack.png", 8, 4, 2, 64, 64, attack);
+	//主人公寄生
+	LoadDivGraph("data/img/eeyanParasite.png", 8, 4, 2, 64, 64, parasite);
+	LoadDivGraph("data/img/eeyanParasiteOut.png", 8, 4, 2, 64, 64, &parasite[10]);
 	//主人公死亡
 	LoadDivGraph("data/img/eeyanDie.png", 16, 4, 4, 64, 64, die);
 
+	//一般兵Aニュートラル
+
+	//一般兵A歩行
+	LoadDivGraph("data/img/enemy1WalkP.png", 8, 4, 2, 64, 64, &move[10]);
 	//一般兵Aジャンプ
 	LoadDivGraph("data/img/enemy1JumpP.png", 4, 4, 1, 64, 64, &jump[10]);
-
+	//一般兵A攻撃
+	LoadDivGraph("data/img/enemy1WaitForAtackP.png", 4, 4, 1, 64, 64, &attack[10]);
+	LoadDivGraph("data/img/enemy1AtackP.png", 4, 4, 1, 64, 64, &attack[15]);
+	//一般兵A死亡
+	LoadDivGraph("data/img/enemy1DieP.png", 8, 4, 2, 64, 64, &die[10]);
 }
