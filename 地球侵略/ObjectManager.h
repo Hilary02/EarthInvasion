@@ -5,6 +5,7 @@
 #include "HealItem.h"
 #include "Enemy.h"
 #include "MoveGround.h"
+#include "SpikeBlock.h"
 #include <map>
 #include <vector>
 

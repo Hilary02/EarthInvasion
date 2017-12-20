@@ -40,6 +40,7 @@
     <ClCompile Include="Scene_Game.cpp" />
     <ClCompile Include="Scene_Title.cpp" />
     <ClCompile Include="SoundManager.cpp" />
+    <ClCompile Include="SpikeBlock.cpp" />
     <ClCompile Include="Stage_Base.cpp" />
     <ClCompile Include="WindowData.cpp" />
   </ItemGroup>
@@ -66,6 +67,7 @@
     <ClInclude Include="Scene_Game.h" />
     <ClInclude Include="Scene_Title.h" />
     <ClInclude Include="SoundManager.h" />
+    <ClInclude Include="SpikeBlock.h" />
     <ClInclude Include="Stage_Base.h" />
     <ClInclude Include="WindowData.h" />
   </ItemGroup>

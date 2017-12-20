@@ -12,7 +12,7 @@ ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap, Player * playe
 	for (unsigned int i = 0; i < vmap.size(); i++) {
 		for (unsigned int j = 0; j < vmap[i].size(); j++) {
 			//if (vmap[i][j] == 3 || vmap[i][j] == 4 || vmap[i][j] == 6) {
-			if (vmap[i][j] ==  4 || vmap[i][j] == 8) {
+			if (vmap[i][j] ==  4 || vmap[i][j] == 8 || vmap[i][j] == 9) {
 
 				Object* obje;
 				int y = i * 32;//yÀ•W
@@ -33,18 +33,20 @@ ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap, Player * playe
 
 					//obje = new Enemy(x, y, img[10], vmap[i][j]);
 					obje = new Enemy(x, y, img[10], vmap[i][j],IcolMgr);
+					break;
 
 		/*		case 3:
 					obje = GroundFloor(x, y, img[3]);
 
 					break;
+					*/
 				case 8:
-					obje = new MoveGround(x, y, 3, 0, 0, img[3]);
+					obje = new MoveGround(x, y, 2, 0, 0, img[3]);
 					break;
-		/*
-				case 10:
-					obje = Enemy(x, y, img[10]);
+				case 9:
+					obje = new SpikeBlock(x, y, img[9], IcolMgr);
 					break;
+/*	
 				case 11:
 					obje = Enemy(x, y, img[11]);
 					break;
@@ -105,6 +107,7 @@ ObjectManager::~ObjectManager() {
 
 void ObjectManager::Loadimg() {
 	img[3] = LoadGraph("data/img/moveGround.png");  //3‚Í“®‚­°
+	img[9] = LoadGraph("data/img/togetoge.png");	//9togetoge
 	img[10] = LoadGraph("data/img/enemy1Wait.png");   //10‚Íˆê”Ê•º
 	img[11] = LoadGraph("data/img/");   //11‚Í’†«
 	img[12] = LoadGraph("data/img/");   //12‚Íƒxƒeƒ‰ƒ“•º

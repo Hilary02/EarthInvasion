@@ -7,7 +7,7 @@ public:
 	MoveGround();
 	~MoveGround();
 	MoveGround(int x, int y, int moveup, int movedown, char xory, int img);
-	void Update() override;
+	void Update(const Collision & playerCol) override;
 	void Draw(int drawX, int drawY) override;
 	void Move();
 	void MoveCheck();
