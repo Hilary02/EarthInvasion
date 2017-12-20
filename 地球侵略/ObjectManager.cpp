@@ -113,13 +113,13 @@ void ObjectManager::Loadimg() {
 }
 
 void ObjectManager::update(){
-	DrawFormatString(90,90,0x000000,0xFFFFFF,"%d",)
+	//DrawFormatString(90,90,0x000000,0xFFFFFF)
 	int i = 0;
 	for (auto &obj : objects) {
 		i++;
 		int n=obj->update(*(player->collision));
 		if (n == -1) {
-			objects.erase(objects.begin() +i);
+			objects.erase(objects.begin() +i-1);
 		}
 	}
 }
