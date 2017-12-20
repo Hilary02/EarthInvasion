@@ -11,7 +11,7 @@ ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap) {
 	for (unsigned int i = 0; i < vmap.size(); i++) {
 		for (unsigned int j = 0; j < vmap[i].size(); j++) {
 			//if (vmap[i][j] == 3 || vmap[i][j] == 4 || vmap[i][j] == 6) {
-			if (vmap[i][j] == 4) {
+			if (vmap[i][j] ==  4 || vmap[i][j] == 8) {
 
 				Object* obje;
 				int y = i * 32;//yÀ•W
@@ -30,10 +30,11 @@ ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap) {
 
 				case 4:
 					obje = new Enemy(x, y, img[10], vmap[i][j]);
-
-		/*		case 3:
-					obje = GroundFloor(x, y, img[3]);
 					break;
+				case 8:
+					obje = new MoveGround(x, y, 3, 0, 0, img[3]);
+					break;
+		/*		
 				case 10:
 					obje = Enemy(x, y, img[10]);
 					break;
@@ -95,7 +96,7 @@ ObjectManager::~ObjectManager() {
 }
 
 void ObjectManager::Loadimg() {
-	img[3] = LoadGraph("data/img/groundFloor.png");  //3‚Í“®‚­°
+	img[3] = LoadGraph("data/img/moveGround.png");  //3‚Í“®‚­°
 	img[10] = LoadGraph("data/img/enemy1Wait.png");   //10‚Íˆê”Ê•º
 	img[11] = LoadGraph("data/img/");   //11‚Í’†«
 	img[12] = LoadGraph("data/img/");   //12‚Íƒxƒeƒ‰ƒ“•º

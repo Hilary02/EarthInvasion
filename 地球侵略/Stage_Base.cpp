@@ -147,7 +147,7 @@ int Stage_Base::loadImg() {
 	chipImg[5] = LoadGraph("data/img/healPot.png");
 	chipImg[6] = LoadGraph("data/img/lockDoor.png");
 	chipImg[7] = LoadGraph("data/img/airFloor.png");
-	chipImg[8] = LoadGraph("data/img/moveGround.png");
+	//chipImg[8] = LoadGraph("data/img/moveGround.png");
 	chipImg[9] = LoadGraph("data/img/togetoge.png");
 	bgHand = LoadGraph("data/img/bg01.jpg");
 	return 1;
