@@ -4,8 +4,6 @@
 #include "SceneManager.h"
 #include "WindowData.h"
 
-//現在は表示したいクラスをここで読みこんでしまっているが，ポインタを用いて必要分だけ読みこめるように
-int time = 0;
 
 
 GameMain::GameMain(){

@@ -6,19 +6,25 @@ class Player :
 {
 public:
 	Player(const std::vector<std::vector <int>>  &vmap);
-	Player(int x, int y);
+	//Player(int x, int y);
 	~Player();
 	void Update();
 	void Draw(int, int);
 	int getX();
 	int getY();
 	int getHp();
+	void modHp(int mod) override;
 private:
 	std::vector<std::vector <int>> vmap;
 	int clock = 0;
+	int x1 = 0;
+	int x2 = 0;
+	int y1 = 0;
+	int y2 = 0;
 	const int MOVE = 2;
 	int drawCount = 0;
 	int cMove = 0;
+	void PerDecision();
 	void LoadImg();
 	bool MapHitCheck(int , int , char);
 	void MyDraw(int, int, int, bool);
@@ -37,4 +43,6 @@ private:
 	int jump[20];
 	int liquid[10];
 	int die[20];
+
+	int invalidDamageTime=60;
 };

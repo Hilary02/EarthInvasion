@@ -4,7 +4,7 @@
 #include <iostream>//ファイル入出力
 #include <string>
 #include <sstream> //文字ストリーム
-#include "KeyManager.h";
+#include "KeyManager.h"
 #include "SoundManager.h"
 
 Stage_Base::Stage_Base() :
@@ -31,11 +31,12 @@ Stage_Base::Stage_Base() :
 	//プレイヤー呼び出し
 	player = new Player(vmap);
 	player->setAbsolutePos(400, 800);
-	objectMgr = new ObjectManager(vmap);
+	colMgr = new CollisionManager(player);
+	objectMgr = new ObjectManager(vmap,player,colMgr);
 
 	//どちらかを使う
 	//objectMgr = new ObjectManager(vmap,player);
-	
+
 	infoArea = new InfoArea(player);
 	//地形画像の読み込み
 	//TODO:引数をつける
@@ -45,10 +46,11 @@ Stage_Base::Stage_Base() :
 
 Stage_Base::~Stage_Base() {
 	delete player;
+	delete colMgr;
+	delete objectMgr;
 }
 
 void Stage_Base::update() {
-	totalFrame++;
 	drawChipNum = 0;
 	player->Update();
 	objectMgr->Update();

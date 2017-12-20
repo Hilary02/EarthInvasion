@@ -11,15 +11,14 @@
 class ObjectManager{
 public:
 	ObjectManager();
-	ObjectManager(std::vector<std::vector <int>> vmap);
-	ObjectManager(std::vector<std::vector <int>> vmap,Player* player);
+	//ObjectManager(std::vector<std::vector <int>> vmap);
+	ObjectManager(std::vector<std::vector <int>> vmap,Player* player, ICollisionManager* colMgr);
 	~ObjectManager();
 
 	void Loadimg();
 
 	void Update();
 	void Draw(int drawX, int drawY);
-	void HitCheck(Object target);
 	
 	std::map<int, int> img;
 
@@ -28,8 +27,7 @@ private:
 	std::vector<Object*> objects;
 
 	Player *player;
-
-	void damage_player();
+	ICollisionManager* IcolMgr;
 
 };
 

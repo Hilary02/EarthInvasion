@@ -6,15 +6,16 @@ Player::Player(std::vector<std::vector <int>> const &vmap) {
 	this->vmap = vmap;
 	this->hp = 15;
 	LoadImg();
+	collision = new Collision(colXOffset, colYOffset, colXSize, colYSize);
 }
 
 
-Player::Player(int x, int y) {
-	this->x = x;
-	this->y = y;
-	this->hp = 15;
-	LoadImg();
-}
+//Player::Player(int x, int y) {
+//	this->x = x;
+//	this->y = y;
+//	this->hp = 15;
+//	LoadImg();
+//}
 
 Player::~Player() {
 
@@ -22,10 +23,12 @@ Player::~Player() {
 
 //計算処理
 void Player::Update() {
+	PerDecision();
+
 	if (keyM.GetKeyFrame(KEY_INPUT_LEFT) >= 1 && !isAttack) {
 		right = false;
 		xyCheck = 'x';
-		if (MapHitCheck(x - MOVE, y, xyCheck) && MapHitCheck(x - MOVE, y + 63, xyCheck)) {
+		if (MapHitCheck(x1 - MOVE, y1, xyCheck) && MapHitCheck(x1 - MOVE, y2, xyCheck)) {
 			x -= MOVE;
 		}
 		else {
@@ -35,7 +38,7 @@ void Player::Update() {
 	if (keyM.GetKeyFrame(KEY_INPUT_RIGHT) >= 1 && !isAttack) {
 		right = true;
 		xyCheck = 'x';
-		if (MapHitCheck(x + MOVE + 63, y, xyCheck) && MapHitCheck(x + MOVE + 63, y + 63, xyCheck)) {
+		if (MapHitCheck(x2 + MOVE, y1, xyCheck) && MapHitCheck(x2 + MOVE, y2, xyCheck)) {
 			x += MOVE;
 		}
 		else {
@@ -45,18 +48,23 @@ void Player::Update() {
 	if (keyM.GetKeyFrame(KEY_INPUT_DOWN) >= 1 && !isJumping && !isAttack && !isLiquid) {
 		isLiquid = true;
 	}
-	else if (keyM.GetKeyFrame(KEY_INPUT_DOWN) == 0)
-		isLiquid = false;
+
+	else if (keyM.GetKeyFrame(KEY_INPUT_DOWN) == 0) {
+		xyCheck = 'y';
+		if (MapHitCheck(x1, y, xyCheck) && MapHitCheck(x2, y, xyCheck))
+			isLiquid = false;
+	}
+
 	if (keyM.GetKeyFrame(KEY_INPUT_UP) == 1 && !isLiquid && !isAttack) {
 		isJumping = true;
-		jumpPower = -5;
+		jumpPower = -6;
 	}
-	if (keyM.GetKeyFrame(KEY_INPUT_A) == 1 && !isAttack && !isJumping && isLiquid) {
+	if (keyM.GetKeyFrame(KEY_INPUT_A) == 1 && !isAttack && !isJumping && !isLiquid) {
 		isAttack = true;
 		drawCount = 0;
 	}
 	if (keyM.GetKeyFrame(KEY_INPUT_S) >= 1) {
-
+		//ObjectManager.aaaa(x,y);
 	}
 	if (keyM.GetKeyFrame(KEY_INPUT_E) >= 1) {
 
@@ -64,7 +72,8 @@ void Player::Update() {
 
 	if (isJumping) {
 		xyCheck = 'y';
-		if (MapHitCheck(x, y + jumpPower + 63, xyCheck) && MapHitCheck(x + 63, y + jumpPower + 63, xyCheck)) {
+		if ((MapHitCheck(x1, y2 + jumpPower, xyCheck) && MapHitCheck(x2, y2 + jumpPower, xyCheck))
+		&& (MapHitCheck(x1, y1 + jumpPower, xyCheck) && MapHitCheck(x2, y1 + jumpPower, xyCheck))) {
 			y += jumpPower;
 			clock++;
 			if (clock >= 5) {
@@ -76,11 +85,13 @@ void Player::Update() {
 		else {
 			y += cMove;
 		}
-
+	}
+	else {
+		jumpPower = 0;
 	}
 
 	xyCheck = 'y';
-	if (MapHitCheck(x, y + 64, xyCheck) && MapHitCheck(x + 63, y + 64, xyCheck)) {
+	if (MapHitCheck(x1, y2 + 1, xyCheck) && MapHitCheck(x2, y2 + 1, xyCheck)) {
 		isJumping = true;
 	}
 	else if (jumpPower > 0) {
@@ -88,17 +99,19 @@ void Player::Update() {
 		jumpPower = 0;
 	}
 
+	collision->updatePos(x,y);
+
 	if (hp <= 0) {
 		isDead = true;
 		//GameOver();
 	}
 
+	if (invalidDamageTime < 60) invalidDamageTime++;
+
 }
 
 bool Player::MapHitCheck(int movedX, int movedY, char check)
 {
-	DrawFormatString(100, 120, 0xFFFFFF, "Seeing:%d,%d", movedX / 32, movedY / 32);
-	//DrawFormatString(100, 120, 0x00, "%d", vmap[((int)this->y + moveY) / 32][((int)this->x + moveX) / 32]);
 	switch (vmap[movedY / 32][movedX / 32]) {
 	case 0:
 		return true;
@@ -107,7 +120,7 @@ bool Player::MapHitCheck(int movedX, int movedY, char check)
 		DrawFormatString(200, 140, 0xFFFFFF, "見えない壁だ！");
 		if (check == 'x') {
 			if (movedX - x > 0)
-				cMove = (movedX - x) - (movedX % 32 + 1);
+				cMove = movedX - (x + 63) - (movedX % 32 + 1);
 			else if (movedX - x < 0)
 				cMove = x % 32;
 		}
@@ -117,17 +130,16 @@ bool Player::MapHitCheck(int movedX, int movedY, char check)
 			}
 			else if (movedY - y < 0) {
 				cMove = y % 32;
+				jumpPower = 0;
 			}
 		}
 		return false;
 		break;
 	case 2:
-		/*
-		
 		DrawFormatString(200, 140, 0xFFFFFF, "壁だ！");
 		if (check == 'x') {
 			if (movedX - x > 0)
-				cMove = movedX - x - (movedX % 32 + 1);
+				cMove = movedX - (x + 63) - (movedX % 32 + 1);
 			else if (movedX - x < 0)
 				cMove = x % 32;
 		}
@@ -137,8 +149,9 @@ bool Player::MapHitCheck(int movedX, int movedY, char check)
 			}
 			else if (movedY - y < 0) {
 				cMove = y % 32;
+				jumpPower = 0;
 			}
-		}*/
+		}
 		
 		return false;
 		break;
@@ -161,7 +174,8 @@ bool Player::MapHitCheck(int movedX, int movedY, char check)
 void Player::Draw(int drawX, int drawY) {
 	int tempX = x - drawX;
 	int tempY = y - drawY;
-
+	DrawFormatString(0, 0, 0xFFFFFF, "%d", isLiquid);
+	
 	switch (plState) {
 	case 'N':	//主人公
 		if (isJumping) {
@@ -183,8 +197,9 @@ void Player::Draw(int drawX, int drawY) {
 			}
 			else {
 
-				if(keyM.GetKeyFrame(KEY_INPUT_DOWN) < 60)
-					drawCount = keyM.GetKeyFrame(KEY_INPUT_DOWN) / 15 % 4;
+				if(keyM.GetKeyFrame(KEY_INPUT_DOWN) < 20)
+					drawCount = keyM.GetKeyFrame(KEY_INPUT_DOWN) / 5 % 4;
+
 				else 
 					drawCount = keyM.GetKeyFrame(KEY_INPUT_DOWN) / 15 % 4 + 5;
 				MyDraw(tempX, tempY, liquid[drawCount], right);
@@ -219,7 +234,6 @@ void Player::Draw(int drawX, int drawY) {
 			DrawGraph(tempX, tempY, move[drawCount], TRUE);
 		}
 		else {
-			drawCount = 0;
 			DrawGraph(tempX, tempY, wait[drawCount % 4], TRUE);
 			drawCount++;
 			if (drawCount == 60) drawCount = 0;
@@ -235,7 +249,6 @@ void Player::Draw(int drawX, int drawY) {
 			DrawGraph(tempX, tempY, move[drawCount], TRUE);
 		}
 		else {
-			drawCount = 0;
 			DrawGraph(tempX, tempY, wait[drawCount % 4], TRUE);
 			drawCount++;
 			if (drawCount == 60) drawCount = 0;
@@ -251,7 +264,6 @@ void Player::Draw(int drawX, int drawY) {
 			DrawGraph(tempX, tempY, move[drawCount], TRUE);
 		}
 		else {
-			drawCount = 0;
 			DrawGraph(tempX, tempY, wait[drawCount % 4], TRUE);
 			drawCount++;
 			if (drawCount == 60) drawCount = 0;
@@ -264,7 +276,6 @@ void Player::Draw(int drawX, int drawY) {
 			DrawGraph(tempX, tempY, move[drawCount], TRUE);
 		}
 		else {
-			drawCount = 0;
 			DrawGraph(tempX, tempY, wait[drawCount % 4], TRUE);
 			drawCount++;
 			if (drawCount == 60) drawCount = 0;
@@ -299,9 +310,39 @@ int Player::getY()
 {
 	return y;
 }
+
 int Player::getHp()
 {
-	return this->hp;
+	return hp;
+}
+
+void Player::PerDecision()
+{
+	int sizeX1 = 0;
+	int sizeX2 = 63;
+	int sizeY1 = 0;
+	int sizeY2 = 63;
+	if (isLiquid) {
+		sizeY1 = 32;
+	}
+	x1 = x + sizeX1;
+	y1 = y + sizeY1;
+	x2 = x + sizeX2;
+	y2 = y + sizeY2;
+
+}
+void Player::modHp(int mod){
+	//変化量が負の場合のみ，無敵時間を起動
+	if (mod < 0) {
+		if (invalidDamageTime == 60) {
+			invalidDamageTime = 0;
+			hp += mod;
+		}
+	}
+	else {
+		//変化量が正なら無敵時間関係なく変更
+		hp += mod;
+	}
 }
 //画像読み込み
 void Player::LoadImg()

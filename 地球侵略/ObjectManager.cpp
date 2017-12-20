@@ -6,8 +6,9 @@ ObjectManager::ObjectManager()
 }
 
 //íœ—\’è
-ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap) {
+ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap, Player * player, ICollisionManager* colMgr) {
 	Loadimg();
+	IcolMgr = colMgr;
 	for (unsigned int i = 0; i < vmap.size(); i++) {
 		for (unsigned int j = 0; j < vmap[i].size(); j++) {
 			//if (vmap[i][j] == 3 || vmap[i][j] == 4 || vmap[i][j] == 6) {
@@ -29,12 +30,18 @@ ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap) {
 						break;*/
 
 				case 4:
-					obje = new Enemy(x, y, img[10], vmap[i][j]);
+
+					//obje = new Enemy(x, y, img[10], vmap[i][j]);
+					obje = new Enemy(x, y, img[10], vmap[i][j],IcolMgr);
+
+		/*		case 3:
+					obje = GroundFloor(x, y, img[3]);
+
 					break;
 				case 8:
 					obje = new MoveGround(x, y, 3, 0, 0, img[3]);
 					break;
-		/*		
+		/*
 				case 10:
 					obje = Enemy(x, y, img[10]);
 					break;
@@ -65,6 +72,7 @@ ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap) {
 			}
 		}
 	}
+	this->player = player;
 }
 //
 //ObjectManager::ObjectManager(std::vector<std::vector<int>> vmap, Player * player){
@@ -106,28 +114,14 @@ void ObjectManager::Loadimg() {
 	img[21] = LoadGraph("data/img/curePod.png"); //21‚Í“ÅÁ‚µ
 }
 
-void ObjectManager::Update()
-{
+void ObjectManager::Update(){
 	for (auto &obj : objects) {
-		obj->Update();
+		obj->Update(*(player->collision));
 	}
 }
 
-void ObjectManager::Draw(int drawX, int drawY)
-{
-	for (auto obj : objects)
-	{
+void ObjectManager::Draw(int drawX, int drawY){
+	for (auto obj : objects){
 		obj->Draw(drawX, drawY);
 	}
-}
-
-
-//void ObjectManager::HitCheck(Object target){
-//	for (auto obj : objects) {
-//		obj.hitCheck(target);
-//	}
-//}
-
-void ObjectManager::damage_player(){
-	player->modHp(-1);
 }
