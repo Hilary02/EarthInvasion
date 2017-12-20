@@ -30,7 +30,6 @@
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="KeyManager.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="MovingFloor.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="ObjectManager.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -58,7 +57,6 @@
     <ClInclude Include="Item.h" />
     <ClInclude Include="KeyManager.h" />
     <ClInclude Include="Main.h" />
-    <ClInclude Include="MovingFloor.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="ObjectManager.h" />
     <ClInclude Include="Player.h" />
@@ -68,6 +66,7 @@
     <ClInclude Include="Scene_Game.h" />
     <ClInclude Include="Scene_Gameover.h" />
     <ClInclude Include="Scene_Title.h" />
+    <ClInclude Include="Singleton.h" />
     <ClInclude Include="SoundManager.h" />
     <ClInclude Include="Stage_Base.h" />
     <ClInclude Include="WindowData.h" />

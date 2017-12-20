@@ -68,7 +68,6 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Scene_Gameover.cpp" />
-    <ClCompile Include="MovingFloor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Collision.h">
@@ -142,7 +141,9 @@
     </ClInclude>
     <ClInclude Include="ISceneManager.h" />
     <ClInclude Include="Scene_Gameover.h" />
-    <ClInclude Include="MovingFloor.h" />
+    <ClInclude Include="Singleton.h">
+      <Filter>ソース ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ソース ファイル">
