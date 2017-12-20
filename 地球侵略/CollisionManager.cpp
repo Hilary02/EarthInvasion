@@ -1,5 +1,5 @@
 #include "CollisionManager.h"
-
+#include "SceneManager.h"
 
 
 CollisionManager::CollisionManager(Player* p){
@@ -19,6 +19,8 @@ void CollisionManager::requestAction(Action act){
 	case Action::KillPlayer:
 		killPlayer();
 		break;
+	case Action::GameOver:
+		gameOver();
 	default:
 		break;
 	}
@@ -30,4 +32,8 @@ void CollisionManager::damagePlayer(){
 
 void CollisionManager::killPlayer(){
 	player->modHp(-20);
+}
+
+void CollisionManager::gameOver() {
+	SceneM.ChangeScene(scene::GameOver);
 }

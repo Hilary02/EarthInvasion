@@ -30,6 +30,7 @@
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="KeyManager.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="MovingFloor.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="ObjectManager.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -37,6 +38,7 @@
     <ClCompile Include="Scene_Config.cpp" />
     <ClCompile Include="Scene_Frame.cpp" />
     <ClCompile Include="Scene_Game.cpp" />
+    <ClCompile Include="Scene_Gameover.cpp" />
     <ClCompile Include="Scene_Title.cpp" />
     <ClCompile Include="SoundManager.cpp" />
     <ClCompile Include="Stage_Base.cpp" />
@@ -52,9 +54,11 @@
     <ClInclude Include="HealItem.h" />
     <ClInclude Include="ICollisionManager.h" />
     <ClInclude Include="InfoArea.h" />
+    <ClInclude Include="ISceneManager.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="KeyManager.h" />
     <ClInclude Include="Main.h" />
+    <ClInclude Include="MovingFloor.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="ObjectManager.h" />
     <ClInclude Include="Player.h" />
@@ -62,6 +66,7 @@
     <ClInclude Include="Scene_Config.h" />
     <ClInclude Include="Scene_Frame.h" />
     <ClInclude Include="Scene_Game.h" />
+    <ClInclude Include="Scene_Gameover.h" />
     <ClInclude Include="Scene_Title.h" />
     <ClInclude Include="SoundManager.h" />
     <ClInclude Include="Stage_Base.h" />

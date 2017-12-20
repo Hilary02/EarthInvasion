@@ -1,6 +1,9 @@
 #pragma once
 #include "Creature.h"
 #include <vector>
+
+
+
 class Player :
 	public Creature
 {
@@ -45,4 +48,6 @@ private:
 	int die[20];
 
 	int invalidDamageTime=60;
+
+	//ICollisionManager& IcolMgr;
 };

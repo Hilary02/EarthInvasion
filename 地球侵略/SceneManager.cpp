@@ -3,7 +3,7 @@
 #include "Scene_Config.h"
 #include "Scene_Game.h"
 #include "Scene_Title.h"
-
+#include "Scene_Gameover.h"
 
 
 SceneManager SceneM;
@@ -48,6 +48,9 @@ void SceneManager::Update() {
 			break;
 		case scene::Config:
 			nowScene = new Scene_Config();
+			break;
+		case scene::GameOver:
+			nowScene = new Scene_Gameover();
 			break;
 		case scene::Ranking:
 			//‚È‚Á‚µ‚ñ

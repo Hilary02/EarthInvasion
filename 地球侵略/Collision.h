@@ -14,8 +14,7 @@ public:
 	int ySize;
 };
 
-class Collision
-{
+class Collision{
 public:
 	Collision();
 	Collision(int xOffset,int yOffset,int xSize,int ySize);

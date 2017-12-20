@@ -1,14 +1,16 @@
 #pragma once
 #include "Scene_Frame.h"
 #include "SoundManager.h"
-
+#include "ISceneManager.h"
 
 enum class scene : unsigned char {
 	None,
 	Title,
 	Game,
 	Config,
-	Ranking
+	Ranking,
+	GameOver,
+	Clear,
 };
 
 /*

@@ -2,9 +2,12 @@
 #include "Player.h"
 #include "KeyManager.h"
 
+//ŽŽŒ±“I
+#include "SceneManager.h"
+
 Player::Player(std::vector<std::vector <int>> const &vmap) {
 	this->vmap = vmap;
-	this->hp = 15;
+	this->hp = 1; //ŽŽŒ±“I
 	LoadImg();
 	collision = new Collision(colXOffset, colYOffset, colXSize, colYSize);
 }
@@ -104,6 +107,9 @@ void Player::Update() {
 	if (hp <= 0) {
 		isDead = true;
 		//GameOver();
+
+		//ŽŽŒ±“I
+		SceneM.ChangeScene(scene::GameOver);
 	}
 
 	if (invalidDamageTime < 60) invalidDamageTime++;
