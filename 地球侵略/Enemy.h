@@ -1,5 +1,6 @@
 #pragma once
 #include "Creature.h"
+#include <vector>
 
 class Enemy :
 	public Creature
@@ -17,18 +18,27 @@ public:
 	void collisionCheck(const Collision& target);
 	void MoveCommon();
 	void AtackCommon();
+	void DeadCheck();
 	bool IsRangeCheck();
 	int enemyID;
 
 private:
+	const int moveRange = 300;
+	const int mod = -1;
+
 	int drawcount = 0;
-	int walk[8];
+	int walkHundle[8];
 	int atackHundle[4];
+	int deadHundle[8];
 	int atackRen = -128;
-	const int moveRange  = 300;
+	int invalidDamageTime = 60;
 	int dis = 150;
-	bool isRight = false;
 	int movedis = 1;
+	int addCount = 1;
+	bool isRight = false;
+	bool countRE = false;
+
+	std::vector<Object*> barrettes;
 
 	Collision* collision;
 	Collision* AttackBox;

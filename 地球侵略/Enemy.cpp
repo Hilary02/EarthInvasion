@@ -15,10 +15,10 @@ Enemy::Enemy(int x, int y, int img, int id, ICollisionManager* IcolMgr){
 	this->y = y;
 	this->imgHandle = img;
 	this->enemyID = id;
-	LoadDivGraph("data/img/enemy1Walk.png", 8, 4, 2, 64, 64, walk);
+	LoadDivGraph("data/img/enemy1Walk.png", 8, 4, 2, 64, 64, walkHundle);
 	LoadDivGraph("data/img/enemy1Atack.png", 4, 4, 1, 64, 64, atackHundle);
+	LoadDivGraph("data/img/enemy1Die.png", 8, 4, 2, 64, 64, deadHundle);
 	collision = new Collision(colXOffset, colYOffset, colXSize, colYSize);
-//	AttackBox = new Collision(atackRen, colYOffset, 320, colYSize);
 	AttackBox = new Collision(32, colYOffset, -160, colYSize);
 
 	this->IcolMgr = IcolMgr;
@@ -38,6 +38,7 @@ void Enemy::Update(const Collision & playerCol)
 	collision->updatePos(x, y);
 	AttackBox->updatePos(x, y);
 	collisionCheck(playerCol);
+	DeadCheck();
 }
 
 void Enemy::Draw(int drawX, int drawY)
@@ -64,6 +65,7 @@ void Enemy::collisionCheck(const Collision & target) {
 		movedis = 0;
 		DrawBox(10, 20, 100, 200, 0xFF0000, true);
 		IcolMgr->requestAction(Action::DmgPlayer);
+		modHp(mod);
 	}
 	else if(attackR){
 		DrawBox(10,20,100,200, 0x0000ff,true);
@@ -77,6 +79,9 @@ void Enemy::collisionCheck(const Collision & target) {
 
 void Enemy::MoveCommon()
 {
+	//力技なのであとで修正（死亡時には移動しない）
+	if (countRE)movedis = 0;
+
 	movedis = 1;
 	if (isRight)
 	{
@@ -86,8 +91,8 @@ void Enemy::MoveCommon()
 	{
 		x -= movedis;
 	}
-	imgHandle = walk[(drawcount / 8) % 8];
-	drawcount++;
+	imgHandle = walkHundle[(drawcount / 8) % 8];
+	drawcount += addCount;
 	
 	//countリセット後回し
 	//if (drawcount == 72) drawcount = 0;
@@ -97,7 +102,19 @@ void Enemy::AtackCommon()
 {
 	movedis = 0;
 	imgHandle = atackHundle[(drawcount / 12) % 4];
-	drawcount++;
+	drawcount += addCount;
+	//drawcount++;
+}
+
+void Enemy::DeadCheck()
+{
+	if(getHp() < 0){
+		if (!countRE) drawcount = 0, countRE = true;
+		if (drawcount > 84) addCount = 0;
+		imgHandle = deadHundle[(drawcount / 12) % 8];
+		drawcount += addCount;
+	}
+
 }
 
 bool Enemy::IsRangeCheck()
@@ -114,4 +131,5 @@ bool Enemy::IsRangeCheck()
 		return isRight;
 	}
 }
+
 
