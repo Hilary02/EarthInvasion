@@ -25,6 +25,7 @@
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="FPS.cpp" />
     <ClCompile Include="GameMain.cpp" />
+    <ClCompile Include="Goal.cpp" />
     <ClCompile Include="HealItem.cpp" />
     <ClCompile Include="InfoArea.cpp" />
     <ClCompile Include="Item.cpp" />
@@ -34,6 +35,7 @@
     <ClCompile Include="ObjectManager.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="Scene_Clear.cpp" />
     <ClCompile Include="Scene_Config.cpp" />
     <ClCompile Include="Scene_Frame.cpp" />
     <ClCompile Include="Scene_Game.cpp" />
@@ -50,6 +52,7 @@
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="FPS.h" />
     <ClInclude Include="GameMain.h" />
+    <ClInclude Include="Goal.h" />
     <ClInclude Include="HealItem.h" />
     <ClInclude Include="ICollisionManager.h" />
     <ClInclude Include="InfoArea.h" />
@@ -61,6 +64,7 @@
     <ClInclude Include="ObjectManager.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="SceneManager.h" />
+    <ClInclude Include="Scene_Clear.h" />
     <ClInclude Include="Scene_Config.h" />
     <ClInclude Include="Scene_Frame.h" />
     <ClInclude Include="Scene_Game.h" />

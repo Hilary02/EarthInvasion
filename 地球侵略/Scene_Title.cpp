@@ -2,6 +2,8 @@
 
 #include "KeyManager.h"
 
+#include <string>;
+
 
 typedef struct {
 	char name[16];
@@ -10,13 +12,13 @@ typedef struct {
 }RootmenuElement;
 
 const int TITLE_NUM = 3;
-const int DefaultPosX = 250;
+const int DefaultPosX = 300;
 int nowSelect = 0;
 
 RootmenuElement TitleMenu[TITLE_NUM] = {	//実際の値の設定
-	{ "Game","ゲーム画面へ", DefaultPosX, 50 },
-	{ "Config" ,"コンフィグ画面へ", DefaultPosX, 80 },
-	{ "Exit" ,"ゲーム終了",DefaultPosX, 110 },
+	{ "Game","ゲーム画面へ", DefaultPosX, 150 },
+	{ "Config" ,"コンフィグ画面へ", DefaultPosX, 210 },
+	{ "Exit" ,"ゲーム終了",DefaultPosX, 270 },
 };
 
 
@@ -55,8 +57,20 @@ void Scene_Title::Update(){
 }
 
 void Scene_Title::Draw(){
+	SetFontSize(30);
 	SoundM.SoundPlayer();
-	DrawString(0, 0, "タイトル(デバッグ表示）", 0xFFFFFF);
+
+	//void DrawCenterString(int y, int screenX, int color, char *c) {
+	//	DrawString(ScreenX / 2 - GetDrawStringWidth(c, strlen(c)) / 2, y, c, color);
+	//}
+
+	//DrawString(0, 0, "タイトル(デバッグ表示）", 0xFFFFFF);
+
+	std::string title = "地球侵略だぁぁぁぁ！ 体験版";
+	DrawString(400 - GetDrawStringWidth("地球侵略だぁぁぁぁ！ 体験版",title.length()) / 2, 50, title.c_str(), 0xFFFFFF);
+
+
+
 	for (int i = 0; i < TITLE_NUM; i++) {
 		if (i == nowSelect) {
 			TitleMenu[i].x = DefaultPosX-20; // 座標をずらす
@@ -69,5 +83,5 @@ void Scene_Title::Draw(){
 		DrawString(TitleMenu[i].x, TitleMenu[i].y, TitleMenu[i].name, 0xFFFFFF);
 	}
 	DrawString(50, 520, TitleMenu[nowSelect].explanation, 0xFFFFFF);
-
+	SetFontSize(16);
 }

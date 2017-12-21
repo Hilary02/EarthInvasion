@@ -4,7 +4,7 @@
 #include "Scene_Game.h"
 #include "Scene_Title.h"
 #include "Scene_Gameover.h"
-
+#include "Scene_Clear.h"
 
 SceneManager SceneM;
 bool sceneFlag;
@@ -51,6 +51,9 @@ void SceneManager::Update() {
 			break;
 		case scene::GameOver:
 			nowScene = new Scene_Gameover();
+			break;
+		case scene::Clear:
+			nowScene = new Scene_Clear();
 			break;
 		case scene::Ranking:
 			//‚È‚Á‚µ‚ñ

@@ -22,6 +22,7 @@ Stage_Base::Stage_Base() :
 	assert(MAP_WIDTH >= 0);
 	vmap.resize(MAP_HEIGHT);
 	for (int i = 0; i < MAP_HEIGHT; i++) {
+	
 		for (int j = 0; j < MAP_WIDTH; j++) {
 			vmap[i].push_back(j);
 		}

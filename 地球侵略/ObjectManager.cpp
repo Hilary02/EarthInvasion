@@ -1,6 +1,8 @@
 #include "ObjectManager.h"
 #include<memory>
 
+#include "Goal.h"
+
 ObjectManager::ObjectManager()
 {
 }
@@ -12,7 +14,7 @@ ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap, Player * playe
 	for (unsigned int i = 0; i < vmap.size(); i++) {
 		for (unsigned int j = 0; j < vmap[i].size(); j++) {
 			//if (vmap[i][j] == 3 || vmap[i][j] == 4 || vmap[i][j] == 6) {
-			if (vmap[i][j] == 4) {
+			if (vmap[i][j] == 4 || vmap[i][j] == 99) {
 
 				Object* obje;
 				int y = i * 32;//yÀ•W
@@ -59,6 +61,10 @@ ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap, Player * playe
 					*/
 					break;
 
+
+				case 99:
+					obje =new  Goal(x, y, img[10], IcolMgr);
+						break;
 				default:
 					break;
 				}

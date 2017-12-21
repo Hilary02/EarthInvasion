@@ -4,19 +4,18 @@
 #include "SceneManager.h"
 #include "KeyManager.h"
 
-//SceneManager‚ğSingleton‚É‚µ‚æ‚¤
-
-class Scene_Gameover :
+class Scene_Clear :
 	public Scene_Frame
 {
 public:
-	Scene_Gameover();
-	~Scene_Gameover();
+	Scene_Clear();
+	~Scene_Clear();
 	void Update();
 	void Draw();
-
 private:
-	std::string text = "GameOver...";
+	std::string text = "StageClear!";
+	std::string c_text = "Š®¬”Å‚É‚à‚²Šú‘Ò‚­‚¾‚³‚¢I";
+
 	//ƒNƒ\•Ï”
 	int moveto = 200;
 	int moveSpeed = 2;
@@ -24,6 +23,6 @@ private:
 	//‚±‚ê‚à‚Ç‚±‚©‚©‚ç‚Á‚Ä‚­‚é
 	int Frame = 0;
 
-	bool canDrawButton=false;
+	bool canDrawButton = false;
 };
 

@@ -1,22 +1,22 @@
-#include "Scene_Gameover.h"
+#include "Scene_Clear.h"
 
 
 
-Scene_Gameover::Scene_Gameover()
+Scene_Clear::Scene_Clear()
 {
 }
 
 
-Scene_Gameover::~Scene_Gameover()
+Scene_Clear::~Scene_Clear()
 {
 }
 
-void Scene_Gameover::Update(){
+void Scene_Clear::Update() {
 	Frame++;
 	if (Frame % 2 == 0 && !canDrawButton) {
 		y += moveSpeed;
 	}
-	if (y==moveto) {
+	if (y == moveto) {
 		canDrawButton = true;
 		moveSpeed = 0;
 	}
@@ -26,11 +26,13 @@ void Scene_Gameover::Update(){
 	}
 }
 
-void Scene_Gameover::Draw(){
+void Scene_Clear::Draw() {
 	SetFontSize(30);
 	DrawFormatString(200, y, 0xFF0000, text.c_str());
 
 	if (canDrawButton) {
+		
+		DrawFormatString(200, 270, 0xFFFFFF, c_text.c_str());
 		DrawFormatString(200, 300, 0xFFFFFF, "Zキーでタイトルに戻る");
 	}
 	SetFontSize(16);
