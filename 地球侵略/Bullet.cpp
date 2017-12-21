@@ -37,8 +37,9 @@ bool Bullet::Update()
 		x--;
 	}
 	remit++;
-	if (remit >60)
+	if (remit > 120)
 	{
+		remit = 0;
 		return false;
 	}
 	else
