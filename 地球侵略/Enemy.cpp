@@ -79,10 +79,10 @@ void Enemy::collisionCheck(const Collision & target) {
 
 void Enemy::MoveCommon()
 {
+	movedis = 1;
 	//—Í‹Z‚È‚Ì‚Å‚ ‚Æ‚ÅC³i€–S‚É‚ÍˆÚ“®‚µ‚È‚¢j
 	if (countRE)movedis = 0;
 
-	movedis = 1;
 	if (isRight)
 	{
 		x += movedis;
@@ -103,6 +103,7 @@ void Enemy::AtackCommon()
 	movedis = 0;
 	imgHandle = atackHundle[(drawcount / 12) % 4];
 	drawcount += addCount;
+	//Object obj = new 
 	//drawcount++;
 }
 
