@@ -32,6 +32,7 @@
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="KeyManager.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="MoveGround.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="ObjectManager.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -43,6 +44,7 @@
     <ClCompile Include="Scene_Gameover.cpp" />
     <ClCompile Include="Scene_Title.cpp" />
     <ClCompile Include="SoundManager.cpp" />
+    <ClCompile Include="SpikeBlock.cpp" />
     <ClCompile Include="Stage_Base.cpp" />
     <ClCompile Include="WindowData.cpp" />
   </ItemGroup>
@@ -62,6 +64,7 @@
     <ClInclude Include="Item.h" />
     <ClInclude Include="KeyManager.h" />
     <ClInclude Include="Main.h" />
+    <ClInclude Include="MoveGround.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="ObjectManager.h" />
     <ClInclude Include="Player.h" />
@@ -74,6 +77,7 @@
     <ClInclude Include="Scene_Title.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="SoundManager.h" />
+    <ClInclude Include="SpikeBlock.h" />
     <ClInclude Include="Stage_Base.h" />
     <ClInclude Include="WindowData.h" />
   </ItemGroup>
