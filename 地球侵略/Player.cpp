@@ -4,7 +4,7 @@
 
 Player::Player(std::vector<std::vector <int>> const &vmap) {
 	this->vmap = vmap;
-	this->hp = 15;
+	this->hp = 3;
 	LoadImg();
 	collision = new Collision(colXOffset, colYOffset, colXSize, colYSize);
 }
@@ -23,63 +23,74 @@ Player::~Player() {
 
 //計算処理
 void Player::Update() {
+	//状態を見て当たり判定を変更
 	PerDecision();
-
-	if (keyM.GetKeyFrame(KEY_INPUT_LEFT) >= 1 && !isAttack && isMoving == 'N') {
-		right = false;
-		xyCheck = 'x';
-		if (MapHitCheck(x1 - MOVE, y1, xyCheck) && MapHitCheck(x1 - MOVE, y2, xyCheck) && MapHitCheck(x1 - MOVE, y3, xyCheck)) {
-			x -= MOVE;
+	//キー入力の処理
+	if (!isAttack && isMoving == 'N') { //モーション中はキー入力無効
+		if (keyM.GetKeyFrame(KEY_INPUT_LEFT) >= 1) {
+			right = false;
+			xyCheck = 'x';
+			if (MapHitCheck(x1 - MOVE, y1, xyCheck) && MapHitCheck(x1 - MOVE, y2, xyCheck) && MapHitCheck(x1 - MOVE, y3, xyCheck)) {
+				x -= MOVE;
+			}
+			else {
+				x -= cMove;
+			}
 		}
-		else {
-			x -= cMove;
+		if (keyM.GetKeyFrame(KEY_INPUT_RIGHT) >= 1) {
+			right = true;
+			xyCheck = 'x';
+			if (MapHitCheck(x2 + MOVE, y1, xyCheck) && MapHitCheck(x2 + MOVE, y2, xyCheck) && MapHitCheck(x2 + MOVE, y3, xyCheck)) {
+				x += MOVE;
+			}
+			else {
+				x += cMove;
+			}
+		}
+		if (!isJumping && !isLiquid) { //ジャンプと液状化してる時に動かない
+			if (keyM.GetKeyFrame(KEY_INPUT_UP) == 1) {
+				isJumping = true;
+				jumpPower = -6;
+			}
+			if (keyM.GetKeyFrame(KEY_INPUT_A) == 1) {
+				isAttack = true;
+				drawCount = 0;
+			}
+			if (plState == 'N') { //ええやん状態のみできる処理
+				if (keyM.GetKeyFrame(KEY_INPUT_DOWN) >= 1) {
+					isLiquid = true;
+					isMoving = 'L';
+					drawCount = 0;
+				}
+				if (keyM.GetKeyFrame(KEY_INPUT_S) >= 1) {
+					if (1) { //ここに死んでる敵がいるか判定
+						plState = 'A';
+						isMoving = 'I';
+						drawCount = 0;
+					}
+				}
+			}
+			if (keyM.GetKeyFrame(KEY_INPUT_E) >= 1 && plState != 'N') {
+				plState = 'N';
+				isMoving = 'O';
+				drawCount = 0;
+			}
 		}
 	}
-	if (keyM.GetKeyFrame(KEY_INPUT_RIGHT) >= 1 && !isAttack && isMoving == 'N') {
-		right = true;
-		xyCheck = 'x';
-		if (MapHitCheck(x2 + MOVE, y1, xyCheck) && MapHitCheck(x2 + MOVE, y2, xyCheck) && MapHitCheck(x2 + MOVE, y3, xyCheck)) {
-			x += MOVE;
-		}
-		else {
-			x += cMove;
-		}
-	}
-	if (keyM.GetKeyFrame(KEY_INPUT_DOWN) >= 1 && !isJumping && !isAttack && !isLiquid && isMoving == 'N') {
-		isLiquid = true;
-		isMoving = 'L';
-		drawCount = 0;
-	}
-
+	//液状化解除の処理
 	if (keyM.GetKeyFrame(KEY_INPUT_DOWN) == 0 && isLiquid) {
 		xyCheck = 'N';
 		if (MapHitCheck(x1, y, xyCheck) && MapHitCheck(x2, y, xyCheck) && MapHitCheck(x3, y, xyCheck)) {
 			isLiquid = false;
 			isMoving = 'R';
-		}
-	}
-
-	if (keyM.GetKeyFrame(KEY_INPUT_UP) == 1 && !isLiquid && !isAttack && isMoving == 'N' && !isJumping) {
-		isJumping = true;
-		jumpPower = -6;
-	}
-	if (keyM.GetKeyFrame(KEY_INPUT_A) == 1 && !isAttack && !isJumping && !isLiquid && isMoving == 'N') {
-		isAttack = true;
-		drawCount = 0;
-	}
-	if (keyM.GetKeyFrame(KEY_INPUT_S) >= 1 && !isAttack && !isJumping && !isLiquid && isMoving == 'N') {
-		if (1) {
-			isMoving = 'I';
 			drawCount = 0;
 		}
 	}
-	if (keyM.GetKeyFrame(KEY_INPUT_E) >= 1 && !isAttack && !isJumping && !isLiquid && isMoving == 'N') {
-		if (plState != 'N') {
-			isMoving = 'O';
-			drawCount = 0;
-		}
+	//通常状態の攻撃判定の処理
+	if (isAttack && plState == 'N' && drawCount >= 25 && drawCount <= 32) {
+		
 	}
-
+	//ジャンプ中の処理
 	if (isJumping) {
 		xyCheck = 'y';
 		if ((MapHitCheck(x1, y2 + jumpPower, xyCheck) && MapHitCheck(x2, y2 + jumpPower, xyCheck) && MapHitCheck(x3, y2 + jumpPower, xyCheck))
@@ -111,8 +122,10 @@ void Player::Update() {
 
 	collision->updatePos(x,y);
 
-	if (hp <= 0) {
+	if (hp <= 0 && !isDead) {
 		isDead = true;
+		isMoving = 'D';
+		drawCount = 0;
 		//GameOver();
 	}
 
@@ -145,7 +158,6 @@ bool Player::MapHitCheck(int movedX, int movedY, char check)
 		return false;
 		break;
 	case 2:
-		DrawFormatString(200, 140, 0xFFFFFF, "壁だ！");
 		if (check == 'x') {
 			if (movedX - x2 > 0)
 				cMove = movedX - x2 - (movedX % 32 + 1);
@@ -167,6 +179,12 @@ bool Player::MapHitCheck(int movedX, int movedY, char check)
 	case 5:
 		return true;
 		break;
+	case 7:
+		if (movedY - (y2) > 0) {
+			cMove = (movedY - (y2)) - (movedY % 32 + 1);
+		}
+		return false;
+		break;
 	case 9:
 		if (movedY - (y2) > 0) {
 			cMove = (movedY - (y2)) - (movedY % 32 + 1);
@@ -183,7 +201,6 @@ bool Player::MapHitCheck(int movedX, int movedY, char check)
 void Player::Draw(int drawX, int drawY) {
 	int tempX = x - drawX;
 	int tempY = y - drawY;
-	DrawFormatString(0, 0, 0xFFFFFF, "%d", isLiquid);
 	
 	switch (plState) {
 	case 'N':	//主人公
@@ -224,15 +241,14 @@ void Player::Draw(int drawX, int drawY) {
 			drawCount++;
 			if (drawCount >= 64) isAttack = false;
 		}
-		else if (isMoving == 'I') {
-			MyDraw(tempX, tempY, parasite[drawCount / 8 % 8], right);
-			drawCount++;
-			if (drawCount >= 64) isMoving = 'N';
-		}
 		else if (isMoving == 'O') {
 			MyDraw(tempX, tempY, parasite[drawCount / 8 % 8 + 10], right);
 			drawCount++;
 			if (drawCount >= 64) isMoving = 'N';
+		}
+		else if (isMoving == 'D') {
+			MyDraw(tempX, tempY, die[drawCount / 8 % 16 ], right);
+			if (drawCount <= 128)	drawCount++;
 		}
 		else if (keyM.GetKeyFrame(KEY_INPUT_RIGHT) >= 1) {
 			drawCount = keyM.GetKeyFrame(KEY_INPUT_RIGHT) / 15 % 4;
@@ -251,16 +267,35 @@ void Player::Draw(int drawX, int drawY) {
 
 	case 'A':	//一般兵A
 		if (isJumping) {
-
+			if (jumpPower <= 1 && jumpPower >= -1)
+				MyDraw(tempX, tempY, jump[11], !right);
+			else if (jumpPower > 1)
+				MyDraw(tempX, tempY, jump[12], !right);
+			else if (jumpPower < -1)
+				MyDraw(tempX, tempY, jump[10], !right);
+		}
+		else if (isMoving == 'I') {
+			MyDraw(tempX, tempY, parasite[drawCount / 8 % 8], right);
+			drawCount++;
+			if (drawCount >= 64) isMoving = 'N';
+		}
+		else if (isAttack) {
+			MyDraw(tempX, tempY, attack[drawCount / 8 % 8 + 10], !right);
+			drawCount++;
+			if (drawCount >= 64) isAttack = false;
 		}
 		else if (keyM.GetKeyFrame(KEY_INPUT_RIGHT) >= 1) {
-			drawCount = keyM.GetKeyFrame(KEY_INPUT_RIGHT) / 15 % 4;
-			DrawGraph(tempX, tempY, move[drawCount], TRUE);
+			drawCount = keyM.GetKeyFrame(KEY_INPUT_RIGHT) / 15 % 8;
+			MyDraw(tempX, tempY, move[drawCount+10], !right);
+		}
+		else if (keyM.GetKeyFrame(KEY_INPUT_LEFT) >= 1) {
+			drawCount = keyM.GetKeyFrame(KEY_INPUT_LEFT) / 15 % 8;
+			MyDraw(tempX, tempY, move[drawCount+10], !right);
 		}
 		else {
-			DrawGraph(tempX, tempY, wait[drawCount % 4], TRUE);
+			if (drawCount > 60) drawCount = 0;
+			MyDraw(tempX, tempY, move[drawCount / 15 % 4 + 10], !right);
 			drawCount++;
-			if (drawCount == 60) drawCount = 0;
 		}
 		break;
 
@@ -347,7 +382,16 @@ void Player::PerDecision()
 	int sizeY1 = 23;
 	int sizeY2 = 63;
 	if (isLiquid) {
-		sizeY1 = 32;
+		sizeX1 = 3;
+		sizeX2 = 57;
+		sizeY1 = 48;
+		sizeY2 = 63;
+	}
+	if (plState == 'A' || plState == 'B' || plState == 'C') {
+		sizeX1 = 23;
+		sizeX2 = 45;
+		sizeY1 = 4;
+		sizeY2 = 63;
 	}
 	x1 = x + sizeX1;
 	y1 = y + sizeY1;
@@ -397,7 +441,7 @@ void Player::LoadImg()
 	LoadDivGraph("data/img/enemy1JumpP.png", 4, 4, 1, 64, 64, &jump[10]);
 	//一般兵A攻撃
 	LoadDivGraph("data/img/enemy1WaitForAtackP.png", 4, 4, 1, 64, 64, &attack[10]);
-	LoadDivGraph("data/img/enemy1AtackP.png", 4, 4, 1, 64, 64, &attack[15]);
+	LoadDivGraph("data/img/enemy1AtackP.png", 4, 4, 1, 64, 64, &attack[14]);
 	//一般兵A死亡
-	LoadDivGraph("data/img/enemy1DieP.png", 8, 4, 2, 64, 64, &die[10]);
+	LoadDivGraph("data/img/enemy1DieP.png", 8, 4, 2, 64, 64, &die[20]);
 }

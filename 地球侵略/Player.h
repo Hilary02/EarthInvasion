@@ -46,7 +46,7 @@ private:
 	int jump[20];
 	int liquid[10];
 	int parasite[20];
-	int die[20];
+	int die[30];
 
 	int invalidDamageTime=60;
 };
