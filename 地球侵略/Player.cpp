@@ -26,7 +26,7 @@ void Player::Update() {
 	//状態を見て当たり判定を変更
 	PerDecision();
 	//キー入力の処理
-	if (!isAttack && isMoving == 'N') { //モーション中はキー入力無効
+	if (!isAttack && !isDead && isMoving == 'N') { //モーション中と死亡時はキー入力無効
 		if (keyM.GetKeyFrame(KEY_INPUT_LEFT) >= 1) {
 			right = false;
 			xyCheck = 'x';
@@ -166,7 +166,7 @@ bool Player::MapHitCheck(int movedX, int movedY, char check)
 		}
 		if (check == 'y') {
 			if (movedY - y2 > 0) {
-				cMove = (movedY - (y+63)) - (movedY % 32 + 1);
+				cMove = (movedY - y2) - (movedY % 32 + 1);
 			}
 			else if (movedY - y1 < 0) {
 				cMove = y1 % 32;
@@ -180,14 +180,35 @@ bool Player::MapHitCheck(int movedX, int movedY, char check)
 		return true;
 		break;
 	case 7:
-		if (movedY - (y2) > 0) {
-			cMove = (movedY - (y2)) - (movedY % 32 + 1);
+		if (check == 'x') {
+			if (movedX - x2 > 0)
+				cMove = movedX - x2 - (movedX % 32 + 1);
+			else if (movedX - x1 < 0)
+				cMove = x1 % 32;
+		}
+		if (check == 'y') {
+			if (movedY - y2 > 0) {
+				cMove = (movedY - y2) - (movedY % 32 + 1);
+			}
+			else if (movedY - y1 < 0) {
+				cMove = y1 % 32;
+				jumpPower = 0;
+			}
 		}
 		return false;
 		break;
+	case 8:
+		if (movedY - y2 > 0) {
+			cMove = (movedY - y2) - (movedY % 32 + 1);
+			return false;
+		}
+		else {
+			return true;
+		}
+		break;
 	case 9:
-		if (movedY - (y2) > 0) {
-			cMove = (movedY - (y2)) - (movedY % 32 + 1);
+		if (movedY - y2 > 0) {
+			cMove = (movedY - y2) - (movedY % 32 + 1);
 		}
 		return false;
 		break;
@@ -248,7 +269,11 @@ void Player::Draw(int drawX, int drawY) {
 		}
 		else if (isMoving == 'D') {
 			MyDraw(tempX, tempY, die[drawCount / 8 % 16 ], right);
-			if (drawCount <= 128)	drawCount++;
+			drawCount++;
+			if (drawCount >= 128) isMoving = 'N';
+		}
+		else if (isDead) {
+			MyDraw(tempX, tempY, die[15], right);
 		}
 		else if (keyM.GetKeyFrame(KEY_INPUT_RIGHT) >= 1) {
 			drawCount = keyM.GetKeyFrame(KEY_INPUT_RIGHT) / 15 % 4;
@@ -268,11 +293,11 @@ void Player::Draw(int drawX, int drawY) {
 	case 'A':	//一般兵A
 		if (isJumping) {
 			if (jumpPower <= 1 && jumpPower >= -1)
-				MyDraw(tempX, tempY, jump[11], !right);
+				MyDraw(tempX, tempY, jump[11], right);
 			else if (jumpPower > 1)
-				MyDraw(tempX, tempY, jump[12], !right);
+				MyDraw(tempX, tempY, jump[12], right);
 			else if (jumpPower < -1)
-				MyDraw(tempX, tempY, jump[10], !right);
+				MyDraw(tempX, tempY, jump[10], right);
 		}
 		else if (isMoving == 'I') {
 			MyDraw(tempX, tempY, parasite[drawCount / 8 % 8], right);
@@ -280,22 +305,36 @@ void Player::Draw(int drawX, int drawY) {
 			if (drawCount >= 64) isMoving = 'N';
 		}
 		else if (isAttack) {
-			MyDraw(tempX, tempY, attack[drawCount / 8 % 8 + 10], !right);
+			if (keyM.GetKeyFrame(KEY_INPUT_LEFT) == 0 && keyM.GetKeyFrame(KEY_INPUT_RIGHT) == 0) {
+				MyDraw(tempX, tempY, attack[drawCount / 8 % 8 + 10], right);
+				drawCount++;
+				if (drawCount >= 64) isAttack = false;
+			}
+			else {
+				MyDraw(tempX, tempY, attack[drawCount / 8 % 4 + 14], right);
+				drawCount++;
+				if (drawCount >= 32) isAttack = false;
+			}
+
+		}
+		else if (isMoving == 'D') {
+			MyDraw(tempX, tempY, die[drawCount / 8 % 8 + 20], right);
 			drawCount++;
-			if (drawCount >= 64) isAttack = false;
+			if (drawCount >= 64) isMoving = 'N';
+		}
+		else if (isDead) {
+			MyDraw(tempX, tempY, die[27], right);
 		}
 		else if (keyM.GetKeyFrame(KEY_INPUT_RIGHT) >= 1) {
 			drawCount = keyM.GetKeyFrame(KEY_INPUT_RIGHT) / 15 % 8;
-			MyDraw(tempX, tempY, move[drawCount+10], !right);
+			MyDraw(tempX, tempY, move[drawCount+10], right);
 		}
 		else if (keyM.GetKeyFrame(KEY_INPUT_LEFT) >= 1) {
 			drawCount = keyM.GetKeyFrame(KEY_INPUT_LEFT) / 15 % 8;
-			MyDraw(tempX, tempY, move[drawCount+10], !right);
+			MyDraw(tempX, tempY, move[drawCount+10], right);
 		}
 		else {
-			if (drawCount > 60) drawCount = 0;
-			MyDraw(tempX, tempY, move[drawCount / 15 % 4 + 10], !right);
-			drawCount++;
+			MyDraw(tempX, tempY, wait[10], right);
 		}
 		break;
 
@@ -434,7 +473,7 @@ void Player::LoadImg()
 	LoadDivGraph("data/img/eeyanDie.png", 16, 4, 4, 64, 64, die);
 
 	//一般兵Aニュートラル
-
+	LoadDivGraph("data/img/enemy1WaitP.png", 1, 1, 1, 64, 64, &wait[10]);
 	//一般兵A歩行
 	LoadDivGraph("data/img/enemy1WalkP.png", 8, 4, 2, 64, 64, &move[10]);
 	//一般兵Aジャンプ
