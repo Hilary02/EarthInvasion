@@ -87,26 +87,26 @@ void Enemy::collisionCheck(const Collision & target) {
 	int isCol = collision->doCollisonCheck((target.hitRange));
 	int attackR = AttackBox->doCollisonCheck((target.hitRange));
 	if (isCol) {
-<<<<<<< HEAD
+
 		//d 		DrawBox(10, 20, 100, 200, 0xFF0000, true);
 		IcolMgr->requestAction(Action::DmgPlayer);
 	}
 	else {
 		//d 		DrawBox(10, 20, 100, 200, 0xFF0000, false);
-=======
+
 		movedis = 0;
-		DrawBox(10, 20, 100, 200, 0xFF0000, true);
+		//d DrawBox(10, 20, 100, 200, 0xFF0000, true);
 		if(!dead)IcolMgr->requestAction(Action::DmgPlayer);
 		modHp(mod);
 	}
-	else if(attackR){
-		DrawBox(10,20,100,200, 0x0000ff,true);
+	if(attackR){
+		//d DrawBox(10,20,100,200, 0x0000ff,true);
 		AtackCommon();
 	}
 	else {
-		DrawBox(10, 20, 100, 200, 0xFF0000, false);
+	//d	DrawBox(10, 20, 100, 200, 0xFF0000, false);
 		MoveCommon();
->>>>>>> master
+
 	}
 }
 
