@@ -22,6 +22,14 @@ void Collision::updatePos(int x, int y) {
 	hitRange.yPos = y;
 }
 
+void Collision::flip(){
+	//hitRange.xOffset = -hitRange.xOffset;
+	//hitRange.yOffset = -hitRange.yOffset;
+	hitRange.xSize= -hitRange.xSize;
+	//yhitRange.ySize  = -hitRange.ySize;
+
+}
+
 int Collision::doCollisonCheck(const HitRange& target) {
 	int tX1 = target.xPos + target.xOffset;
 	int tX2 = target.xPos + target.xOffset + target.xSize;
@@ -33,8 +41,20 @@ int Collision::doCollisonCheck(const HitRange& target) {
 	int mY1 = hitRange.yPos + hitRange.yOffset;
 	int mY2 = hitRange.yPos + hitRange.yOffset + hitRange.ySize;
 
+	if (mX1 > mX2) {
+		int temp = mX1;
+		mX1 = mX2;
+		mX2 = temp;
+	}
+	if (mY1 > mY2) {
+		int temp = mY1;
+		mY1 = mY2;
+		mY2 = temp;
+	}
+
 
 	//d DrawFormatString(0, 200, 0xFFFFFF, "Enemy:%d,%d     Player:%d,%d",mX1,mX2, tX1, tY1);
+
 	if ((tX1 < mX2) && (tX2 > mX1) &&
 		(tY1 < mY2) && (tY2 > mY1)) {
 		/*“–‚½‚Á‚Ä‚¢‚½ê‡‚ÉÀs‚³‚ê‚éˆ—‚ÍŒÄ‚Ño‚µŒ³‚Å‘‚­*/

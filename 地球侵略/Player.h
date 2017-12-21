@@ -22,8 +22,10 @@ private:
 	int clock = 0;
 	int x1 = 0;
 	int x2 = 0;
+	int x3 = 0;
 	int y1 = 0;
 	int y2 = 0;
+	int y3 = 0;
 	const int MOVE = 2;
 	int drawCount = 0;
 	int cMove = 0;
@@ -38,14 +40,16 @@ private:
 	bool isLiquid = false;
 	bool isAttack = false;
 	bool isDead = false;
+	char isMoving = 'N';
 	char xyCheck = 'N';
 	char plState = 'N';
-	int wait[5];
-	int move[5];
-	int attack[10];
+	int wait[20];
+	int move[20];
+	int attack[20];
 	int jump[20];
 	int liquid[10];
-	int die[20];
+	int parasite[20];
+	int die[30];
 
 	int invalidDamageTime=60;
 
