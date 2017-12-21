@@ -45,7 +45,7 @@ ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap, Player * playe
 					break;
 					*/
 				case 8:
-					obje = new MoveGround(x, y, 2, 0, 0, img[3]);
+					obje = new MoveGround(x, y, 2, 0.25, 0, img[3]);
 					break;
 				case 9:
 					obje = new SpikeBlock(x, y, img[9], IcolMgr);

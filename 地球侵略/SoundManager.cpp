@@ -44,7 +44,7 @@ void SoundManager::SoundVolume(int number) {
 			isVolChanged = true;
 		}
 		if (isVolChanged) {
-			Se(LoadSoundMem("data/mc/se_Z.mp3"));
+			Se(LoadSoundMem("data/mc/pick up.wav"));
 			isVolChanged = false;
 		}
 	}

@@ -6,19 +6,19 @@ class MoveGround :
 public:
 	MoveGround();
 	~MoveGround();
-	MoveGround(int x, int y, int moveup, int movedown, char xory, int img);
+	MoveGround(double x, double y, double moveup, double movedown, char xory, int img);
 	void Update(const Collision & playerCol) override;
 	void Draw(int drawX, int drawY) override;
 	void Move();
 	void MoveCheck();
 
 private:
-	int x;
-	int y;
-	int moveUp;
-	int moveDown;
-	int moveX;
-	int moveY;
+	double x;
+	double y;
+	double moveUp;
+	double moveDown;
+	double moveX;
+	double moveY;
 	int imgGround;
 	char xory;
 	const int MOVE = 1;
