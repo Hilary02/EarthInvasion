@@ -10,7 +10,7 @@ class Scene_Clear :
 public:
 	Scene_Clear();
 	~Scene_Clear();
-	void Update();
+	void update();
 	void Draw();
 private:
 	std::string text = "StageClear!";

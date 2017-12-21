@@ -2,7 +2,7 @@
 #include "SceneManager.h"
 
 
-CollisionManager::CollisionManager(Player* p){
+CollisionManager::CollisionManager(Player* p) {
 	player = p;
 }
 
@@ -11,7 +11,7 @@ CollisionManager::~CollisionManager()
 {
 }
 
-void CollisionManager::requestAction(Action act){
+void CollisionManager::requestAction(Action act) {
 	switch (act) {
 	case Action::DmgPlayer:
 		damagePlayer();
@@ -22,7 +22,7 @@ void CollisionManager::requestAction(Action act){
 
 	case Action::GameOver:
 		gameOver();
-    break;
+		break;
 	case Action::HealPlayer:
 		healPlayer();
 		break;
@@ -32,19 +32,19 @@ void CollisionManager::requestAction(Action act){
 	}
 }
 
-void CollisionManager::damagePlayer(){
+void CollisionManager::damagePlayer() {
 	player->modHp(-1);
 }
 
-void CollisionManager::killPlayer(){
+void CollisionManager::killPlayer() {
 	player->modHp(-20);
 }
 
-<<<<<<< HEAD
+
 void CollisionManager::gameOver() {
 	SceneM.ChangeScene(scene::GameOver);
-=======
-void CollisionManager::healPlayer(){
+}
+void CollisionManager::healPlayer() {
 	player->modHp(1);
->>>>>>> origin/healItem
+
 }

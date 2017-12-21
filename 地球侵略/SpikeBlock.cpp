@@ -19,10 +19,12 @@ SpikeBlock::SpikeBlock(int x, int y, int img, ICollisionManager* IcolMgr) {
 
 }
 
-void SpikeBlock::Update(const Collision & playerCol)
+int SpikeBlock::update(const Collision & playerCol)
 {
 	collision->updatePos(x, y);
 	collisionCheck(playerCol);
+
+	return 0;
 }
 
 void SpikeBlock::Draw(int drawX, int drawY)

@@ -7,14 +7,14 @@ Goal::Goal(int x, int y, int handle, ICollisionManager * IcolMgr){
 	this->y = y;
 	this->imgHandle = handle;
 	this->IcolMgr = IcolMgr;
-	collision = new Collision(0, 0, 32, 64);
+	collision = new Collision(0, 0, 64, 128);
 }
 
 Goal::~Goal()
 {
 }
 
-void Goal::Update(const Collision & playerCol){
+int Goal::update(const Collision & playerCol){
 	collision->updatePos(x, y);
 	int isCol = collision->doCollisonCheck((playerCol.hitRange));
 	if (isCol == 1) {
@@ -24,6 +24,7 @@ void Goal::Update(const Collision & playerCol){
 	else {
 		//d DrawBox(100, 20, 100, 200, 0xFF0000, false);
 	}
+	return 0;
 }
 
 void Goal::Draw(int drawX, int drawY){

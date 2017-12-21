@@ -11,7 +11,7 @@ Scene_Gameover::~Scene_Gameover()
 {
 }
 
-void Scene_Gameover::Update(){
+void Scene_Gameover::update(){
 	Frame++;
 	if (Frame % 2 == 0 && !canDrawButton) {
 		y += moveSpeed;

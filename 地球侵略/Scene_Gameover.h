@@ -12,7 +12,7 @@ class Scene_Gameover :
 public:
 	Scene_Gameover();
 	~Scene_Gameover();
-	void Update();
+	void update();
 	void Draw();
 
 private:

@@ -118,7 +118,6 @@
     <ClCompile Include="WindowData.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-
     <ClCompile Include="Goal.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -129,7 +128,6 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Bullet.cpp">
-
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>

@@ -22,7 +22,7 @@ MoveGround::MoveGround(double x, double y, double moveUp, double moveDown, char 
 	this->imgGround = img;
 	collision = new Collision(0, 0, 32, 128);
 }
-void MoveGround::Update(const Collision & playerCol){
+int MoveGround::update(const Collision & playerCol){
 
 
 	Move();
@@ -30,6 +30,7 @@ void MoveGround::Update(const Collision & playerCol){
 	if (collision->doCollisonCheck(playerCol.hitRange)) {
 		
 	}
+	return 0;
 }
 
 void MoveGround::Draw(int drawX, int drawY) {

@@ -31,7 +31,7 @@ Stage_Base::Stage_Base() :
 	readMap("data/map/tutrial-map改良版32.csv");
 	//プレイヤー呼び出し
 	player = new Player(vmap);
-	player->setAbsolutePos(800, 100);
+	player->setAbsolutePos(100, 600);
 	colMgr = new CollisionManager(player);
 	objectMgr = new ObjectManager(vmap,player,colMgr);
 

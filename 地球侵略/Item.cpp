@@ -43,7 +43,7 @@ int Item::collisionCheck(const Collision & target) {
 		return -1;
 	}
 	else {
-		DrawBox(10, 20, 100, 200, 0xFF0000, false);
+		//d DrawBox(10, 20, 100, 200, 0xFF0000, false);
 		return 0;
 	}
 }
