@@ -89,17 +89,17 @@ void Enemy::collisionCheck(const Collision & target) {
 	if (isCol) {
 
 		//d 		DrawBox(10, 20, 100, 200, 0xFF0000, true);
-		IcolMgr->requestAction(Action::DmgPlayer);
+		if (!dead)IcolMgr->requestAction(Action::DmgPlayer);
+		//IcolMgr->requestAction(Action::DmgPlayer);
+		modHp(mod);
 	}
-	else {
+	else if (attackR) {
 		//d 		DrawBox(10, 20, 100, 200, 0xFF0000, false);
 
 		movedis = 0;
 		//d DrawBox(10, 20, 100, 200, 0xFF0000, true);
-		if(!dead)IcolMgr->requestAction(Action::DmgPlayer);
-		modHp(mod);
-	}
-	if(attackR){
+	
+	
 		//d DrawBox(10,20,100,200, 0x0000ff,true);
 		AtackCommon();
 	}
