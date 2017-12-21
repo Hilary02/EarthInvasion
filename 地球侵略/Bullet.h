@@ -8,9 +8,9 @@ public:
 	Bullet(int, int, int, bool, ICollisionManager*);
 	~Bullet();
 
-	int remit;
+	int remit = 0;
 
-	void Update();
+	bool Update();
 	void Draw(int, int);
 
 private:

@@ -27,7 +27,7 @@ Bullet::~Bullet()
 {
 }
 
-void Bullet::Update()
+bool Bullet::Update()
 {
 	if (isR) {
 		x++;
@@ -37,6 +37,14 @@ void Bullet::Update()
 		x--;
 	}
 	remit++;
+	if (remit >60)
+	{
+		return false;
+	}
+	else
+	{
+		return true;
+	}
 }
 
 void Bullet::Draw(int drawX, int drawY)

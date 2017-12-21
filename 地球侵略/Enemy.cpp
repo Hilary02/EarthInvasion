@@ -43,10 +43,16 @@ void Enemy::Update(const Collision & playerCol)
 	DeadCheck();
 	if (!dead)
 	{
+
 		for (auto &bull : bullets)
 		{
-			bull->Update();
+			index++;
+			if (!bull->Update())
+			{
+				bullets.erase(bullets.begin()+index);
+			}
 		}
+		index = -1;
 	}
 
 }
@@ -82,7 +88,7 @@ void Enemy::collisionCheck(const Collision & target) {
 	if (isCol) {
 		movedis = 0;
 		DrawBox(10, 20, 100, 200, 0xFF0000, true);
-		IcolMgr->requestAction(Action::DmgPlayer);
+		if(!dead)IcolMgr->requestAction(Action::DmgPlayer);
 		modHp(mod);
 	}
 	else if(attackR){

@@ -40,8 +40,9 @@ private:
 	int ct = 181;
 	bool isRight = false;
 	bool dead = false;
-
-	int index = 0;
+	
+	int index = -1;
+	bool rangeFlg;
 
 	std::vector<Bullet*> bullets;
 
