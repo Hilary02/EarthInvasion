@@ -40,7 +40,7 @@ private:
 	char isMoving = 'N';
 	char xyCheck = 'N';
 	char plState = 'N';
-	int wait[5];
+	int wait[20];
 	int move[20];
 	int attack[20];
 	int jump[20];
