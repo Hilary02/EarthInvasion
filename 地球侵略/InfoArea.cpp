@@ -21,7 +21,7 @@ void InfoArea::update() {
 }
 
 void InfoArea::draw() {
-	DrawFormatString(0, 250, GetColor(255, 125, 255), "Info...");
+	//d DrawFormatString(0, 250, GetColor(255, 125, 255), "Info...");
 	DrawBox(baseX, baseY, 800, 600, 0x878773, TRUE);
 	DrawFormatString(baseX + 40, baseY + 40, col_black, "HP:");
 	for (int i = 0; i < 15; i++) {

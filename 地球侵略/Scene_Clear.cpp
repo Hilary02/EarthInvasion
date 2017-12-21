@@ -14,7 +14,7 @@ Scene_Clear::~Scene_Clear()
 void Scene_Clear::Update() {
 	Frame++;
 	if (Frame % 2 == 0 && !canDrawButton) {
-		y += moveSpeed;
+		y += moveto;
 	}
 	if (y == moveto) {
 		canDrawButton = true;

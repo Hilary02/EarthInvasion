@@ -22,7 +22,7 @@ void Goal::Update(const Collision & playerCol){
 		SceneM.ChangeScene(scene::Clear);
 	}
 	else {
-		DrawBox(100, 20, 100, 200, 0xFF0000, false);
+		//d DrawBox(100, 20, 100, 200, 0xFF0000, false);
 	}
 }
 

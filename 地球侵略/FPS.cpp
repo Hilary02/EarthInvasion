@@ -14,7 +14,7 @@ void FpsFunction(int x,int y) {
 		count = 0;										//カウントを初期化
 	}
 	else count++;	//現在何周目かカウント
-	if (fps != 0) DrawFormatString(x, y, GetColor(255, 125, 255), "fps %.1f", fps); //fpsを表示
+					//d	if (fps != 0) DrawFormatString(x, y, GetColor(255, 125, 255), "fps %.1f", fps); //fpsを表示
 	return;
 }
 

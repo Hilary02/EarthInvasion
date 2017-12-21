@@ -50,7 +50,7 @@ void SoundManager::SoundVolume(int number) {
 	}
 
 	if (CheckSoundMem(bgm) == 0) {
-		DrawFormatString(0, 60, GetColor(255, 255, 255), "STOP");
+		//d DrawFormatString(0, 60, GetColor(255, 255, 255), "STOP");
 	}
 }
 

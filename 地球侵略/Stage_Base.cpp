@@ -60,12 +60,13 @@ void Stage_Base::update() {
 
 
 	//Debug
-	if (keyM.GetKeyFrame(KEY_INPUT_Q) == 1) {
-		player->modHp(1);
-	}
-	if (keyM.GetKeyFrame(KEY_INPUT_W) == 1) {
-		player->modHp(-1);
-	}
+	//d 
+	//if (keyM.GetKeyFrame(KEY_INPUT_Q) == 1) {
+	//	player->modHp(1);
+	//}
+	//if (keyM.GetKeyFrame(KEY_INPUT_W) == 1) {
+	//	player->modHp(-1);
+	//}
 
 }
 
@@ -97,8 +98,8 @@ void Stage_Base::draw() {
 	infoArea->draw();
 
 	//デバッグ情報
-	DrawFormatString(0, 30, GetColor(255, 125, 255), "マップ表示原点：%d  ,%d", drawX, drawY);
-	DrawFormatString(0, 50, GetColor(255, 125, 255), "表示画像数：%d", drawChipNum);
+//d	DrawFormatString(0, 30, GetColor(255, 125, 255), "マップ表示原点：%d  ,%d", drawX, drawY);
+//d	DrawFormatString(0, 50, GetColor(255, 125, 255), "表示画像数：%d", drawChipNum);
 }
 
 

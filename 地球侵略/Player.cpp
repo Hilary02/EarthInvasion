@@ -123,7 +123,7 @@ bool Player::MapHitCheck(int movedX, int movedY, char check)
 		return true;
 		break;
 	case 1:
-		DrawFormatString(200, 140, 0xFFFFFF, "見えない壁だ！");
+		//d		DrawFormatString(200, 140, 0xFFFFFF, "見えない壁だ！");
 		if (check == 'x') {
 			if (movedX - x > 0)
 				cMove = movedX - (x + 63) - (movedX % 32 + 1);
@@ -142,7 +142,7 @@ bool Player::MapHitCheck(int movedX, int movedY, char check)
 		return false;
 		break;
 	case 2:
-		DrawFormatString(200, 140, 0xFFFFFF, "壁だ！");
+		//d	DrawFormatString(200, 140, 0xFFFFFF, "壁だ！");
 		if (check == 'x') {
 			if (movedX - x > 0)
 				cMove = movedX - (x + 63) - (movedX % 32 + 1);
@@ -180,7 +180,6 @@ bool Player::MapHitCheck(int movedX, int movedY, char check)
 void Player::Draw(int drawX, int drawY) {
 	int tempX = x - drawX;
 	int tempY = y - drawY;
-	DrawFormatString(0, 0, 0xFFFFFF, "%d", isLiquid);
 	
 	switch (plState) {
 	case 'N':	//主人公
@@ -290,12 +289,12 @@ void Player::Draw(int drawX, int drawY) {
 	}
 
 
-	//DrawFormatString(100, 100, 0xFFFFFF, "%d,%d", tempX, tempY);
-	DrawFormatString(100, 80, 0xFFFFFF, "Player:%d,%d", (int)x, (int)y);
-	DrawFormatString(100, 100, 0xFFFFFF, "MapChip:%d,%d", (int)(x / 32), (int)(y / 32));
-	if (isJumping) DrawFormatString(300, 80, 0xFFFFFF, "ジャンプ中,%d",jumpPower);
-	if (isAttack) DrawFormatString(300, 100, 0xFFFFFF, "アタック中");
-	if (isDead) DrawFormatString(300, 120, 0xFFFFFF, "死んだ");
+	// DrawFormatString(100, 100, 0xFFFFFF, "%d,%d", tempX, tempY);
+	//d	DrawFormatString(100, 80, 0xFFFFFF, "Player:%d,%d", (int)x, (int)y);
+	//d DrawFormatString(100, 100, 0xFFFFFF, "MapChip:%d,%d", (int)(x / 32), (int)(y / 32));
+	//d if (isJumping) DrawFormatString(300, 80, 0xFFFFFF, "ジャンプ中,%d",jumpPower);
+	//d if (isAttack) DrawFormatString(300, 100, 0xFFFFFF, "アタック中");
+	//d if (isDead) DrawFormatString(300, 120, 0xFFFFFF, "死んだ");
 
 }
 

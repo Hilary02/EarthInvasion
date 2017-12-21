@@ -38,7 +38,7 @@ void Enemy::Update(const Collision & playerCol)
 
 void Enemy::Draw(int drawX, int drawY)
 {
-	DrawFormatString(0, 0, 0xFFFFFF, "Enemy:%d,%d     Draw:%d,%d", x, y, x - drawX, y - drawY);
+	//d	DrawFormatString(0, 0, 0xFFFFFF, "Enemy:%d,%d     Draw:%d,%d", x, y, x - drawX, y - drawY);
 	isRight = IsRangeCheck();
 	if (isRight)
 	{
@@ -53,11 +53,11 @@ void Enemy::Draw(int drawX, int drawY)
 void Enemy::collisionCheck(const Collision & target) {
 	int isCol = collision->doCollisonCheck((target.hitRange));
 	if (isCol) {
-		DrawBox(10, 20, 100, 200, 0xFF0000, true);
+		//d 		DrawBox(10, 20, 100, 200, 0xFF0000, true);
 		IcolMgr->requestAction(Action::DmgPlayer);
 	}
 	else {
-		DrawBox(10, 20, 100, 200, 0xFF0000, false);
+		//d 		DrawBox(10, 20, 100, 200, 0xFF0000, false);
 	}
 }
 
