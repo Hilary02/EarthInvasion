@@ -11,7 +11,7 @@ MoveGround::~MoveGround()
 {
 }
 
-MoveGround::MoveGround(int x, int y, int moveUp, int moveDown, char xory, int img) {
+MoveGround::MoveGround(double x, double y, double moveUp, double moveDown, char xory, int img) {
 	this->x = x;
 	this->y = y;
 	this->moveX = x;
