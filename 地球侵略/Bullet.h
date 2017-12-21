@@ -5,10 +5,15 @@ class Bullet :
 {
 public:
 	Bullet();
+	Bullet(int, int, int, bool, ICollisionManager*);
 	~Bullet();
 
+	int remit;
+
+	void Update();
+	void Draw(int, int);
+
 private:
-	int x;
-	int y;
+	bool isR;
 };
 

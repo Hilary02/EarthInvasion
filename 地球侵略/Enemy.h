@@ -1,5 +1,6 @@
 #pragma once
 #include "Creature.h"
+#include "Bullet.h"
 #include <vector>
 
 class Enemy :
@@ -27,6 +28,7 @@ private:
 	const int mod = -1;
 
 	int drawcount = 0;
+	int bulletHundle;
 	int walkHundle[8];
 	int atackHundle[4];
 	int deadHundle[8];
@@ -35,10 +37,13 @@ private:
 	int dis = 150;
 	int movedis = 1;
 	int addCount = 1;
+	int ct = 181;
 	bool isRight = false;
-	bool countRE = false;
+	bool dead = false;
 
-	std::vector<Object*> barrettes;
+	int index = 0;
+
+	std::vector<Bullet*> bullets;
 
 	Collision* collision;
 	Collision* AttackBox;
