@@ -2,8 +2,8 @@
 
 
 
-Scene_Clear::Scene_Clear()
-{
+Scene_Clear::Scene_Clear(){
+	bg = LoadGraph("data/img/clear1.png");
 }
 
 
@@ -27,13 +27,15 @@ void Scene_Clear::Update() {
 }
 
 void Scene_Clear::Draw() {
+	DrawGraph(0, 0, bg, true);
 	SetFontSize(30);
-	DrawFormatString(200, y, 0xFF0000, text.c_str());
+	
 
 	if (canDrawButton) {
 		
-		DrawFormatString(200, 270, 0xFFFFFF, c_text.c_str());
-		DrawFormatString(200, 300, 0xFFFFFF, "Zキーでタイトルに戻る");
+		//DrawFormatString(200, 270, 0xFFFFFF, c_text.c_str());
+		DrawFormatString(150, 420, 0xFF0000, c_text.c_str());
+		DrawFormatString(150, 480, 0xFFFFFF, "Zキーでタイトルに戻る");
 	}
 	SetFontSize(16);
 }

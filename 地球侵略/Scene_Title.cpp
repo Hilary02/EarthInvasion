@@ -25,6 +25,7 @@ RootmenuElement TitleMenu[TITLE_NUM] = {	//ÀÛ‚Ì’l‚Ìİ’è
 Scene_Title::Scene_Title()
 {
 	SoundM.SetSound(LoadSoundMem("data/mc/ƒƒjƒ…[‰æ–Ê.wav"));	
+	bg= LoadGraph("data/img/enemy1Wait.png");
 }
 
 

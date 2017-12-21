@@ -63,7 +63,7 @@ ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap, Player * playe
 
 
 				case 99:
-					obje =new  Goal(x, y, img[10], IcolMgr);
+					obje =new  Goal(x, y, img[21], IcolMgr);
 						break;
 				default:
 					break;
@@ -111,7 +111,10 @@ void ObjectManager::Loadimg() {
 	img[13] = LoadGraph("data/img/");   //13‚Í“ÅlŠÔ
 	img[14] = LoadGraph("data/img/");   //14‚Í–‚–@g‚¢
 	img[20] = LoadGraph("data/img/healPot.png");    //20‚Í‰ñ•œ–ò
-	img[21] = LoadGraph("data/img/curePod.png"); //21‚Í“ÅÁ‚µ
+	//img[21] = LoadGraph("data/img/curePod.png"); //21‚Í“ÅÁ‚µ
+
+	img[21] = LoadGraph("data/img/clear.png"); //‚­‚è‚ 
+
 }
 
 void ObjectManager::Update(){

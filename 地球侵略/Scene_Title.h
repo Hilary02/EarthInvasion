@@ -8,5 +8,7 @@ public:
 	~Scene_Title();
 	void Update();
 	void Draw();
+private:
+	int bg;
 };
 

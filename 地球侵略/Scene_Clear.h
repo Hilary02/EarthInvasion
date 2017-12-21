@@ -24,5 +24,7 @@ private:
 	int Frame = 0;
 
 	bool canDrawButton = false;
+
+	int bg;
 };
 

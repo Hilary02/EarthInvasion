@@ -7,7 +7,7 @@ Goal::Goal(int x, int y, int handle, ICollisionManager * IcolMgr){
 	this->y = y;
 	this->imgHandle = handle;
 	this->IcolMgr = IcolMgr;
-	collision = new Collision(0, 0, 64, 64);
+	collision = new Collision(0, 0, 32, 64);
 }
 
 Goal::~Goal()
