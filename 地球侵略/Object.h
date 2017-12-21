@@ -12,9 +12,9 @@ public:
 	//Object(int x, int y, int handle);
 	Object(int x, int y, int handle,ICollisionManager* IcolMgr);
 	~Object();
-	virtual void Update(const Collision & playerCol);
+	virtual int update(const Collision & playerCol);
 	virtual void Draw(int drawX, int drawY);
-	void collisionCheck();
+	//void collisionCheck();
 
 	// マップにおいての絶対座標を指定するとその座標に設定
 	void setAbsolutePos(int modX, int modY);

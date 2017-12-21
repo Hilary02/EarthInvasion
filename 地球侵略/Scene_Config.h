@@ -7,7 +7,7 @@ class Scene_Config :
 public:
 	Scene_Config();
 	~Scene_Config();
-	void Update();
+	void update();
 	void Draw();
 private:
 	//const static int MENU_NUM = 5;

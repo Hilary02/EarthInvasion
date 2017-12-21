@@ -19,8 +19,14 @@ void CollisionManager::requestAction(Action act){
 	case Action::KillPlayer:
 		killPlayer();
 		break;
+
 	case Action::GameOver:
 		gameOver();
+    break;
+	case Action::HealPlayer:
+		healPlayer();
+		break;
+
 	default:
 		break;
 	}
@@ -34,6 +40,11 @@ void CollisionManager::killPlayer(){
 	player->modHp(-20);
 }
 
+<<<<<<< HEAD
 void CollisionManager::gameOver() {
 	SceneM.ChangeScene(scene::GameOver);
+=======
+void CollisionManager::healPlayer(){
+	player->modHp(1);
+>>>>>>> origin/healItem
 }

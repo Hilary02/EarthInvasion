@@ -7,7 +7,7 @@ class Scene_Game :
 public:
 	Scene_Game();
 	~Scene_Game();
-	void Update();
+	void update();
 	void Draw();
 private:
 	Stage_Base* nowStage;

@@ -25,7 +25,7 @@ void SceneManager::ChangeScene(scene next) {
 	nextScene = next;
 }
 
-void SceneManager::Update() {
+void SceneManager::update() {
 	if (nextScene != scene::None) {
 		/*シーンがタイトルならばインスタンスを削除する代わりにタイトルフラグを折るだけ．
 		タイトルのカーソル位置を保持するようにするためこうしているが，
@@ -61,7 +61,7 @@ void SceneManager::Update() {
 		}
 		nextScene = scene::None;
 	}
-	nowScene->Update();
+	nowScene->update();
 }
 
 void SceneManager::Draw() {

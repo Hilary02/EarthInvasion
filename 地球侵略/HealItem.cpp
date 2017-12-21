@@ -12,8 +12,9 @@ HealItem::~HealItem()
 }
 
 
-void HealItem::Update()
+int HealItem::update()
 {
+	return 0;
 }
 
 

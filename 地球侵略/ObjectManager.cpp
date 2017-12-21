@@ -1,4 +1,5 @@
 #include "ObjectManager.h"
+#include "Item.h"
 #include<memory>
 
 #include "Goal.h"
@@ -15,7 +16,9 @@ ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap, Player * playe
 		for (unsigned int j = 0; j < vmap[i].size(); j++) {
 			//if (vmap[i][j] == 3 || vmap[i][j] == 4 || vmap[i][j] == 6) {
 
-			if (vmap[i][j] ==  4 || vmap[i][j] == 8 || vmap[i][j] == 9|| vmap[i][j] == 99) {
+
+			if (vmap[i][j] ==  4 || vmap[i][j] == 5|| vmap[i][j] == 8 || vmap[i][j] == 9|| vmap[i][j] == 99) {
+
 
 
 				Object* obje;
@@ -38,7 +41,13 @@ ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap, Player * playe
 					//obje = new Enemy(x, y, img[10], vmap[i][j]);
 					obje = new Enemy(x, y, img[10], vmap[i][j],IcolMgr);
 					break;
+<<<<<<< HEAD
 
+=======
+				case 5:
+					obje = new Item(x, y, img[20],IcolMgr);
+					break;
+>>>>>>> origin/healItem
 		/*		case 3:
 					obje = GroundFloor(x, y, img[3]);
 
@@ -128,9 +137,15 @@ void ObjectManager::Loadimg() {
 
 }
 
-void ObjectManager::Update(){
+void ObjectManager::update(){
+	//DrawFormatString(90,90,0x000000,0xFFFFFF)
+	int i = 0;
 	for (auto &obj : objects) {
-		obj->Update(*(player->collision));
+		i++;
+		int n=obj->update(*(player->collision));
+		if (n == -1) {
+			objects.erase(objects.begin() +i-1);
+		}
 	}
 }
 

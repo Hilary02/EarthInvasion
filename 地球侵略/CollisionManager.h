@@ -14,6 +14,10 @@ private:
 	Player* player;
 	void damagePlayer();
 	void killPlayer();
+
 	void gameOver();
+
+	void healPlayer();
+
 };
 

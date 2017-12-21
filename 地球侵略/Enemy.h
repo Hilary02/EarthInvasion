@@ -14,7 +14,7 @@ public:
 	//Enemy(int x, int y, int img, int id);
 	Enemy(int x, int y, int img, int id, ICollisionManager* IcolMgr);
 	
-	void Update(const Collision & playerCol) override;
+	int update(const Collision & playerCol) override;
 	void Draw(int drawX, int drawY) override;
 	void collisionCheck(const Collision& target);
 	void MoveCommon();

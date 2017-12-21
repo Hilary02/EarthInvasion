@@ -24,7 +24,7 @@ void GameMain::MainLoop() {
 
 		SoundM.SoundPlayer();
 
-		SceneM.Update();
+		SceneM.update();
 		SceneM.Draw();
 		
 		//デバック表示

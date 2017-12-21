@@ -2,7 +2,7 @@
 #include "Player.h"
 #include "KeyManager.h"
 
-//Œ±“I
+//?????I
 #include "SceneManager.h"
 
 Player::Player(std::vector<std::vector <int>> const &vmap) {
@@ -26,12 +26,13 @@ Player::~Player() {
 
 }
 
-//ŒvZˆ—
-void Player::Update() {
-	//ó‘Ô‚ğŒ©‚Ä“–‚½‚è”»’è‚ğ•ÏX
+//?v?Z????
+
+int Player::update() {
+
 	PerDecision();
-	//ƒL[“ü—Í‚Ìˆ—
-	if (!isAttack && !isDead && isMoving == 'N') { //ƒ‚[ƒVƒ‡ƒ“’†‚Æ€–S‚ÍƒL[“ü—Í–³Œø
+	//?L?[???Í‚Ì???
+	if (!isAttack && !isDead && isMoving == 'N') { //???[?V???????Æ??S???ÍƒL?[???Í–???
 		if (keyM.GetKeyFrame(KEY_INPUT_LEFT) >= 1) {
 			right = false;
 			xyCheck = 'x';
@@ -52,7 +53,7 @@ void Player::Update() {
 				x += cMove;
 			}
 		}
-		if (!isJumping && !isLiquid) { //ƒWƒƒƒ“ƒv‚Æ‰tó‰»‚µ‚Ä‚é‚É“®‚©‚È‚¢
+		if (!isJumping && !isLiquid) { //?W?????v?Æ‰t?ó‰»‚??Ä‚é?É“????È‚?
 			if (keyM.GetKeyFrame(KEY_INPUT_UP) == 1) {
 				isJumping = true;
 				jumpPower = -6;
@@ -61,14 +62,14 @@ void Player::Update() {
 				isAttack = true;
 				drawCount = 0;
 			}
-			if (plState == 'N') { //‚¦‚¦‚â‚ñó‘Ô‚Ì‚İ‚Å‚«‚éˆ—
+			if (plState == 'N') { //?????????Ì‚İ‚Å‚??éˆ??
 				if (keyM.GetKeyFrame(KEY_INPUT_DOWN) >= 1) {
 					isLiquid = true;
 					isMoving = 'L';
 					drawCount = 0;
 				}
 				if (keyM.GetKeyFrame(KEY_INPUT_S) >= 1) {
-					if (1) { //‚±‚±‚É€‚ñ‚Å‚é“G‚ª‚¢‚é‚©”»’è
+					if (1) { //?????É??????????é‚©????
 						plState = 'A';
 						isMoving = 'I';
 						drawCount = 0;
@@ -82,7 +83,7 @@ void Player::Update() {
 			}
 		}
 	}
-	//‰tó‰»‰ğœ‚Ìˆ—
+	//?t?ó‰»‰???Ì???
 	if (keyM.GetKeyFrame(KEY_INPUT_DOWN) == 0 && isLiquid) {
 		xyCheck = 'N';
 		if (MapHitCheck(x1, y, xyCheck) && MapHitCheck(x2, y, xyCheck) && MapHitCheck(x3, y, xyCheck)) {
@@ -91,11 +92,11 @@ void Player::Update() {
 			drawCount = 0;
 		}
 	}
-	//’Êíó‘Ô‚ÌUŒ‚”»’è‚Ìˆ—
+	//?Ê??Ô‚ÌU??????????
 	if (isAttack && plState == 'N' && drawCount >= 25 && drawCount <= 32) {
 
 	}
-	//ƒWƒƒƒ“ƒv’†‚Ìˆ—
+	//?W?????v???Ì???
 	if (isJumping) {
 		xyCheck = 'y';
 		if ((MapHitCheck(x1, y2 + jumpPower, xyCheck) && MapHitCheck(x2, y2 + jumpPower, xyCheck) && MapHitCheck(x3, y2 + jumpPower, xyCheck))
@@ -133,12 +134,12 @@ void Player::Update() {
 		drawCount = 0;
 		//GameOver();
 
-		//Œ±“I
+		//?????I
 		SceneM.ChangeScene(scene::GameOver);
 	}
 
 	if (invalidDamageTime < 60) invalidDamageTime++;
-
+	return 0;
 }
 
 bool Player::MapHitCheck(int movedX, int movedY, char check)
@@ -149,7 +150,7 @@ bool Player::MapHitCheck(int movedX, int movedY, char check)
 		break;
 	case 1:
 
-		//d		DrawFormatString(200, 140, 0xFFFFFF, "Œ©‚¦‚È‚¢•Ç‚¾I");
+		//d		DrawFormatString(200, 140, 0xFFFFFF, "?????È‚??Ç‚??I");
 
 		if (check == 'x') {
 			if (movedX - x2 > 0)
@@ -170,7 +171,7 @@ bool Player::MapHitCheck(int movedX, int movedY, char check)
 		break;
 	case 2:
 
-		//d	DrawFormatString(200, 140, 0xFFFFFF, "•Ç‚¾I");
+		//d	DrawFormatString(200, 140, 0xFFFFFF, "?Ç‚??I");
 
 		if (check == 'x') {
 			if (movedX - x2 > 0)
@@ -238,7 +239,7 @@ void Player::Draw(int drawX, int drawY) {
 	int tempY = y - drawY;
 
 	switch (plState) {
-	case 'N':	//ålŒö
+	case 'N':	//????
 		if (isJumping) {
 			if (jumpPower <= 1 && jumpPower >= -1)
 				MyDraw(tempX, tempY, jump[1], right);
@@ -304,7 +305,7 @@ void Player::Draw(int drawX, int drawY) {
 		}
 		break;
 
-	case 'A':	//ˆê”Ê•ºA
+	case 'A':	//????A
 		if (isJumping) {
 			if (jumpPower <= 1 && jumpPower >= -1)
 				MyDraw(tempX, tempY, jump[11], right);
@@ -352,7 +353,7 @@ void Player::Draw(int drawX, int drawY) {
 		}
 		break;
 
-	case'B':	//ˆê”Ê•ºB
+	case'B':	//????B
 		if (isJumping) {
 
 		}
@@ -367,7 +368,7 @@ void Player::Draw(int drawX, int drawY) {
 		}
 		break;
 
-	case'C':	//ˆê”Ê•ºC
+	case'C':	//????C
 		if (isJumping) {
 
 		}
@@ -382,7 +383,7 @@ void Player::Draw(int drawX, int drawY) {
 		}
 		break;
 
-	case'W':	//–‚—
+	case'W':	//????
 		if (keyM.GetKeyFrame(KEY_INPUT_RIGHT) >= 1) {
 			drawCount = keyM.GetKeyFrame(KEY_INPUT_RIGHT) / 15 % 4;
 			DrawGraph(tempX, tempY, move[drawCount], TRUE);
@@ -399,9 +400,9 @@ void Player::Draw(int drawX, int drawY) {
 	// DrawFormatString(100, 100, 0xFFFFFF, "%d,%d", tempX, tempY);
 	//d	DrawFormatString(100, 80, 0xFFFFFF, "Player:%d,%d", (int)x, (int)y);
 	//d DrawFormatString(100, 100, 0xFFFFFF, "MapChip:%d,%d", (int)(x / 32), (int)(y / 32));
-	//d if (isJumping) DrawFormatString(300, 80, 0xFFFFFF, "ƒWƒƒƒ“ƒv’†,%d",jumpPower);
-	//d if (isAttack) DrawFormatString(300, 100, 0xFFFFFF, "ƒAƒ^ƒbƒN’†");
-	//d if (isDead) DrawFormatString(300, 120, 0xFFFFFF, "€‚ñ‚¾");
+	//d if (isJumping) DrawFormatString(300, 80, 0xFFFFFF, "?W?????v??,%d",jumpPower);
+	//d if (isAttack) DrawFormatString(300, 100, 0xFFFFFF, "?A?^?b?N??");
+	//d if (isDead) DrawFormatString(300, 120, 0xFFFFFF, "????);
 
 }
 
@@ -454,7 +455,7 @@ void Player::PerDecision()
 	y3 = y + ((sizeY1 + sizeY2) / 2);
 }
 void Player::modHp(int mod){
-	//•Ï‰»—Ê‚ª•‰‚Ìê‡‚Ì‚İC–³“GŠÔ‚ğ‹N“®
+	//?Ï‰??Ê‚????Ìê‡?Ì‚İC???G???Ô‚?N??
 	if (mod < 0) {
 		if (invalidDamageTime == 60) {
 			invalidDamageTime = 0;
@@ -462,39 +463,39 @@ void Player::modHp(int mod){
 		}
 	}
 	else {
-		//•Ï‰»—Ê‚ª³‚È‚ç–³“GŠÔŠÖŒW‚È‚­•ÏX
+		//?Ï‰??Ê‚????È‚ç–³?G???ÔŠÖŒW?È‚??ÏX
 		hp += mod;
 	}
 }
-//‰æ‘œ“Ç‚İ‚İ
+//?æ‘œ?Ç‚İ???
 void Player::LoadImg()
 {
-	//ålŒöƒjƒ…[ƒgƒ‰ƒ‹
+	//?????j???[?g????
 	LoadDivGraph("data/img/eeyanWait.png", 4, 4, 1, 64, 64, wait);
-	//ålŒö•às
+	//??????s
 	LoadDivGraph("data/img/eeyanMove.png", 4, 4, 1, 64, 64, move);
-	//ålŒöƒWƒƒƒ“ƒv
+	//?????W?????v
 	LoadDivGraph("data/img/eeyanJump.png", 4, 4, 1, 64, 64, jump);
-	//ålŒö‰tó‰»
+	//?????t??
 	LoadDivGraph("data/img/eeyanEkijouka.png", 4, 4, 1, 64, 64, liquid);
 	LoadDivGraph("data/img/eeyanEkijoukaMove.png", 4, 4, 1, 64, 64, &liquid[5]);
-	//ålŒöUŒ‚
+	//?????U??
 	LoadDivGraph("data/img/eeyanAttack.png", 8, 4, 2, 64, 64, attack);
-	//ålŒöŠñ¶
+	//??????
 	LoadDivGraph("data/img/eeyanParasite.png", 8, 4, 2, 64, 64, parasite);
 	LoadDivGraph("data/img/eeyanParasiteOut.png", 8, 4, 2, 64, 64, &parasite[10]);
-	//ålŒö€–S
+	//???????S
 	LoadDivGraph("data/img/eeyanDie.png", 16, 4, 4, 64, 64, die);
 
-	//ˆê”Ê•ºAƒjƒ…[ƒgƒ‰ƒ‹
+	//????A?j???[?g????
 	LoadDivGraph("data/img/enemy1WaitP.png", 1, 1, 1, 64, 64, &wait[10]);
-	//ˆê”Ê•ºA•às
+	//????A??s
 	LoadDivGraph("data/img/enemy1WalkP.png", 8, 4, 2, 64, 64, &move[10]);
-	//ˆê”Ê•ºAƒWƒƒƒ“ƒv
+	//????A?W?????v
 	LoadDivGraph("data/img/enemy1JumpP.png", 4, 4, 1, 64, 64, &jump[10]);
-	//ˆê”Ê•ºAUŒ‚
+	//????A?U??
 	LoadDivGraph("data/img/enemy1WaitForAtackP.png", 4, 4, 1, 64, 64, &attack[10]);
 	LoadDivGraph("data/img/enemy1AtackP.png", 4, 4, 1, 64, 64, &attack[14]);
-	//ˆê”Ê•ºA€–S
+	//????A???S
 	LoadDivGraph("data/img/enemy1DieP.png", 8, 4, 2, 64, 64, &die[20]);
 }

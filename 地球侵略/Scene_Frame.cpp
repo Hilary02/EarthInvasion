@@ -12,7 +12,7 @@ Scene_Frame::~Scene_Frame()
 }
 
 
-void Scene_Frame::Update()
+void Scene_Frame::update()
 {
 }
 

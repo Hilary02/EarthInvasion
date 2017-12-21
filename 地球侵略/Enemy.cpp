@@ -34,12 +34,13 @@ Enemy::Enemy(int x, int y, int img, int id, ICollisionManager* IcolMgr){
 //	HitAction = hit;
 //}
 
-void Enemy::Update(const Collision & playerCol)
+int Enemy::update(const Collision & playerCol)
 {
 	ct++;
 	collision->updatePos(x, y);
 	AttackBox->updatePos(x, y);
 	collisionCheck(playerCol);
+
 	DeadCheck();
 	if (!dead)
 	{
@@ -54,6 +55,9 @@ void Enemy::Update(const Collision & playerCol)
 		}
 		index = -1;
 	}
+
+
+	return 0;
 
 }
 
@@ -98,8 +102,8 @@ void Enemy::collisionCheck(const Collision & target) {
 
 		movedis = 0;
 		//d DrawBox(10, 20, 100, 200, 0xFF0000, true);
-	
-	
+
+
 		//d DrawBox(10,20,100,200, 0x0000ff,true);
 		AtackCommon();
 	}
