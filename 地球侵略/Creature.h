@@ -1,5 +1,6 @@
 #pragma once
 #include "Object.h"
+#include "SceneManager.h"
 /**
 敵や主人公など，キャラクターを管理する．
 体力や攻撃力などステータス管理をできるように．
@@ -20,7 +21,7 @@ public:
 	void setAtk();
 	// 体力を取得する
 	int getHp();
-	virtual void Update(const Collision & playerCol) override;
+	virtual int update(const Collision & playerCol) override;
 	virtual void Draw(int ,int) override;
 };
 

@@ -6,7 +6,7 @@ WindowData window;
 WindowData::WindowData() :
 	WINDOW_WIDTH(800),
 	WINDOW_HEIGHT(600),
-	TITLE("LEI_v0.1") {
+	TITLE("’n‹…N—ª‚¾‚Ÿ‚Ÿ‚ŸI ‘ÌŒ±”Å") {
 }
 
 

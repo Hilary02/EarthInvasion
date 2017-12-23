@@ -1,23 +1,30 @@
 #include "ObjectManager.h"
+#include "Item.h"
 #include<memory>
+
+#include "Goal.h"
 
 ObjectManager::ObjectManager()
 {
 }
 
-//çÌèúó\íË
+//?Ìèú?\??
 ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap, Player * player, ICollisionManager* colMgr) {
 	Loadimg();
 	IcolMgr = colMgr;
 	for (unsigned int i = 0; i < vmap.size(); i++) {
 		for (unsigned int j = 0; j < vmap[i].size(); j++) {
 			//if (vmap[i][j] == 3 || vmap[i][j] == 4 || vmap[i][j] == 6) {
-			if (vmap[i][j] == 4) {
+
+
+			if (vmap[i][j] == 4 || vmap[i][j] == 5 || vmap[i][j] == 8 || vmap[i][j] == 9 || vmap[i][j] == 99) {
+
+
 
 				Object* obje;
-				int y = i * 32;//yç¿ïW
-				int x = j * 32;//xç¿ïW
-				int path = 0;    //ÉIÉuÉWÉFÉNÉgÇ…çáÇÌÇπÇΩâÊëúÇÃÉpÉX
+				int y = i * 32;//y???W
+				int x = j * 32;//x???W
+				int path = 0;    //?I?u?W?F?N?g?…ç??ÌÇπ???Êëú?ÃÉp?X
 				path = img[vmap[i][j]];
 				switch (vmap[i][j])
 				{
@@ -30,35 +37,51 @@ ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap, Player * playe
 						break;*/
 
 				case 4:
+
 					//obje = new Enemy(x, y, img[10], vmap[i][j]);
-					obje = new Enemy(x, y, img[10], vmap[i][j],IcolMgr);
-
-		/*		case 3:
-					obje = GroundFloor(x, y, img[3]);
-					break;
-				case 10:
-					obje = Enemy(x, y, img[10]);
-					break;
-				case 11:
-					obje = Enemy(x, y, img[11]);
-					break;
-				case 12:
-					obje = Enemy(x, y, img[12]);
-					break;
-				case 13:
-					obje = Enemy(x, y, img[13]);
-					break;
-				case 14:
-					obje = Enemy(x, y, img[14]);
-					break;
-				case 20:
-					obje = Item(x, y, img[20]);
-					break;
-				case 21:
-					obje = Item(x, y, img[21]);
-					*/
+					obje = new Enemy(x, y, img[10], vmap[i][j], IcolMgr);
 					break;
 
+				case 5:
+					obje = new Item(x, y, img[20], IcolMgr);
+					break;
+
+					/*		case 3:
+								obje = GroundFloor(x, y, img[3]);
+
+								break;
+								*/
+				case 8:
+					obje = new MoveGround(x, y, 2, 0.25, 0, img[3]);
+					break;
+				case 9:
+					obje = new SpikeBlock(x, y, img[9], IcolMgr);
+					break;
+					/*
+									case 11:
+										obje = Enemy(x, y, img[11]);
+										break;
+									case 12:
+										obje = Enemy(x, y, img[12]);
+										break;
+									case 13:
+										obje = Enemy(x, y, img[13]);
+										break;
+									case 14:
+										obje = Enemy(x, y, img[14]);
+										break;
+									case 20:
+										obje = Item(x, y, img[20]);
+										break;
+									case 21:
+										obje = Item(x, y, img[21]);
+										*/
+
+
+
+				case 99:
+					obje = new  Goal(x, y, img[21], IcolMgr);
+					break;
 				default:
 					break;
 				}
@@ -75,9 +98,9 @@ ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap, Player * playe
 //		for (unsigned int j = 0; j < vmap[i].size(); j++) {
 //			if (vmap[i][j] == 3 || vmap[i][j] == 4 || vmap[i][j] == 6) {
 //				Object obje;
-//				int x = i * 32;//xç¿ïW
-//				int y = j * 32;//yç¿ïW
-//				int path = 0;    //ÉIÉuÉWÉFÉNÉgÇ…çáÇÌÇπÇΩâÊëúÇÃÉpÉX
+//				int x = i * 32;//x???W
+//				int y = j * 32;//y???W
+//				int path = 0;    //?I?u?W?F?N?g?…ç??ÌÇπ???Êëú?ÃÉp?X
 //				path = img[vmap[i][j]];
 //				switch (vmap[i][j])
 //				{
@@ -98,24 +121,34 @@ ObjectManager::~ObjectManager() {
 }
 
 void ObjectManager::Loadimg() {
-	img[3] = LoadGraph("data/img/groundFloor.png");  //3ÇÕìÆÇ≠è∞
-	img[10] = LoadGraph("data/img/enemy1Wait.png");   //10ÇÕàÍî ï∫
-	img[11] = LoadGraph("data/img/");   //11ÇÕíÜè´
-	img[12] = LoadGraph("data/img/");   //12ÇÕÉxÉeÉâÉìï∫
-	img[13] = LoadGraph("data/img/");   //13ÇÕì≈êlä‘
-	img[14] = LoadGraph("data/img/");   //14ÇÕñÇñ@égÇ¢
-	img[20] = LoadGraph("data/img/healPot.png");    //20ÇÕâÒïúñÚ
-	img[21] = LoadGraph("data/img/curePod.png"); //21ÇÕì≈è¡Çµ
+	img[3] = LoadGraph("data/img/moveGround.png");  //3?Õì?????
+	img[9] = LoadGraph("data/img/togetoge.png");	//9togetoge
+	img[10] = LoadGraph("data/img/enemy1Wait.png");   //10?Õà???
+	img[11] = LoadGraph("data/img/");   //11?Õí???
+	img[12] = LoadGraph("data/img/");   //12?ÕÉx?e??????
+	img[13] = LoadGraph("data/img/");   //13?Õì≈êl??
+	img[14] = LoadGraph("data/img/");   //14?Õñ??@?g??
+	img[20] = LoadGraph("data/img/healPot.png");    //20?ÕâÒïúñ?
+	//img[21] = LoadGraph("data/img/curePod.png"); //21?Õì≈è???
+
+	img[21] = LoadGraph("data/img/clear.png"); //???ËÇ†
+
 }
 
-void ObjectManager::Update(){
+void ObjectManager::update() {
+	//DrawFormatString(90,90,0x000000,0xFFFFFF)
+	int i = 0;
 	for (auto &obj : objects) {
-		obj->Update(*(player->collision));
+		i++;
+		int n = obj->update(*(player->collision));
+		if (n == -1) {
+			objects.erase(objects.begin() + i - 1);
+		}
 	}
 }
 
-void ObjectManager::Draw(int drawX, int drawY){
-	for (auto obj : objects){
+void ObjectManager::Draw(int drawX, int drawY) {
+	for (auto obj : objects) {
 		obj->Draw(drawX, drawY);
 	}
 }

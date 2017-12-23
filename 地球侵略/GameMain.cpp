@@ -24,11 +24,11 @@ void GameMain::MainLoop() {
 
 		SoundM.SoundPlayer();
 
-		SceneM.Update();
+		SceneM.update();
 		SceneM.Draw();
 		
 		//デバック表示
 		FpsFunction(window.WINDOW_WIDTH - 80,0);
-		DrawFormatString(window.WINDOW_WIDTH-120, 20, GetColor(255, 125, 255), "Frame:%d", time);
+		//d DrawFormatString(window.WINDOW_WIDTH-120, 20, GetColor(255, 125, 255), "Frame:%d", time);
 	}
 }

@@ -6,7 +6,9 @@ class Scene_Title :
 public:
 	Scene_Title();
 	~Scene_Title();
-	void Update();
+	void update();
 	void Draw();
+private:
+	int bg;
 };
 

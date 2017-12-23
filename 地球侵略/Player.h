@@ -1,6 +1,9 @@
 #pragma once
 #include "Creature.h"
 #include <vector>
+
+
+
 class Player :
 	public Creature
 {
@@ -8,7 +11,7 @@ public:
 	Player(const std::vector<std::vector <int>>  &vmap);
 	//Player(int x, int y);
 	~Player();
-	void Update();
+	int update();
 	void Draw(int, int);
 	int getX();
 	int getY();
@@ -49,4 +52,6 @@ private:
 	int die[30];
 
 	int invalidDamageTime=60;
+
+	//ICollisionManager& IcolMgr;
 };

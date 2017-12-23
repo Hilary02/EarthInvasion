@@ -22,6 +22,7 @@ Stage_Base::Stage_Base() :
 	assert(MAP_WIDTH >= 0);
 	vmap.resize(MAP_HEIGHT);
 	for (int i = 0; i < MAP_HEIGHT; i++) {
+
 		for (int j = 0; j < MAP_WIDTH; j++) {
 			vmap[i].push_back(j);
 		}
@@ -30,7 +31,7 @@ Stage_Base::Stage_Base() :
 	readMap("data/map/tutrial-map改良版32.csv");
 	//プレイヤー呼び出し
 	player = new Player(vmap);
-	player->setAbsolutePos(800, 100);
+	player->setAbsolutePos(100, 600);
 	colMgr = new CollisionManager(player);
 	objectMgr = new ObjectManager(vmap,player,colMgr);
 
@@ -52,19 +53,20 @@ Stage_Base::~Stage_Base() {
 
 void Stage_Base::update() {
 	drawChipNum = 0;
-	player->Update();
-	objectMgr->Update();
+	player->update();
+	objectMgr->update();
 	infoArea->update();
 	scrollMap();	//プレイヤー座標に応じた表示範囲の変更
 
 
 	//Debug
-	if (keyM.GetKeyFrame(KEY_INPUT_Q) == 1) {
-		player->modHp(1);
-	}
-	if (keyM.GetKeyFrame(KEY_INPUT_W) == 1) {
-		player->modHp(-1);
-	}
+	//d
+	//if (keyM.GetKeyFrame(KEY_INPUT_Q) == 1) {
+	//	player->modHp(1);
+	//}
+	//if (keyM.GetKeyFrame(KEY_INPUT_W) == 1) {
+	//	player->modHp(-1);
+	//}
 
 }
 
@@ -96,8 +98,8 @@ void Stage_Base::draw() {
 	infoArea->draw();
 
 	//デバッグ情報
-	DrawFormatString(0, 30, GetColor(255, 125, 255), "マップ表示原点：%d  ,%d", drawX, drawY);
-	DrawFormatString(0, 50, GetColor(255, 125, 255), "表示画像数：%d", drawChipNum);
+//d	DrawFormatString(0, 30, GetColor(255, 125, 255), "マップ表示原点：%d  ,%d", drawX, drawY);
+//d	DrawFormatString(0, 50, GetColor(255, 125, 255), "表示画像数：%d", drawChipNum);
 }
 
 
@@ -141,16 +143,19 @@ int Stage_Base::readMap(std::string file) {
 //仮も仮なので後で分離
 int Stage_Base::loadImg() {
 	//画像の設定
-	LoadDivGraph("data/img/20170823174821.png", 10, 10, 1, 32, 32, chipImg);
+//d	LoadDivGraph("data/img/20170823174821.png", 10, 10, 1, 32, 32, chipImg);
 	//chipImg[1] = LoadGraph("data/img/airFloor.png");
 	chipImg[2] = LoadGraph("data/img/groundFloor.png");
 	//chipImg[3] = LoadGraph("data/img/eeyanWait.png");
 	//chipImg[4] = LoadGraph("data/img/enemy1Wait.png");
-	chipImg[5] = LoadGraph("data/img/healPot.png");
-	chipImg[6] = LoadGraph("data/img/lockDoor.png");
+
+	//d chipImg[5] = LoadGraph("data/img/healPot.png");
+	//d chipImg[6] = LoadGraph("data/img/lockDoor.png");
+
+
 	chipImg[7] = LoadGraph("data/img/airFloor.png");
-	chipImg[8] = LoadGraph("data/img/moveGround.png");
-	chipImg[9] = LoadGraph("data/img/togetoge.png");
+	//chipImg[8] = LoadGraph("data/img/moveGround.png");
+	//chipImg[9] = LoadGraph("data/img/togetoge.png");
 	bgHand = LoadGraph("data/img/bg01.jpg");
 	return 1;
 

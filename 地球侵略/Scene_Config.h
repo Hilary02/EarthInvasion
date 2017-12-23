@@ -7,16 +7,18 @@ class Scene_Config :
 public:
 	Scene_Config();
 	~Scene_Config();
-	void Update();
+	void update();
 	void Draw();
 private:
-	const static int MENU_NUM = 5;
+	//const static int MENU_NUM = 5;
+	const static int MENU_NUM = 3;
 	//どれが選択されているのか
 	enum OPTION_SELECT {
-		BGM, SE, KEY, PAD, EXIT
+		//BGM, SE, KEY, PAD, EXIT
+		BGM, SE,  EXIT
 	};
 	enum OPTION_DRAW {
-		VOL_CON, KEY_CON, PAD_CON
+		VOL_CON, KEY_CON   //, PAD_CON
 	};
 	//メニューの描画場所と内容をまとめる
 	typedef struct {
@@ -26,9 +28,9 @@ private:
 
 	MenuElement_t MenuElement[MENU_NUM] = {	//実際の値の設定
 		{ 400, 280, "BGM" },
-		{ 400, 310, "SE" },
-		{ 400, 340, "KEY" },
-		{ 400, 370, "PAD" },
+		{ 400, 340, "SE" },			//310から変えた
+		//{ 400, 340, "KEY" },
+		//{ 400, 370, "PAD" },
 		{ 400, 400, "Back to Title" }
 	};
 	int nowSelect;

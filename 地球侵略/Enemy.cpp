@@ -34,12 +34,13 @@ Enemy::Enemy(int x, int y, int img, int id, ICollisionManager* IcolMgr){
 //	HitAction = hit;
 //}
 
-void Enemy::Update(const Collision & playerCol)
+int Enemy::update(const Collision & playerCol)
 {
 	ct++;
 	collision->updatePos(x, y);
 	AttackBox->updatePos(x, y);
 	collisionCheck(playerCol);
+
 	DeadCheck();
 	if (!dead)
 	{
@@ -55,14 +56,18 @@ void Enemy::Update(const Collision & playerCol)
 		index = -1;
 	}
 
+
+	return 0;
+
 }
 
 void Enemy::Draw(int drawX, int drawY)
 {
-	DrawBox(AttackBox->hitRange.xPos + AttackBox->hitRange.xOffset -drawX, AttackBox->hitRange.yPos + AttackBox->hitRange.yOffset - drawY, AttackBox->hitRange.xPos + AttackBox->hitRange.xOffset - drawX+AttackBox->hitRange.xSize, AttackBox->hitRange.yPos + AttackBox->hitRange.yOffset - drawY+AttackBox->hitRange.ySize, 0x00FF00, false);
 
+	//d	DrawFormatString(0, 0, 0xFFFFFF, "Enemy:%d,%d     Draw:%d,%d", x, y, x - drawX, y - drawY);
 
-	DrawFormatString(0, 0, 0xFFFFFF, "Enemy:%d,%d     Draw:%d,%d", x, y, x - drawX, y - drawY);
+	//DrawBox(AttackBox->hitRange.xPos + AttackBox->hitRange.xOffset -drawX, AttackBox->hitRange.yPos + AttackBox->hitRange.yOffset - drawY, AttackBox->hitRange.xPos + AttackBox->hitRange.xOffset - drawX+AttackBox->hitRange.xSize, AttackBox->hitRange.yPos + AttackBox->hitRange.yOffset - drawY+AttackBox->hitRange.ySize, 0x00FF00, false);
+
 	isRight = IsRangeCheck();
 	if (isRight)
 	{
@@ -86,25 +91,33 @@ void Enemy::collisionCheck(const Collision & target) {
 	int isCol = collision->doCollisonCheck((target.hitRange));
 	int attackR = AttackBox->doCollisonCheck((target.hitRange));
 	if (isCol) {
-		movedis = 0;
-		DrawBox(10, 20, 100, 200, 0xFF0000, true);
-		if(!dead)IcolMgr->requestAction(Action::DmgPlayer);
+
+		//d 		DrawBox(10, 20, 100, 200, 0xFF0000, true);
+		if (!dead)IcolMgr->requestAction(Action::DmgPlayer);
+		//IcolMgr->requestAction(Action::DmgPlayer);
 		modHp(mod);
 	}
-	else if(attackR){
-		DrawBox(10,20,100,200, 0x0000ff,true);
+	else if (attackR) {
+		//d 		DrawBox(10, 20, 100, 200, 0xFF0000, false);
+
+		movedis = 0;
+		//d DrawBox(10, 20, 100, 200, 0xFF0000, true);
+
+
+		//d DrawBox(10,20,100,200, 0x0000ff,true);
 		AtackCommon();
 	}
 	else {
-		DrawBox(10, 20, 100, 200, 0xFF0000, false);
+	//d	DrawBox(10, 20, 100, 200, 0xFF0000, false);
 		MoveCommon();
+
 	}
 }
 
 void Enemy::MoveCommon()
 {
 	movedis = 1;
-	//—Í‹Z‚È‚Ì‚Å‚ ‚Æ‚ÅC³i€–S‚É‚ÍˆÚ“®‚µ‚È‚¢j
+	//?Í‹Z?È‚Ì‚Å‚??Æ‚ÅC???i???S???É‚ÍˆÚ“????È‚??j
 	if (dead)movedis = 0;
 
 	if (isRight)
@@ -117,8 +130,8 @@ void Enemy::MoveCommon()
 	}
 	imgHandle = walkHundle[(drawcount / 8) % 8];
 	drawcount += addCount;
-	
-	//countƒŠƒZƒbƒgŒã‰ñ‚µ
+
+	//count???Z?b?g????
 	//if (drawcount == 72) drawcount = 0;
 }
 

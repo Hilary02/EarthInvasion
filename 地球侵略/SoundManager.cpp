@@ -44,13 +44,13 @@ void SoundManager::SoundVolume(int number) {
 			isVolChanged = true;
 		}
 		if (isVolChanged) {
-			Se(LoadSoundMem("data/mc/se_Z.mp3"));
+			Se(LoadSoundMem("data/mc/pick up.wav"));
 			isVolChanged = false;
 		}
 	}
 
 	if (CheckSoundMem(bgm) == 0) {
-		DrawFormatString(0, 60, GetColor(255, 255, 255), "STOP");
+		//d DrawFormatString(0, 60, GetColor(255, 255, 255), "STOP");
 	}
 }
 

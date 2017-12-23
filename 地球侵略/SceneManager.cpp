@@ -3,8 +3,8 @@
 #include "Scene_Config.h"
 #include "Scene_Game.h"
 #include "Scene_Title.h"
-
-
+#include "Scene_Gameover.h"
+#include "Scene_Clear.h"
 
 SceneManager SceneM;
 bool sceneFlag;
@@ -25,7 +25,7 @@ void SceneManager::ChangeScene(scene next) {
 	nextScene = next;
 }
 
-void SceneManager::Update() {
+void SceneManager::update() {
 	if (nextScene != scene::None) {
 		/*シーンがタイトルならばインスタンスを削除する代わりにタイトルフラグを折るだけ．
 		タイトルのカーソル位置を保持するようにするためこうしているが，
@@ -49,13 +49,19 @@ void SceneManager::Update() {
 		case scene::Config:
 			nowScene = new Scene_Config();
 			break;
+		case scene::GameOver:
+			nowScene = new Scene_Gameover();
+			break;
+		case scene::Clear:
+			nowScene = new Scene_Clear();
+			break;
 		case scene::Ranking:
 			//なっしん
 			break;
 		}
 		nextScene = scene::None;
 	}
-	nowScene->Update();
+	nowScene->update();
 }
 
 void SceneManager::Draw() {

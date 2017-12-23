@@ -3,6 +3,12 @@
 enum class Action{
 	DmgPlayer,
 	KillPlayer,
+
+	GameOver,
+
+
+	HealPlayer,
+
 };
 
 

@@ -7,7 +7,7 @@ class Scene_Frame
 public:
 	Scene_Frame();
 	virtual ~Scene_Frame();
-	virtual void Update() = 0;
+	virtual void update() = 0;
 	virtual void Draw() = 0;
 };
 

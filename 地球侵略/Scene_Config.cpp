@@ -15,7 +15,7 @@ Scene_Config::Scene_Config() {
 Scene_Config::~Scene_Config() {
 }
 
-void Scene_Config::Update() {
+void Scene_Config::update() {
 	if (keyM.GetKeyFrame(KEY_INPUT_ESCAPE) == 1) {
 		SceneM.ChangeScene(scene::Title);
 	}
@@ -24,8 +24,11 @@ void Scene_Config::Update() {
 
 void Scene_Config::Draw()
 {
-	DrawFormatString(0, 20, GetColor(255, 255, 255), "設定テスト %d", nowSelect);
-	DrawString(0, 40, "Spaceキーを押すとBGM再生", GetColor(255, 255, 255));
+	SetFontSize(30);
+	//DrawFormatString(0, 20, GetColor(255, 255, 255), "設定テスト %d", nowSelect);
+	//DrawString(0, 40, "Spaceキーを押すとBGM再生", GetColor(255, 255, 255));
+
+	DrawFormatString(20, 20, GetColor(255, 255, 255), "コンフィグ");
 
 	for (int i = 0; i < MENU_NUM; i++) {
 		if (i == nowSelect) {
@@ -41,10 +44,10 @@ void Scene_Config::Draw()
 
 	//音量を表示　関数に切り分けるかも
 	DrawFormatString(430, 280, GetColor(255, 255, 255), ": %d", SoundM.Volume(0));
-	DrawFormatString(430, 310, GetColor(255, 255, 255), ": %d", SoundM.Volume(1));
+	DrawFormatString(430, 340, GetColor(255, 255, 255), ": %d", SoundM.Volume(1));
 
 
-
+	SetFontSize(16);
 }
 
 
@@ -69,11 +72,11 @@ void Scene_Config::MoveCursor() {
 	}
 	if (keyM.GetKeyFrame(KEY_INPUT_Z) == 1) {
 		switch (nowSelect) {
-		case KEY:
-			isKeyConfig = true;
-			break;
-		case PAD:
-			break;
+		//case KEY:
+		//	isKeyConfig = true;
+		//	break;
+		//case PAD:
+		//	break;
 		case EXIT:
 			SceneM.ChangeScene(scene::Title);
 		default:
@@ -82,10 +85,10 @@ void Scene_Config::MoveCursor() {
 	}
 	if (keyM.GetKeyFrame(KEY_INPUT_ESCAPE) == 1) {
 		switch (nowSelect) {
-		case KEY:
-		case PAD:
-			isKeyConfig = false;
-			break;
+		//case KEY:
+		//case PAD:
+		//	isKeyConfig = false;
+		//	break;
 		default:
 			break;
 		}

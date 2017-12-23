@@ -2,8 +2,10 @@
 #include "DxLib.h"
 #include "Object.h"
 #include "Player.h"
-#include "HealItem.h"
+#include "Item.h"
 #include "Enemy.h"
+#include "MoveGround.h"
+#include "SpikeBlock.h"
 #include <map>
 #include <vector>
 
@@ -16,7 +18,7 @@ public:
 
 	void Loadimg();
 
-	void Update();
+	void update();
 	void Draw(int drawX, int drawY);
 	
 	std::map<int, int> img;
@@ -27,7 +29,7 @@ private:
 
 	Player *player;
 	ICollisionManager* IcolMgr;
-
+	
 };
 
 
