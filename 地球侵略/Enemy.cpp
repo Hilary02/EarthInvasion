@@ -25,14 +25,6 @@ Enemy::Enemy(int x, int y, int img, int id, ICollisionManager* IcolMgr){
 	this->IcolMgr = IcolMgr;
 }
 
-//Enemy::Enemy(int x, int y, int img, int id,) {
-//	this->x = x;
-//	this->y = y;
-//	this->imgHandle = img;
-//	this->enemyID = id;
-//	LoadDivGraph("data/img/enemy1Walk.png", 8, 4, 2, 64, 64, walk);
-//	HitAction = hit;
-//}
 
 void Enemy::Update(const Collision & playerCol)
 {
