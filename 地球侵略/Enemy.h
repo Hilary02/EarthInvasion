@@ -11,6 +11,7 @@ public:
 	Enemy();
 	~Enemy();
 
+	//Enemy(int x, int y, int img, int id);
 	Enemy(int x, int y, int img, int id, ICollisionManager* IcolMgr);
 	
 	void Update(const Collision & playerCol) override;
