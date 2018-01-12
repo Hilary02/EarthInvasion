@@ -21,7 +21,7 @@ public:
 	~Collision();
 	HitRange hitRange;
 	void updatePos(int x, int y);
-	void flip();
+	void xFlip();
 	int doCollisonCheck(const HitRange& target);
 	int id;
 };

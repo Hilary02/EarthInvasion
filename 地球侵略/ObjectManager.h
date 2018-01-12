@@ -22,6 +22,7 @@ public:
 	void Draw(int drawX, int drawY);
 	
 	std::map<int, int> img;
+	static std::vector<Object*> terrain;	//‚±‚ê‚Í–³’ƒ‚©‚È getter‚Í‚Ü‚½Œã‚Å
 
 private:
 	Object *objP;

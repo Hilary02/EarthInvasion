@@ -9,15 +9,15 @@ public:
 	MoveGround(double x, double y, double moveup, double movedown, char xory, int img);
 	int update(const Collision & playerCol) override;
 	void Draw(int drawX, int drawY) override;
-	void Move();
-	void MoveCheck();
 
 private:
-	double x;
+	void Move();
+	void MoveCheck();
+	double x;		//座標の基準点
 	double y;
-	double moveUp;
+	double moveUp;	//基準点からどれだけ移動できるか
 	double moveDown;
-	double moveX;
+	double moveX;	//現在の座標
 	double moveY;
 	int imgGround;
 	char xory;

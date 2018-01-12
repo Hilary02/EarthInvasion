@@ -1,11 +1,12 @@
 #include "ObjectManager.h"
 #include "Item.h"
-#include<memory>
+#include <memory>
 
 #include "Goal.h"
+std::vector<Object*> ObjectManager::terrain;	//実体
 
-ObjectManager::ObjectManager()
-{
+ObjectManager::ObjectManager(){
+	terrain.clear();
 }
 
 //?폜?\??
@@ -14,21 +15,13 @@ ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap, Player * playe
 	IcolMgr = colMgr;
 	for (unsigned int i = 0; i < vmap.size(); i++) {
 		for (unsigned int j = 0; j < vmap[i].size(); j++) {
-			//if (vmap[i][j] == 3 || vmap[i][j] == 4 || vmap[i][j] == 6) {
-
-
-			if (vmap[i][j] == 4 || vmap[i][j] == 5 || vmap[i][j] == 8 || vmap[i][j] == 9 || vmap[i][j] == 99) {
-
-
-
+			if (vmap[i][j] == 4 || vmap[i][j] == 5 || vmap[i][j] == 9 || vmap[i][j] == 99) {
 				Object* obje;
 				int y = i * 32;//y???W
 				int x = j * 32;//x???W
 				int path = 0;    //?I?u?W?F?N?g?ɍ??킹???摜?̃p?X
 				path = img[vmap[i][j]];
-				switch (vmap[i][j])
-				{
-
+				switch (vmap[i][j]) {
 					/*case 3:
 						obje = GroundFloor(x, y, img[3]);
 						break;
@@ -37,49 +30,16 @@ ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap, Player * playe
 						break;*/
 
 				case 4:
-
-					//obje = new Enemy(x, y, img[10], vmap[i][j]);
 					obje = new Enemy(x, y, img[10], vmap[i][j], IcolMgr);
 					break;
-
 				case 5:
 					obje = new Item(x, y, img[20], IcolMgr);
 					break;
 
-					/*		case 3:
-								obje = GroundFloor(x, y, img[3]);
-
-								break;
-								*/
-				case 8:
-					obje = new MoveGround(x, y, 2, 0.25, 0, img[3]);
-					break;
 				case 9:
 					obje = new SpikeBlock(x, y, img[9], IcolMgr);
 					break;
-					/*
-									case 11:
-										obje = Enemy(x, y, img[11]);
-										break;
-									case 12:
-										obje = Enemy(x, y, img[12]);
-										break;
-									case 13:
-										obje = Enemy(x, y, img[13]);
-										break;
-									case 14:
-										obje = Enemy(x, y, img[14]);
-										break;
-									case 20:
-										obje = Item(x, y, img[20]);
-										break;
-									case 21:
-										obje = Item(x, y, img[21]);
-										*/
-
-
-
-				case 99:
+				case 99:	//暫定ゴール
 					obje = new  Goal(x, y, img[21], IcolMgr);
 					break;
 				default:
@@ -87,38 +47,27 @@ ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap, Player * playe
 				}
 				objects.push_back(obje);
 			}
+			if (vmap[i][j] == 8) {
+				Object* obje;
+				int y = i * 32;//y???W
+				int x = j * 32;//x???W
+				int path = 0;    //?I?u?W?F?N?g?ɍ??킹???摜?̃p?X
+				path = img[vmap[i][j]];
+				switch (vmap[i][j]) {
+				case 8:	//動く床
+					obje = new MoveGround(x, y, 2, 0.25, 0, img[3]);
+					break;
+				default:
+					break;
+				}
+				terrain.push_back(obje);
+			}
 		}
 	}
 	this->player = player;
 }
-//
-//ObjectManager::ObjectManager(std::vector<std::vector<int>> vmap, Player * player){
-//	Loadimg();
-//	for (unsigned int i = 0; i < vmap.size(); i++) {
-//		for (unsigned int j = 0; j < vmap[i].size(); j++) {
-//			if (vmap[i][j] == 3 || vmap[i][j] == 4 || vmap[i][j] == 6) {
-//				Object obje;
-//				int x = i * 32;//x???W
-//				int y = j * 32;//y???W
-//				int path = 0;    //?I?u?W?F?N?g?ɍ??킹???摜?̃p?X
-//				path = img[vmap[i][j]];
-//				switch (vmap[i][j])
-//				{
-//				case 6:
-//					obje = HealItem(x, y, img[6]);
-//				default:
-//					break;
-//				}
-//				objects.push_back(obje);
-//			}
-//		}
-//	}
-//	this->player = player;
-//}
 
-
-ObjectManager::~ObjectManager() {
-}
+ObjectManager::~ObjectManager() {}
 
 void ObjectManager::Loadimg() {
 	img[3] = LoadGraph("data/img/moveGround.png");  //3?͓?????
@@ -145,10 +94,16 @@ void ObjectManager::update() {
 			objects.erase(objects.begin() + i - 1);
 		}
 	}
+	for (auto &ter : terrain) {
+		ter->update(*(player->collision));
+	}
 }
 
 void ObjectManager::Draw(int drawX, int drawY) {
 	for (auto obj : objects) {
 		obj->Draw(drawX, drawY);
+	}
+	for (auto &ter : terrain) {
+		ter->Draw(drawX, drawY);
 	}
 }

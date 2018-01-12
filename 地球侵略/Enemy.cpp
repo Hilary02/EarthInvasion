@@ -1,16 +1,12 @@
 #include "Enemy.h"
 #include "DxLib.h"
 
-Enemy::Enemy()
-{
-}
+Enemy::Enemy(){}
 
 
-Enemy::~Enemy()
-{
-}
+Enemy::~Enemy(){}
 
-Enemy::Enemy(int x, int y, int img, int id, ICollisionManager* IcolMgr){
+Enemy::Enemy(int x, int y, int img, int id, ICollisionManager* IcolMgr) {
 	this->x = x;
 	this->y = y;
 	this->imgHandle = img;
@@ -50,7 +46,7 @@ int Enemy::update(const Collision & playerCol)
 			index++;
 			if (!bull->Update())
 			{
-				bullets.erase(bullets.begin()+index);
+				bullets.erase(bullets.begin() + index);
 			}
 		}
 		index = -1;
@@ -108,7 +104,7 @@ void Enemy::collisionCheck(const Collision & target) {
 		AtackCommon();
 	}
 	else {
-	//d	DrawBox(10, 20, 100, 200, 0xFF0000, false);
+		//d	DrawBox(10, 20, 100, 200, 0xFF0000, false);
 		MoveCommon();
 
 	}
@@ -149,30 +145,23 @@ void Enemy::AtackCommon()
 	//drawcount++;
 }
 
-void Enemy::DeadCheck()
-{
-	if(getHp() < 0){
+void Enemy::DeadCheck(){
+	if (getHp() < 0) {
 		if (!dead) drawcount = 0, dead = true;
 		if (drawcount > 84) addCount = 0;
 		imgHandle = deadHundle[(drawcount / 12) % 8];
 		drawcount += addCount;
 	}
-
 }
 
-bool Enemy::IsRangeCheck()
-{
+bool Enemy::IsRangeCheck(){
 	dis += movedis;
-	if (moveRange < dis)
-	{
+	if (moveRange < dis) {
 		dis = 0;
-		AttackBox->flip();
+		AttackBox->xFlip();
 		return !isRight;
 	}
-	else
-	{
+	else {
 		return isRight;
 	}
 }
-
-

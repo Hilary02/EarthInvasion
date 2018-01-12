@@ -4,6 +4,7 @@
 
 //?????I
 #include "SceneManager.h"
+#include "ObjectManager.h"
 
 Player::Player(std::vector<std::vector <int>> const &vmap) {
 	this->vmap = vmap;
@@ -128,6 +129,34 @@ int Player::update() {
 
 	collision->updatePos(x,y);
 
+
+	/*
+			めちゃくちゃやん
+	
+	*/
+	for (auto t : ObjectManager::terrain) {
+		if (collision->doCollisonCheck(t->collision->hitRange)) {
+			//int tx = t->collision->hitRange.xPos + t->collision->hitRange.xOffset;
+			int topTY = t->collision->hitRange.yPos + t->collision->hitRange.yOffset;
+			int underTY = t->collision->hitRange.yPos + t->collision->hitRange.yOffset + t->collision->hitRange.ySize;
+			int topPY = collision->hitRange.yPos + collision->hitRange.yOffset;
+			int underPY = collision->hitRange.yPos + collision->hitRange.yOffset + collision->hitRange.ySize;
+
+			if (underPY > topTY) {
+				isJumping = false;
+				y = topTY - collision->hitRange.ySize;
+				jumpPower = 0;
+			}
+			if (underTY >= topPY) {
+				DrawBox(10, 10, 20, 20, 0xDDD000, true);
+			}
+
+		}
+	}
+
+
+
+
 	if (hp <= 0 && !isDead) {
 		isDead = true;
 		isMoving = 'D';
@@ -213,13 +242,14 @@ bool Player::MapHitCheck(int movedX, int movedY, char check)
 		return false;
 		break;
 	case 8:
-		if (movedY - y2 > 0) {
-			cMove = (movedY - y2) - (movedY % 32 + 1);
-			return false;
-		}
-		else {
-			return true;
-		}
+		//if (movedY - y2 > 0) {
+		//	cMove = (movedY - y2) - (movedY % 32 + 1);
+		//	return false;
+		//}
+		//else {
+		//	return true;
+		//}
+		return true;
 		break;
 	case 9:
 		if (movedY - y2 > 0) {
