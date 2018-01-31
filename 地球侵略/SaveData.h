@@ -15,14 +15,14 @@ public:
 	int makeSave();
 	int save();
 	int load();
-	void d_print();
+	void d_print();	//Debug
+
 	int getBGMVol();
 	int getSEVol();
 	int getClearFlag(int stage);
-
-	int setBGMVol(int vol);
-	int setSEVol(int vol);
-	int setClearFlag(int stage, int flag);
+	void setBGMVol(int vol);
+	void setSEVol(int vol);
+	void setClearFlag(int stage, int flag);
 
 private:
 	SaveData();

@@ -26,6 +26,7 @@
     <ClCompile Include="WindowData.cpp" />
     <ClCompile Include="SpikeBlock.cpp" />
     <ClCompile Include="SaveData.cpp" />
+    <ClCompile Include="Scene_StageSelect.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Collision.h" />
@@ -132,6 +133,7 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClInclude Include="SaveData.h" />
+    <ClInclude Include="Scene_StageSelect.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Collision.h">

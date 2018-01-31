@@ -1,8 +1,9 @@
 #include "SceneManager.h"
 
-#include "Scene_Config.h"
-#include "Scene_Game.h"
 #include "Scene_Title.h"
+#include "Scene_StageSelect.h"
+#include "Scene_Game.h"
+#include "Scene_Config.h"
 #include "Scene_Gameover.h"
 #include "Scene_Clear.h"
 
@@ -15,7 +16,6 @@ SceneManager::SceneManager() :
 	sceneFlag = true;
 	//nowScene = (Scene_Frame*) new Scene_Title();
 }
-
 
 SceneManager::~SceneManager()
 {
@@ -43,6 +43,9 @@ void SceneManager::update() {
 			nowScene = new Scene_Title();
 			sceneFlag = true;
 			break;
+		case scene::StageSelect:
+			nowScene = new Scene_StageSelect();
+			break;
 		case scene::Game:
 			nowScene = new Scene_Game();
 			break;
@@ -54,9 +57,6 @@ void SceneManager::update() {
 			break;
 		case scene::Clear:
 			nowScene = new Scene_Clear();
-			break;
-		case scene::Ranking:
-			//‚È‚Á‚µ‚ñ
 			break;
 		}
 		nextScene = scene::None;
