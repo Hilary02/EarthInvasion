@@ -5,12 +5,6 @@
 
 class SaveData {
 public:
-	struct content {
-		int bgmVolume;
-		int seVolume;
-		std::array<int, 14> clearFlag;
-	};
-
 	static SaveData& get_instance();
 	int makeSave();
 	int save();
@@ -25,6 +19,12 @@ public:
 	void setClearFlag(int stage, int flag);
 
 private:
+	struct content {
+		int bgmVolume;
+		int seVolume;
+		std::array<int, 14> clearFlag;
+	};
+
 	SaveData();
 	SaveData(const SaveData&) {};
 	~SaveData();

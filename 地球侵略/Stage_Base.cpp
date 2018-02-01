@@ -6,7 +6,7 @@
 #include <sstream> //文字ストリーム
 #include "KeyManager.h"
 #include "SoundManager.h"
-
+#include "SceneManager.h"
 
 Stage_Base::Stage_Base(){}
 
@@ -44,24 +44,35 @@ Stage_Base::Stage_Base(int stage) {
 	//どちらかを使う
 	//objectMgr = new ObjectManager(vmap,player);
 
-	infoArea = new InfoArea(player);
+	//制限時間 ttp://nanoappli.com/blog/archives/3229
+	time = 10'000;
+	//DXライブラリの機能ではなくC++の機能で実装したい
+	//現在，一時停止とか完全に無視して時間が進む
+	timeLimit = GetNowCount() + time;
+
 	//地形画像の読み込み
-	//TODO:引数をつける
+	//TODO:ステージごとの引数をつける
 	loadImg();
 }
 
-
 Stage_Base::~Stage_Base() {
+	vmap.clear();
 	delete player;
 	delete colMgr;
 	delete objectMgr;
+	InitGraph();
 }
 
 void Stage_Base::update() {
+	//タイマー
+	leftTime = int(timeLimit - GetNowCount());
+	if (leftTime <= 0) {
+		SceneM.ChangeScene(scene::GameOver);
+	}
+
 	drawChipNum = 0;
 	player->update();
 	objectMgr->update();
-	infoArea->update();
 	scrollMap();	//プレイヤー座標に応じた表示範囲の変更
 }
 
@@ -90,7 +101,7 @@ void Stage_Base::draw() {
 	}
 	player->Draw(drawX, drawY);
 	objectMgr->Draw(drawX, drawY);
-	infoArea->draw();
+	drawInfo();
 
 	//デバッグ情報
 //d	DrawFormatString(0, 30, GetColor(255, 125, 255), "マップ表示原点：%d  ,%d", drawX, drawY);
@@ -153,6 +164,31 @@ int Stage_Base::loadImg() {
 	//chipImg[8] = LoadGraph("data/img/moveGround.png");
 	//chipImg[9] = LoadGraph("data/img/togetoge.png");
 	bgHand = LoadGraph("data/img/bg01.jpg");
+
+	//InfoArea用
+	img_hpbar = LoadGraph("data/img/hpbar.png");
+	img_hpbar_empty = LoadGraph("data/img/hpbar_empty.png");
+
+
 	return 1;
 
+}
+
+int Stage_Base::drawInfo(){
+	//背景 そのうち画像になるか？
+	DrawBox(infoX, infoY, 800, 600, 0x878773, TRUE);
+	//HP表示欄 MAX15まで
+	DrawFormatString(infoX + 40, infoY + 40, 0x000000, "HP:");
+	for (int i = 0; i < 15; i++) {
+		int x = infoX + 65 + i*(hpbar_width + 2);
+		if (i < player->getHp()) {
+			DrawGraph(x, infoY + 40, img_hpbar, false);
+		}
+		else {
+			DrawGraph(x, infoY + 40, img_hpbar_empty, false);
+		}
+	}
+	//制限時間表示欄 そのうち時間の表示になるはず
+	DrawFormatString(infoX+300, infoY+50, 0xFFFFFF, "残り時間  %02d:%02d'%02d", leftTime / 60000/*分*/, (leftTime % 60000) / 1000/*秒*/, ((leftTime % 60000) % 1000)/10 /*ms*/);
+	return 0;
 }

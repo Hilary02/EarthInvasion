@@ -6,7 +6,6 @@
 enum class scene : unsigned char {
 	None,
 	Title,
-	StageSelect,
 	Game,
 	Config,
 	GameOver,

@@ -11,7 +11,9 @@ SaveData & SaveData::get_instance() {
 }
 
 int SaveData::makeSave() {
-
+	content.bgmVolume = 200;
+	content.seVolume = 200;
+	content.clearFlag[0] = 2;
 	return 0;
 }
 
@@ -36,7 +38,6 @@ void SaveData::d_print() {
 	cout << content.seVolume << ",";
 	for (int i : content.clearFlag)
 		cout << i << flush;
-
 	cout << endl;
 }
 
@@ -46,7 +47,6 @@ int SaveData::getClearFlag(int stage) { return content.bgmVolume; }
 void SaveData::setBGMVol(int vol) { content.bgmVolume = vol; }
 void SaveData::setSEVol(int vol) { content.seVolume = vol; }
 void SaveData::setClearFlag(int stage, int flag) { content.clearFlag[stage] = flag; }
-
 
 SaveData::SaveData() {}
 SaveData::~SaveData() {}

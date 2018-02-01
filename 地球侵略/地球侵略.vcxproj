@@ -28,7 +28,6 @@
     <ClCompile Include="GameMain.cpp" />
     <ClCompile Include="Goal.cpp" />
     <ClCompile Include="HealItem.cpp" />
-    <ClCompile Include="InfoArea.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="KeyManager.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -43,7 +42,6 @@
     <ClCompile Include="Scene_Frame.cpp" />
     <ClCompile Include="Scene_Game.cpp" />
     <ClCompile Include="Scene_Gameover.cpp" />
-    <ClCompile Include="Scene_StageSelect.cpp" />
     <ClCompile Include="Scene_Title.cpp" />
     <ClCompile Include="SoundManager.cpp" />
     <ClCompile Include="SpikeBlock.cpp" />
@@ -61,7 +59,6 @@
     <ClInclude Include="Goal.h" />
     <ClInclude Include="HealItem.h" />
     <ClInclude Include="ICollisionManager.h" />
-    <ClInclude Include="InfoArea.h" />
     <ClInclude Include="ISceneManager.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="KeyManager.h" />
@@ -77,7 +74,6 @@
     <ClInclude Include="Scene_Frame.h" />
     <ClInclude Include="Scene_Game.h" />
     <ClInclude Include="Scene_Gameover.h" />
-    <ClInclude Include="Scene_StageSelect.h" />
     <ClInclude Include="Scene_Title.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="SoundManager.h" />

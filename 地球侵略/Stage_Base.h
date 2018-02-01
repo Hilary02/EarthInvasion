@@ -4,7 +4,6 @@
 #include "DxLib.h"
 #include "WindowData.h"
 #include "Player.h"
-#include "InfoArea.h"
 #include "ObjectManager.h"
 #include "CollisionManager.h"
 #include "SaveData.h"
@@ -29,6 +28,7 @@ public:
 private:
 	int readMap(std::string file);
 	int loadImg();
+	int drawInfo();
 
 	//複数ステージに対応するためにconst外し中
 	int MAP_HEIGHT;	//縦方向マップチップ数
@@ -46,12 +46,24 @@ private:
 	Player *player;
 	ObjectManager *objectMgr;
 	CollisionManager *colMgr;
-	InfoArea *infoArea;
 	SaveData &savedata = SaveData::get_instance();
 
-	//描画する際の左上座標
+	//地形などを描画する際の左上座標
 	int drawX, drawY;
 
+	//情報表示エリアの原点
+	int infoX = 0;
+	int infoY = 520;
+	int img_hpbar;
+	int img_hpbar_empty;
+	int hpbar_width = 8;
+	int hpbar_height = 16;
+
+	//制限時間（）
+
+	LONGLONG time;
+	LONGLONG timeLimit;
+	int leftTime;
 
 	//デバッグ用データ
 	int drawChipNum = 0;
