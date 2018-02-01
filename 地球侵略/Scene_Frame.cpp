@@ -1,7 +1,5 @@
 #include "Scene_Frame.h"
 
-
-
 Scene_Frame::Scene_Frame()
 {
 }

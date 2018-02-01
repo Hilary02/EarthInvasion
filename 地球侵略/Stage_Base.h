@@ -1,15 +1,13 @@
 #pragma once
-
-
-#include "DxLib.h"
-#include "Player.h"
-#include "ObjectManager.h"
-#include "WindowData.h"
-#include "ObjectManager.h"
-#include "InfoArea.h"
 #include <vector>
 #include <array>
+#include "DxLib.h"
+#include "WindowData.h"
+#include "Player.h"
+#include "InfoArea.h"
+#include "ObjectManager.h"
 #include "CollisionManager.h"
+#include "SaveData.h"
 /**
 Stageクラスはまず地形を読み込む．
 Playerクラス，ObjectManagerクラスに主人公の移動とそれ以外の処理を投げるので
@@ -18,9 +16,10 @@ Playerクラス，ObjectManagerクラスに主人公の移動とそれ以外の処理を投げるので
 マップチップのデータが1-9で足りているため，20番以降を用いて敵情報の保存とかできるかもしれない．
 別ファイルでも管理もできるが，マップ座標をいちいち調べながら打たなければいけなくなる．
 */
-class Stage_Base{
+class Stage_Base {
 public:
 	Stage_Base();
+	Stage_Base(int stage);
 	~Stage_Base();
 
 	void update();	//更新処理
@@ -31,9 +30,9 @@ private:
 	int readMap(std::string file);
 	int loadImg();
 
-
-	const int MAP_HEIGHT;	//縦方向マップチップ数
-	const int MAP_WIDTH;	//横方向マップチップ数
+	//複数ステージに対応するためにconst外し中
+	int MAP_HEIGHT;	//縦方向マップチップ数
+	int MAP_WIDTH;	//横方向マップチップ数
 	const int CHIPSIZE = 32;//マップチップの大きさ
 
 	int chipImg[10];		//マップチップ格納用配列
@@ -48,9 +47,10 @@ private:
 	ObjectManager *objectMgr;
 	CollisionManager *colMgr;
 	InfoArea *infoArea;
+	SaveData &savedata = SaveData::get_instance();
 
 	//描画する際の左上座標
-	int drawX,drawY;
+	int drawX, drawY;
 
 
 	//デバッグ用データ

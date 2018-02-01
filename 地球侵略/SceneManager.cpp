@@ -8,12 +8,12 @@
 #include "Scene_Clear.h"
 
 SceneManager SceneM;
-bool sceneFlag;
+bool sceneFlag = false;
 
 SceneManager::SceneManager() :
 	nextScene(scene::None) {
 	nowScene = new Scene_Title();
-	sceneFlag = true;
+	//sceneFlag = true;
 	//nowScene = (Scene_Frame*) new Scene_Title();
 }
 
@@ -31,17 +31,18 @@ void SceneManager::update() {
 		タイトルのカーソル位置を保持するようにするためこうしているが，
 		選択位置管理クラスを作るかでメモリ使用量を減らしてもいいかも
 		*/
-		if (sceneFlag == true) {
-			sceneFlag = false;
-		}
-		else {
-			delete nowScene;
-		}
+
+		//if (sceneFlag == true) {
+		//	sceneFlag = false;
+		//}
+		//else {
+		//}
+		delete nowScene;
 
 		switch (nextScene) {
 		case scene::Title:
 			nowScene = new Scene_Title();
-			sceneFlag = true;
+			//sceneFlag = true;
 			break;
 		case scene::StageSelect:
 			nowScene = new Scene_StageSelect();

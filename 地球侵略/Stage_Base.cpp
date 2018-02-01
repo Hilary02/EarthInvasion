@@ -7,10 +7,14 @@
 #include "KeyManager.h"
 #include "SoundManager.h"
 
-Stage_Base::Stage_Base() :
-	//コンストラクタの引数に設定されないといけない
-	MAP_HEIGHT(30)
-	, MAP_WIDTH(128) {
+
+Stage_Base::Stage_Base(){}
+
+Stage_Base::Stage_Base(int stage) {
+	//コードや外部ファイルに書くくらいならcsvから読み取ったほうが利便性高そう？
+	//Arrayにするなら大きめに取っておくとか．Vectorだと広いステージになったときの読み込み速度が心配．
+	MAP_HEIGHT = 30;
+	MAP_WIDTH = 128;
 	SoundM.SetSound(LoadSoundMem("data/mc/ビルの屋上、危険伴わず.wav"));
 	//08.18　vectorのサイズを動的に変更できるようにした
 	//指定したマップサイズで配列を確保
@@ -22,13 +26,15 @@ Stage_Base::Stage_Base() :
 	assert(MAP_WIDTH >= 0);
 	vmap.resize(MAP_HEIGHT);
 	for (int i = 0; i < MAP_HEIGHT; i++) {
-
 		for (int j = 0; j < MAP_WIDTH; j++) {
 			vmap[i].push_back(j);
 		}
 	}
 	//マップ地形の読み込み
+
+	//ここを複数ステージ用に書き換え
 	readMap("data/map/tutrial-map改良版32.csv");
+
 	//プレイヤー呼び出し
 	player = new Player(vmap);
 	player->setAbsolutePos(100, 600);
@@ -57,17 +63,6 @@ void Stage_Base::update() {
 	objectMgr->update();
 	infoArea->update();
 	scrollMap();	//プレイヤー座標に応じた表示範囲の変更
-
-
-	//Debug
-	//d
-	//if (keyM.GetKeyFrame(KEY_INPUT_Q) == 1) {
-	//	player->modHp(1);
-	//}
-	//if (keyM.GetKeyFrame(KEY_INPUT_W) == 1) {
-	//	player->modHp(-1);
-	//}
-
 }
 
 void Stage_Base::draw() {
@@ -137,6 +132,7 @@ int Stage_Base::readMap(std::string file) {
 			this->vmap[y][x] = temp;			//vectorもアクセス方法は配列と同様に行える
 		}
 	}
+	ifs.close();
 	return 1;
 }
 

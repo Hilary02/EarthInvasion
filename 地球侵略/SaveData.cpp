@@ -19,6 +19,7 @@ int SaveData::save() {
 	std::ofstream ofs("save.dat", std::ios::binary);
 	if (!ofs) return -1;
 	ofs.write((char*)&content, sizeof(content));
+	ofs.close();
 	return 0;
 }
 
@@ -26,6 +27,7 @@ int SaveData::load() {
 	std::ifstream ifs("save.dat", std::ios::binary);
 	if (!ifs) return -1;
 	ifs.read((char*)&content, sizeof(content));
+	ifs.close();
 	return 0;
 }
 

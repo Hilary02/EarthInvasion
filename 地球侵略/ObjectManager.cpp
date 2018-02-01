@@ -9,7 +9,6 @@ ObjectManager::ObjectManager(){
 	terrain.clear();
 }
 
-//?폜?\??
 ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap, Player * player, ICollisionManager* colMgr) {
 	Loadimg();
 	IcolMgr = colMgr;
@@ -22,20 +21,12 @@ ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap, Player * playe
 				int path = 0;    //?I?u?W?F?N?g?ɍ??킹???摜?̃p?X
 				path = img[vmap[i][j]];
 				switch (vmap[i][j]) {
-					/*case 3:
-						obje = GroundFloor(x, y, img[3]);
-						break;
-					case 10:
-						obje = Enemy(x, y, img[4]);
-						break;*/
-
 				case 4:
 					obje = new Enemy(x, y, img[10], vmap[i][j], IcolMgr);
 					break;
 				case 5:
 					obje = new Item(x, y, img[20], IcolMgr);
 					break;
-
 				case 9:
 					obje = new SpikeBlock(x, y, img[9], IcolMgr);
 					break;
@@ -49,9 +40,9 @@ ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap, Player * playe
 			}
 			if (vmap[i][j] == 8) {
 				Object* obje;
-				int y = i * 32;//y???W
-				int x = j * 32;//x???W
-				int path = 0;    //?I?u?W?F?N?g?ɍ??킹???摜?̃p?X
+				int y = i * 32;	//y座標
+				int x = j * 32;	//x座標
+				int path = 0;	//画像ハンドル
 				path = img[vmap[i][j]];
 				switch (vmap[i][j]) {
 				case 8:	//動く床
@@ -60,14 +51,16 @@ ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap, Player * playe
 				default:
 					break;
 				}
-				terrain.push_back(obje);
+				terrain.push_back(obje);	//こちらは地形に保存
 			}
 		}
 	}
 	this->player = player;
 }
 
-ObjectManager::~ObjectManager() {}
+ObjectManager::~ObjectManager() {
+	terrain.clear();
+}
 
 void ObjectManager::Loadimg() {
 	img[3] = LoadGraph("data/img/moveGround.png");  //3?͓?????
@@ -85,7 +78,6 @@ void ObjectManager::Loadimg() {
 }
 
 void ObjectManager::update() {
-	//DrawFormatString(90,90,0x000000,0xFFFFFF)
 	int i = 0;
 	for (auto &obj : objects) {
 		i++;

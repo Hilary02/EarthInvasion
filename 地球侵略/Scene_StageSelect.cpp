@@ -5,31 +5,22 @@
 Scene_StageSelect::Scene_StageSelect() {
 	int clearedNum = 0;
 	savedata.load();
-	for (int i = 0; i < clearState.size(); i++) {
+	for (unsigned int i = 0; i < clearState.size(); i++) {
 		clearState[i] = savedata.getClearFlag(i);
 	}
-	for (int i = 1; i < clearState.size(); i++) {
-		if (i<12 & i % 3 != 0 ) {
-			if (clearState[i] == 1) {
-				clearedNum++;
-			}
-			else {
-				clearState[i] = 2;
-			} //挑戦可能であることを示す．
+	for (unsigned int i = 1; i < clearState.size(); i++) {
+		if (i < 12 && i % 3 != 0) {
+			if (clearState[i] == 1) clearedNum++;
+			else clearState[i] = 2;//挑戦可能であることを示す．
 		}
 		if (i % 3 == 0) {
-			if (clearState[i] == 1) {
-				clearedNum++;
-			}
-			else if (clearState[i - 2]==1 && clearState[i - 1]==1) {
+			if (clearState[i] == 1) clearedNum++;
+			else if (clearState[i - 2] == 1 && clearState[i - 1] == 1) 
 				clearState[i] = 2; //挑戦可能であることを示す．
-			}
 		}
 		if (i == 13) {
-			printfDx("\n%d\n",clearedNum);
-			if (clearedNum > 12) {
-				clearState[i] = 2;  //挑戦可能であることを示す．
-			}
+			printfDx("\n%d\n", clearedNum);
+			if (clearedNum > 12)clearState[i] = 2;  //挑戦可能であることを示す．
 		}
 	}
 }
@@ -43,13 +34,9 @@ void Scene_StageSelect::update() {
 	3ステージごとに通常，通常，ボスの構成 ボスは2つの通常ステを攻略してから
 	13 ラスボス？(12まですべてクリアで挑戦できる)
 	*/
-
-
-
-
 	if (keyM.GetKeyFrame(KEY_INPUT_DOWN) == 1 || (keyM.GetKeyFrame(KEY_INPUT_DOWN) >= 15 && keyM.GetKeyFrame(KEY_INPUT_DOWN) % 4 == 0)) {	//下キーが押されていたら
 		nowSelect = (nowSelect + 1) % 14;				//選択状態を一つ下げる
-		while (!clearState[nowSelect] >= 1) {
+		while (!(clearState[nowSelect] >= 1)) {
 			nowSelect = (nowSelect + 1) % 14;				//良い感じになるまで選択状態を一つ下げる
 		}
 		printfDx("%d", nowSelect);
@@ -58,13 +45,15 @@ void Scene_StageSelect::update() {
 
 	if (keyM.GetKeyFrame(KEY_INPUT_UP) == 1 || (keyM.GetKeyFrame(KEY_INPUT_UP) >= 15 && keyM.GetKeyFrame(KEY_INPUT_UP) % 4 == 0)) {		//上キーが押されていたら
 		nowSelect = (nowSelect + (14 - 1)) % 14;	//選択状態を一つ上げる
-		while (!clearState[nowSelect] >= 1) {
-			nowSelect = (nowSelect + (14 - 1)) % 14;	//選択状態を一つ上げる
+		while (!(clearState[nowSelect] >= 1)) {
+			nowSelect = (nowSelect + (14 - 1)) % 14;
 		}
 		printfDx("%d", nowSelect);
 		SoundM.Se(LoadSoundMem("data/mc/pick up.wav"));
 	}
-
+	if (keyM.GetKeyFrame(KEY_INPUT_Z) == 1) {
+		SceneM.ChangeScene(scene::Game);
+	}
 	if (keyM.GetKeyFrame(KEY_INPUT_ESCAPE) == 1) {
 		SceneM.ChangeScene(scene::Title);
 	}
@@ -72,7 +61,7 @@ void Scene_StageSelect::update() {
 
 void Scene_StageSelect::Draw() {
 	int textColor = 0x000000;
-	for (int i = 0; i < clearState.size(); i++) {
+	for (unsigned int i = 0; i < clearState.size(); i++) {
 		switch (clearState[i]) {
 		case 0:
 			textColor = 0x909090; //挑戦不可能

@@ -45,9 +45,7 @@ void Scene_Title::update(){
 	if (keyM.GetKeyFrame(KEY_INPUT_Z) == 1) {
 		switch (nowSelect) {
 		case 0:
-			//SceneM.ChangeScene(scene::Game);
-			SceneM.ChangeScene(scene::StageSelect);
-
+			SceneM.ChangeScene(scene::Game);
 			break;
 		case 1:
 			SceneM.ChangeScene(scene::Config);
