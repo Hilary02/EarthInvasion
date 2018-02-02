@@ -33,7 +33,7 @@ Stage_Base::Stage_Base(int stage) {
 	//マップ地形の読み込み
 
 	//ここを複数ステージ用に書き換え
-	readMap("data/map/tutrial-map改良版32.csv");
+	readMap("data/map/stage00.csv");
 
 	//プレイヤー呼び出し
 	player = new Player(vmap);
@@ -45,7 +45,7 @@ Stage_Base::Stage_Base(int stage) {
 	//objectMgr = new ObjectManager(vmap,player);
 
 	//制限時間 ttp://nanoappli.com/blog/archives/3229
-	time = 10'000;
+	time = 1200'000;
 	//DXライブラリの機能ではなくC++の機能で実装したい
 	//現在，一時停止とか完全に無視して時間が進む
 	timeLimit = GetNowCount() + time;
@@ -71,8 +71,8 @@ void Stage_Base::update() {
 	}
 
 	drawChipNum = 0;
-	player->update();
 	objectMgr->update();
+	player->update();
 	scrollMap();	//プレイヤー座標に応じた表示範囲の変更
 }
 
@@ -99,8 +99,8 @@ void Stage_Base::draw() {
 			}
 		}
 	}
-	player->Draw(drawX, drawY);
 	objectMgr->Draw(drawX, drawY);
+	player->Draw(drawX, drawY);
 	drawInfo();
 
 	//デバッグ情報
@@ -188,7 +188,7 @@ int Stage_Base::drawInfo(){
 			DrawGraph(x, infoY + 40, img_hpbar_empty, false);
 		}
 	}
-	//制限時間表示欄 そのうち時間の表示になるはず
+	//制限時間表示欄
 	DrawFormatString(infoX+300, infoY+50, 0xFFFFFF, "残り時間  %02d:%02d'%02d", leftTime / 60000/*分*/, (leftTime % 60000) / 1000/*秒*/, ((leftTime % 60000) % 1000)/10 /*ms*/);
 	return 0;
 }

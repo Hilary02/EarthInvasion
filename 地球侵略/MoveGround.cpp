@@ -13,7 +13,7 @@ MoveGround::MoveGround(double x, double y, double moveUp, double moveDown, char 
 	this->moveDown = moveDown * 64;
 	this->xory = xory;
 	this->imgGround = img;
-	collision = new Collision(0, 0, 64, 16);
+	collision = new Collision(0, -MOVE, 64, 16);
 }
 
 int MoveGround::update(const Collision & playerCol) {
@@ -27,7 +27,7 @@ void MoveGround::Draw(int drawX, int drawY) {
 	DrawGraph(moveX - drawX, moveY - drawY, imgGround, true);
 
 	//“–‚½‚è”»’è—Ìˆæ‚Ì•\Ž¦
-	//DrawBox(collision->hitRange.xPos + collision->hitRange.xOffset - drawX, collision->hitRange.yPos + collision->hitRange.yOffset -drawY, collision->hitRange.xPos + collision->hitRange.xOffset + collision->hitRange.xSize - drawX, collision->hitRange.yPos + collision->hitRange.yOffset + collision->hitRange.ySize -drawY, 0xFF00FF, false);
+	//DrawBox(collision->hitRange.xPos + collision->hitRange.xOffset - drawX, collision->hitRange.yPos + collision->hitRange.yOffset - drawY, collision->hitRange.xPos + collision->hitRange.xOffset + collision->hitRange.xSize - drawX, collision->hitRange.yPos + collision->hitRange.yOffset + collision->hitRange.ySize - drawY, 0xFF00FF, false);
 }
 
 void MoveGround::Move() {

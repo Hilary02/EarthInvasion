@@ -101,7 +101,7 @@ int Player::update() {
 	if (isJumping) {
 		xyCheck = 'y';
 		if ((MapHitCheck(x1, y2 + jumpPower, xyCheck) && MapHitCheck(x2, y2 + jumpPower, xyCheck) && MapHitCheck(x3, y2 + jumpPower, xyCheck))
-		&& (MapHitCheck(x1, y1 + jumpPower, xyCheck) && MapHitCheck(x2, y1 + jumpPower, xyCheck) && MapHitCheck(x3, y1 + jumpPower, xyCheck))) {
+			&& (MapHitCheck(x1, y1 + jumpPower, xyCheck) && MapHitCheck(x2, y1 + jumpPower, xyCheck) && MapHitCheck(x3, y1 + jumpPower, xyCheck))) {
 			y += jumpPower;
 			clock++;
 			if (clock >= 5) {
@@ -127,12 +127,12 @@ int Player::update() {
 		jumpPower = 0;
 	}
 
-	collision->updatePos(x,y);
+	collision->updatePos(x, y);
 
 
 	/*
 			めちゃくちゃやん
-	
+
 	*/
 	for (auto t : ObjectManager::terrain) {
 		if (collision->doCollisonCheck(t->collision->hitRange)) {
@@ -142,32 +142,23 @@ int Player::update() {
 			int topPY = collision->hitRange.yPos + collision->hitRange.yOffset;
 			int underPY = collision->hitRange.yPos + collision->hitRange.yOffset + collision->hitRange.ySize;
 
-			if (underPY > topTY) {
+			if (underPY <= underTY + 8/*少し吸い込まれる*/) {
+				y = topTY - collision->hitRange.ySize+2;
+				//jumpPower = 0;
 				isJumping = false;
-				y = topTY - collision->hitRange.ySize;
-				jumpPower = 0;
 			}
-			if (underTY >= topPY) {
-				DrawBox(10, 10, 20, 20, 0xDDD000, true);
-			}
-
 		}
 	}
-
-
-
 
 	if (hp <= 0 && !isDead) {
 		isDead = true;
 		isMoving = 'D';
 		drawCount = 0;
-		//GameOver();
-
-		//?????I
+		//ゲームオーバー処理．ここでやっていいのか？
 		SceneM.ChangeScene(scene::GameOver);
 	}
 
-	if (invalidDamageTime < 60) invalidDamageTime++;
+	if (invalidDamageTime < 60) invalidDamageTime++;	//無敵時間
 	return 0;
 }
 
@@ -242,13 +233,6 @@ bool Player::MapHitCheck(int movedX, int movedY, char check)
 		return false;
 		break;
 	case 8:
-		//if (movedY - y2 > 0) {
-		//	cMove = (movedY - y2) - (movedY % 32 + 1);
-		//	return false;
-		//}
-		//else {
-		//	return true;
-		//}
 		return true;
 		break;
 	case 9:
@@ -313,7 +297,7 @@ void Player::Draw(int drawX, int drawY) {
 			if (drawCount >= 64) isMoving = 'N';
 		}
 		else if (isMoving == 'D') {
-			MyDraw(tempX, tempY, die[drawCount / 8 % 16 ], right);
+			MyDraw(tempX, tempY, die[drawCount / 8 % 16], right);
 			drawCount++;
 			if (drawCount >= 128) isMoving = 'N';
 		}
@@ -372,11 +356,11 @@ void Player::Draw(int drawX, int drawY) {
 		}
 		else if (keyM.GetKeyFrame(KEY_INPUT_RIGHT) >= 1) {
 			drawCount = keyM.GetKeyFrame(KEY_INPUT_RIGHT) / 15 % 8;
-			MyDraw(tempX, tempY, move[drawCount+10], right);
+			MyDraw(tempX, tempY, move[drawCount + 10], right);
 		}
 		else if (keyM.GetKeyFrame(KEY_INPUT_LEFT) >= 1) {
 			drawCount = keyM.GetKeyFrame(KEY_INPUT_LEFT) / 15 % 8;
-			MyDraw(tempX, tempY, move[drawCount+10], right);
+			MyDraw(tempX, tempY, move[drawCount + 10], right);
 		}
 		else {
 			MyDraw(tempX, tempY, wait[10], right);
@@ -445,19 +429,9 @@ void Player::MyDraw(int tempX, int tempY, int movement, bool lrFlag) {
 	}
 }
 
-int Player::getX()
-{
-	return x;
-}
-int Player::getY()
-{
-	return y;
-}
-
-int Player::getHp()
-{
-	return hp;
-}
+int Player::getX() { return x; }
+int Player::getY() { return y; }
+int Player::getHp() { return hp; }
 
 void Player::PerDecision()
 {
@@ -484,7 +458,7 @@ void Player::PerDecision()
 	x3 = x + ((sizeX1 + sizeX2) / 2);
 	y3 = y + ((sizeY1 + sizeY2) / 2);
 }
-void Player::modHp(int mod){
+void Player::modHp(int mod) {
 	//?ω??ʂ????̏ꍇ?̂݁C???G???Ԃ?N??
 	if (mod < 0) {
 		if (invalidDamageTime == 60) {

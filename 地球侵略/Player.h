@@ -2,8 +2,6 @@
 #include "Creature.h"
 #include <vector>
 
-
-
 class Player :
 	public Creature
 {
