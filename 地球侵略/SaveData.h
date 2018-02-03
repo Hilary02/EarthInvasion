@@ -22,7 +22,7 @@ private:
 	struct content {
 		int bgmVolume;
 		int seVolume;
-		std::array<int, 14> clearFlag;
+		int clearFlag[14];
 	};
 
 	SaveData();

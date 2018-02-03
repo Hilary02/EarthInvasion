@@ -3,13 +3,15 @@
 #include <memory>
 
 #include "Goal.h"
+#include "LockedDoor.h"
 std::vector<Object*> ObjectManager::terrain;	//実体
 
-ObjectManager::ObjectManager(){
+ObjectManager::ObjectManager() {
 	terrain.clear();
 }
 
-ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap, Player * player, ICollisionManager* colMgr) {
+ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap, Player * player, ICollisionManager* colMgr, int stage) {
+	stageId = stage;
 	Loadimg();
 	IcolMgr = colMgr;
 	for (unsigned int i = 0; i < vmap.size(); i++) {
@@ -31,20 +33,23 @@ ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap, Player * playe
 					obje = new SpikeBlock(x, y, img[9], IcolMgr);
 					break;
 				case 99:	//暫定ゴール
-					obje = new  Goal(x, y, img[21], IcolMgr);
+					obje = new  Goal(x, y, img[21], IcolMgr, stageId);
 					break;
 				default:
 					break;
 				}
 				objects.push_back(obje);
 			}
-			if (vmap[i][j] == 8) {
+			if (vmap[i][j] == 6 || vmap[i][j] == 8) {
 				Object* obje;
 				int y = i * 32;	//y座標
 				int x = j * 32;	//x座標
 				int path = 0;	//画像ハンドル
 				path = img[vmap[i][j]];
 				switch (vmap[i][j]) {
+				case 6:
+					obje = new LockedDoor(x, y, img[6]);
+					break;
 				case 8:	//動く床
 					obje = new MoveGround(x, y, 2, 0.25, 0, img[3]);
 					break;
@@ -63,7 +68,10 @@ ObjectManager::~ObjectManager() {
 }
 
 void ObjectManager::Loadimg() {
+	/* ステージによって読み込む画像も変わるのか？ */
 	img[3] = LoadGraph("data/img/moveGround.png");  //3?͓?????
+	img[6] = LoadGraph("data/img/lockDoor.png");
+
 	img[9] = LoadGraph("data/img/togetoge.png");	//9togetoge
 	img[10] = LoadGraph("data/img/enemy1Wait.png");   //10?͈???
 	img[11] = LoadGraph("data/img/");   //11?͒???
@@ -80,14 +88,19 @@ void ObjectManager::Loadimg() {
 void ObjectManager::update() {
 	int i = 0;
 	for (auto &obj : objects) {
-		i++;
 		int n = obj->update(*(player->collision));
 		if (n == -1) {
-			objects.erase(objects.begin() + i - 1);
+			objects.erase(objects.begin() + i);
 		}
+		i++;
 	}
+	i = 0;
 	for (auto &ter : terrain) {
-		ter->update(*(player->collision));
+		int n=ter->update(*(player->collision));
+		if (n == -1) {
+			terrain.erase(terrain.begin() + i);
+		}
+		i++;
 	}
 }
 

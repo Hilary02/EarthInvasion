@@ -20,6 +20,7 @@ public:
 	void setAbsolutePos(int modX, int modY);
 	//ˆÚ“®—Ê‚ğİ’è‚·‚é‚Æˆø”‚Ì’lˆÚ“®‚·‚é
 	void setRelativePos(int modX, int modY);
+	int getId();
 
 	Collision* collision;
 protected:
@@ -28,6 +29,7 @@ protected:
 	int colYOffset = 0;
 	int colXSize = 32;
 	int colYSize = 64;
+	int id;
 
 	//À•W
 	int x, y;

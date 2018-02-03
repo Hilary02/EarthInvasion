@@ -43,7 +43,7 @@ void SaveData::d_print() {
 
 int SaveData::getBGMVol() { return content.bgmVolume; }
 int SaveData::getSEVol() { return content.seVolume; }
-int SaveData::getClearFlag(int stage) { return content.bgmVolume; }
+int SaveData::getClearFlag(int stage) { return content.clearFlag[stage]; }
 void SaveData::setBGMVol(int vol) { content.bgmVolume = vol; }
 void SaveData::setSEVol(int vol) { content.seVolume = vol; }
 void SaveData::setClearFlag(int stage, int flag) { content.clearFlag[stage] = flag; }

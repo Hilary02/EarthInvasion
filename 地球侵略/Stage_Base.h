@@ -58,6 +58,7 @@ private:
 	int img_hpbar_empty;
 	int hpbar_width = 8;
 	int hpbar_height = 16;
+	int stageId; //セーブ用
 
 	//制限時間（）
 

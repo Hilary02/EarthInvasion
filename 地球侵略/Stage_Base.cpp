@@ -11,6 +11,7 @@
 Stage_Base::Stage_Base(){}
 
 Stage_Base::Stage_Base(int stage) {
+	stageId = stage;
 	//コードや外部ファイルに書くくらいならcsvから読み取ったほうが利便性高そう？
 	//Arrayにするなら大きめに取っておくとか．Vectorだと広いステージになったときの読み込み速度が心配．
 	MAP_HEIGHT = 30;
@@ -33,19 +34,19 @@ Stage_Base::Stage_Base(int stage) {
 	//マップ地形の読み込み
 
 	//ここを複数ステージ用に書き換え
-	readMap("data/map/stage00.csv");
+	readMap("data/map/stage0.csv");
 
 	//プレイヤー呼び出し
 	player = new Player(vmap);
-	player->setAbsolutePos(100, 600);
+	player->setAbsolutePos(1800, 600);
 	colMgr = new CollisionManager(player);
-	objectMgr = new ObjectManager(vmap,player,colMgr);
+	objectMgr = new ObjectManager(vmap,player,colMgr,stageId);
 
 	//どちらかを使う
 	//objectMgr = new ObjectManager(vmap,player);
 
 	//制限時間 ttp://nanoappli.com/blog/archives/3229
-	time = 1200'000;
+	time = 120'000;
 	//DXライブラリの機能ではなくC++の機能で実装したい
 	//現在，一時停止とか完全に無視して時間が進む
 	timeLimit = GetNowCount() + time;
@@ -150,19 +151,8 @@ int Stage_Base::readMap(std::string file) {
 //仮も仮なので後で分離
 int Stage_Base::loadImg() {
 	//画像の設定
-//d	LoadDivGraph("data/img/20170823174821.png", 10, 10, 1, 32, 32, chipImg);
-	//chipImg[1] = LoadGraph("data/img/airFloor.png");
 	chipImg[2] = LoadGraph("data/img/groundFloor.png");
-	//chipImg[3] = LoadGraph("data/img/eeyanWait.png");
-	//chipImg[4] = LoadGraph("data/img/enemy1Wait.png");
-
-	//d chipImg[5] = LoadGraph("data/img/healPot.png");
-	//d chipImg[6] = LoadGraph("data/img/lockDoor.png");
-
-
 	chipImg[7] = LoadGraph("data/img/airFloor.png");
-	//chipImg[8] = LoadGraph("data/img/moveGround.png");
-	//chipImg[9] = LoadGraph("data/img/togetoge.png");
 	bgHand = LoadGraph("data/img/bg01.jpg");
 
 	//InfoArea用
@@ -171,7 +161,6 @@ int Stage_Base::loadImg() {
 
 
 	return 1;
-
 }
 
 int Stage_Base::drawInfo(){

@@ -30,6 +30,7 @@
     <ClCompile Include="HealItem.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="KeyManager.cpp" />
+    <ClCompile Include="LockedDoor.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MoveGround.cpp" />
     <ClCompile Include="Object.cpp" />
@@ -62,6 +63,7 @@
     <ClInclude Include="ISceneManager.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="KeyManager.h" />
+    <ClInclude Include="LockedDoor.h" />
     <ClInclude Include="Main.h" />
     <ClInclude Include="MoveGround.h" />
     <ClInclude Include="Object.h" />

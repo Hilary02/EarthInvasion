@@ -11,17 +11,15 @@ Scene_Game::Scene_Game() {
 	}
 	for (unsigned int i = 1; i < clearState.size(); i++) {
 		if (i < 12 && i % 3 != 0) {
-			if (clearState[i] == 1) clearedNum++;
-			else clearState[i] = 2;//挑戦可能であることを示す．
+			if (clearState[i] == 1) { clearedNum++; }
+			else { clearState[i] = 2; }//挑戦可能であることを示す．
 		}
 		if (i % 3 == 0) {
-			if (clearState[i] == 1) clearedNum++;
-			else if (clearState[i - 2] == 1 && clearState[i - 1] == 1)
-				clearState[i] = 2; //挑戦可能であることを示す．
+			if (clearState[i] == 1) { clearedNum++; }
+			else if (clearState[i - 2] == 1 && clearState[i - 1] == 1) { clearState[i] = 2; } //挑戦可能であることを示す．
 		}
 		if (i == 13) {
-			printfDx("\n%d\n", clearedNum);
-			if (clearedNum > 12)clearState[i] = 2;  //挑戦可能であることを示す．
+			if (clearedNum >= 12 && clearState[i] != 1)clearState[i] = 2;  //挑戦可能であることを示す．
 		}
 	}
 }
@@ -80,7 +78,7 @@ void Scene_Game::selectUpdate() {
 	}
 	if (keyM.GetKeyFrame(KEY_INPUT_Z) == 1) {
 		stageSelecting = false;
-		nowStage = new Stage_Base(0);
+		nowStage = new Stage_Base(nowSelect);
 
 	}
 }

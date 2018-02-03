@@ -33,3 +33,5 @@ void Object::setRelativePos(int modX, int modY) {
 	this->x += modX;
 	this->y += modY;
 }
+
+int Object::getId() { return id; }

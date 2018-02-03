@@ -13,7 +13,7 @@ class ObjectManager{
 public:
 	ObjectManager();
 	//ObjectManager(std::vector<std::vector <int>> vmap);
-	ObjectManager(std::vector<std::vector <int>> vmap,Player* player, ICollisionManager* colMgr);
+	ObjectManager(std::vector<std::vector <int>> vmap,Player* player, ICollisionManager* colMgr,int stage);
 	~ObjectManager();
 
 	void Loadimg();
@@ -30,6 +30,7 @@ private:
 
 	Player *player;
 	ICollisionManager* IcolMgr;
+	int stageId;
 	
 };
 

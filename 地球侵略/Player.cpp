@@ -12,6 +12,11 @@ Player::Player(std::vector<std::vector <int>> const &vmap) {
 	this->hp = 10;
 
 	LoadImg();
+
+	
+	colXOffset = 16;
+	colXSize = 30;
+
 	collision = new Collision(colXOffset, colYOffset, colXSize, colYSize);
 }
 
@@ -127,7 +132,21 @@ int Player::update() {
 		jumpPower = 0;
 	}
 
+	if (keyM.GetKeyFrame(KEY_INPUT_W) == 1) {
+		collision->playerParasite = 0; //攻撃状態かどうかとか記録
+		printfDx("Mode:0");
+	}
+	if (keyM.GetKeyFrame(KEY_INPUT_E) == 1) {
+		collision->playerParasite = 1; //攻撃状態かどうかとか記録
+		printfDx("Mode:1");
+	}
+
+
+
 	collision->updatePos(x, y);
+	//collision->playerParasite = 0;//仮なのでいつか統一した規格に
+	collision->playerState = 0; //攻撃状態かどうかとか記録
+
 
 
 	/*
@@ -137,15 +156,41 @@ int Player::update() {
 	for (auto t : ObjectManager::terrain) {
 		if (collision->doCollisonCheck(t->collision->hitRange)) {
 			//int tx = t->collision->hitRange.xPos + t->collision->hitRange.xOffset;
-			int topTY = t->collision->hitRange.yPos + t->collision->hitRange.yOffset;
-			int underTY = t->collision->hitRange.yPos + t->collision->hitRange.yOffset + t->collision->hitRange.ySize;
-			int topPY = collision->hitRange.yPos + collision->hitRange.yOffset;
-			int underPY = collision->hitRange.yPos + collision->hitRange.yOffset + collision->hitRange.ySize;
 
-			if (underPY <= underTY + 8/*少し吸い込まれる*/) {
-				y = topTY - collision->hitRange.ySize+2;
-				//jumpPower = 0;
-				isJumping = false;
+			switch (t->getId()) {
+			case 6: //扉
+			{
+				int leftTX = t->collision->hitRange.xPos + t->collision->hitRange.xOffset;
+				int leftPX = collision->hitRange.xPos + collision->hitRange.xOffset;
+
+				if (leftPX < leftTX) {
+					x = leftTX - collision->hitRange.xSize - collision->hitRange.xOffset;
+				}
+				else if (leftPX > leftTX) {
+					x = leftTX + t->collision->hitRange.xSize - collision->hitRange.xOffset;
+				}
+				isAttack = false;
+
+				break;
+			}
+			case 8: //動く床
+			{
+				int topTY = t->collision->hitRange.yPos + t->collision->hitRange.yOffset;
+				int underTY = t->collision->hitRange.yPos + t->collision->hitRange.yOffset + t->collision->hitRange.ySize;
+				int topPY = collision->hitRange.yPos + collision->hitRange.yOffset;
+				int underPY = collision->hitRange.yPos + collision->hitRange.yOffset + collision->hitRange.ySize;
+
+
+				if (underPY <= underTY + 8/*少し吸い込まれる*/) {
+					y = topTY - collision->hitRange.ySize + 2;
+					//jumpPower = 0;
+					isJumping = false;
+				}
+			}
+			break;
+
+			default:
+				break;
 			}
 		}
 	}
@@ -249,6 +294,8 @@ bool Player::MapHitCheck(int movedX, int movedY, char check)
 }
 
 void Player::Draw(int drawX, int drawY) {
+	DrawBox(collision->hitRange.xPos + collision->hitRange.xOffset - drawX, collision->hitRange.yPos + collision->hitRange.yOffset - drawY, collision->hitRange.xPos + collision->hitRange.xOffset + collision->hitRange.xSize - drawX, collision->hitRange.yPos + collision->hitRange.yOffset + collision->hitRange.ySize - drawY, 0xFF00FF, false);
+
 	int tempX = x - drawX;
 	int tempY = y - drawY;
 
