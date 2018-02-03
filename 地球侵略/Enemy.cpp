@@ -1,5 +1,6 @@
 #include "Enemy.h"
 #include "DxLib.h"
+#include "ObjectManager.h"
 
 Enemy::Enemy(){}
 
@@ -30,8 +31,7 @@ Enemy::Enemy(int x, int y, int img, int id, ICollisionManager* IcolMgr) {
 //	HitAction = hit;
 //}
 
-int Enemy::update(const Collision & playerCol)
-{
+int Enemy::update(const Collision & playerCol){
 	ct++;
 	collision->updatePos(x, y);
 	AttackBox->updatePos(x, y);
@@ -50,6 +50,36 @@ int Enemy::update(const Collision & playerCol)
 			}
 		}
 		index = -1;
+	}
+
+	for (auto t : ObjectManager::terrain) {
+		if (collision->doCollisonCheck(t->collision->hitRange)) {
+			//int tx = t->collision->hitRange.xPos + t->collision->hitRange.xOffset;
+
+			switch (t->getId()) {
+			case 6: //扉
+				//プレイヤーを流用．これCreatureクラスにいれるべきじゃね ？
+			{
+				int leftTX = t->collision->hitRange.xPos + t->collision->hitRange.xOffset;
+				int leftPX = collision->hitRange.xPos + collision->hitRange.xOffset;
+
+				if (leftPX < leftTX) {
+					x = leftTX - collision->hitRange.xSize - collision->hitRange.xOffset;
+				}
+				else if (leftPX > leftTX) {
+					x = leftTX + t->collision->hitRange.xSize - collision->hitRange.xOffset;
+				}
+				
+
+				break;
+			}
+			
+			break;
+
+			default:
+				break;
+			}
+		}
 	}
 
 
