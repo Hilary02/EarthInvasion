@@ -1,9 +1,5 @@
 #include "ObjectManager.h"
-#include "Item.h"
 #include <memory>
-
-#include "Goal.h"
-#include "LockedDoor.h"
 
 ObjectManager::ObjectManager() {
 	terrain.clear();
@@ -19,8 +15,8 @@ ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap, int stage) {
 		for (unsigned int j = 0; j < vmap[i].size(); j++) {
 			if (vmap[i][j] == 4 || vmap[i][j] == 5 || vmap[i][j] == 9 || vmap[i][j] == 99) {
 				Object* obje;
-				int y = i * 32;//y???W
-				int x = j * 32;//x???W
+				int y = i * 32;//y座標
+				int x = j * 32;//x座標
 				int path = 0;    //?I?u?W?F?N?g?ɍ??킹???摜?̃p?X
 				path = img[vmap[i][j]];
 				switch (vmap[i][j]) {
@@ -41,6 +37,7 @@ ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap, int stage) {
 				}
 				objects.push_back(obje);
 			}
+
 			if (vmap[i][j] == 6 || vmap[i][j] == 8) {
 				Object* obje;
 				int y = i * 32;	//y座標

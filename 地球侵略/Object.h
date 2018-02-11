@@ -2,6 +2,12 @@
 #include <DxLib.h>
 #include "Collision.h"
 #include "ICollisionManager.h"
+
+//とりあえず作成．ほかに用途がるのかも知らない
+enum class state {
+	none,dead
+};
+
 /**
 動く床やアイテムなど，ステージ上に配置されるモノを管理
 詳細未定
@@ -23,6 +29,9 @@ public:
 	int getId();
 
 	Collision* collision;
+	//そのうちprivateに変える
+	state state = state::none;
+
 protected:
 	//当たり判定の大きさ
 	int colXOffset = 0;

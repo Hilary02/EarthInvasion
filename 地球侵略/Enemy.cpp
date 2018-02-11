@@ -8,18 +8,20 @@ Enemy::~Enemy() {
 	delete AttackBox;
 }
 
-Enemy::Enemy(int x, int y, int img, int id, ICollisionManager* IcolMgr,IObjectManager* Iobj) {
+Enemy::Enemy(int x, int y, int img, int id, ICollisionManager* IcolMgr, IObjectManager* Iobj) {
 	this->IobjMgr = Iobj;
 
 	this->x = x;
 	this->y = y;
 	this->imgHandle = img;
+	this->id = id;
+	//enemyIDがどう用いられているかわからないが，保留
 	this->enemyID = id;
 	LoadDivGraph("data/img/enemy1Walk.png", 8, 4, 2, 64, 64, walkHundle);
 	LoadDivGraph("data/img/enemy1Atack.png", 4, 4, 1, 64, 64, atackHundle);
 	LoadDivGraph("data/img/enemy1Die.png", 8, 4, 2, 64, 64, deadHundle);
 	bulletHundle = LoadGraph("data/img/bullet.png");
-	collision = new Collision(colXOffset, colYOffset, colXSize, colYSize);
+	collision = new Collision(16, 0, 20, 64);
 	AttackBox = new Collision(32, colYOffset, -160, colYSize);
 
 	this->IcolMgr = IcolMgr;
@@ -46,7 +48,7 @@ int Enemy::update(const Collision & playerCol) {
 	}
 
 	//プレイヤーを流用．これCreatureクラスにいれるべきじゃね ？
-	for (auto t : IobjMgr->getTerrainList() ) {
+	for (auto t : IobjMgr->getTerrainList()) {
 		if (collision->doCollisonCheck(t->collision->hitRange)) {
 			switch (t->getId()) {
 			case 6: //扉
@@ -99,7 +101,7 @@ void Enemy::collisionCheck(const Collision & target) {
 		modHp(mod);
 	}
 	else if (attackR) {
-		//d 		DrawBox(10, 20, 100, 200, 0xFF0000, false);
+		//d     DrawBox(10, 20, 100, 200, 0xFF0000, false);
 
 		movedis = 0;
 		//d DrawBox(10, 20, 100, 200, 0xFF0000, true);
@@ -109,7 +111,7 @@ void Enemy::collisionCheck(const Collision & target) {
 		AtackCommon();
 	}
 	else {
-		//d	DrawBox(10, 20, 100, 200, 0xFF0000, false);
+		//d DrawBox(10, 20, 100, 200, 0xFF0000, false);
 		MoveCommon();
 
 	}
@@ -156,6 +158,7 @@ void Enemy::DeadCheck() {
 		if (drawcount > 84) addCount = 0;
 		imgHandle = deadHundle[(drawcount / 12) % 8];
 		drawcount += addCount;
+		state = state::dead;
 	}
 }
 

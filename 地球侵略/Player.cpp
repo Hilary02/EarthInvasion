@@ -4,7 +4,7 @@
 #include "ObjectManager.h"
 #include "SceneManager.h"
 
-Player::Player(std::vector<std::vector <int>> const &vmap,IObjectManager* Iobj) {
+Player::Player(std::vector<std::vector <int>> const &vmap, IObjectManager* Iobj) {
 	LoadImg();
 	this->IobjMgr = Iobj;
 	this->vmap = vmap;
@@ -60,18 +60,40 @@ int Player::update() {
 					isMoving = 'L';
 					drawCount = 0;
 				}
+
+				/*NOTE:親クラスで定義した変数を子が同名で再定義してしまうと
+				親クラスのポインタ型からアクセスしたときに参照エラーが発生する．
+				デバッガでみて初めて気が付いた				*/
+				//寄生キー
 				if (keyM.GetKeyFrame(KEY_INPUT_S) >= 1) {
-					if (1) { //?????Ɏ??????????邩????
-						plState = 'A';
-						isMoving = 'I';
-						drawCount = 0;
+					for (auto o : IobjMgr->getObjectList()) {
+						if (collision->doCollisonCheck(o->collision->hitRange)) { //当たり判定をとる
+
+							switch (o->getId()) {
+							case 4: //兵士
+							{
+								plState = 'A';
+								isMoving = 'I';
+								drawCount = 0;
+								collision->playerParasite = 1; //攻撃状態かどうかとか記録
+								printfDx("Mode:1");
+								break;
+							}
+							default:
+								break;
+							}
+						}
 					}
 				}
 			}
+
+			//寄生解除
 			if (keyM.GetKeyFrame(KEY_INPUT_E) >= 1 && plState != 'N') {
 				plState = 'N';
 				isMoving = 'O';
 				drawCount = 0;
+				collision->playerParasite = 0; 
+				printfDx("Mode:0");
 			}
 		}
 	}
@@ -118,14 +140,7 @@ int Player::update() {
 		jumpPower = 0;
 	}
 
-	if (keyM.GetKeyFrame(KEY_INPUT_W) == 1) {
-		collision->playerParasite = 0; //攻撃状態かどうかとか記録
-		printfDx("Mode:0");
-	}
-	if (keyM.GetKeyFrame(KEY_INPUT_E) == 1) {
-		collision->playerParasite = 1; //攻撃状態かどうかとか記録
-		printfDx("Mode:1");
-	}
+
 
 
 
@@ -139,7 +154,7 @@ int Player::update() {
 			めちゃくちゃやん
 
 	*/
-//	for (auto t : ObjectManager::terrain) {
+	//	for (auto t : ObjectManager::terrain) {
 	for (auto t : IobjMgr->getTerrainList()) {
 
 		if (collision->doCollisonCheck(t->collision->hitRange)) {

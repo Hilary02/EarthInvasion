@@ -16,5 +16,4 @@ private:
 	int x;
 	int y;
 	int imgSpike;
-	Collision* collision;
 };

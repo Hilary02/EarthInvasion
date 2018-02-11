@@ -14,7 +14,6 @@ public:
 	void Draw(int drawX, int drawY);
 
 private:
-	Collision* collision;
 	int stageId;
 	SaveData &savedata = SaveData::get_instance();
 

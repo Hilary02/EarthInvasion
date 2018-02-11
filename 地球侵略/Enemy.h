@@ -46,7 +46,6 @@ private:
 
 	std::vector<Bullet*> bullets;
 
-	Collision* collision;
 	Collision* AttackBox;
 };
 
