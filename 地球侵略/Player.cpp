@@ -1,35 +1,21 @@
 #include "DxLib.h"
 #include "Player.h"
 #include "KeyManager.h"
-
-//?????I
-#include "SceneManager.h"
 #include "ObjectManager.h"
+#include "SceneManager.h"
 
-Player::Player(std::vector<std::vector <int>> const &vmap) {
+Player::Player(std::vector<std::vector <int>> const &vmap,IObjectManager* Iobj) {
+	LoadImg();
+	this->IobjMgr = Iobj;
 	this->vmap = vmap;
 
 	this->hp = 10;
-
-	LoadImg();
-
-	
 	colXOffset = 16;
 	colXSize = 30;
-
 	collision = new Collision(colXOffset, colYOffset, colXSize, colYSize);
 }
 
-
-//Player::Player(int x, int y) {
-//	this->x = x;
-//	this->y = y;
-//	this->hp = 15;
-//	LoadImg();
-//}
-
 Player::~Player() {
-
 }
 
 //?v?Z????
@@ -153,7 +139,9 @@ int Player::update() {
 			めちゃくちゃやん
 
 	*/
-	for (auto t : ObjectManager::terrain) {
+//	for (auto t : ObjectManager::terrain) {
+	for (auto t : IobjMgr->getTerrainList()) {
+
 		if (collision->doCollisonCheck(t->collision->hitRange)) {
 			//int tx = t->collision->hitRange.xPos + t->collision->hitRange.xOffset;
 

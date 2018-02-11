@@ -37,13 +37,10 @@ Stage_Base::Stage_Base(int stage) {
 	readMap("data/map/stage0.csv");
 
 	//プレイヤー呼び出し
-	player = new Player(vmap);
-	player->setAbsolutePos(1800, 600);
-	colMgr = new CollisionManager(player);
-	objectMgr = new ObjectManager(vmap,player,colMgr,stageId);
 
-	//どちらかを使う
-	//objectMgr = new ObjectManager(vmap,player);
+	objectMgr = new ObjectManager(vmap,stageId);
+	this->player = objectMgr->getPlayer();
+
 
 	//制限時間 ttp://nanoappli.com/blog/archives/3229
 	time = 120'000;
@@ -58,8 +55,6 @@ Stage_Base::Stage_Base(int stage) {
 
 Stage_Base::~Stage_Base() {
 	vmap.clear();
-	delete player;
-	delete colMgr;
 	delete objectMgr;
 	InitGraph();
 }
@@ -73,7 +68,6 @@ void Stage_Base::update() {
 
 	drawChipNum = 0;
 	objectMgr->update();
-	player->update();
 	scrollMap();	//プレイヤー座標に応じた表示範囲の変更
 }
 
@@ -101,7 +95,6 @@ void Stage_Base::draw() {
 		}
 	}
 	objectMgr->Draw(drawX, drawY);
-	player->Draw(drawX, drawY);
 	drawInfo();
 
 	//デバッグ情報

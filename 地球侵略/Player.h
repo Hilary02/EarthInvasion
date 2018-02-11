@@ -6,7 +6,7 @@ class Player :
 	public Creature
 {
 public:
-	Player(const std::vector<std::vector <int>>  &vmap);
+	Player(const std::vector<std::vector <int>>  &vmap, IObjectManager* Iobj);
 	//Player(int x, int y);
 	~Player();
 	int update();

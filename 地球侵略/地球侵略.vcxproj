@@ -60,6 +60,7 @@
     <ClInclude Include="Goal.h" />
     <ClInclude Include="HealItem.h" />
     <ClInclude Include="ICollisionManager.h" />
+    <ClInclude Include="IObjectManager.h" />
     <ClInclude Include="ISceneManager.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="KeyManager.h" />

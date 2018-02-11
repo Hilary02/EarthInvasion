@@ -3,7 +3,6 @@
 #include <array>
 #include "DxLib.h"
 #include "WindowData.h"
-#include "Player.h"
 #include "ObjectManager.h"
 #include "CollisionManager.h"
 #include "SaveData.h"

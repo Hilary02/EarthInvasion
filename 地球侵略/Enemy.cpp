@@ -2,12 +2,15 @@
 #include "DxLib.h"
 #include "ObjectManager.h"
 
-Enemy::Enemy(){}
+Enemy::Enemy() {}
 
+Enemy::~Enemy() {
+	delete AttackBox;
+}
 
-Enemy::~Enemy(){}
+Enemy::Enemy(int x, int y, int img, int id, ICollisionManager* IcolMgr,IObjectManager* Iobj) {
+	this->IobjMgr = Iobj;
 
-Enemy::Enemy(int x, int y, int img, int id, ICollisionManager* IcolMgr) {
 	this->x = x;
 	this->y = y;
 	this->imgHandle = img;
@@ -22,16 +25,7 @@ Enemy::Enemy(int x, int y, int img, int id, ICollisionManager* IcolMgr) {
 	this->IcolMgr = IcolMgr;
 }
 
-//Enemy::Enemy(int x, int y, int img, int id,) {
-//	this->x = x;
-//	this->y = y;
-//	this->imgHandle = img;
-//	this->enemyID = id;
-//	LoadDivGraph("data/img/enemy1Walk.png", 8, 4, 2, 64, 64, walk);
-//	HitAction = hit;
-//}
-
-int Enemy::update(const Collision & playerCol){
+int Enemy::update(const Collision & playerCol) {
 	ct++;
 	collision->updatePos(x, y);
 	AttackBox->updatePos(x, y);
@@ -40,7 +34,6 @@ int Enemy::update(const Collision & playerCol){
 	DeadCheck();
 	if (!dead)
 	{
-
 		for (auto &bull : bullets)
 		{
 			index++;
@@ -52,46 +45,29 @@ int Enemy::update(const Collision & playerCol){
 		index = -1;
 	}
 
-	for (auto t : ObjectManager::terrain) {
+	//プレイヤーを流用．これCreatureクラスにいれるべきじゃね ？
+	for (auto t : IobjMgr->getTerrainList() ) {
 		if (collision->doCollisonCheck(t->collision->hitRange)) {
-			//int tx = t->collision->hitRange.xPos + t->collision->hitRange.xOffset;
-
 			switch (t->getId()) {
 			case 6: //扉
-				//プレイヤーを流用．これCreatureクラスにいれるべきじゃね ？
 			{
 				int leftTX = t->collision->hitRange.xPos + t->collision->hitRange.xOffset;
 				int leftPX = collision->hitRange.xPos + collision->hitRange.xOffset;
 
-				if (leftPX < leftTX) {
-					x = leftTX - collision->hitRange.xSize - collision->hitRange.xOffset;
-				}
-				else if (leftPX > leftTX) {
-					x = leftTX + t->collision->hitRange.xSize - collision->hitRange.xOffset;
-				}
-				
-
+				if (leftPX < leftTX) { x = leftTX - collision->hitRange.xSize - collision->hitRange.xOffset; }
+				else if (leftPX > leftTX) { x = leftTX + t->collision->hitRange.xSize - collision->hitRange.xOffset; }
 				break;
 			}
-			
-			break;
-
 			default:
 				break;
 			}
 		}
 	}
-
-
 	return 0;
-
 }
 
-void Enemy::Draw(int drawX, int drawY){
+void Enemy::Draw(int drawX, int drawY) {
 	DrawBox(collision->hitRange.xPos + collision->hitRange.xOffset - drawX, collision->hitRange.yPos + collision->hitRange.yOffset - drawY, collision->hitRange.xPos + collision->hitRange.xOffset + collision->hitRange.xSize - drawX, collision->hitRange.yPos + collision->hitRange.yOffset + collision->hitRange.ySize - drawY, 0xFF00FF, false);
-
-	//d	DrawFormatString(0, 0, 0xFFFFFF, "Enemy:%d,%d     Draw:%d,%d", x, y, x - drawX, y - drawY);
-
 	//DrawBox(AttackBox->hitRange.xPos + AttackBox->hitRange.xOffset -drawX, AttackBox->hitRange.yPos + AttackBox->hitRange.yOffset - drawY, AttackBox->hitRange.xPos + AttackBox->hitRange.xOffset - drawX+AttackBox->hitRange.xSize, AttackBox->hitRange.yPos + AttackBox->hitRange.yOffset - drawY+AttackBox->hitRange.ySize, 0x00FF00, false);
 
 	isRight = IsRangeCheck();
@@ -118,7 +94,6 @@ void Enemy::collisionCheck(const Collision & target) {
 	int attackR = AttackBox->doCollisonCheck((target.hitRange));
 	if (isCol) {
 
-		//d 		DrawBox(10, 20, 100, 200, 0xFF0000, true);
 		if (!dead)IcolMgr->requestAction(Action::DmgPlayer);
 		//IcolMgr->requestAction(Action::DmgPlayer);
 		modHp(mod);
@@ -175,7 +150,7 @@ void Enemy::AtackCommon()
 	//drawcount++;
 }
 
-void Enemy::DeadCheck(){
+void Enemy::DeadCheck() {
 	if (getHp() < 0) {
 		if (!dead) drawcount = 0, dead = true;
 		if (drawcount > 84) addCount = 0;
@@ -184,7 +159,7 @@ void Enemy::DeadCheck(){
 	}
 }
 
-bool Enemy::IsRangeCheck(){
+bool Enemy::IsRangeCheck() {
 	dis += movedis;
 	if (moveRange < dis) {
 		dis = 0;

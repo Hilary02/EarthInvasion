@@ -4,16 +4,17 @@
 
 #include "Goal.h"
 #include "LockedDoor.h"
-std::vector<Object*> ObjectManager::terrain;	//実体
 
 ObjectManager::ObjectManager() {
 	terrain.clear();
 }
 
-ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap, Player * player, ICollisionManager* colMgr, int stage) {
+ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap, int stage) {
+	this->player = new Player(vmap,this);
+	this->colMgr = new CollisionManager(player);
 	stageId = stage;
 	Loadimg();
-	IcolMgr = colMgr;
+	//IcolMgr = colMgr;
 	for (unsigned int i = 0; i < vmap.size(); i++) {
 		for (unsigned int j = 0; j < vmap[i].size(); j++) {
 			if (vmap[i][j] == 4 || vmap[i][j] == 5 || vmap[i][j] == 9 || vmap[i][j] == 99) {
@@ -24,16 +25,16 @@ ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap, Player * playe
 				path = img[vmap[i][j]];
 				switch (vmap[i][j]) {
 				case 4:
-					obje = new Enemy(x, y, img[10], vmap[i][j], IcolMgr);
+					obje = new Enemy(x, y, img[10], vmap[i][j], colMgr,this);
 					break;
 				case 5:
-					obje = new Item(x, y, img[20], IcolMgr);
+					obje = new Item(x, y, img[20], colMgr);
 					break;
 				case 9:
-					obje = new SpikeBlock(x, y, img[9], IcolMgr);
+					obje = new SpikeBlock(x, y, img[9], colMgr);
 					break;
 				case 99:	//暫定ゴール
-					obje = new  Goal(x, y, img[21], IcolMgr, stageId);
+					obje = new  Goal(x, y, img[21], colMgr, stageId);
 					break;
 				default:
 					break;
@@ -60,10 +61,13 @@ ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap, Player * playe
 			}
 		}
 	}
-	this->player = player;
+	player->setAbsolutePos(300, 600);
 }
 
 ObjectManager::~ObjectManager() {
+	delete player;
+	delete colMgr;
+
 	terrain.clear();
 }
 
@@ -86,6 +90,8 @@ void ObjectManager::Loadimg() {
 }
 
 void ObjectManager::update() {
+	player->update();
+
 	int i = 0;
 	for (auto &obj : objects) {
 		int n = obj->update(*(player->collision));
@@ -105,10 +111,24 @@ void ObjectManager::update() {
 }
 
 void ObjectManager::Draw(int drawX, int drawY) {
+	player->Draw(drawX, drawY);
+
 	for (auto obj : objects) {
 		obj->Draw(drawX, drawY);
 	}
 	for (auto &ter : terrain) {
 		ter->Draw(drawX, drawY);
 	}
+}
+
+Player* ObjectManager::getPlayer(){
+	return player;
+}
+
+std::vector<Object*>& ObjectManager::getObjectList(){
+	return objects;
+}
+
+std::vector<Object*>& ObjectManager::getTerrainList(){
+	return terrain;
 }

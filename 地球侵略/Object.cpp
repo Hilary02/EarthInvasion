@@ -8,8 +8,8 @@ Object::Object(int x, int y, int handle, ICollisionManager* IcolMgr) {
 
 }
 
-Object::~Object()
-{
+Object::~Object(){
+	delete collision;
 }
 
 int Object::update(const Collision & playerCol)

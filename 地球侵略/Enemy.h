@@ -12,7 +12,7 @@ public:
 	~Enemy();
 
 	//Enemy(int x, int y, int img, int id);
-	Enemy(int x, int y, int img, int id, ICollisionManager* IcolMgr);
+	Enemy(int x, int y, int img, int id, ICollisionManager* IcolMgr, IObjectManager* Iobj);
 	
 	int update(const Collision & playerCol) override;
 	void Draw(int drawX, int drawY) override;
