@@ -5,7 +5,7 @@ class Bullet :
 {
 public:
 	Bullet();
-	Bullet(int, int, int, bool, ICollisionManager*);
+	Bullet(int, int, int, bool);
 	~Bullet();
 
 	int remit = 0;

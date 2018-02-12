@@ -18,8 +18,6 @@ Player::Player(std::vector<std::vector <int>> const &vmap, IObjectManager* Iobj)
 Player::~Player() {
 }
 
-//?v?Z????
-
 int Player::update() {
 
 	PerDecision();
@@ -75,8 +73,7 @@ int Player::update() {
 								plState = 'A';
 								isMoving = 'I';
 								drawCount = 0;
-								collision->playerParasite = 1; //攻撃状態かどうかとか記録
-								printfDx("Mode:1");
+								collision->playerParasite = 1; //当たり判定に寄生状態を記録
 								break;
 							}
 							default:
@@ -92,7 +89,7 @@ int Player::update() {
 				plState = 'N';
 				isMoving = 'O';
 				drawCount = 0;
-				collision->playerParasite = 0; 
+				collision->playerParasite = 0;
 				printfDx("Mode:0");
 			}
 		}
@@ -140,26 +137,12 @@ int Player::update() {
 		jumpPower = 0;
 	}
 
-
-
-
-
 	collision->updatePos(x, y);
-	//collision->playerParasite = 0;//仮なのでいつか統一した規格に
 	collision->playerState = 0; //攻撃状態かどうかとか記録
 
-
-
-	/*
-			めちゃくちゃやん
-
-	*/
-	//	for (auto t : ObjectManager::terrain) {
+	//地形オブジェクトとの当たり判定をとり，位置の修正
 	for (auto t : IobjMgr->getTerrainList()) {
-
 		if (collision->doCollisonCheck(t->collision->hitRange)) {
-			//int tx = t->collision->hitRange.xPos + t->collision->hitRange.xOffset;
-
 			switch (t->getId()) {
 			case 6: //扉
 			{
@@ -186,7 +169,6 @@ int Player::update() {
 
 				if (underPY <= underTY + 8/*少し吸い込まれる*/) {
 					y = topTY - collision->hitRange.ySize + 2;
-					//jumpPower = 0;
 					isJumping = false;
 				}
 			}
@@ -197,6 +179,27 @@ int Player::update() {
 			}
 		}
 	}
+
+	//オブジェクトとの当たり判定をとり，プレイヤー自身に影響する処理を行う
+	for (auto o : IobjMgr->getObjectList()) {
+		if (collision->doCollisonCheck(o->collision->hitRange)) { //当たり判定をとる
+			switch (o->getId()) {
+			case 4: //兵士
+				if(o->state != state::dead)modHp(-1);
+				break;
+			case 5: //回復ポッド
+				modHp(1);
+				break;
+			case 9: //とげとげ
+				modHp(-1);
+				break;
+			default:
+				break;
+			}
+		}
+	}
+
+
 
 	if (hp <= 0 && !isDead) {
 		isDead = true;
@@ -217,9 +220,6 @@ bool Player::MapHitCheck(int movedX, int movedY, char check)
 		return true;
 		break;
 	case 1:
-
-		//d		DrawFormatString(200, 140, 0xFFFFFF, "?????Ȃ??ǂ??I");
-
 		if (check == 'x') {
 			if (movedX - x2 > 0)
 				cMove = movedX - x2 - (movedX % 32 + 1);
@@ -238,9 +238,6 @@ bool Player::MapHitCheck(int movedX, int movedY, char check)
 		return false;
 		break;
 	case 2:
-
-		//d	DrawFormatString(200, 140, 0xFFFFFF, "?ǂ??I");
-
 		if (check == 'x') {
 			if (movedX - x2 > 0)
 				cMove = movedX - x2 - (movedX % 32 + 1);
@@ -258,9 +255,6 @@ bool Player::MapHitCheck(int movedX, int movedY, char check)
 		}
 
 		return false;
-		break;
-	case 5:
-		return true;
 		break;
 	case 7:
 		if (check == 'x') {
@@ -279,9 +273,6 @@ bool Player::MapHitCheck(int movedX, int movedY, char check)
 			}
 		}
 		return false;
-		break;
-	case 8:
-		return true;
 		break;
 	case 9:
 		if (movedY - y2 > 0) {
@@ -508,8 +499,9 @@ void Player::PerDecision()
 	x3 = x + ((sizeX1 + sizeX2) / 2);
 	y3 = y + ((sizeY1 + sizeY2) / 2);
 }
+
+//体力の変更 ダメージを受けるときだけ60フレームの無敵時間
 void Player::modHp(int mod) {
-	//?ω??ʂ????̏ꍇ?̂݁C???G???Ԃ?N??
 	if (mod < 0) {
 		if (invalidDamageTime == 60) {
 			invalidDamageTime = 0;
@@ -517,7 +509,6 @@ void Player::modHp(int mod) {
 		}
 	}
 	else {
-		//?ω??ʂ????Ȃ疳?G???Ԋ֌W?Ȃ??ύX
 		hp += mod;
 	}
 }

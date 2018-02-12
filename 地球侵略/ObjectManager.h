@@ -9,7 +9,6 @@
 #include "MoveGround.h"
 #include "SpikeBlock.h"
 #include "IObjectManager.h"
-#include "CollisionManager.h"
 #include "Goal.h"
 #include "LockedDoor.h"
 
@@ -39,6 +38,4 @@ private:
 	std::vector<Object*> objects;
 	std::vector<Object*> terrain;
 
-	//ICollisionManager* IcolMgr;
-	CollisionManager* colMgr;
 };

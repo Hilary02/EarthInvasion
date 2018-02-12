@@ -1,12 +1,10 @@
 #include "Bullet.h"
 
-
-
 Bullet::Bullet()
 {
 }
 
-Bullet::Bullet(int x, int y , int Hundle, bool isRight, ICollisionManager * Icol)
+Bullet::Bullet(int x, int y , int Hundle, bool isRight)
 {
 	if (isRight)
 	{
@@ -18,7 +16,6 @@ Bullet::Bullet(int x, int y , int Hundle, bool isRight, ICollisionManager * Icol
 	}
 	this->y = y + 30;
 	this->imgHandle = Hundle;
-	this->IcolMgr = Icol;
 	isR = isRight;
 }
 

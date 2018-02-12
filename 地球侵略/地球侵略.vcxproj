@@ -21,7 +21,6 @@
   <ItemGroup>
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Collision.cpp" />
-    <ClCompile Include="CollisionManager.cpp" />
     <ClCompile Include="Creature.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="FPS.cpp" />
@@ -52,14 +51,12 @@
   <ItemGroup>
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="Collision.h" />
-    <ClInclude Include="CollisionManager.h" />
     <ClInclude Include="Creature.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="FPS.h" />
     <ClInclude Include="GameMain.h" />
     <ClInclude Include="Goal.h" />
     <ClInclude Include="HealItem.h" />
-    <ClInclude Include="ICollisionManager.h" />
     <ClInclude Include="IObjectManager.h" />
     <ClInclude Include="ISceneManager.h" />
     <ClInclude Include="Item.h" />

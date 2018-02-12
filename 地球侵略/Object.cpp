@@ -4,7 +4,7 @@ Object::Object()
 {
 }
 
-Object::Object(int x, int y, int handle, ICollisionManager* IcolMgr) {
+Object::Object(int x, int y, int handle) {
 
 }
 

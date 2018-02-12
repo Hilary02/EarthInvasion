@@ -1,7 +1,6 @@
 #pragma once
 #include <DxLib.h>
 #include "Collision.h"
-#include "ICollisionManager.h"
 
 //‚Æ‚è‚ ‚¦‚¸ì¬D‚Ù‚©‚É—p“r‚ª‚é‚Ì‚©‚à’m‚ç‚È‚¢
 enum class state {
@@ -15,8 +14,7 @@ enum class state {
 class Object {
 public:
 	Object();
-	//Object(int x, int y, int handle);
-	Object(int x, int y, int handle,ICollisionManager* IcolMgr);
+	Object(int x, int y, int handle);
 	~Object();
 	virtual int update(const Collision & playerCol);
 	virtual void Draw(int drawX, int drawY);
@@ -44,5 +42,4 @@ protected:
 	int x, y;
 
 	int imgHandle;
-	ICollisionManager* IcolMgr;
 };

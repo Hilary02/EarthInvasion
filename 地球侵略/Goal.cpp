@@ -2,18 +2,15 @@
 #include "DxLib.h"
 #include "SceneManager.h"
 
-Goal::Goal(int x, int y, int handle, ICollisionManager * IcolMgr, int stage){
+Goal::Goal(int x, int y, int handle, int stage){
 	this->x = x;
 	this->y = y;
 	this->imgHandle = handle;
-	this->IcolMgr = IcolMgr;
 	this->stageId = stage;
 	collision = new Collision(0, 0, 64, 128);
 }
 
-Goal::~Goal()
-{
-}
+Goal::~Goal(){}
 
 int Goal::update(const Collision & playerCol){
 	collision->updatePos(x, y);

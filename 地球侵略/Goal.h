@@ -8,7 +8,7 @@ class Goal :
 public:
 
 
-	Goal(int x, int y, int handle, ICollisionManager* IcolMgr,int stage);
+	Goal(int x, int y, int handle,int stage);
 	~Goal();
 	int update(const Collision & playerCol);
 	void Draw(int drawX, int drawY);

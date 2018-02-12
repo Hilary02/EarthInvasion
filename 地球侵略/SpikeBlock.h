@@ -8,7 +8,7 @@ class SpikeBlock :
 public:
 	SpikeBlock();
 	~SpikeBlock();
-	SpikeBlock(int x, int y, int img, ICollisionManager* IcolMgr);
+	SpikeBlock(int x, int y, int img);
 	int update(const Collision & playerCol) override;
 	void Draw(int drawX, int drawY) override;
 	void collisionCheck(const Collision& target);

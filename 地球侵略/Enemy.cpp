@@ -8,9 +8,8 @@ Enemy::~Enemy() {
 	delete AttackBox;
 }
 
-Enemy::Enemy(int x, int y, int img, int id, ICollisionManager* IcolMgr, IObjectManager* Iobj) {
+Enemy::Enemy(int x, int y, int img, int id, IObjectManager* Iobj) {
 	this->IobjMgr = Iobj;
-
 	this->x = x;
 	this->y = y;
 	this->imgHandle = img;
@@ -22,9 +21,7 @@ Enemy::Enemy(int x, int y, int img, int id, ICollisionManager* IcolMgr, IObjectM
 	LoadDivGraph("data/img/enemy1Die.png", 8, 4, 2, 64, 64, deadHundle);
 	bulletHundle = LoadGraph("data/img/bullet.png");
 	collision = new Collision(16, 0, 20, 64);
-	AttackBox = new Collision(32, colYOffset, -160, colYSize);
-
-	this->IcolMgr = IcolMgr;
+	AttackBox = new Collision(32, colYOffset, -160, colYSize);	
 }
 
 int Enemy::update(const Collision & playerCol) {
@@ -96,8 +93,6 @@ void Enemy::collisionCheck(const Collision & target) {
 	int attackR = AttackBox->doCollisonCheck((target.hitRange));
 	if (isCol) {
 
-		if (!dead)IcolMgr->requestAction(Action::DmgPlayer);
-		//IcolMgr->requestAction(Action::DmgPlayer);
 		modHp(mod);
 	}
 	else if (attackR) {
@@ -120,7 +115,6 @@ void Enemy::collisionCheck(const Collision & target) {
 void Enemy::MoveCommon()
 {
 	movedis = 1;
-	//?͋Z?Ȃ̂ł??ƂŏC???i???S???ɂ͈ړ????Ȃ??j
 	if (dead)movedis = 0;
 
 	if (isRight)
@@ -134,7 +128,6 @@ void Enemy::MoveCommon()
 	imgHandle = walkHundle[(drawcount / 8) % 8];
 	drawcount += addCount;
 
-	//count???Z?b?g????
 	//if (drawcount == 72) drawcount = 0;
 }
 
@@ -146,7 +139,7 @@ void Enemy::AtackCommon()
 	if (ct > 180)
 	{
 		ct = 0;
-		Bullet* objBull = new Bullet(x, y, bulletHundle, isRight, IcolMgr);
+		Bullet* objBull = new Bullet(x, y, bulletHundle, isRight);
 		bullets.push_back(objBull);
 	}
 	//drawcount++;

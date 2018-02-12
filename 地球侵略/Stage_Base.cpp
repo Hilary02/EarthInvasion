@@ -32,13 +32,10 @@ Stage_Base::Stage_Base(int stage) {
 		}
 	}
 	//マップ地形の読み込み
-
 	//ここを複数ステージ用に書き換え
 	readMap("data/map/stage0.csv");
-
-	//プレイヤー呼び出し
-
 	objectMgr = new ObjectManager(vmap,stageId);
+	//プレイヤー呼び出し
 	this->player = objectMgr->getPlayer();
 
 

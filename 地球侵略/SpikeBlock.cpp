@@ -1,22 +1,14 @@
 #include "SpikeBlock.h"
 
+SpikeBlock::SpikeBlock() {}
+SpikeBlock::~SpikeBlock() {}
 
-
-SpikeBlock::SpikeBlock()
-{
-}
-
-
-SpikeBlock::~SpikeBlock()
-{
-}
-SpikeBlock::SpikeBlock(int x, int y, int img, ICollisionManager* IcolMgr) {
-	this->x = x;	
+SpikeBlock::SpikeBlock(int x, int y, int img) {
+	this->x = x;
 	this->y = y;
 	this->imgSpike = img;
-	collision = new Collision(0-2, 0-2, 256, 64);
-	this->IcolMgr = IcolMgr;
-
+	this->id = 9;
+	collision = new Collision(0 - 2, 0 - 2, 256, 64);
 }
 
 int SpikeBlock::update(const Collision & playerCol)
@@ -29,12 +21,9 @@ int SpikeBlock::update(const Collision & playerCol)
 
 void SpikeBlock::Draw(int drawX, int drawY)
 {
-		DrawGraph(x - drawX, y - drawY, imgSpike, true);
+	DrawGraph(x - drawX, y - drawY, imgSpike, true);
 }
 
 void SpikeBlock::collisionCheck(const Collision & target) {
-	int isCol = collision->doCollisonCheck((target.hitRange));
-	if (isCol) {
-		IcolMgr->requestAction(Action::DmgPlayer);
-	}
+	//プレイヤー側での処理に変更
 }

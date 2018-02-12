@@ -4,7 +4,6 @@
 #include "DxLib.h"
 #include "WindowData.h"
 #include "ObjectManager.h"
-#include "CollisionManager.h"
 #include "SaveData.h"
 /**
 Stageクラスはまず地形を読み込む．
@@ -44,7 +43,6 @@ private:
 
 	Player *player;
 	ObjectManager *objectMgr;
-	CollisionManager *colMgr;
 	SaveData &savedata = SaveData::get_instance();
 
 	//地形などを描画する際の左上座標
