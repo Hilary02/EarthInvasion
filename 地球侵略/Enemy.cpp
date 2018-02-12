@@ -1,6 +1,7 @@
 #include "Enemy.h"
 #include "DxLib.h"
 #include "ObjectManager.h"
+#include "KeyManager.h"
 
 Enemy::Enemy() {}
 
@@ -21,7 +22,7 @@ Enemy::Enemy(int x, int y, int img, int id, IObjectManager* Iobj) {
 	LoadDivGraph("data/img/enemy1Die.png", 8, 4, 2, 64, 64, deadHundle);
 	bulletHundle = LoadGraph("data/img/bullet.png");
 	collision = new Collision(16, 0, 20, 64);
-	AttackBox = new Collision(32, colYOffset, -160, colYSize);	
+	AttackBox = new Collision(32, colYOffset, -160, colYSize);
 }
 
 int Enemy::update(const Collision & playerCol) {
@@ -29,6 +30,7 @@ int Enemy::update(const Collision & playerCol) {
 	collision->updatePos(x, y);
 	AttackBox->updatePos(x, y);
 	collisionCheck(playerCol);
+
 
 	DeadCheck();
 	if (!dead)
@@ -42,6 +44,18 @@ int Enemy::update(const Collision & playerCol) {
 			}
 		}
 		index = -1;
+	}
+	if (dead) {
+		//（死亡状態 かつ）寄生キー，接触中
+		if (keyM.GetKeyFrame(KEY_INPUT_S) >= 1) {
+			if (collision->doCollisonCheck((playerCol.hitRange))) {
+				remove = true;
+			}
+		}
+	}
+	if (remove) {
+		removeCount--;
+		if (removeCount == 0) return -1;
 	}
 
 	//プレイヤーを流用．これCreatureクラスにいれるべきじゃね ？
@@ -100,8 +114,6 @@ void Enemy::collisionCheck(const Collision & target) {
 
 		movedis = 0;
 		//d DrawBox(10, 20, 100, 200, 0xFF0000, true);
-
-
 		//d DrawBox(10,20,100,200, 0x0000ff,true);
 		AtackCommon();
 	}

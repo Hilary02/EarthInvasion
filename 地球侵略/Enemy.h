@@ -9,8 +9,6 @@ class Enemy :
 public:
 	Enemy();
 	~Enemy();
-
-	//Enemy(int x, int y, int img, int id);
 	Enemy(int x, int y, int img, int id, IObjectManager* Iobj);
 	
 	int update(const Collision & playerCol) override;
@@ -46,5 +44,7 @@ private:
 	std::vector<Bullet*> bullets;
 
 	Collision* AttackBox;
+	bool remove = false;
+	int removeCount = 70;
 };
 
