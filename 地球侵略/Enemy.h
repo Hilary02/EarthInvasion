@@ -5,14 +5,11 @@
 
 class Enemy :
 	public Creature
-
 {
 public:
 	Enemy();
 	~Enemy();
-
-	//Enemy(int x, int y, int img, int id);
-	Enemy(int x, int y, int img, int id, ICollisionManager* IcolMgr);
+	Enemy(int x, int y, int img, int id, IObjectManager* Iobj);
 	
 	int update(const Collision & playerCol) override;
 	void Draw(int drawX, int drawY) override;
@@ -46,7 +43,8 @@ private:
 
 	std::vector<Bullet*> bullets;
 
-	Collision* collision;
 	Collision* AttackBox;
+	bool remove = false;
+	int removeCount = 70;
 };
 

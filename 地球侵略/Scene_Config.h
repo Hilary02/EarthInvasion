@@ -1,6 +1,7 @@
 #pragma once
 #include "Scene_Frame.h"
 #include "SoundManager.h"
+
 class Scene_Config :
 	public Scene_Frame
 {
@@ -10,15 +11,12 @@ public:
 	void update();
 	void Draw();
 private:
-	//const static int MENU_NUM = 5;
 	const static int MENU_NUM = 3;
-	//どれが選択されているのか
 	enum OPTION_SELECT {
-		//BGM, SE, KEY, PAD, EXIT
-		BGM, SE,  EXIT
+		BGM, SE,  EXIT //オプションメニュー
 	};
 	enum OPTION_DRAW {
-		VOL_CON, KEY_CON   //, PAD_CON
+		VOL_CON, KEY_CON   //PADの設定は保留
 	};
 	//メニューの描画場所と内容をまとめる
 	typedef struct {
@@ -26,9 +24,9 @@ private:
 		char name[32];		// 項目名格納用変数
 	} MenuElement_t;
 
-	MenuElement_t MenuElement[MENU_NUM] = {	//実際の値の設定
+	MenuElement_t MenuElement[MENU_NUM] = {	//実際の位置や値の設定
 		{ 400, 280, "BGM" },
-		{ 400, 340, "SE" },			//310から変えた
+		{ 400, 340, "SE" },	
 		//{ 400, 340, "KEY" },
 		//{ 400, 370, "PAD" },
 		{ 400, 400, "Back to Title" }

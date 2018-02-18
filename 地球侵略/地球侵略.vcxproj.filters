@@ -2,13 +2,11 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="Collision.cpp" />
-    <ClCompile Include="CollisionManager.cpp" />
     <ClCompile Include="Creature.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="FPS.cpp" />
     <ClCompile Include="GameMain.cpp" />
     <ClCompile Include="HealItem.cpp" />
-    <ClCompile Include="InfoArea.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="KeyManager.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -25,17 +23,16 @@
     <ClCompile Include="Stage_Base.cpp" />
     <ClCompile Include="WindowData.cpp" />
     <ClCompile Include="SpikeBlock.cpp" />
+    <ClCompile Include="SaveData.cpp" />
+    <ClCompile Include="LockedDoor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Collision.h" />
-    <ClInclude Include="CollisionManager.h" />
     <ClInclude Include="Creature.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="FPS.h" />
     <ClInclude Include="GameMain.h" />
     <ClInclude Include="HealItem.h" />
-    <ClInclude Include="ICollisionManager.h" />
-    <ClInclude Include="InfoArea.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="KeyManager.h" />
     <ClInclude Include="Main.h" />
@@ -71,9 +68,6 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="HealItem.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="InfoArea.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Item.cpp">
@@ -130,6 +124,9 @@
     <ClCompile Include="Bullet.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClInclude Include="SaveData.h" />
+    <ClInclude Include="LockedDoor.h" />
+    <ClInclude Include="IObjectManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Collision.h">
@@ -154,9 +151,6 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="ICollisionManager.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="InfoArea.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Item.h">

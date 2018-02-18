@@ -1,10 +1,7 @@
 #include "Collision.h"
+//#include "DxLib.h"  //デバッグ表示をしたいなら追加
 
-#include "DxLib.h"
-
-Collision::Collision()
-{
-}
+Collision::Collision(){}
 
 Collision::Collision(int xOffset, int yOffset, int xSize, int ySize) {
 	hitRange.xOffset = xOffset;
@@ -13,21 +10,15 @@ Collision::Collision(int xOffset, int yOffset, int xSize, int ySize) {
 	hitRange.ySize = ySize;
 }
 
-Collision::~Collision()
-{
-}
+Collision::~Collision(){}
 
 void Collision::updatePos(int x, int y) {
 	hitRange.xPos = x;
 	hitRange.yPos = y;
 }
 
-void Collision::flip(){
-	//hitRange.xOffset = -hitRange.xOffset;
-	//hitRange.yOffset = -hitRange.yOffset;
+void Collision::xFlip(){
 	hitRange.xSize= -hitRange.xSize;
-	//yhitRange.ySize  = -hitRange.ySize;
-
 }
 
 int Collision::doCollisonCheck(const HitRange& target) {
@@ -51,10 +42,6 @@ int Collision::doCollisonCheck(const HitRange& target) {
 		mY1 = mY2;
 		mY2 = temp;
 	}
-
-
-	//d DrawFormatString(0, 200, 0xFFFFFF, "Enemy:%d,%d     Player:%d,%d",mX1,mX2, tX1, tY1);
-
 	if ((tX1 < mX2) && (tX2 > mX1) &&
 		(tY1 < mY2) && (tY2 > mY1)) {
 		/*当たっていた場合に実行される処理は呼び出し元で書く*/

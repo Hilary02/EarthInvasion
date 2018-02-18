@@ -1,19 +1,22 @@
 #pragma once
+#include <map>
+#include <vector>
 #include "DxLib.h"
 #include "Object.h"
 #include "Player.h"
-#include "Item.h"
 #include "Enemy.h"
+#include "Item.h"
 #include "MoveGround.h"
 #include "SpikeBlock.h"
-#include <map>
-#include <vector>
+#include "IObjectManager.h"
+#include "Goal.h"
+#include "LockedDoor.h"
 
-class ObjectManager{
+class ObjectManager:
+private IObjectManager {
 public:
 	ObjectManager();
-	//ObjectManager(std::vector<std::vector <int>> vmap);
-	ObjectManager(std::vector<std::vector <int>> vmap,Player* player, ICollisionManager* colMgr);
+	ObjectManager(std::vector<std::vector <int>> vmap,int stage);
 	~ObjectManager();
 
 	void Loadimg();
@@ -22,14 +25,17 @@ public:
 	void Draw(int drawX, int drawY);
 	
 	std::map<int, int> img;
+	//‚±‚ê‚Í–³’ƒ‚©‚È getter‚Í‚Ü‚½Œã‚Å
+
+	Player* getPlayer();
+	std::vector<Object*>& getObjectList() override;
+	std::vector<Object*>& getTerrainList()override;
+
 
 private:
-	Object *objP;
-	std::vector<Object*> objects;
-
+	int stageId;
 	Player *player;
-	ICollisionManager* IcolMgr;
-	
+	std::vector<Object*> objects;
+	std::vector<Object*> terrain;
+
 };
-
-

@@ -1,71 +1,86 @@
 #include "Enemy.h"
 #include "DxLib.h"
+#include "ObjectManager.h"
+#include "KeyManager.h"
 
-Enemy::Enemy()
-{
+Enemy::Enemy() {}
+
+Enemy::~Enemy() {
+	delete AttackBox;
 }
 
-
-Enemy::~Enemy()
-{
-}
-
-Enemy::Enemy(int x, int y, int img, int id, ICollisionManager* IcolMgr){
+Enemy::Enemy(int x, int y, int img, int id, IObjectManager* Iobj) {
+	this->IobjMgr = Iobj;
 	this->x = x;
 	this->y = y;
 	this->imgHandle = img;
+	this->id = id;
+	//enemyIDがどう用いられているかわからないが，保留
 	this->enemyID = id;
 	LoadDivGraph("data/img/enemy1Walk.png", 8, 4, 2, 64, 64, walkHundle);
 	LoadDivGraph("data/img/enemy1Atack.png", 4, 4, 1, 64, 64, atackHundle);
 	LoadDivGraph("data/img/enemy1Die.png", 8, 4, 2, 64, 64, deadHundle);
 	bulletHundle = LoadGraph("data/img/bullet.png");
-	collision = new Collision(colXOffset, colYOffset, colXSize, colYSize);
+	collision = new Collision(16, 0, 20, 64);
 	AttackBox = new Collision(32, colYOffset, -160, colYSize);
-
-	this->IcolMgr = IcolMgr;
 }
 
-//Enemy::Enemy(int x, int y, int img, int id,) {
-//	this->x = x;
-//	this->y = y;
-//	this->imgHandle = img;
-//	this->enemyID = id;
-//	LoadDivGraph("data/img/enemy1Walk.png", 8, 4, 2, 64, 64, walk);
-//	HitAction = hit;
-//}
-
-int Enemy::update(const Collision & playerCol)
-{
+int Enemy::update(const Collision & playerCol) {
 	ct++;
 	collision->updatePos(x, y);
 	AttackBox->updatePos(x, y);
 	collisionCheck(playerCol);
 
+
 	DeadCheck();
 	if (!dead)
 	{
-
 		for (auto &bull : bullets)
 		{
 			index++;
 			if (!bull->Update())
 			{
-				bullets.erase(bullets.begin()+index);
+				bullets.erase(bullets.begin() + index);
 			}
 		}
 		index = -1;
 	}
+	if (dead) {
+		//（死亡状態 かつ）寄生キー，接触中
+		if (keyM.GetKeyFrame(KEY_INPUT_S) >= 1) {
+			if (collision->doCollisonCheck((playerCol.hitRange))) {
+				remove = true;
+			}
+		}
+	}
+	if (remove) {
+		removeCount--;
+		if (removeCount == 0) return -1;
+	}
 
+	//プレイヤーを流用．これCreatureクラスにいれるべきじゃね ？
+	for (auto t : IobjMgr->getTerrainList()) {
+		if (collision->doCollisonCheck(t->collision->hitRange)) {
+			switch (t->getId()) {
+			case 6: //扉
+			{
+				int leftTX = t->collision->hitRange.xPos + t->collision->hitRange.xOffset;
+				int leftPX = collision->hitRange.xPos + collision->hitRange.xOffset;
 
+				if (leftPX < leftTX) { x = leftTX - collision->hitRange.xSize - collision->hitRange.xOffset; }
+				else if (leftPX > leftTX) { x = leftTX + t->collision->hitRange.xSize - collision->hitRange.xOffset; }
+				break;
+			}
+			default:
+				break;
+			}
+		}
+	}
 	return 0;
-
 }
 
-void Enemy::Draw(int drawX, int drawY)
-{
-
-	//d	DrawFormatString(0, 0, 0xFFFFFF, "Enemy:%d,%d     Draw:%d,%d", x, y, x - drawX, y - drawY);
-
+void Enemy::Draw(int drawX, int drawY) {
+	DrawBox(collision->hitRange.xPos + collision->hitRange.xOffset - drawX, collision->hitRange.yPos + collision->hitRange.yOffset - drawY, collision->hitRange.xPos + collision->hitRange.xOffset + collision->hitRange.xSize - drawX, collision->hitRange.yPos + collision->hitRange.yOffset + collision->hitRange.ySize - drawY, 0xFF00FF, false);
 	//DrawBox(AttackBox->hitRange.xPos + AttackBox->hitRange.xOffset -drawX, AttackBox->hitRange.yPos + AttackBox->hitRange.yOffset - drawY, AttackBox->hitRange.xPos + AttackBox->hitRange.xOffset - drawX+AttackBox->hitRange.xSize, AttackBox->hitRange.yPos + AttackBox->hitRange.yOffset - drawY+AttackBox->hitRange.ySize, 0x00FF00, false);
 
 	isRight = IsRangeCheck();
@@ -92,23 +107,18 @@ void Enemy::collisionCheck(const Collision & target) {
 	int attackR = AttackBox->doCollisonCheck((target.hitRange));
 	if (isCol) {
 
-		//d 		DrawBox(10, 20, 100, 200, 0xFF0000, true);
-		if (!dead)IcolMgr->requestAction(Action::DmgPlayer);
-		//IcolMgr->requestAction(Action::DmgPlayer);
 		modHp(mod);
 	}
 	else if (attackR) {
-		//d 		DrawBox(10, 20, 100, 200, 0xFF0000, false);
+		//d     DrawBox(10, 20, 100, 200, 0xFF0000, false);
 
 		movedis = 0;
 		//d DrawBox(10, 20, 100, 200, 0xFF0000, true);
-
-
 		//d DrawBox(10,20,100,200, 0x0000ff,true);
 		AtackCommon();
 	}
 	else {
-	//d	DrawBox(10, 20, 100, 200, 0xFF0000, false);
+		//d DrawBox(10, 20, 100, 200, 0xFF0000, false);
 		MoveCommon();
 
 	}
@@ -117,7 +127,6 @@ void Enemy::collisionCheck(const Collision & target) {
 void Enemy::MoveCommon()
 {
 	movedis = 1;
-	//?͋Z?Ȃ̂ł??ƂŏC???i???S???ɂ͈ړ????Ȃ??j
 	if (dead)movedis = 0;
 
 	if (isRight)
@@ -131,7 +140,6 @@ void Enemy::MoveCommon()
 	imgHandle = walkHundle[(drawcount / 8) % 8];
 	drawcount += addCount;
 
-	//count???Z?b?g????
 	//if (drawcount == 72) drawcount = 0;
 }
 
@@ -143,36 +151,30 @@ void Enemy::AtackCommon()
 	if (ct > 180)
 	{
 		ct = 0;
-		Bullet* objBull = new Bullet(x, y, bulletHundle, isRight, IcolMgr);
+		Bullet* objBull = new Bullet(x, y, bulletHundle, isRight);
 		bullets.push_back(objBull);
 	}
 	//drawcount++;
 }
 
-void Enemy::DeadCheck()
-{
-	if(getHp() < 0){
+void Enemy::DeadCheck() {
+	if (getHp() < 0) {
 		if (!dead) drawcount = 0, dead = true;
 		if (drawcount > 84) addCount = 0;
 		imgHandle = deadHundle[(drawcount / 12) % 8];
 		drawcount += addCount;
+		state = state::dead;
 	}
-
 }
 
-bool Enemy::IsRangeCheck()
-{
+bool Enemy::IsRangeCheck() {
 	dis += movedis;
-	if (moveRange < dis)
-	{
+	if (moveRange < dis) {
 		dis = 0;
-		AttackBox->flip();
+		AttackBox->xFlip();
 		return !isRight;
 	}
-	else
-	{
+	else {
 		return isRight;
 	}
 }
-
-

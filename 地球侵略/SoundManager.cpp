@@ -5,10 +5,14 @@ SoundManager SoundM;
 SoundManager::SoundManager(){}
 
 
-SoundManager::~SoundManager(){}
+SoundManager::~SoundManager(){
+	DeleteSoundMem(bgm);
+	DeleteSoundMem(se);
+}
 
 void SoundManager::SetSound(int bgm) {					//SetSound(LoadSoundMem("File")
-	StopSoundMem(SoundManager::bgm);
+	StopSoundMem(this->bgm);
+	DeleteSoundMem(this->bgm);		//後片付けは大事．解放しないとメモリリークの原因になる．
 	SoundManager::bgm = bgm;
 	ChangeVolumeSoundMem(bgmVolume,SoundManager::bgm);
 }
@@ -47,10 +51,6 @@ void SoundManager::SoundVolume(int number) {
 			Se(LoadSoundMem("data/mc/pick up.wav"));
 			isVolChanged = false;
 		}
-	}
-
-	if (CheckSoundMem(bgm) == 0) {
-		//d DrawFormatString(0, 60, GetColor(255, 255, 255), "STOP");
 	}
 }
 

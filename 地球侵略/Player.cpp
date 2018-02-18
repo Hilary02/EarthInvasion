@@ -1,32 +1,22 @@
 #include "DxLib.h"
 #include "Player.h"
 #include "KeyManager.h"
-
-//?????I
+#include "ObjectManager.h"
 #include "SceneManager.h"
 
-Player::Player(std::vector<std::vector <int>> const &vmap) {
+Player::Player(std::vector<std::vector <int>> const &vmap, IObjectManager* Iobj) {
+	LoadImg();
+	this->IobjMgr = Iobj;
 	this->vmap = vmap;
 
 	this->hp = 10;
-
-	LoadImg();
+	colXOffset = 16;
+	colXSize = 30;
 	collision = new Collision(colXOffset, colYOffset, colXSize, colYSize);
 }
 
-
-//Player::Player(int x, int y) {
-//	this->x = x;
-//	this->y = y;
-//	this->hp = 15;
-//	LoadImg();
-//}
-
 Player::~Player() {
-
 }
-
-//?v?Z????
 
 int Player::update() {
 
@@ -68,18 +58,39 @@ int Player::update() {
 					isMoving = 'L';
 					drawCount = 0;
 				}
+
+				/*NOTE:親クラスで定義した変数を子が同名で再定義してしまうと
+				親クラスのポインタ型からアクセスしたときに参照エラーが発生する．
+				デバッガでみて初めて気が付いた				*/
+				//寄生キー
 				if (keyM.GetKeyFrame(KEY_INPUT_S) >= 1) {
-					if (1) { //?????Ɏ??????????邩????
-						plState = 'A';
-						isMoving = 'I';
-						drawCount = 0;
+					for (auto o : IobjMgr->getObjectList()) {
+						if (collision->doCollisonCheck(o->collision->hitRange)) { //当たり判定をとる
+
+							switch (o->getId()) {
+							case 4: //兵士
+							{
+								plState = 'A';
+								isMoving = 'I';
+								drawCount = 0;
+								collision->playerParasite = 1; //当たり判定に寄生状態を記録
+								break;
+							}
+							default:
+								break;
+							}
+						}
 					}
 				}
 			}
+
+			//寄生解除
 			if (keyM.GetKeyFrame(KEY_INPUT_E) >= 1 && plState != 'N') {
 				plState = 'N';
 				isMoving = 'O';
 				drawCount = 0;
+				collision->playerParasite = 0;
+				printfDx("Mode:0");
 			}
 		}
 	}
@@ -100,7 +111,7 @@ int Player::update() {
 	if (isJumping) {
 		xyCheck = 'y';
 		if ((MapHitCheck(x1, y2 + jumpPower, xyCheck) && MapHitCheck(x2, y2 + jumpPower, xyCheck) && MapHitCheck(x3, y2 + jumpPower, xyCheck))
-		&& (MapHitCheck(x1, y1 + jumpPower, xyCheck) && MapHitCheck(x2, y1 + jumpPower, xyCheck) && MapHitCheck(x3, y1 + jumpPower, xyCheck))) {
+			&& (MapHitCheck(x1, y1 + jumpPower, xyCheck) && MapHitCheck(x2, y1 + jumpPower, xyCheck) && MapHitCheck(x3, y1 + jumpPower, xyCheck))) {
 			y += jumpPower;
 			clock++;
 			if (clock >= 5) {
@@ -126,19 +137,79 @@ int Player::update() {
 		jumpPower = 0;
 	}
 
-	collision->updatePos(x,y);
+	collision->updatePos(x, y);
+	collision->playerState = 0; //攻撃状態かどうかとか記録
+
+	//地形オブジェクトとの当たり判定をとり，位置の修正
+	for (auto t : IobjMgr->getTerrainList()) {
+		if (collision->doCollisonCheck(t->collision->hitRange)) {
+			switch (t->getId()) {
+			case 6: //扉
+			{
+				int leftTX = t->collision->hitRange.xPos + t->collision->hitRange.xOffset;
+				int leftPX = collision->hitRange.xPos + collision->hitRange.xOffset;
+
+				if (leftPX < leftTX) {
+					x = leftTX - collision->hitRange.xSize - collision->hitRange.xOffset;
+				}
+				else if (leftPX > leftTX) {
+					x = leftTX + t->collision->hitRange.xSize - collision->hitRange.xOffset;
+				}
+				isAttack = false;
+
+				break;
+			}
+			case 8: //動く床
+			{
+				int topTY = t->collision->hitRange.yPos + t->collision->hitRange.yOffset;
+				int underTY = t->collision->hitRange.yPos + t->collision->hitRange.yOffset + t->collision->hitRange.ySize;
+				int topPY = collision->hitRange.yPos + collision->hitRange.yOffset;
+				int underPY = collision->hitRange.yPos + collision->hitRange.yOffset + collision->hitRange.ySize;
+
+
+				if (underPY <= underTY + 8/*少し吸い込まれる*/) {
+					y = topTY - collision->hitRange.ySize + 2;
+					isJumping = false;
+				}
+			}
+			break;
+
+			default:
+				break;
+			}
+		}
+	}
+
+	//オブジェクトとの当たり判定をとり，プレイヤー自身に影響する処理を行う
+	for (auto o : IobjMgr->getObjectList()) {
+		if (collision->doCollisonCheck(o->collision->hitRange)) { //当たり判定をとる
+			switch (o->getId()) {
+			case 4: //兵士
+				if(o->state != state::dead)modHp(-1);
+				break;
+			case 5: //回復ポッド
+				modHp(1);
+				break;
+			case 9: //とげとげ
+				modHp(-1);
+				break;
+			default:
+				break;
+			}
+		}
+	}
+
+
 
 	if (hp <= 0 && !isDead) {
 		isDead = true;
 		isMoving = 'D';
 		drawCount = 0;
-		//GameOver();
-
-		//?????I
+		//ゲームオーバー処理．ここでやっていいのか？
 		SceneM.ChangeScene(scene::GameOver);
 	}
 
-	if (invalidDamageTime < 60) invalidDamageTime++;
+	if (invalidDamageTime < 60) invalidDamageTime++;	//無敵時間
 	return 0;
 }
 
@@ -149,9 +220,6 @@ bool Player::MapHitCheck(int movedX, int movedY, char check)
 		return true;
 		break;
 	case 1:
-
-		//d		DrawFormatString(200, 140, 0xFFFFFF, "?????Ȃ??ǂ??I");
-
 		if (check == 'x') {
 			if (movedX - x2 > 0)
 				cMove = movedX - x2 - (movedX % 32 + 1);
@@ -170,9 +238,6 @@ bool Player::MapHitCheck(int movedX, int movedY, char check)
 		return false;
 		break;
 	case 2:
-
-		//d	DrawFormatString(200, 140, 0xFFFFFF, "?ǂ??I");
-
 		if (check == 'x') {
 			if (movedX - x2 > 0)
 				cMove = movedX - x2 - (movedX % 32 + 1);
@@ -190,9 +255,6 @@ bool Player::MapHitCheck(int movedX, int movedY, char check)
 		}
 
 		return false;
-		break;
-	case 5:
-		return true;
 		break;
 	case 7:
 		if (check == 'x') {
@@ -212,15 +274,6 @@ bool Player::MapHitCheck(int movedX, int movedY, char check)
 		}
 		return false;
 		break;
-	case 8:
-		if (movedY - y2 > 0) {
-			cMove = (movedY - y2) - (movedY % 32 + 1);
-			return false;
-		}
-		else {
-			return true;
-		}
-		break;
 	case 9:
 		if (movedY - y2 > 0) {
 			cMove = (movedY - y2) - (movedY % 32 + 1);
@@ -235,6 +288,8 @@ bool Player::MapHitCheck(int movedX, int movedY, char check)
 }
 
 void Player::Draw(int drawX, int drawY) {
+	DrawBox(collision->hitRange.xPos + collision->hitRange.xOffset - drawX, collision->hitRange.yPos + collision->hitRange.yOffset - drawY, collision->hitRange.xPos + collision->hitRange.xOffset + collision->hitRange.xSize - drawX, collision->hitRange.yPos + collision->hitRange.yOffset + collision->hitRange.ySize - drawY, 0xFF00FF, false);
+
 	int tempX = x - drawX;
 	int tempY = y - drawY;
 
@@ -283,7 +338,7 @@ void Player::Draw(int drawX, int drawY) {
 			if (drawCount >= 64) isMoving = 'N';
 		}
 		else if (isMoving == 'D') {
-			MyDraw(tempX, tempY, die[drawCount / 8 % 16 ], right);
+			MyDraw(tempX, tempY, die[drawCount / 8 % 16], right);
 			drawCount++;
 			if (drawCount >= 128) isMoving = 'N';
 		}
@@ -342,11 +397,11 @@ void Player::Draw(int drawX, int drawY) {
 		}
 		else if (keyM.GetKeyFrame(KEY_INPUT_RIGHT) >= 1) {
 			drawCount = keyM.GetKeyFrame(KEY_INPUT_RIGHT) / 15 % 8;
-			MyDraw(tempX, tempY, move[drawCount+10], right);
+			MyDraw(tempX, tempY, move[drawCount + 10], right);
 		}
 		else if (keyM.GetKeyFrame(KEY_INPUT_LEFT) >= 1) {
 			drawCount = keyM.GetKeyFrame(KEY_INPUT_LEFT) / 15 % 8;
-			MyDraw(tempX, tempY, move[drawCount+10], right);
+			MyDraw(tempX, tempY, move[drawCount + 10], right);
 		}
 		else {
 			MyDraw(tempX, tempY, wait[10], right);
@@ -415,19 +470,9 @@ void Player::MyDraw(int tempX, int tempY, int movement, bool lrFlag) {
 	}
 }
 
-int Player::getX()
-{
-	return x;
-}
-int Player::getY()
-{
-	return y;
-}
-
-int Player::getHp()
-{
-	return hp;
-}
+int Player::getX() { return x; }
+int Player::getY() { return y; }
+int Player::getHp() { return hp; }
 
 void Player::PerDecision()
 {
@@ -454,8 +499,9 @@ void Player::PerDecision()
 	x3 = x + ((sizeX1 + sizeX2) / 2);
 	y3 = y + ((sizeY1 + sizeY2) / 2);
 }
-void Player::modHp(int mod){
-	//?ω??ʂ????̏ꍇ?̂݁C???G???Ԃ?N??
+
+//体力の変更 ダメージを受けるときだけ60フレームの無敵時間
+void Player::modHp(int mod) {
 	if (mod < 0) {
 		if (invalidDamageTime == 60) {
 			invalidDamageTime = 0;
@@ -463,7 +509,6 @@ void Player::modHp(int mod){
 		}
 	}
 	else {
-		//?ω??ʂ????Ȃ疳?G???Ԋ֌W?Ȃ??ύX
 		hp += mod;
 	}
 }

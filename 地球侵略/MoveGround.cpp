@@ -1,15 +1,8 @@
 #include "MoveGround.h"
 
+MoveGround::MoveGround() {}
 
-
-MoveGround::MoveGround()
-{
-}
-
-
-MoveGround::~MoveGround()
-{
-}
+MoveGround::~MoveGround() {}
 
 MoveGround::MoveGround(double x, double y, double moveUp, double moveDown, char xory, int img) {
 	this->x = x;
@@ -20,28 +13,27 @@ MoveGround::MoveGround(double x, double y, double moveUp, double moveDown, char 
 	this->moveDown = moveDown * 64;
 	this->xory = xory;
 	this->imgGround = img;
-	collision = new Collision(0, 0, 32, 128);
+	collision = new Collision(0, -MOVE, 64, 16);
+	id = 8;
 }
-int MoveGround::update(const Collision & playerCol){
 
-
+int MoveGround::update(const Collision & playerCol) {
+	//ここでは動くだけで当たり判定はせず，Player自身で判定と座標の処理を行う．
 	Move();
-
-	if (collision->doCollisonCheck(playerCol.hitRange)) {
-		
-	}
+	collision->updatePos((int)moveX, (int)moveY);
 	return 0;
 }
 
 void MoveGround::Draw(int drawX, int drawY) {
-	DrawGraph(moveX - drawX, moveY - drawY, imgGround, true);
+	DrawGraph((int)moveX - drawX, (int)moveY - drawY, imgGround, true);
 
+	//当たり判定領域の表示
+	//DrawBox(collision->hitRange.xPos + collision->hitRange.xOffset - drawX, collision->hitRange.yPos + collision->hitRange.yOffset - drawY, collision->hitRange.xPos + collision->hitRange.xOffset + collision->hitRange.xSize - drawX, collision->hitRange.yPos + collision->hitRange.yOffset + collision->hitRange.ySize - drawY, 0xFF00FF, false);
 }
 
 void MoveGround::Move() {
 	MoveCheck();
-	if (xory)
-	{
+	if (xory) {
 		if (isXorY) {
 			moveX -= MOVE;
 		}
@@ -49,8 +41,7 @@ void MoveGround::Move() {
 			moveX += MOVE;
 		}
 	}
-	else
-	{
+	else {
 		if (isXorY) {
 			moveY -= MOVE;
 		}
@@ -64,7 +55,7 @@ void MoveGround::MoveCheck() {
 	if (moveX < x - moveUp || moveX > x + moveDown) {
 		isXorY = !isXorY;
 	}
-	else if(moveY < y - moveUp || moveY > y + moveDown){
+	else if (moveY < y - moveUp || moveY > y + moveDown) {
 		isXorY = !isXorY;
 	}
 }

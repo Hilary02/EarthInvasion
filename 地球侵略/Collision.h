@@ -21,7 +21,8 @@ public:
 	~Collision();
 	HitRange hitRange;
 	void updatePos(int x, int y);
-	void flip();
+	void xFlip();
 	int doCollisonCheck(const HitRange& target);
-	int id;
+	int playerParasite;	//プレイヤーの状態を衝突相手に知らせるための変数．
+	int playerState;
 };

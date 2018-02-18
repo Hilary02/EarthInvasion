@@ -8,7 +8,6 @@ enum class scene : unsigned char {
 	Title,
 	Game,
 	Config,
-	Ranking,
 	GameOver,
 	Clear,
 };
@@ -20,7 +19,6 @@ Scene_Frameを継承したクラスのポインタをもち，そこからupdateとDraw処理を行う．
 次のupdate処理が実行されるときにシーン変更が実行される．
 シーンを追加したい際にはscene列挙体に列挙子を追加して，update処理にも追加を行うこと．
 ※現在それ以外のクラスも呼ぶことができてしまう．インターフェイスに変更を行う予定
-
 */
 class SceneManager {
 public:

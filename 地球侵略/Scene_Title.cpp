@@ -1,9 +1,6 @@
+#include <string>
 #include "Scene_Title.h"
-
 #include "KeyManager.h"
-
-#include <string>;
-
 
 typedef struct {
 	char name[16];
@@ -21,16 +18,13 @@ RootmenuElement TitleMenu[TITLE_NUM] = {	//実際の値の設定
 	{ "Exit" ,"ゲーム終了",DefaultPosX, 270 },
 };
 
-
-Scene_Title::Scene_Title()
-{
+Scene_Title::Scene_Title(){
 	SoundM.SetSound(LoadSoundMem("data/mc/メニュー画面.wav"));	
 	bg= LoadGraph("data/img/enemy1Wait.png");
 }
 
-
-Scene_Title::~Scene_Title()
-{
+Scene_Title::~Scene_Title(){
+	DeleteGraph(bg);
 }
 
 void Scene_Title::update(){

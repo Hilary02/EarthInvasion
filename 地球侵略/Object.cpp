@@ -4,12 +4,12 @@ Object::Object()
 {
 }
 
-Object::Object(int x, int y, int handle, ICollisionManager* IcolMgr) {
+Object::Object(int x, int y, int handle) {
 
 }
 
-Object::~Object()
-{
+Object::~Object(){
+	delete collision;
 }
 
 int Object::update(const Collision & playerCol)
@@ -33,3 +33,5 @@ void Object::setRelativePos(int modX, int modY) {
 	this->x += modX;
 	this->y += modY;
 }
+
+int Object::getId() { return id; }

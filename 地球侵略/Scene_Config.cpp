@@ -1,18 +1,12 @@
 #include "Scene_Config.h"
 
-
-
-
 Scene_Config::Scene_Config() {
-	//仮で音源を利用しています．
-	//BGMはセルリアン，SEはhttp://dova-s.jp/se/play278.htmlから拝借．
-
 	nowSelect = BGM;
 	nowDraw = VOL_CON;
 }
 
-
 Scene_Config::~Scene_Config() {
+	printfDx("Delete_Config\n");
 }
 
 void Scene_Config::update() {
@@ -22,12 +16,8 @@ void Scene_Config::update() {
 	MoveCursor();
 }
 
-void Scene_Config::Draw()
-{
+void Scene_Config::Draw() {
 	SetFontSize(30);
-	//DrawFormatString(0, 20, GetColor(255, 255, 255), "設定テスト %d", nowSelect);
-	//DrawString(0, 40, "Spaceキーを押すとBGM再生", GetColor(255, 255, 255));
-
 	DrawFormatString(20, 20, GetColor(255, 255, 255), "コンフィグ");
 
 	for (int i = 0; i < MENU_NUM; i++) {
@@ -46,16 +36,12 @@ void Scene_Config::Draw()
 	DrawFormatString(430, 280, GetColor(255, 255, 255), ": %d", SoundM.Volume(0));
 	DrawFormatString(430, 340, GetColor(255, 255, 255), ": %d", SoundM.Volume(1));
 
-
 	SetFontSize(16);
 }
 
-
 // キー入力に応じてコンフィグ操作を行う関数
 void Scene_Config::MoveCursor() {
-
 	//長押ししていると連続スクロールをすることができる処理
-	//いらない気もするけれど，困る事はないはずなのでつけとく
 	if (keyM.GetKeyFrame(KEY_INPUT_DOWN) == 1 || (keyM.GetKeyFrame(KEY_INPUT_DOWN) >= 15 && keyM.GetKeyFrame(KEY_INPUT_DOWN) % 4 == 0)) {
 		nowSelect = (nowSelect + 1) % MENU_NUM;				//選択状態を一つ下げる
 	}
@@ -72,11 +58,11 @@ void Scene_Config::MoveCursor() {
 	}
 	if (keyM.GetKeyFrame(KEY_INPUT_Z) == 1) {
 		switch (nowSelect) {
-		//case KEY:
-		//	isKeyConfig = true;
-		//	break;
-		//case PAD:
-		//	break;
+			//case KEY:
+			//	isKeyConfig = true;
+			//	break;
+			//case PAD:
+			//	break;
 		case EXIT:
 			SceneM.ChangeScene(scene::Title);
 		default:
@@ -85,10 +71,10 @@ void Scene_Config::MoveCursor() {
 	}
 	if (keyM.GetKeyFrame(KEY_INPUT_ESCAPE) == 1) {
 		switch (nowSelect) {
-		//case KEY:
-		//case PAD:
-		//	isKeyConfig = false;
-		//	break;
+			//case KEY:
+			//case PAD:
+			//	isKeyConfig = false;
+			//	break;
 		default:
 			break;
 		}

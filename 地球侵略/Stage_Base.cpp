@@ -6,11 +6,16 @@
 #include <sstream> //文字ストリーム
 #include "KeyManager.h"
 #include "SoundManager.h"
+#include "SceneManager.h"
 
-Stage_Base::Stage_Base() :
-	//コンストラクタの引数に設定されないといけない
-	MAP_HEIGHT(30)
-	, MAP_WIDTH(128) {
+Stage_Base::Stage_Base(){}
+
+Stage_Base::Stage_Base(int stage) {
+	stageId = stage;
+	//コードや外部ファイルに書くくらいならcsvから読み取ったほうが利便性高そう？
+	//Arrayにするなら大きめに取っておくとか．Vectorだと広いステージになったときの読み込み速度が心配．
+	MAP_HEIGHT = 30;
+	MAP_WIDTH = 128;
 	SoundM.SetSound(LoadSoundMem("data/mc/ビルの屋上、危険伴わず.wav"));
 	//08.18　vectorのサイズを動的に変更できるようにした
 	//指定したマップサイズで配列を確保
@@ -22,52 +27,45 @@ Stage_Base::Stage_Base() :
 	assert(MAP_WIDTH >= 0);
 	vmap.resize(MAP_HEIGHT);
 	for (int i = 0; i < MAP_HEIGHT; i++) {
-
 		for (int j = 0; j < MAP_WIDTH; j++) {
 			vmap[i].push_back(j);
 		}
 	}
 	//マップ地形の読み込み
-	readMap("data/map/tutrial-map改良版32.csv");
+	//ここを複数ステージ用に書き換え
+	readMap("data/map/stage0.csv");
+	objectMgr = new ObjectManager(vmap,stageId);
 	//プレイヤー呼び出し
-	player = new Player(vmap);
-	player->setAbsolutePos(100, 600);
-	colMgr = new CollisionManager(player);
-	objectMgr = new ObjectManager(vmap,player,colMgr);
+	this->player = objectMgr->getPlayer();
 
-	//どちらかを使う
-	//objectMgr = new ObjectManager(vmap,player);
 
-	infoArea = new InfoArea(player);
+	//制限時間 ttp://nanoappli.com/blog/archives/3229
+	time = 120'000;
+	//DXライブラリの機能ではなくC++の機能で実装したい
+	//現在，一時停止とか完全に無視して時間が進む
+	timeLimit = GetNowCount() + time;
+
 	//地形画像の読み込み
-	//TODO:引数をつける
+	//TODO:ステージごとの引数をつける
 	loadImg();
 }
 
-
 Stage_Base::~Stage_Base() {
-	delete player;
-	delete colMgr;
+	vmap.clear();
 	delete objectMgr;
+	InitGraph();
 }
 
 void Stage_Base::update() {
+	//タイマー
+	leftTime = int(timeLimit - GetNowCount());
+	if (leftTime <= 0) {
+		SceneM.ChangeScene(scene::GameOver);
+	}
+
 	drawChipNum = 0;
-	player->update();
 	objectMgr->update();
-	infoArea->update();
 	scrollMap();	//プレイヤー座標に応じた表示範囲の変更
-
-
-	//Debug
-	//d
-	//if (keyM.GetKeyFrame(KEY_INPUT_Q) == 1) {
-	//	player->modHp(1);
-	//}
-	//if (keyM.GetKeyFrame(KEY_INPUT_W) == 1) {
-	//	player->modHp(-1);
-	//}
-
 }
 
 void Stage_Base::draw() {
@@ -93,9 +91,8 @@ void Stage_Base::draw() {
 			}
 		}
 	}
-	player->Draw(drawX, drawY);
 	objectMgr->Draw(drawX, drawY);
-	infoArea->draw();
+	drawInfo();
 
 	//デバッグ情報
 //d	DrawFormatString(0, 30, GetColor(255, 125, 255), "マップ表示原点：%d  ,%d", drawX, drawY);
@@ -137,26 +134,40 @@ int Stage_Base::readMap(std::string file) {
 			this->vmap[y][x] = temp;			//vectorもアクセス方法は配列と同様に行える
 		}
 	}
+	ifs.close();
 	return 1;
 }
 
 //仮も仮なので後で分離
 int Stage_Base::loadImg() {
 	//画像の設定
-//d	LoadDivGraph("data/img/20170823174821.png", 10, 10, 1, 32, 32, chipImg);
-	//chipImg[1] = LoadGraph("data/img/airFloor.png");
 	chipImg[2] = LoadGraph("data/img/groundFloor.png");
-	//chipImg[3] = LoadGraph("data/img/eeyanWait.png");
-	//chipImg[4] = LoadGraph("data/img/enemy1Wait.png");
-
-	//d chipImg[5] = LoadGraph("data/img/healPot.png");
-	//d chipImg[6] = LoadGraph("data/img/lockDoor.png");
-
-
 	chipImg[7] = LoadGraph("data/img/airFloor.png");
-	//chipImg[8] = LoadGraph("data/img/moveGround.png");
-	//chipImg[9] = LoadGraph("data/img/togetoge.png");
 	bgHand = LoadGraph("data/img/bg01.jpg");
-	return 1;
 
+	//InfoArea用
+	img_hpbar = LoadGraph("data/img/hpbar.png");
+	img_hpbar_empty = LoadGraph("data/img/hpbar_empty.png");
+
+
+	return 1;
+}
+
+int Stage_Base::drawInfo(){
+	//背景 そのうち画像になるか？
+	DrawBox(infoX, infoY, 800, 600, 0x878773, TRUE);
+	//HP表示欄 MAX15まで
+	DrawFormatString(infoX + 40, infoY + 40, 0x000000, "HP:");
+	for (int i = 0; i < 15; i++) {
+		int x = infoX + 65 + i*(hpbar_width + 2);
+		if (i < player->getHp()) {
+			DrawGraph(x, infoY + 40, img_hpbar, false);
+		}
+		else {
+			DrawGraph(x, infoY + 40, img_hpbar_empty, false);
+		}
+	}
+	//制限時間表示欄
+	DrawFormatString(infoX+300, infoY+50, 0xFFFFFF, "残り時間  %02d:%02d'%02d", leftTime / 60000/*分*/, (leftTime % 60000) / 1000/*秒*/, ((leftTime % 60000) % 1000)/10 /*ms*/);
+	return 0;
 }
