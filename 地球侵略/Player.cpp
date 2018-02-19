@@ -90,7 +90,6 @@ int Player::update() {
 				isMoving = 'O';
 				drawCount = 0;
 				collision->playerParasite = 0;
-				printfDx("Mode:0");
 			}
 		}
 	}

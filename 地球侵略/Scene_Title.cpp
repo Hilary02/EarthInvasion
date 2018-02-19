@@ -4,30 +4,33 @@
 
 typedef struct {
 	char name[16];
-	char explanation[32];
+	char explanation[32];	//使わない説
 	int x, y;
 }RootmenuElement;
 
-const int TITLE_NUM = 3;
-const int DefaultPosX = 300;
-int nowSelect = 0;
+const int TITLE_NUM = 4;
+const int DefaultPosX = 380;
+int nowSelect = 1;
 
 RootmenuElement TitleMenu[TITLE_NUM] = {	//実際の値の設定
-	{ "Game","ゲーム画面へ", DefaultPosX, 150 },
-	{ "Config" ,"コンフィグ画面へ", DefaultPosX, 210 },
-	{ "Exit" ,"ゲーム終了",DefaultPosX, 270 },
+	{ "チュートリアル","練習台", DefaultPosX, 250 },
+	{ "ゲームスタート","さあ，侵略です", DefaultPosX, 300 },
+	{ "設定" ,"音量の調節", DefaultPosX, 350 },
+	{ "Exit" ,"ゲーム終了",DefaultPosX, 400 },
 };
 
-Scene_Title::Scene_Title(){
-	SoundM.SetSound(LoadSoundMem("data/mc/メニュー画面.wav"));	
-	bg= LoadGraph("data/img/enemy1Wait.png");
+Scene_Title::Scene_Title() {
+	SoundM.SetSound(LoadSoundMem("data/mc/メニュー画面.wav"));
+	bg = LoadGraph("data/img/bg_title.png");
+	cursor = LoadGraph("data/img/cursor.png");
 }
 
-Scene_Title::~Scene_Title(){
+Scene_Title::~Scene_Title() {
 	DeleteGraph(bg);
+	DeleteGraph(cursor);
 }
 
-void Scene_Title::update(){
+void Scene_Title::update() {
 	if (keyM.GetKeyFrame(KEY_INPUT_DOWN) == 1 || (keyM.GetKeyFrame(KEY_INPUT_DOWN) >= 15 && keyM.GetKeyFrame(KEY_INPUT_DOWN) % 4 == 0)) {	//下キーが押されていたら
 		nowSelect = (nowSelect + 1) % TITLE_NUM;				//選択状態を一つ下げる
 		SoundM.Se(LoadSoundMem("data/mc/pick up.wav"));
@@ -39,44 +42,38 @@ void Scene_Title::update(){
 	if (keyM.GetKeyFrame(KEY_INPUT_Z) == 1) {
 		switch (nowSelect) {
 		case 0:
-			SceneM.ChangeScene(scene::Game);
+			SceneM.ChangeScene(scene::Game);//仮
 			break;
 		case 1:
-			SceneM.ChangeScene(scene::Config);
+			SceneM.ChangeScene(scene::Game);
 			break;
 		case 2:
+			SceneM.ChangeScene(scene::Config);
+			break;
+		case 3:
 			DxLib_End();
 			break;
 		}
 	}
 }
 
-void Scene_Title::Draw(){
-	SetFontSize(30);
+void Scene_Title::Draw() {
+	SetFontSize(24);
 	SoundM.SoundPlayer();
+	DrawGraph(0, 0, bg, TRUE);
 
-	//void DrawCenterString(int y, int screenX, int color, char *c) {
-	//	DrawString(ScreenX / 2 - GetDrawStringWidth(c, strlen(c)) / 2, y, c, color);
+	//for (int i = 0; i < TITLE_NUM; i++) {
+	//	if (i == nowSelect) {
+	//		TitleMenu[i].x = DefaultPosX - 20; // 座標をずらす
+	//	}
+	//	else {
+	//		TitleMenu[i].x = DefaultPosX;
+	//	}
 	//}
+	DrawGraph(DefaultPosX - 30, TitleMenu[nowSelect].y, cursor, TRUE);
 
-	//DrawString(0, 0, "タイトル(デバッグ表示）", 0xFFFFFF);
-
-	std::string title = "地球侵略だぁぁぁぁ！ 体験版";
-	DrawString(400 - GetDrawStringWidth("地球侵略だぁぁぁぁ！ 体験版",title.length()) / 2, 50, title.c_str(), 0xFFFFFF);
-
-
-
-	for (int i = 0; i < TITLE_NUM; i++) {
-		if (i == nowSelect) {
-			TitleMenu[i].x = DefaultPosX-20; // 座標をずらす
-		}
-		else {
-			TitleMenu[i].x = DefaultPosX;
-		}
-	}
 	for (int i = 0; i < TITLE_NUM; i++) { // メニュー項目を描画
-		DrawString(TitleMenu[i].x, TitleMenu[i].y, TitleMenu[i].name, 0xFFFFFF);
+		DrawString(TitleMenu[i].x, TitleMenu[i].y, TitleMenu[i].name, 0x000000);
 	}
-	DrawString(50, 520, TitleMenu[nowSelect].explanation, 0xFFFFFF);
-	SetFontSize(16);
+	SetFontSize(-1);
 }

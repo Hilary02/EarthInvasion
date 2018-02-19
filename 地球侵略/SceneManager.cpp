@@ -10,7 +10,7 @@ SceneManager SceneM;
 
 SceneManager::SceneManager() {
 	nowScene = new Scene_Title();
-	nextScene = scene::None;
+	nextScene = scene::Title;
 }
 
 SceneManager::~SceneManager()

@@ -10,5 +10,6 @@ public:
 	void Draw();
 private:
 	int bg;
+	int cursor;
 };
 
