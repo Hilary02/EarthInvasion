@@ -45,5 +45,9 @@ private:
 	std::array<int, 14> clearState;
 	SaveData &savedata = SaveData::get_instance();
 	int bg_stageselect;
+
+	//‘¾˜g” •\¦ŠÖ”
+	void DrawThickBox(int x1, int y1, int x2, int y2, unsigned int Color, int Thickness = 1);
+
 };
 
