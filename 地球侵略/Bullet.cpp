@@ -19,6 +19,22 @@ Bullet::Bullet(int x, int y , int Hundle, bool isRight)
 	isR = isRight;
 }
 
+Bullet::Bullet(int x, int y, int Hundle, bool isRight, int id)
+{
+	if (isRight)
+	{
+		this->x = x + 60;
+	}
+	else
+	{
+		this->x = x;
+	}
+	this->y = y + 30;
+	this->imgHandle = Hundle;
+	isR = isRight;
+	this->id = id;
+}
+
 
 Bullet::~Bullet()
 {

@@ -34,7 +34,8 @@ private:
 	int dis = 150;
 	int movedis = 1;
 	int addCount = 1;
-	int ct = 181;
+	int atkCt = 181;
+	int HpCt = 61;
 	bool isRight = false;
 	bool dead = false;
 	

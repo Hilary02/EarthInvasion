@@ -18,8 +18,8 @@ public:
 	// ‘Ì—Í‚ğ•ÏX
 	virtual void setHp(int newHp);
 	virtual void modHp(int mod);
-	// UŒ‚—Í‚ğİ’è
-	void setAtk();
+	// UŒ‚—Í‚ğİ’è(‚±‚ê‚àŒp³‚³‚¹‚½)
+	virtual void setAtk(int newAtk);
 	// ‘Ì—Í‚ğæ“¾‚·‚é
 	int getHp();
 	virtual int update(const Collision & playerCol) override;
