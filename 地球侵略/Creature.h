@@ -18,7 +18,7 @@ public:
 	// ‘Ì—Í‚ğ•ÏX
 	virtual void setHp(int newHp);
 	virtual void modHp(int mod);
-	// UŒ‚—Í‚ğİ’è(‚±‚ê‚àŒp³‚³‚¹‚½)
+	// UŒ‚—Í‚ğİ’è(‚±‚ê‚àŒp³‚³‚¹‚½) byJ
 	virtual void setAtk(int newAtk);
 	// ‘Ì—Í‚ğæ“¾‚·‚é
 	int getHp();

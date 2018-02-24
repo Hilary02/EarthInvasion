@@ -116,6 +116,12 @@ Player* ObjectManager::getPlayer() {
 	return player;
 }
 
+void ObjectManager::setObjectList(Object* obj)
+{
+	objects.push_back(obj);
+
+}
+
 std::vector<Object*>& ObjectManager::getObjectList() {
 	return objects;
 }

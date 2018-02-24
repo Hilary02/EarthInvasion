@@ -29,12 +29,11 @@ Enemy::Enemy(int x, int y, int img, int id, IObjectManager* Iobj) {
 }
 
 int Enemy::update(const Collision & playerCol) {
-	atkCt++;
-	atkCt++;
+	atkCt += addCount;
+	HpCt += addCount;
 	collision->updatePos(x, y);
 	AttackBox->updatePos(x, y);
 	collisionCheck(playerCol);
-
 
 	DeadCheck();
 	if (!dead)
@@ -43,6 +42,11 @@ int Enemy::update(const Collision & playerCol) {
 		{
 			index++;
 			if (!bull->Update())
+			{
+				bullets.erase(bullets.begin() + index);
+			}
+
+			if (bull->collisionCheck(playerCol))
 			{
 				bullets.erase(bullets.begin() + index);
 			}
@@ -109,8 +113,8 @@ void Enemy::Draw(int drawX, int drawY) {
 void Enemy::collisionCheck(const Collision & target) {
 	int isCol = collision->doCollisonCheck((target.hitRange));
 	int attackR = AttackBox->doCollisonCheck((target.hitRange));
-	if (isCol && atkCt > 60) {
-		atkCt = 0;
+	if (isCol && HpCt > 60) {
+		HpCt = 0;
 		modHp(mod);
 	}
 	else if (attackR) {
@@ -155,8 +159,9 @@ void Enemy::AtackCommon()
 	if (atkCt > 180)
 	{
 		atkCt = 0;
-		Bullet* objBull = new Bullet(x, y, bulletHundle, isRight);
+		Bullet* objBull = new Bullet(x, y, bulletHundle, isRight, id);
 		bullets.push_back(objBull);
+		IobjMgr->setObjectList(objBull);
 	}
 	//drawcount++;
 }
