@@ -10,6 +10,7 @@ public:
 	~Bullet();
 
 	int remit = 0;
+	int CT = 0;
 
 	bool Update();
 	void Draw(int, int);

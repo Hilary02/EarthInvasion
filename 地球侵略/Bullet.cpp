@@ -77,10 +77,16 @@ void Bullet::Draw(int drawX, int drawY)
 
 int Bullet::update(const Collision & playerCol)
 {
+	collision->updatePos(x, y);
 	int isCol = collision->doCollisonCheck((playerCol.hitRange));
 	if (isCol)
 	{
-		return -1;
+		CT++;
+		if (CT > 3)
+		{
+			return -1;
+		}
+		return 0;
 	}
 	else if (remit > 120)
 	{
