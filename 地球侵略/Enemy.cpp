@@ -15,8 +15,11 @@ Enemy::Enemy(int x, int y, int img, int id, IObjectManager* Iobj) {
 	this->y = y;
 	this->imgHandle = img;
 	this->id = id;
-	//enemyIDがどう用いられているかわからないが，保留
-	this->enemyID = id;
+	if (id == 4)
+	{
+		setHp(3);
+		setAtk(3);
+	}
 	LoadDivGraph("data/img/enemy1Walk.png", 8, 4, 2, 64, 64, walkHundle);
 	LoadDivGraph("data/img/enemy1Atack.png", 4, 4, 1, 64, 64, atackHundle);
 	LoadDivGraph("data/img/enemy1Die.png", 8, 4, 2, 64, 64, deadHundle);
@@ -26,11 +29,11 @@ Enemy::Enemy(int x, int y, int img, int id, IObjectManager* Iobj) {
 }
 
 int Enemy::update(const Collision & playerCol) {
-	ct++;
+	atkCt += addCount;
+	HpCt += addCount;
 	collision->updatePos(x, y);
 	AttackBox->updatePos(x, y);
 	collisionCheck(playerCol);
-
 
 	DeadCheck();
 	if (!dead)
@@ -39,6 +42,11 @@ int Enemy::update(const Collision & playerCol) {
 		{
 			index++;
 			if (!bull->Update())
+			{
+				bullets.erase(bullets.begin() + index);
+			}
+
+			if (bull->collisionCheck(playerCol))
 			{
 				bullets.erase(bullets.begin() + index);
 			}
@@ -105,8 +113,8 @@ void Enemy::Draw(int drawX, int drawY) {
 void Enemy::collisionCheck(const Collision & target) {
 	int isCol = collision->doCollisonCheck((target.hitRange));
 	int attackR = AttackBox->doCollisonCheck((target.hitRange));
-	if (isCol) {
-
+	if (isCol && HpCt > 60) {
+		HpCt = 0;
 		modHp(mod);
 	}
 	else if (attackR) {
@@ -148,11 +156,12 @@ void Enemy::AtackCommon()
 	movedis = 0;
 	imgHandle = atackHundle[(drawcount / 12) % 4];
 	drawcount += addCount;
-	if (ct > 180)
+	if (atkCt > 180)
 	{
-		ct = 0;
-		Bullet* objBull = new Bullet(x, y, bulletHundle, isRight);
+		atkCt = 0;
+		Bullet* objBull = new Bullet(x, y, bulletHundle, isRight, id);
 		bullets.push_back(objBull);
+		IobjMgr->setObjectList(objBull);
 	}
 	//drawcount++;
 }

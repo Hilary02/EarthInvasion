@@ -28,6 +28,9 @@ public:
 	//‚±‚ê‚Í–³’ƒ‚©‚È getter‚Í‚Ü‚½Œã‚Å
 
 	Player* getPlayer();
+
+	void setObjectList(Object* obj) override;
+
 	std::vector<Object*>& getObjectList() override;
 	std::vector<Object*>& getTerrainList()override;
 

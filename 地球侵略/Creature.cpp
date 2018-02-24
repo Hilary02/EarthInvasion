@@ -23,8 +23,8 @@ void Creature::modHp(int mod){
 }
 
 // UŒ‚—Í‚ğİ’è
-void Creature::setAtk() {
-
+void Creature::setAtk(int newAtk) {
+	attack = newAtk;
 }
 
 

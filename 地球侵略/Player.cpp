@@ -192,6 +192,9 @@ int Player::update() {
 			case 9: //とげとげ
 				modHp(-1);
 				break;
+			case 104: //一般兵の弾
+				modHp(-3);
+				break;
 			default:
 				break;
 			}
