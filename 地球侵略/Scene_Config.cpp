@@ -6,7 +6,6 @@ Scene_Config::Scene_Config() {
 }
 
 Scene_Config::~Scene_Config() {
-	printfDx("Delete_Config\n");
 }
 
 void Scene_Config::update() {
