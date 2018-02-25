@@ -84,18 +84,20 @@ int Bullet::update(const Collision & playerCol)
 		CT++;
 		if (CT > 3)
 		{
-			return -1;
+			st = -1;
+			return st;
 		}
-		return 0;
+		return st;
 	}
 	else if (remit > 120)
 	{
 		remit = 0;
-		return -1;
+		st = -1;
+		return st;
 	}
 	else
 	{
-		return 0;
+		return st;
 	}
 }
 
@@ -110,4 +112,9 @@ bool Bullet::collisionCheck(const Collision & target)
 	{
 		return false;
 	}
+}
+
+void Bullet::setState(int st)
+{
+	this->st = st;
 }

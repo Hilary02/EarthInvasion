@@ -103,10 +103,39 @@ int Player::update() {
 			drawCount = 0;
 		}
 	}
-	//?ʏ??Ԃ̍U??????????
+	//通常状態の攻撃処理
 	if (isAttack && plState == 'N' && drawCount >= 25 && drawCount <= 32) {
 
 	}
+	//一般兵の攻撃処理
+	bulletCT += 1;
+	if (isAttack && plState == 'A' && drawCount >= 25 && drawCount <= 32)
+	{
+		if (bulletCT > 60)
+		{
+			bulletCT = 0;
+			Bullet* objBull = new Bullet(x, y, bulletHundle, right, 0);
+			bullets.push_back(objBull);
+			IobjMgr->setObjectList(objBull);
+		}
+	}
+
+	for (auto &bull : bullets)
+	{
+		bulletindex++;
+		if (!bull->Update())
+		{
+			bullets.erase(bullets.begin() + bulletindex);
+		}
+
+		/*if (bull->collisionCheck(playerCol))
+		{
+		bullets.erase(bullets.begin() + bulletindex);
+		}*/
+	}
+	bulletindex = -1;
+
+
 	//?W?????v???̏???
 	if (isJumping) {
 		xyCheck = 'y';

@@ -11,11 +11,13 @@ public:
 
 	int remit = 0;
 	int CT = 0;
+	int st = 0;
 
 	bool Update();
 	void Draw(int, int);
 	int update(const Collision & playerCol) override;
 	bool collisionCheck(const Collision& target);
+	void setState(int st);
 
 private:
 	bool isR;

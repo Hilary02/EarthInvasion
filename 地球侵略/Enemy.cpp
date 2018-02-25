@@ -101,13 +101,6 @@ void Enemy::Draw(int drawX, int drawY) {
 		DrawGraph(x - drawX, y - drawY, imgHandle, true);
 	}
 
-	if (!dead)
-	{
-		for (auto &bull : bullets)
-		{
-			bull->Draw(drawX, drawY);
-		}
-	}
 }
 
 void Enemy::collisionCheck(const Collision & target) {
@@ -173,6 +166,11 @@ void Enemy::DeadCheck() {
 		imgHandle = deadHundle[(drawcount / 12) % 8];
 		drawcount += addCount;
 		state = state::dead;
+		for (auto &bull : bullets)
+		{
+			bull->setState(-1);
+		}
+		bullets.clear();
 	}
 }
 

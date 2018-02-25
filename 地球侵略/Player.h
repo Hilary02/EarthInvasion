@@ -1,5 +1,6 @@
 #pragma once
 #include "Creature.h"
+#include "Bullet.h"
 #include <vector>
 
 class Player :
@@ -51,5 +52,9 @@ private:
 
 	int invalidDamageTime=60;
 
-	//ICollisionManager& IcolMgr;
+	//bulletŠÖ˜A‚Ì•Ï”
+	std::vector<Bullet*> bullets;
+	int bulletCT = 61;
+	int bulletHundle = LoadGraph("data/img/bullet.png");
+	int bulletindex = -1;
 };
