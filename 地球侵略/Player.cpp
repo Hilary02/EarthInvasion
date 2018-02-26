@@ -102,11 +102,21 @@ int Player::update() {
 			drawCount = 0;
 		}
 	}
-	//通常状態の攻撃処理
+	//通常状態の攻撃処理 
 	if (isAttack && plState == 'N' && drawCount >= 25 && drawCount <= 32) {
-
+		collision->playerState = 1;
+		if (right)
+		{
+			collision->updatePos(x + 15, y);
+		}
+		else if(!right)
+		{
+			collision->updatePos(x - 15, y);
+		}
+		
 	}
-	//一般兵の攻撃処理
+
+	//一般兵状態の攻撃処理 
 	bulletCT += 1;
 	if (isAttack && plState == 'A' && drawCount >= 25 && drawCount <= 32)
 	{
@@ -119,6 +129,7 @@ int Player::update() {
 		}
 	}
 
+	//弾の処理
 	for (auto &bull : bullets)
 	{
 		bulletindex++;
@@ -127,13 +138,22 @@ int Player::update() {
 			bullets.erase(bullets.begin() + bulletindex);
 		}
 
-		/*if (bull->collisionCheck(playerCol))
+		for (auto o : IobjMgr->getObjectList()) 
 		{
-		bullets.erase(bullets.begin() + bulletindex);
-		}*/
+			if (bull->collision->doCollisonCheck(o->collision->hitRange))
+			{
+				switch (o->getId())
+				{
+				case 4:
+					bull->setState(-1);
+					break;
+				default:
+					break;
+				}
+			}
+		}
 	}
 	bulletindex = -1;
-
 
 	//?W?????v???̏???
 	if (isJumping) {
@@ -165,8 +185,14 @@ int Player::update() {
 		jumpPower = 0;
 	}
 
-	collision->updatePos(x, y);
-	collision->playerState = 0; //攻撃状態かどうかとか記録
+	if (!collision->playerState)
+	{
+		collision->updatePos(x, y);
+	}
+	else if(collision->playerState && drawCount > 60)
+	{
+		collision->playerState = 0;
+	}
 
 	//地形オブジェクトとの当たり判定をとり，位置の修正
 	for (auto t : IobjMgr->getTerrainList()) {

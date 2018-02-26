@@ -24,5 +24,5 @@ public:
 	void xFlip();
 	int doCollisonCheck(const HitRange& target);
 	int playerParasite;	//プレイヤーの状態を衝突相手に知らせるための変数．
-	int playerState;
+	int playerState; //攻撃状態かどうかとか記録
 };

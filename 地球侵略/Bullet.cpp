@@ -4,7 +4,7 @@ Bullet::Bullet()
 {
 }
 
-Bullet::Bullet(int x, int y , int Hundle, bool isRight)
+/*Bullet::Bullet(int x, int y , int Hundle, bool isRight)
 {
 	if (isRight)
 	{
@@ -19,7 +19,7 @@ Bullet::Bullet(int x, int y , int Hundle, bool isRight)
 	isR = isRight;
 
 	collision = new Collision(0, 0, 16, 16);
-}
+}*/
 
 Bullet::Bullet(int x, int y, int Hundle, bool isRight, int id)
 {
@@ -49,11 +49,11 @@ bool Bullet::Update()
 	collision->updatePos(x, y);
 
 	if (isR) {
-		x++;
+		x += MOVEDIS;
 	}
 	else
 	{
-		x--;
+		x -= MOVEDIS;
 	}
 	remit++;
 	if (remit > 120)

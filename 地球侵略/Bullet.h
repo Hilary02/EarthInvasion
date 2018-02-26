@@ -1,11 +1,13 @@
 #pragma once
 #include "Object.h"
+#define MOVEDIS 2
+
 class Bullet :
 	public Object
 {
 public:
 	Bullet();
-	Bullet(int, int, int, bool);
+	//Bullet(int, int, int, bool);
 	Bullet(int, int, int, bool, int id);
 	~Bullet();
 

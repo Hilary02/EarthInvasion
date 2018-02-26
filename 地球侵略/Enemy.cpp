@@ -53,6 +53,20 @@ int Enemy::update(const Collision & playerCol) {
 		}
 		index = -1;
 	}
+
+	//オブジェクトとの当たり判定をとり，プレイヤー自身に影響する処理を行う
+	for (auto o : IobjMgr->getObjectList()) {
+		if (collision->doCollisonCheck(o->collision->hitRange)) { //当たり判定をとる
+			switch (o->getId()) {
+			case 100: //プレイヤーの弾
+				if (state != state::dead)modHp(-3);
+				break;
+			default:
+				break;
+			}
+		}
+	}
+
 	if (dead) {
 		//（死亡状態 かつ）寄生キー，接触中
 		if (keyM.GetKeyFrame(KEY_INPUT_S) >= 1) {
