@@ -148,8 +148,9 @@ void Enemy::collisionCheck(const Collision & target) {
 	else
 	{
 		count += 1;
-		if (count > 150) //なんで100じゃなくて150ならいいのか分からん
+		if (count > 60) 
 		{
+			count = 0;
 			isPlayerAtk = false;
 		}
 	}
