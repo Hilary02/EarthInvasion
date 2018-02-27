@@ -189,7 +189,7 @@ int Player::update() {
 	{
 		collision->updatePos(x, y);
 	}
-	else if(collision->playerState && drawCount > 60)
+	else if(collision->playerState && drawCount > 50)
 	{
 		collision->playerState = 0;
 	}
@@ -239,7 +239,7 @@ int Player::update() {
 		if (collision->doCollisonCheck(o->collision->hitRange)) { //当たり判定をとる
 			switch (o->getId()) {
 			case 4: //兵士
-				if(o->state != state::dead)modHp(-1);
+				if (o->state != state::dead && !collision->playerState)modHp(-1);
 				break;
 			case 5: //回復ポッド
 				modHp(1);

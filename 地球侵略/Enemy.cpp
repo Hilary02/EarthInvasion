@@ -120,22 +120,38 @@ void Enemy::Draw(int drawX, int drawY) {
 void Enemy::collisionCheck(const Collision & target) {
 	int isCol = collision->doCollisonCheck((target.hitRange));
 	int attackR = AttackBox->doCollisonCheck((target.hitRange));
-	if (isCol && HpCt > 60) {
-		HpCt = 0;
-		modHp(mod);
-	}
-	else if (attackR) {
-		//d     DrawBox(10, 20, 100, 200, 0xFF0000, false);
 
-		movedis = 0;
-		//d DrawBox(10, 20, 100, 200, 0xFF0000, true);
-		//d DrawBox(10,20,100,200, 0x0000ff,true);
-		AtackCommon();
-	}
-	else {
-		//d DrawBox(10, 20, 100, 200, 0xFF0000, false);
-		MoveCommon();
 
+	if (!isPlayerAtk) {
+
+		if (isCol && target.playerState) {
+			isPlayerAtk = true;
+			modHp(mod);
+		}
+		else if (isCol && HpCt > 60 && !target.playerState) {
+			HpCt = 0;
+			modHp(mod);
+		}
+		else if (attackR) {
+			//d     DrawBox(10, 20, 100, 200, 0xFF0000, false);
+
+			movedis = 0;
+			//d DrawBox(10, 20, 100, 200, 0xFF0000, true);
+			//d DrawBox(10,20,100,200, 0x0000ff,true);
+			AtackCommon();
+		}
+		else {
+			//d DrawBox(10, 20, 100, 200, 0xFF0000, false);
+			MoveCommon();
+		}
+	}
+	else
+	{
+		count += 1;
+		if (count > 150) //なんで100じゃなくて150ならいいのか分からん
+		{
+			isPlayerAtk = false;
+		}
 	}
 }
 
@@ -174,7 +190,7 @@ void Enemy::AtackCommon()
 }
 
 void Enemy::DeadCheck() {
-	if (getHp() < 0) {
+	if (getHp() <= 0) {
 		if (!dead) drawcount = 0, dead = true;
 		if (drawcount > 84) addCount = 0;
 		imgHandle = deadHundle[(drawcount / 12) % 8];

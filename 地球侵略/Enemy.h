@@ -36,6 +36,8 @@ private:
 	int addCount = 1;
 	int atkCt = 181;
 	int HpCt = 61;
+	int count = 0;  // enemy‚Ìdrawcount‚ğŠX‚Åplayer‚Ì—l‚É0‚É–ß‚·‚Æ‚±‚ê‚¢‚ç‚È‚¢
+	bool isPlayerAtk = false;
 	bool isRight = false;
 	bool dead = false;
 	
