@@ -107,11 +107,11 @@ int Player::update() {
 		collision->playerState = 1;
 		if (right)
 		{
-			collision->updatePos(x + 15, y);
+			collision->updatePos(x + 40, y);
 		}
 		else if(!right)
 		{
-			collision->updatePos(x - 15, y);
+			collision->updatePos(x - 40, y);
 		}
 		
 	}

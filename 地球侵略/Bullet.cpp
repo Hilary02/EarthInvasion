@@ -82,7 +82,7 @@ int Bullet::update(const Collision & playerCol)
 	if (isCol)
 	{
 		CT++;
-		if (CT > 3)
+		if (CT > 1)
 		{
 			st = -1;
 			return st;
