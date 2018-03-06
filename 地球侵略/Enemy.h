@@ -26,6 +26,7 @@ private:
 
 	int drawcount = 0;
 	int bulletHundle;
+	int damegeHundle;
 	int walkHundle[8];
 	int atackHundle[4];
 	int deadHundle[8];

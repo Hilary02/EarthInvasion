@@ -52,6 +52,7 @@ private:
 
 	int invalidDamageTime=60;
 
+	int updateCT = 51;
 	//bulletŠÖ˜A‚Ì•Ï”
 	std::vector<Bullet*> bullets;
 	int bulletCT = 61;

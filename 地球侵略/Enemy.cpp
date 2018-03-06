@@ -24,6 +24,7 @@ Enemy::Enemy(int x, int y, int img, int id, IObjectManager* Iobj) {
 	LoadDivGraph("data/img/enemy1Atack.png", 4, 4, 1, 64, 64, atackHundle);
 	LoadDivGraph("data/img/enemy1Die.png", 8, 4, 2, 64, 64, deadHundle);
 	bulletHundle = LoadGraph("data/img/bullet.png");
+	damegeHundle = LoadGraph("data/img/enemy1Damage.png");
 	collision = new Collision(16, 0, 20, 64);
 	AttackBox = new Collision(32, colYOffset, -160, colYSize);
 }
@@ -125,11 +126,9 @@ void Enemy::collisionCheck(const Collision & target) {
 	if (!isPlayerAtk) {
 
 		if (isCol && target.playerState) {
+			imgHandle = damegeHundle;
+			movedis = 0;
 			isPlayerAtk = true;
-			modHp(mod);
-		}
-		else if (isCol && HpCt > 60 && !target.playerState) {
-			HpCt = 0;
 			modHp(mod);
 		}
 		else if (attackR) {
@@ -145,11 +144,9 @@ void Enemy::collisionCheck(const Collision & target) {
 			MoveCommon();
 		}
 	}
-	else
-	{
+	else{
 		count += 1;
-		if (count > 60) 
-		{
+		if (count > 60) {
 			count = 0;
 			isPlayerAtk = false;
 		}
@@ -197,8 +194,7 @@ void Enemy::DeadCheck() {
 		imgHandle = deadHundle[(drawcount / 12) % 8];
 		drawcount += addCount;
 		state = state::dead;
-		for (auto &bull : bullets)
-		{
+		for (auto &bull : bullets){
 			bull->setState(-1);
 		}
 		bullets.clear();

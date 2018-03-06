@@ -185,13 +185,15 @@ int Player::update() {
 		jumpPower = 0;
 	}
 
+	updateCT += 1;
 	if (!collision->playerState)
 	{
 		collision->updatePos(x, y);
 	}
-	else if(collision->playerState && drawCount > 50)
+	else if(collision->playerState && updateCT > 45)
 	{
 		collision->playerState = 0;
+		updateCT = 0;
 	}
 
 	//地形オブジェクトとの当たり判定をとり，位置の修正
