@@ -216,3 +216,7 @@ bool Enemy::IsRangeCheck() {
 		return isRight;
 	}
 }
+
+bool Enemy::getDeadState(){
+	return dead;
+}

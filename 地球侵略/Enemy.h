@@ -19,6 +19,7 @@ public:
 	void DeadCheck();
 	bool IsRangeCheck();
 	int enemyID;
+	bool getDeadState();
 
 private:
 	const int moveRange = 300;

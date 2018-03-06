@@ -57,4 +57,6 @@ private:
 	int bulletCT = 61;
 	int bulletHundle = LoadGraph("data/img/bullet.png");
 	int bulletindex = -1;
+
+	void debugMode();
 };

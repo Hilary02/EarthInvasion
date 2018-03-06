@@ -13,13 +13,14 @@ Player::Player(std::vector<std::vector <int>> const &vmap, IObjectManager* Iobj)
 	colXOffset = 16;
 	colXSize = 30;
 	collision = new Collision(colXOffset, colYOffset, colXSize, colYSize);
+	printfDx("%d", collision);
 }
 
 Player::~Player() {
 }
 
 int Player::update() {
-
+	debugMode();
 	PerDecision();
 	//?L?[???͂̏???
 	if (!isAttack && !isDead && isMoving == 'N') { //???[?V???????Ǝ??S???̓L?[???͖???
@@ -70,10 +71,13 @@ int Player::update() {
 							switch (o->getId()) {
 							case 4: //兵士
 							{
-								plState = 'A';
-								isMoving = 'I';
-								drawCount = 0;
-								collision->playerParasite = 1; //当たり判定に寄生状態を記録
+								Enemy* ene = (Enemy*)o;	//いいのかな？
+								if (ene->getDeadState() == true) {
+									plState = 'A';
+									isMoving = 'I';
+									drawCount = 0;
+									collision->playerParasite = 1; //当たり判定に寄生状態を記録
+								}
 								break;
 							}
 							default:
@@ -102,6 +106,8 @@ int Player::update() {
 			drawCount = 0;
 		}
 	}
+	collision->updatePos(x, y);
+
 	//通常状態の攻撃処理 
 	if (isAttack && plState == 'N' && drawCount >= 25 && drawCount <= 32) {
 		collision->playerState = 1;
@@ -109,11 +115,11 @@ int Player::update() {
 		{
 			collision->updatePos(x + 15, y);
 		}
-		else if(!right)
+		else if (!right)
 		{
 			collision->updatePos(x - 15, y);
 		}
-		
+
 	}
 
 	//一般兵状態の攻撃処理 
@@ -138,7 +144,7 @@ int Player::update() {
 			bullets.erase(bullets.begin() + bulletindex);
 		}
 
-		for (auto o : IobjMgr->getObjectList()) 
+		for (auto o : IobjMgr->getObjectList())
 		{
 			if (bull->collision->doCollisonCheck(o->collision->hitRange))
 			{
@@ -189,7 +195,7 @@ int Player::update() {
 	{
 		collision->updatePos(x, y);
 	}
-	else if(collision->playerState && drawCount > 50)
+	else if (collision->playerState && drawCount > 50)
 	{
 		collision->playerState = 0;
 	}
@@ -524,6 +530,12 @@ void Player::MyDraw(int tempX, int tempY, int movement, bool lrFlag) {
 	}
 	else {
 		DrawTurnGraph(tempX, tempY, movement, TRUE);
+	}
+}
+
+void Player::debugMode(){
+	if (keyM.GetKeyFrame(KEY_INPUT_K) == 1) {
+		hp = 0;
 	}
 }
 
