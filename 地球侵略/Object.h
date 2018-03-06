@@ -1,10 +1,11 @@
 #pragma once
 #include <DxLib.h>
 #include "Collision.h"
+#include "ObjectID.h"
 
 //とりあえず作成．ほかに用途がるのかも知らない
 enum class state {
-	none,dead
+	none, dead
 };
 
 /**
@@ -24,7 +25,7 @@ public:
 	void setAbsolutePos(int modX, int modY);
 	//移動量を設定すると引数の値移動する
 	void setRelativePos(int modX, int modY);
-	int getId();
+	ObjectID getId();
 
 	Collision* collision;
 	//そのうちprivateに変える
@@ -36,7 +37,7 @@ protected:
 	int colYOffset = 0;
 	int colXSize = 32;
 	int colYSize = 64;
-	int id;
+	ObjectID id;
 
 	//座標
 	int x, y;

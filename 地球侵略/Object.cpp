@@ -8,7 +8,7 @@ Object::Object(int x, int y, int handle) {
 
 }
 
-Object::~Object(){
+Object::~Object() {
 	delete collision;
 }
 
@@ -34,4 +34,4 @@ void Object::setRelativePos(int modX, int modY) {
 	this->y += modY;
 }
 
-int Object::getId() { return id; }
+ObjectID Object::getId() { return id; }

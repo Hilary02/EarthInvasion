@@ -14,7 +14,7 @@ MoveGround::MoveGround(double x, double y, double moveUp, double moveDown, char 
 	this->xory = xory;
 	this->imgGround = img;
 	collision = new Collision(0, -MOVE, 64, 16);
-	id = 8;
+	id = ObjectID::moveingFloor;
 }
 
 int MoveGround::update(const Collision & playerCol) {

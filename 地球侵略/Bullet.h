@@ -8,7 +8,7 @@ class Bullet :
 public:
 	Bullet();
 	//Bullet(int, int, int, bool);
-	Bullet(int, int, int, bool, int id);
+	Bullet(int, int, int, bool, ObjectID id);
 	~Bullet();
 
 	int remit = 0;

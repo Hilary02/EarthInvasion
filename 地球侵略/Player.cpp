@@ -13,7 +13,6 @@ Player::Player(std::vector<std::vector <int>> const &vmap, IObjectManager* Iobj)
 	colXOffset = 16;
 	colXSize = 30;
 	collision = new Collision(colXOffset, colYOffset, colXSize, colYSize);
-	printfDx("%d", collision);
 }
 
 Player::~Player() {
@@ -69,7 +68,7 @@ int Player::update() {
 						if (collision->doCollisonCheck(o->collision->hitRange)) { //当たり判定をとる
 
 							switch (o->getId()) {
-							case 4: //兵士
+							case ObjectID::soldierA: //兵士
 							{
 								Enemy* ene = (Enemy*)o;	//いいのかな？
 								if (ene->getDeadState() == true) {
@@ -129,7 +128,7 @@ int Player::update() {
 		if (bulletCT > 60)
 		{
 			bulletCT = 0;
-			Bullet* objBull = new Bullet(x, y, bulletHundle, right, 0);
+			Bullet* objBull = new Bullet(x, y, bulletHundle, right, ObjectID::playerBullet);
 			bullets.push_back(objBull);
 			IobjMgr->setObjectList(objBull);
 		}
@@ -150,7 +149,7 @@ int Player::update() {
 			{
 				switch (o->getId())
 				{
-				case 4:
+				case ObjectID::soldierA:
 					bull->setState(-1);
 					break;
 				default:
@@ -204,7 +203,7 @@ int Player::update() {
 	for (auto t : IobjMgr->getTerrainList()) {
 		if (collision->doCollisonCheck(t->collision->hitRange)) {
 			switch (t->getId()) {
-			case 6: //扉
+			case ObjectID::lockedDoor: //扉
 			{
 				int leftTX = t->collision->hitRange.xPos + t->collision->hitRange.xOffset;
 				int leftPX = collision->hitRange.xPos + collision->hitRange.xOffset;
@@ -219,7 +218,7 @@ int Player::update() {
 
 				break;
 			}
-			case 8: //動く床
+			case ObjectID::moveingFloor: //動く床
 			{
 				int topTY = t->collision->hitRange.yPos + t->collision->hitRange.yOffset;
 				int underTY = t->collision->hitRange.yPos + t->collision->hitRange.yOffset + t->collision->hitRange.ySize;
@@ -244,16 +243,16 @@ int Player::update() {
 	for (auto o : IobjMgr->getObjectList()) {
 		if (collision->doCollisonCheck(o->collision->hitRange)) { //当たり判定をとる
 			switch (o->getId()) {
-			case 4: //兵士
+			case ObjectID::soldierA: //兵士
 				if (o->state != state::dead && !collision->playerState)modHp(-1);
 				break;
-			case 5: //回復ポッド
+			case ObjectID::healPot: //回復ポッド
 				modHp(1);
 				break;
-			case 9: //とげとげ
+			case ObjectID::spike: //とげとげ
 				modHp(-1);
 				break;
-			case 104: //一般兵の弾
+			case ObjectID::enemyBullet: //一般兵の弾
 				modHp(-3);
 				break;
 			default:
@@ -533,7 +532,7 @@ void Player::MyDraw(int tempX, int tempY, int movement, bool lrFlag) {
 	}
 }
 
-void Player::debugMode(){
+void Player::debugMode() {
 	if (keyM.GetKeyFrame(KEY_INPUT_K) == 1) {
 		hp = 0;
 	}

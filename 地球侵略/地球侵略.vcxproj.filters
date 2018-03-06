@@ -52,9 +52,6 @@
     <ClCompile Include="Collision.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="CollisionManager.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="Creature.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -127,12 +124,10 @@
     <ClInclude Include="SaveData.h" />
     <ClInclude Include="LockedDoor.h" />
     <ClInclude Include="IObjectManager.h" />
+    <ClInclude Include="ObjectID.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Collision.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="CollisionManager.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Creature.h">
@@ -148,9 +143,6 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="HealItem.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="ICollisionManager.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Item.h">

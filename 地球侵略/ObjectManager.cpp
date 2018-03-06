@@ -19,7 +19,7 @@ ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap, int stage) {
 				path = img[vmap[i][j]];
 				switch ((ObjectID)vmap[i][j]) {
 				case ObjectID::soldierA:
-					obje = new Enemy(x, y, img[10], vmap[i][j], this);
+					obje = new Enemy(x, y, img[10], ObjectID::soldierA, this);
 					break;
 				case ObjectID::healPot:
 					obje = new Item(x, y, img[20]);

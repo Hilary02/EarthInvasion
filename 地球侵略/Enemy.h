@@ -9,8 +9,8 @@ class Enemy :
 public:
 	Enemy();
 	~Enemy();
-	Enemy(int x, int y, int img, int id, IObjectManager* Iobj);
-	
+	Enemy(int x, int y, int img, ObjectID id, IObjectManager* Iobj);
+
 	int update(const Collision & playerCol) override;
 	void Draw(int drawX, int drawY) override;
 	void collisionCheck(const Collision& target);
@@ -41,7 +41,7 @@ private:
 	bool isPlayerAtk = false;
 	bool isRight = false;
 	bool dead = false;
-	
+
 	int index = -1;
 	bool rangeFlg;
 

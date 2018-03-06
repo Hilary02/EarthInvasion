@@ -10,14 +10,14 @@ LockedDoor::LockedDoor(int x, int y, int img) {
 	moveTo = y - 96;
 	this->img = img;
 	collision = new Collision(0, 0, 16, 96);
-	id = 6;
+	id = ObjectID::lockedDoor;
 }
 
 int LockedDoor::update(const Collision & playerCol) {
-	collision->updatePos(x ,y);
+	collision->updatePos(x, y);
 	//ƒvƒŒƒCƒ„[‚ª•ºŽmó‘Ô‚È‚çŽ©•ª‚ðÁ‚·
 	int isCol = collision->doCollisonCheck(playerCol.hitRange);
-	if (isCol == 1 && playerCol.playerParasite ==1 ) {
+	if (isCol == 1 && playerCol.playerParasite == 1) {
 		open = true;
 	}
 	if (open) openAnimation();
