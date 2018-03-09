@@ -21,7 +21,8 @@ Enemy::Enemy(int x, int y, int img, int id, IObjectManager* Iobj) {
 		setAtk(3);
 	}
 	LoadDivGraph("data/img/enemy1Walk.png", 8, 4, 2, 64, 64, walkHundle);
-	LoadDivGraph("data/img/enemy1Atack.png", 4, 4, 1, 64, 64, atackHundle);
+	LoadDivGraph("data/img/enemy1WaitForAtack.png", 4, 4, 1, 64, 64, atackHundle);
+	LoadDivGraph("data/img/enemy1Atack.png", 4, 4, 1, 64, 64, &atackHundle[4]);
 	LoadDivGraph("data/img/enemy1Die.png", 8, 4, 2, 64, 64, deadHundle);
 	bulletHundle = LoadGraph("data/img/bullet.png");
 	damegeHundle = LoadGraph("data/img/enemy1Damage.png");
@@ -155,6 +156,13 @@ void Enemy::collisionCheck(const Collision & target) {
 
 void Enemy::MoveCommon()
 {
+	if (!isMove)
+	{
+		drawcount = 0;
+		isMove = true;
+		isAtacck = false;
+	}
+	
 	movedis = 1;
 	if (dead)movedis = 0;
 
@@ -174,17 +182,22 @@ void Enemy::MoveCommon()
 
 void Enemy::AtackCommon()
 {
+	if (!isAtacck)
+	{
+		drawcount = 0;
+		isMove = false;
+		isAtacck = true;
+	}
 	movedis = 0;
-	imgHandle = atackHundle[(drawcount / 12) % 4];
+	imgHandle = atackHundle[(drawcount / 12) % 8];
 	drawcount += addCount;
-	if (atkCt > 180)
+	if (atkCt > 104 && !dead && drawcount > 48)
 	{
 		atkCt = 0;
 		Bullet* objBull = new Bullet(x, y, bulletHundle, isRight, id);
 		bullets.push_back(objBull);
 		IobjMgr->setObjectList(objBull);
 	}
-	//drawcount++;
 }
 
 void Enemy::DeadCheck() {

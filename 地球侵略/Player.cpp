@@ -478,6 +478,8 @@ void Player::Draw(int drawX, int drawY) {
 		else {
 			DrawGraph(tempX, tempY, wait[drawCount % 4], TRUE);
 			drawCount++;
+
+
 			if (drawCount == 60) drawCount = 0;
 		}
 		break;
@@ -495,7 +497,7 @@ void Player::Draw(int drawX, int drawY) {
 			drawCount++;
 			if (drawCount == 60) drawCount = 0;
 		}
-		break;
+		break;	
 
 	case'W':	//????
 		if (keyM.GetKeyFrame(KEY_INPUT_RIGHT) >= 1) {

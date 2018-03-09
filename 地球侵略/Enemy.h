@@ -28,7 +28,7 @@ private:
 	int bulletHundle;
 	int damegeHundle;
 	int walkHundle[8];
-	int atackHundle[4];
+	int atackHundle[8];
 	int deadHundle[8];
 	int atackRen = -128;
 	int invalidDamageTime = 60;
@@ -41,9 +41,11 @@ private:
 	bool isPlayerAtk = false;
 	bool isRight = false;
 	bool dead = false;
+	bool isMove = true;
+	bool isAtacck = false;
 	
 	int index = -1;
-	bool rangeFlg;
+	//bool rangeFlg;
 
 	std::vector<Bullet*> bullets;
 
