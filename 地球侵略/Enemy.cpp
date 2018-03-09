@@ -156,7 +156,7 @@ void Enemy::collisionCheck(const Collision & target) {
 
 void Enemy::MoveCommon()
 {
-	if (!isMove)
+	if (!isMove && !dead)
 	{
 		drawcount = 0;
 		isMove = true;
@@ -182,7 +182,7 @@ void Enemy::MoveCommon()
 
 void Enemy::AtackCommon()
 {
-	if (!isAtacck)
+	if (!isAtacck && !dead)
 	{
 		drawcount = 0;
 		isMove = false;
