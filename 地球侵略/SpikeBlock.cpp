@@ -7,7 +7,7 @@ SpikeBlock::SpikeBlock(int x, int y, int img) {
 	this->x = x;
 	this->y = y;
 	this->imgSpike = img;
-	this->id = 9;
+	this->id = ObjectID::spike;
 	collision = new Collision(0 - 2, 0 - 2, 256, 64);
 }
 

@@ -12,18 +12,20 @@
 #include "Goal.h"
 #include "LockedDoor.h"
 
-class ObjectManager:
-private IObjectManager {
+
+
+class ObjectManager :
+	private IObjectManager {
 public:
 	ObjectManager();
-	ObjectManager(std::vector<std::vector <int>> vmap,int stage);
+	ObjectManager(std::vector<std::vector <int>> vmap, int stage);
 	~ObjectManager();
 
 	void Loadimg();
 
 	void update();
 	void Draw(int drawX, int drawY);
-	
+
 	std::map<int, int> img;
 	//‚±‚ê‚Í–³’ƒ‚©‚È getter‚Í‚Ü‚½Œã‚Å
 
@@ -40,5 +42,4 @@ private:
 	Player *player;
 	std::vector<Object*> objects;
 	std::vector<Object*> terrain;
-
 };

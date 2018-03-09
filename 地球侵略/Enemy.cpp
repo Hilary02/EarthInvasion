@@ -9,13 +9,13 @@ Enemy::~Enemy() {
 	delete AttackBox;
 }
 
-Enemy::Enemy(int x, int y, int img, int id, IObjectManager* Iobj) {
+Enemy::Enemy(int x, int y, int img, ObjectID id, IObjectManager* Iobj) {
 	this->IobjMgr = Iobj;
 	this->x = x;
 	this->y = y;
 	this->imgHandle = img;
 	this->id = id;
-	if (id == 4)
+	if (id == ObjectID::soldierA)
 	{
 		setHp(3);
 		setAtk(3);
@@ -60,7 +60,7 @@ int Enemy::update(const Collision & playerCol) {
 	for (auto o : IobjMgr->getObjectList()) {
 		if (collision->doCollisonCheck(o->collision->hitRange)) { //当たり判定をとる
 			switch (o->getId()) {
-			case 100: //プレイヤーの弾
+			case ObjectID::playerBullet: //プレイヤーの弾
 				if (state != state::dead)modHp(-3);
 				break;
 			default:
@@ -86,7 +86,7 @@ int Enemy::update(const Collision & playerCol) {
 	for (auto t : IobjMgr->getTerrainList()) {
 		if (collision->doCollisonCheck(t->collision->hitRange)) {
 			switch (t->getId()) {
-			case 6: //扉
+			case ObjectID::lockedDoor: //扉
 			{
 				int leftTX = t->collision->hitRange.xPos + t->collision->hitRange.xOffset;
 				int leftPX = collision->hitRange.xPos + collision->hitRange.xOffset;
@@ -194,7 +194,7 @@ void Enemy::AtackCommon()
 	if (atkCt > 104 && !dead && drawcount > 48)
 	{
 		atkCt = 0;
-		Bullet* objBull = new Bullet(x, y, bulletHundle, isRight, id);
+		Bullet* objBull = new Bullet(x, y, bulletHundle, isRight, ObjectID::enemyBullet);
 		bullets.push_back(objBull);
 		IobjMgr->setObjectList(objBull);
 	}
@@ -224,4 +224,8 @@ bool Enemy::IsRangeCheck() {
 	else {
 		return isRight;
 	}
+}
+
+bool Enemy::getDeadState(){
+	return dead;
 }

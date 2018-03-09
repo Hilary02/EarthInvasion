@@ -19,7 +19,7 @@ Player::~Player() {
 }
 
 int Player::update() {
-
+	debugMode();
 	PerDecision();
 	//?L?[???͂̏???
 	if (!isAttack && !isDead && isMoving == 'N') { //???[?V???????Ǝ??S???̓L?[???͖???
@@ -68,12 +68,15 @@ int Player::update() {
 						if (collision->doCollisonCheck(o->collision->hitRange)) { //当たり判定をとる
 
 							switch (o->getId()) {
-							case 4: //兵士
+							case ObjectID::soldierA: //兵士
 							{
-								plState = 'A';
-								isMoving = 'I';
-								drawCount = 0;
-								collision->playerParasite = 1; //当たり判定に寄生状態を記録
+								Enemy* ene = (Enemy*)o;	//いいのかな？
+								if (ene->getDeadState() == true) {
+									plState = 'A';
+									isMoving = 'I';
+									drawCount = 0;
+									collision->playerParasite = 1; //当たり判定に寄生状態を記録
+								}
 								break;
 							}
 							default:
@@ -102,6 +105,8 @@ int Player::update() {
 			drawCount = 0;
 		}
 	}
+	collision->updatePos(x, y);
+
 	//通常状態の攻撃処理 
 	if (isAttack && plState == 'N' && drawCount >= 25 && drawCount <= 32) {
 		collision->playerState = 1;
@@ -109,11 +114,11 @@ int Player::update() {
 		{
 			collision->updatePos(x + 40, y);
 		}
-		else if(!right)
+		else if (!right)
 		{
 			collision->updatePos(x - 40, y);
 		}
-		
+
 	}
 
 	//一般兵状態の攻撃処理 
@@ -123,7 +128,7 @@ int Player::update() {
 		if (bulletCT > 60)
 		{
 			bulletCT = 0;
-			Bullet* objBull = new Bullet(x, y, bulletHundle, right, 0);
+			Bullet* objBull = new Bullet(x, y, bulletHundle, right, ObjectID::playerBullet);
 			bullets.push_back(objBull);
 			IobjMgr->setObjectList(objBull);
 		}
@@ -138,13 +143,13 @@ int Player::update() {
 			bullets.erase(bullets.begin() + bulletindex);
 		}
 
-		for (auto o : IobjMgr->getObjectList()) 
+		for (auto o : IobjMgr->getObjectList())
 		{
 			if (bull->collision->doCollisonCheck(o->collision->hitRange))
 			{
 				switch (o->getId())
 				{
-				case 4:
+				case ObjectID::soldierA:
 					bull->setState(-1);
 					break;
 				default:
@@ -200,7 +205,7 @@ int Player::update() {
 	for (auto t : IobjMgr->getTerrainList()) {
 		if (collision->doCollisonCheck(t->collision->hitRange)) {
 			switch (t->getId()) {
-			case 6: //扉
+			case ObjectID::lockedDoor: //扉
 			{
 				int leftTX = t->collision->hitRange.xPos + t->collision->hitRange.xOffset;
 				int leftPX = collision->hitRange.xPos + collision->hitRange.xOffset;
@@ -215,7 +220,7 @@ int Player::update() {
 
 				break;
 			}
-			case 8: //動く床
+			case ObjectID::moveingFloor: //動く床
 			{
 				int topTY = t->collision->hitRange.yPos + t->collision->hitRange.yOffset;
 				int underTY = t->collision->hitRange.yPos + t->collision->hitRange.yOffset + t->collision->hitRange.ySize;
@@ -240,16 +245,16 @@ int Player::update() {
 	for (auto o : IobjMgr->getObjectList()) {
 		if (collision->doCollisonCheck(o->collision->hitRange)) { //当たり判定をとる
 			switch (o->getId()) {
-			case 4: //兵士
+			case ObjectID::soldierA: //兵士
 				if (o->state != state::dead && !collision->playerState)modHp(-1);
 				break;
-			case 5: //回復ポッド
+			case ObjectID::healPot: //回復ポッド
 				modHp(1);
 				break;
-			case 9: //とげとげ
+			case ObjectID::spike: //とげとげ
 				modHp(-1);
 				break;
-			case 104: //一般兵の弾
+			case ObjectID::enemyBullet: //一般兵の弾
 				modHp(-3);
 				break;
 			default:
@@ -528,6 +533,12 @@ void Player::MyDraw(int tempX, int tempY, int movement, bool lrFlag) {
 	}
 	else {
 		DrawTurnGraph(tempX, tempY, movement, TRUE);
+	}
+}
+
+void Player::debugMode() {
+	if (keyM.GetKeyFrame(KEY_INPUT_K) == 1) {
+		hp = 0;
 	}
 }
 

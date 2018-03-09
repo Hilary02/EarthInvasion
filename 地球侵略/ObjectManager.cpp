@@ -17,17 +17,17 @@ ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap, int stage) {
 				int x = j * 32;	//x座標
 				int path = 0;	//画像ハンドル
 				path = img[vmap[i][j]];
-				switch (vmap[i][j]) {
-				case 4:
-					obje = new Enemy(x, y, img[10], vmap[i][j], this);
+				switch ((ObjectID)vmap[i][j]) {
+				case ObjectID::soldierA:
+					obje = new Enemy(x, y, img[10], ObjectID::soldierA, this);
 					break;
-				case 5:
+				case ObjectID::healPot:
 					obje = new Item(x, y, img[20]);
 					break;
-				case 9:
+				case ObjectID::spike:
 					obje = new SpikeBlock(x, y, img[9]);
 					break;
-				case 99:	//暫定ゴール
+				case ObjectID::goal:	//暫定ゴール
 					obje = new  Goal(x, y, img[21], stageId);
 					break;
 				default:
@@ -42,11 +42,11 @@ ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap, int stage) {
 				int x = j * 32;	//x座標
 				int path = 0;	//画像ハンドル
 				path = img[vmap[i][j]];
-				switch (vmap[i][j]) {
-				case 6:
+				switch ((ObjectID)vmap[i][j]) {
+				case ObjectID::lockedDoor:
 					obje = new LockedDoor(x, y, img[6]);
 					break;
-				case 8:	//動く床
+				case ObjectID::moveingFloor:	//動く床
 					obje = new MoveGround(x, y, 2, 0.25, 0, img[3]);
 					break;
 				default:
@@ -116,8 +116,7 @@ Player* ObjectManager::getPlayer() {
 	return player;
 }
 
-void ObjectManager::setObjectList(Object* obj)
-{
+void ObjectManager::setObjectList(Object* obj) {
 	objects.push_back(obj);
 
 }

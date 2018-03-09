@@ -16,7 +16,7 @@ Item::Item(int x, int y, int img)
 	this->x = x;
 	this->y = y;
 	this->imgHandle = img;
-	this->id = 5;
+	this->id = ObjectID::healPot;
 	collision = new Collision(0, 0, 64, 64);
 }
 
@@ -36,7 +36,7 @@ void Item::Draw(int drawX, int drawY)
 int Item::collisionCheck(const Collision & target) {
 	int isCol = collision->doCollisonCheck((target.hitRange));
 	if (isCol) {
-		
+
 		//delete this;
 		return -1;
 	}

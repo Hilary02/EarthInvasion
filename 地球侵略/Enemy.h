@@ -9,8 +9,8 @@ class Enemy :
 public:
 	Enemy();
 	~Enemy();
-	Enemy(int x, int y, int img, int id, IObjectManager* Iobj);
-	
+	Enemy(int x, int y, int img, ObjectID id, IObjectManager* Iobj);
+
 	int update(const Collision & playerCol) override;
 	void Draw(int drawX, int drawY) override;
 	void collisionCheck(const Collision& target);
@@ -19,6 +19,7 @@ public:
 	void DeadCheck();
 	bool IsRangeCheck();
 	int enemyID;
+	bool getDeadState();
 
 private:
 	const int moveRange = 300;

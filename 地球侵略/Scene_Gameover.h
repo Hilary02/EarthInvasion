@@ -17,9 +17,9 @@ public:
 
 private:
 	std::string text = "GameOver...";
-	//ƒNƒ\•Ï”
-	int moveto = 200;
-	int moveSpeed = 2;
+	int moveTo = 200;
+	double speed = 0.6;
+	double acceleration = 0.5;
 	int y = 0;
 	//‚±‚ê‚à‚Ç‚±‚©‚©‚ç‚Á‚Ä‚­‚é
 	int Frame = 0;

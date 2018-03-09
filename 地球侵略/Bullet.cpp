@@ -21,7 +21,7 @@ Bullet::Bullet()
 	collision = new Collision(0, 0, 16, 16);
 }*/
 
-Bullet::Bullet(int x, int y, int Hundle, bool isRight, int id)
+Bullet::Bullet(int x, int y, int Hundle, bool isRight, ObjectID id)
 {
 	if (isRight)
 	{
@@ -34,7 +34,7 @@ Bullet::Bullet(int x, int y, int Hundle, bool isRight, int id)
 	this->y = y + 30;
 	this->imgHandle = Hundle;
 	isR = isRight;
-	this->id = 100 + id;
+	this->id = id;
 
 	collision = new Collision(0, 0, 16, 16);
 }
@@ -65,8 +65,8 @@ bool Bullet::Update()
 	{
 		return true;
 	}
-	
-	
+
+
 }
 
 void Bullet::Draw(int drawX, int drawY)

@@ -22,6 +22,8 @@ public:
 	virtual void setAtk(int newAtk);
 	// 体力を取得する
 	int getHp();
+	void collisionObjectCheck();
+
 	virtual int update(const Collision & playerCol) override;
 	virtual void Draw(int ,int) override;
 	//地形との当たり判定に用いるインターフェース
