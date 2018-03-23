@@ -56,7 +56,7 @@ private:
 	//bulletŠÖ˜A‚Ì•Ï”
 	std::vector<Bullet*> bullets;
 	int bulletCT = 61;
-	int bulletHundle = LoadGraph("data/img/bullet.png");
+	int bulletHandle = LoadGraph("data/img/bullet.png");
 	int bulletindex = -1;
 
 	void debugMode();

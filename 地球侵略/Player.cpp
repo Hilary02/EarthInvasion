@@ -133,7 +133,7 @@ int Player::update() {
 		if (bulletCT > 60)
 		{
 			bulletCT = 0;
-			Bullet* objBull = new Bullet(x, y, bulletHundle, right, ObjectID::playerBullet);
+			Bullet* objBull = new Bullet(x, y, bulletHandle, right, ObjectID::playerBullet);
 			bullets.push_back(objBull);
 			IobjMgr->setObjectList(objBull);
 		}
