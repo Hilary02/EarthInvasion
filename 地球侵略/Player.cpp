@@ -112,13 +112,18 @@ int Player::update() {
 		collision->playerState = 1;
 		if (right)
 		{
-			collision->updatePos(x + 40, y);
+			collision->updatePos(x , y);
+			collision->hitRange.xSize = 100;
 		}
 		else if (!right)
 		{
-			collision->updatePos(x - 40, y);
-		}
+			collision->updatePos(x - 70, y);
+			collision->hitRange.xSize = 100;
 
+		}
+	}
+	else {
+		collision->hitRange.xSize = 32;
 	}
 
 	//一般兵状態の攻撃処理 
@@ -195,7 +200,7 @@ int Player::update() {
 	{
 		collision->updatePos(x, y);
 	}
-	else if(collision->playerState && updateCT > 45)
+	else if (collision->playerState && updateCT > 45)
 	{
 		collision->playerState = 0;
 		updateCT = 0;
@@ -273,7 +278,7 @@ int Player::update() {
 		SceneM.ChangeScene(scene::GameOver);
 	}
 
-	if (invalidDamageTime < 60) invalidDamageTime++;	//無敵時間
+	invalidDamageTime++;	//無敵時間
 	return 0;
 }
 
@@ -502,7 +507,7 @@ void Player::Draw(int drawX, int drawY) {
 			drawCount++;
 			if (drawCount == 60) drawCount = 0;
 		}
-		break;	
+		break;
 
 	case'W':	//????
 		if (keyM.GetKeyFrame(KEY_INPUT_RIGHT) >= 1) {
@@ -572,10 +577,10 @@ void Player::PerDecision()
 	y3 = y + ((sizeY1 + sizeY2) / 2);
 }
 
-//体力の変更 ダメージを受けるときだけ60フレームの無敵時間
+//体力の変更 ダメージを受けるときだけ120フレームの無敵時間
 void Player::modHp(int mod) {
 	if (mod < 0) {
-		if (invalidDamageTime == 60) {
+		if (invalidDamageTime >= 120) {
 			invalidDamageTime = 0;
 			hp += mod;
 		}

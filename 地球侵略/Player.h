@@ -50,7 +50,7 @@ private:
 	int parasite[20];
 	int die[30];
 
-	int invalidDamageTime=60;
+	int invalidDamageTime=120;
 
 	int updateCT = 51;
 	//bulletŠÖ˜A‚Ì•Ï”
