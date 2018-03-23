@@ -8,7 +8,7 @@ class Scene_Game :
 	public Scene_Frame
 {
 public:
-	Scene_Game();
+	Scene_Game(int param=0);
 	~Scene_Game();
 	void update();
 	void Draw();

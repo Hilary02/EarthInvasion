@@ -2,7 +2,7 @@
 #include "SceneManager.h"
 #include "KeyManager.h"
 
-Scene_Game::Scene_Game() {
+Scene_Game::Scene_Game(int param) {
 	//nowStage = new Stage_Base;
 	int clearedNum = 0;
 	savedata.load();
@@ -30,6 +30,12 @@ Scene_Game::Scene_Game() {
 	   3:うっすら表示(直近のボスステージ)
 	*/
 	bg_stageselect = LoadGraph("data/img/bg_stageselect.png");
+
+	//パラメータでチュートリアルが渡された時には一気に飛ばす。これまずいかな
+	if (param ==1) {
+		stageSelecting = false;
+		nowStage = new Stage_Base(0);	
+	}
 }
 
 

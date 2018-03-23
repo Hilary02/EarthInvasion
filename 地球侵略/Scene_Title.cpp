@@ -3,8 +3,8 @@
 #include "KeyManager.h"
 
 typedef struct {
-	char name[16];
-	char explanation[32];	//使わない説
+	char name[32];
+	char explanation[64];	//使わない説
 	int x, y;
 }RootmenuElement;
 
@@ -13,10 +13,10 @@ const int DefaultPosX = 380;
 int nowSelect = 1;
 
 RootmenuElement TitleMenu[TITLE_NUM] = {	//実際の値の設定
-	{ "チュートリアル","練習台", DefaultPosX, 250 },
-	{ "ゲームスタート","さあ，侵略です", DefaultPosX, 300 },
-	{ "設定" ,"音量の調節", DefaultPosX, 350 },
-	{ "Exit" ,"ゲーム終了",DefaultPosX, 400 },
+	{ "体験版","ステージのデモが遊べます", DefaultPosX, 250 },
+	{ "ステージセレクト","まだステージはないのでUIだけ見ることができます", DefaultPosX, 300 },
+	{ "設定" ,"音量の調節ができます", DefaultPosX, 350 },
+	{ "Exit" ,"ゲーム終了 ※しないでください...",DefaultPosX, 400 },
 };
 
 Scene_Title::Scene_Title() {
@@ -42,7 +42,7 @@ void Scene_Title::update() {
 	if (keyM.GetKeyFrame(KEY_INPUT_Z) == 1) {
 		switch (nowSelect) {
 		case 0:
-			SceneM.ChangeScene(scene::Game);//仮
+			SceneM.ChangeScene(scene::Game, 1);//仮
 			break;
 		case 1:
 			SceneM.ChangeScene(scene::Game);
@@ -75,5 +75,6 @@ void Scene_Title::Draw() {
 	for (int i = 0; i < TITLE_NUM; i++) { // メニュー項目を描画
 		DrawString(TitleMenu[i].x, TitleMenu[i].y, TitleMenu[i].name, 0x000000);
 	}
+	DrawString(20, 560, TitleMenu[nowSelect].explanation, 0x000000);
 	SetFontSize(-1);
 }

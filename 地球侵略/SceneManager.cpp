@@ -17,8 +17,10 @@ SceneManager::~SceneManager()
 {
 }
 
-void SceneManager::ChangeScene(scene next) {
+void SceneManager::ChangeScene(scene next,int param) {
+	this->param = 0;
 	nextScene = next;
+	this->param = param;
 }
 
 void SceneManager::update() {
@@ -29,7 +31,7 @@ void SceneManager::update() {
 			nowScene = new Scene_Title();
 			break;
 		case scene::Game:
-			nowScene = new Scene_Game();
+			nowScene = new Scene_Game(param);
 			break;
 		case scene::Config:
 			nowScene = new Scene_Config();
