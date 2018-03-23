@@ -8,7 +8,7 @@
 #include "SoundManager.h"
 #include "SceneManager.h"
 
-Stage_Base::Stage_Base(){}
+Stage_Base::Stage_Base() {}
 
 Stage_Base::Stage_Base(int stage) {
 	stageId = stage;
@@ -34,7 +34,7 @@ Stage_Base::Stage_Base(int stage) {
 	//マップ地形の読み込み
 	//ここを複数ステージ用に書き換え
 	readMap("data/map/stage0.csv");
-	objectMgr = new ObjectManager(vmap,stageId);
+	objectMgr = new ObjectManager(vmap, stageId);
 	//プレイヤー呼び出し
 	this->player = objectMgr->getPlayer();
 
@@ -69,7 +69,7 @@ void Stage_Base::update() {
 }
 
 void Stage_Base::draw() {
-	//DrawGraph(0, 0, bgHand, false);	//背景の描画
+	DrawGraph(((800 - bgWidth) *((drawX) / (float)(MAP_WIDTH*CHIPSIZE))), -200, bgHand, false);	//背景の描画
 	int baseChipY = max(0, drawY - CHIPSIZE * 2);
 	int baseChipX = max(0, drawX - CHIPSIZE * 2);
 	for (int y = baseChipY / CHIPSIZE; y < ((drawY + window.WINDOW_HEIGHT - 50) / CHIPSIZE); y++) {
@@ -143,7 +143,9 @@ int Stage_Base::loadImg() {
 	//画像の設定
 	chipImg[2] = LoadGraph("data/img/groundFloor.png");
 	chipImg[7] = LoadGraph("data/img/airFloor.png");
-	bgHand = LoadGraph("data/img/bg01.jpg");
+	bgHand = LoadGraph("data/img/bg_factory.png");
+	int t;
+	GetGraphSize(bgHand, &bgWidth, &t);
 
 	//InfoArea用
 	img_hpbar = LoadGraph("data/img/hpbar.png");
@@ -153,7 +155,7 @@ int Stage_Base::loadImg() {
 	return 1;
 }
 
-int Stage_Base::drawInfo(){
+int Stage_Base::drawInfo() {
 	//背景 そのうち画像になるか？
 	DrawBox(infoX, infoY, 800, 600, 0x878773, TRUE);
 	//HP表示欄 MAX15まで
@@ -168,6 +170,6 @@ int Stage_Base::drawInfo(){
 		}
 	}
 	//制限時間表示欄
-	DrawFormatString(infoX+300, infoY+50, 0xFFFFFF, "残り時間  %02d:%02d'%02d", leftTime / 60000/*分*/, (leftTime % 60000) / 1000/*秒*/, ((leftTime % 60000) % 1000)/10 /*ms*/);
+	DrawFormatString(infoX + 300, infoY + 50, 0xFFFFFF, "残り時間  %02d:%02d'%02d", leftTime / 60000/*分*/, (leftTime % 60000) / 1000/*秒*/, ((leftTime % 60000) % 1000) / 10 /*ms*/);
 	return 0;
 }
