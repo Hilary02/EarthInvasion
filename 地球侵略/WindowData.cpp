@@ -3,6 +3,14 @@
 //windowを用いて初期化など行う．
 WindowData window;
 
+bool WindowData::ask_screenmode() {
+	if (MessageBox(NULL, "フルスクリーンで起動しますか？", "起動オプション", MB_YESNO) == IDYES) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
 WindowData::WindowData() :
 	WINDOW_WIDTH(800),
 	WINDOW_HEIGHT(600),
@@ -16,8 +24,17 @@ WindowData::~WindowData()
 
 //ウィンドウの初期化処理を行う．
 int WindowData::Init() {
-	ChangeWindowMode(true);
-	SetGraphMode(WINDOW_WIDTH, WINDOW_HEIGHT, 32);
+	//ChangeWindowMode(true);
+	//is_fullscreen = ask_screenmode();  //コメントアウトで強制ウィンドウ
+	if (is_fullscreen) {
+		ChangeWindowMode(FALSE);          //フルスクリーン
+	}
+	else {
+		ChangeWindowMode(TRUE);           //ウィンドウモードで表示
+		SetWindowSizeChangeEnableFlag(TRUE, TRUE);  // ウインドウサイズ可変
+		SetGraphMode(WINDOW_WIDTH, WINDOW_HEIGHT, 32);
+		SetWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+	}
 	if (DxLib_Init() == -1)	return -1;
 	SetMainWindowText(TITLE.c_str());				//c_strでchar型にできる
 	SetBackgroundColor(0, 0, 0);					//背景色を黒に

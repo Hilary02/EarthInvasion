@@ -40,7 +40,7 @@ Stage_Base::Stage_Base(int stage) {
 
 
 	//制限時間 ttp://nanoappli.com/blog/archives/3229
-	time = 120'000;
+	time = 180'000;
 	//DXライブラリの機能ではなくC++の機能で実装したい
 	//現在，一時停止とか完全に無視して時間が進む
 	timeLimit = GetNowCount() + time;

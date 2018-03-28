@@ -56,7 +56,7 @@ ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap, int stage) {
 			}
 		}
 	}
-	player->setAbsolutePos(300, 600);
+	player->setAbsolutePos(100, 600);
 }
 
 ObjectManager::~ObjectManager() {

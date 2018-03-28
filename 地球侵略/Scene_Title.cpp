@@ -10,13 +10,13 @@ typedef struct {
 
 const int TITLE_NUM = 4;
 const int DefaultPosX = 380;
-int nowSelect = 1;
+int nowSelect = 0;
 
 RootmenuElement TitleMenu[TITLE_NUM] = {	//実際の値の設定
 	{ "体験版","ステージのデモが遊べます", DefaultPosX, 250 },
 	{ "ステージセレクト","まだステージはないのでUIだけ見ることができます", DefaultPosX, 300 },
 	{ "設定" ,"音量の調節ができます", DefaultPosX, 350 },
-	{ "Exit" ,"ゲーム終了 ※しないでください...",DefaultPosX, 400 },
+	{ "Exit" ,"ゲーム終了",DefaultPosX, 400 },
 };
 
 Scene_Title::Scene_Title() {
@@ -33,10 +33,18 @@ Scene_Title::~Scene_Title() {
 void Scene_Title::update() {
 	if (keyM.GetKeyFrame(KEY_INPUT_DOWN) == 1 || (keyM.GetKeyFrame(KEY_INPUT_DOWN) >= 15 && keyM.GetKeyFrame(KEY_INPUT_DOWN) % 4 == 0)) {	//下キーが押されていたら
 		nowSelect = (nowSelect + 1) % TITLE_NUM;				//選択状態を一つ下げる
+		if (nowSelect == 1) {
+			nowSelect = (nowSelect + 1) % TITLE_NUM;				//選択状態を一つ下げる
+
+		}
 		SoundM.Se(LoadSoundMem("data/mc/pick up.wav"));
 	}
 	if (keyM.GetKeyFrame(KEY_INPUT_UP) == 1 || (keyM.GetKeyFrame(KEY_INPUT_UP) >= 15 && keyM.GetKeyFrame(KEY_INPUT_UP) % 4 == 0)) {		//上キーが押されていたら
 		nowSelect = (nowSelect + (TITLE_NUM - 1)) % TITLE_NUM;	//選択状態を一つ上げる
+		if (nowSelect == 1) {
+			nowSelect = (nowSelect + (TITLE_NUM - 1)) % TITLE_NUM;	//選択状態を一つ上げる
+
+		}
 		SoundM.Se(LoadSoundMem("data/mc/pick up.wav"));
 	}
 	if (keyM.GetKeyFrame(KEY_INPUT_Z) == 1) {
@@ -73,7 +81,14 @@ void Scene_Title::Draw() {
 	DrawGraph(DefaultPosX - 30, TitleMenu[nowSelect].y, cursor, TRUE);
 
 	for (int i = 0; i < TITLE_NUM; i++) { // メニュー項目を描画
-		DrawString(TitleMenu[i].x, TitleMenu[i].y, TitleMenu[i].name, 0x000000);
+		if (i == 1) {
+			DrawString(TitleMenu[i].x, TitleMenu[i].y, TitleMenu[i].name, 0x777777);
+
+		}
+		else {
+
+			DrawString(TitleMenu[i].x, TitleMenu[i].y, TitleMenu[i].name, 0x000000);
+		}
 	}
 	DrawString(20, 560, TitleMenu[nowSelect].explanation, 0x000000);
 	SetFontSize(-1);

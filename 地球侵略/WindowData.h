@@ -8,7 +8,8 @@
 class WindowData {
 private:
 	const std::string TITLE;
-
+	bool is_fullscreen = false;
+	bool ask_screenmode();
 
 public:
 	WindowData();
@@ -18,6 +19,7 @@ public:
 	const int WINDOW_HEIGHT;
 	
 	int Init();
+
 };
 
 //WindowData.cppì‡Ç≈íËã`çœÇ›
