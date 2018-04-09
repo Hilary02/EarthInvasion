@@ -200,7 +200,7 @@ int Player::update() {
 	{
 		collision->updatePos(x, y);
 	}
-	else if (collision->playerState && updateCT > 45)
+	else if (collision->playerState && updateCT > 60)
 	{
 		collision->playerState = 0;
 		updateCT = 0;
@@ -254,7 +254,7 @@ int Player::update() {
 				if (o->state != state::dead && !collision->playerState)modHp(-1);
 				break;
 			case ObjectID::healPot: //回復ポッド
-				modHp(1);
+				modHp(5);
 				break;
 			case ObjectID::spike: //とげとげ
 				modHp(-1);
