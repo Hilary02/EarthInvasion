@@ -59,5 +59,7 @@ private:
 	int bulletHandle = LoadGraph("data/img/bullet.png");
 	int bulletindex = -1;
 
+	int damageCount = 0;
+
 	void debugMode();
 };

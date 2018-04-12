@@ -81,7 +81,7 @@ int Enemy::update(const Collision & playerCol) {
 
 	if (dead) {
 		//（死亡状態 かつ）寄生キー，接触中
-		if (keyM.GetKeyFrame(KEY_INPUT_S) >= 1) {
+		if (keyM.GetKeyFrame(KEY_INPUT_X) >= 1) {
 			if (collision->doCollisonCheck((playerCol.hitRange))) {
 				remove = true;
 			}

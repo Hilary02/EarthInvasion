@@ -48,7 +48,7 @@ int Player::update() {
 				isJumping = true;
 				jumpPower = -6;
 			}
-			if (keyM.GetKeyFrame(KEY_INPUT_A) == 1) {
+			if (keyM.GetKeyFrame(KEY_INPUT_Z) == 1) {
 				isAttack = true;
 				drawCount = 0;
 			}
@@ -63,7 +63,7 @@ int Player::update() {
 				親クラスのポインタ型からアクセスしたときに参照エラーが発生する．
 				デバッガでみて初めて気が付いた				*/
 				//寄生キー
-				if (keyM.GetKeyFrame(KEY_INPUT_S) >= 1) {
+				if (keyM.GetKeyFrame(KEY_INPUT_X) >= 1) {
 					for (auto o : IobjMgr->getObjectList()) {
 						if (collision->doCollisonCheck(o->collision->hitRange)) { //当たり判定をとる
 
@@ -88,7 +88,7 @@ int Player::update() {
 			}
 
 			//寄生解除
-			if (keyM.GetKeyFrame(KEY_INPUT_E) >= 1 && plState != 'N') {
+			if (keyM.GetKeyFrame(KEY_INPUT_DOWN) >= 45 && plState != 'N') {
 				plState = 'N';
 				isMoving = 'O';
 				drawCount = 0;
@@ -112,7 +112,7 @@ int Player::update() {
 		collision->playerState = 1;
 		if (right)
 		{
-			collision->updatePos(x , y);
+			collision->updatePos(x, y);
 			collision->hitRange.xSize = 100;
 		}
 		else if (!right)
@@ -530,14 +530,32 @@ void Player::Draw(int drawX, int drawY) {
 	//d if (isAttack) DrawFormatString(300, 100, 0xFFFFFF, "?A?^?b?N??");
 	//d if (isDead) DrawFormatString(300, 120, 0xFFFFFF, "????);
 
+
+
 }
 
 void Player::MyDraw(int tempX, int tempY, int movement, bool lrFlag) {
-	if (lrFlag) {
-		DrawGraph(tempX, tempY, movement, TRUE);
+	//修正要素
+	if (invalidDamageTime < 120) {
+		if ((invalidDamageTime / 20) % 2 > 0) {
+			SetDrawBlendMode(DX_BLENDMODE_ALPHA, 170);
+			if (lrFlag) {
+				DrawGraph(tempX, tempY, movement, TRUE);
+			}
+			else {
+				DrawTurnGraph(tempX, tempY, movement, TRUE);
+			}
+			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+			damageCount--;
+		}
 	}
 	else {
-		DrawTurnGraph(tempX, tempY, movement, TRUE);
+		if (lrFlag) {
+			DrawGraph(tempX, tempY, movement, TRUE);
+		}
+		else {
+			DrawTurnGraph(tempX, tempY, movement, TRUE);
+		}
 	}
 }
 
@@ -583,6 +601,7 @@ void Player::modHp(int mod) {
 		if (invalidDamageTime >= 120) {
 			invalidDamageTime = 0;
 			hp += mod;
+			damageCount = 15;
 		}
 	}
 	else {

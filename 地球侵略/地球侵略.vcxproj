@@ -26,7 +26,6 @@
     <ClCompile Include="FPS.cpp" />
     <ClCompile Include="GameMain.cpp" />
     <ClCompile Include="Goal.cpp" />
-    <ClCompile Include="HealItem.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="KeyManager.cpp" />
     <ClCompile Include="LockedDoor.cpp" />
@@ -46,6 +45,7 @@
     <ClCompile Include="SoundManager.cpp" />
     <ClCompile Include="SpikeBlock.cpp" />
     <ClCompile Include="Stage_Base.cpp" />
+    <ClCompile Include="TextBox.cpp" />
     <ClCompile Include="WindowData.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -56,7 +56,6 @@
     <ClInclude Include="FPS.h" />
     <ClInclude Include="GameMain.h" />
     <ClInclude Include="Goal.h" />
-    <ClInclude Include="HealItem.h" />
     <ClInclude Include="IObjectManager.h" />
     <ClInclude Include="ISceneManager.h" />
     <ClInclude Include="Item.h" />
@@ -80,6 +79,7 @@
     <ClInclude Include="SoundManager.h" />
     <ClInclude Include="SpikeBlock.h" />
     <ClInclude Include="Stage_Base.h" />
+    <ClInclude Include="TextBox.h" />
     <ClInclude Include="WindowData.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
