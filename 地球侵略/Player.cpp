@@ -536,18 +536,16 @@ void Player::Draw(int drawX, int drawY) {
 
 void Player::MyDraw(int tempX, int tempY, int movement, bool lrFlag) {
 	//修正要素
-	if (invalidDamageTime < 120) {
-		if ((invalidDamageTime / 20) % 2 > 0) {
-			SetDrawBlendMode(DX_BLENDMODE_ALPHA, 170);
-			if (lrFlag) {
-				DrawGraph(tempX, tempY, movement, TRUE);
-			}
-			else {
-				DrawTurnGraph(tempX, tempY, movement, TRUE);
-			}
-			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
-			damageCount--;
+
+	if (invalidDamageTime < 120 && (invalidDamageTime / 20) % 2 > 0) {
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 170);
+		if (lrFlag) {
+			DrawGraph(tempX, tempY, movement, TRUE);
 		}
+		else {
+			DrawTurnGraph(tempX, tempY, movement, TRUE);
+		}
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	}
 	else {
 		if (lrFlag) {
@@ -601,7 +599,6 @@ void Player::modHp(int mod) {
 		if (invalidDamageTime >= 120) {
 			invalidDamageTime = 0;
 			hp += mod;
-			damageCount = 15;
 		}
 	}
 	else {

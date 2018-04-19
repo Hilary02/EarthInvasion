@@ -52,7 +52,7 @@ void Stage_Base::update() {
 }
 
 void Stage_Base::draw() {
-	DrawGraph(((800 - bgWidth) *((drawX) / (float)(MAP_WIDTH*CHIPSIZE))), -200, bgHand, false);	//”wŒi‚Ì•`‰æ
+	DrawGraphF(((800 - bgWidth) *((drawX) / (float)(MAP_WIDTH*CHIPSIZE))), -200, bgHand, false);	//”wŒi‚Ì•`‰æ
 	int baseChipY = max(0, drawY - CHIPSIZE * 2);
 	int baseChipX = max(0, drawX - CHIPSIZE * 2);
 	for (int y = baseChipY / CHIPSIZE; y < ((drawY + window.WINDOW_HEIGHT - 50) / CHIPSIZE); y++) {
