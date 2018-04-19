@@ -51,7 +51,6 @@ private:
 	bool isNotice = false;
 
 	int index = -1;
-	//bool rangeFlg;
 
 	std::vector<Bullet*> bullets;
 

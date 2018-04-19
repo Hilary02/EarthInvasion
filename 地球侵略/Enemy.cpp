@@ -45,15 +45,11 @@ int Enemy::update(const Collision & playerCol) {
 		for (auto &bull : bullets)
 		{
 			index++;
-			if (!bull->Update())
+			if (!bull->isOutOfRange() || bull->collisionCheck(playerCol))
 			{
 				bullets.erase(bullets.begin() + index);
 			}
 
-			if (bull->collisionCheck(playerCol))
-			{
-				bullets.erase(bullets.begin() + index);
-			}
 		}
 		index = -1;
 	}
