@@ -41,7 +41,7 @@ private:
 	int HpCt = 61;
 	int count = 0;  // enemyのdrawcountを所々でplayerの様に0に戻すとこれいらない
 	int counter = 0;	//カウンタ系統一したほうがいいのでは？
-	int endNotice=0xFFFFFF;
+	int endNotice = 0xFFFFFF;
 	bool drawIcon = false;
 	bool isPlayerAtk = false;
 	bool isRight = false;
@@ -49,7 +49,7 @@ private:
 	bool isMove = true;
 	bool isAtacck = false;
 	bool isNotice = false;
-	
+
 	int index = -1;
 	//bool rangeFlg;
 
@@ -59,4 +59,3 @@ private:
 	bool remove = false;
 	int removeCount = 70;
 };
-

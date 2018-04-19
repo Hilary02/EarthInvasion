@@ -3,9 +3,12 @@
 #include "Collision.h"
 #include "ObjectID.h"
 
-//とりあえず作成．ほかに用途がるのかも知らない
+//Enemyなどの管理用に
 enum class state {
-	none, dead
+	none,
+	alive,
+	dead,
+	respawn,
 };
 
 /**

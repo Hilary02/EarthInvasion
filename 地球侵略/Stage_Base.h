@@ -28,7 +28,6 @@ private:
 	int loadImg();
 	int drawInfo();
 
-	//複数ステージに対応するためにconst外し中
 	int MAP_HEIGHT;	//縦方向マップチップ数
 	int MAP_WIDTH;	//横方向マップチップ数
 	const int CHIPSIZE = 32;//マップチップの大きさ

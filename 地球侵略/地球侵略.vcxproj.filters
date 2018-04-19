@@ -6,7 +6,6 @@
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="FPS.cpp" />
     <ClCompile Include="GameMain.cpp" />
-    <ClCompile Include="HealItem.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="KeyManager.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -25,6 +24,7 @@
     <ClCompile Include="SpikeBlock.cpp" />
     <ClCompile Include="SaveData.cpp" />
     <ClCompile Include="LockedDoor.cpp" />
+    <ClCompile Include="TextBox.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Collision.h" />
@@ -32,7 +32,6 @@
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="FPS.h" />
     <ClInclude Include="GameMain.h" />
-    <ClInclude Include="HealItem.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="KeyManager.h" />
     <ClInclude Include="Main.h" />
@@ -125,6 +124,7 @@
     <ClInclude Include="LockedDoor.h" />
     <ClInclude Include="IObjectManager.h" />
     <ClInclude Include="ObjectID.h" />
+    <ClInclude Include="TextBox.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Collision.h">

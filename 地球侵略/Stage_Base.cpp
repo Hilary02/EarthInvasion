@@ -12,25 +12,8 @@ Stage_Base::Stage_Base() {}
 
 Stage_Base::Stage_Base(int stage) {
 	stageId = stage;
-	//コードや外部ファイルに書くくらいならcsvから読み取ったほうが利便性高そう？
-	//Arrayにするなら大きめに取っておくとか．Vectorだと広いステージになったときの読み込み速度が心配．
-	MAP_HEIGHT = 30;
-	MAP_WIDTH = 128;
 	SoundM.SetSound(LoadSoundMem("data/mc/ビルの屋上、危険伴わず.wav"));
-	//08.18　vectorのサイズを動的に変更できるようにした
-	//指定したマップサイズで配列を確保
-	//参考にしたところ
-	//http://d.hatena.ne.jp/tei3344/20130207/1360238838
 
-	//マップの領域の確保
-	assert(MAP_HEIGHT >= 0);
-	assert(MAP_WIDTH >= 0);
-	vmap.resize(MAP_HEIGHT);
-	for (int i = 0; i < MAP_HEIGHT; i++) {
-		for (int j = 0; j < MAP_WIDTH; j++) {
-			vmap[i].push_back(j);
-		}
-	}
 	//マップ地形の読み込み
 	//ここを複数ステージ用に書き換え
 	readMap("data/map/stage0.csv");
@@ -69,7 +52,7 @@ void Stage_Base::update() {
 }
 
 void Stage_Base::draw() {
-	DrawGraph(((800 - bgWidth) *((drawX) / (float)(MAP_WIDTH*CHIPSIZE))), -200, bgHand, false);	//背景の描画
+	DrawGraphF(((800 - bgWidth) *((drawX) / (float)(MAP_WIDTH*CHIPSIZE))), -200, bgHand, false);	//背景の描画
 	int baseChipY = max(0, drawY - CHIPSIZE * 2);
 	int baseChipX = max(0, drawX - CHIPSIZE * 2);
 	for (int y = baseChipY / CHIPSIZE; y < ((drawY + window.WINDOW_HEIGHT - 50) / CHIPSIZE); y++) {
@@ -115,25 +98,26 @@ int Stage_Base::readMap(std::string file) {
 	std::string str;	//行を格納
 	std::string buf;	//値を格納
 	int temp;
-	//ファイルのオープン
-	std::ifstream ifs(file);
-	if (!ifs) return 1;
+	std::ifstream ifs(file);	//ファイルのオープン
+	if (!ifs) return -1;
 
-	for (int y = 0; y < this->MAP_HEIGHT; y++) {
-		getline(ifs, str);				//csvファイルを1行読み込む
+	while (getline(ifs, str)) {
+		std::vector<int> splited;
 		std::istringstream stream(str);
-		for (int x = 0; x < this->MAP_WIDTH; x++) {
-			getline(stream, buf, ',');	//カンマで区切る
+		while (getline(stream, buf, ',')) {
 			if (buf.size() != 0) {
 				temp = std::stoi(buf);		//int型に変更
 			}
 			else {
 				temp = 0;
 			}
-
-			this->vmap[y][x] = temp;			//vectorもアクセス方法は配列と同様に行える
+			splited.push_back(temp);
 		}
+		vmap.push_back(splited);
 	}
+	MAP_WIDTH = vmap[0].size();	//マップ幅の代表として一番最初を格納
+	MAP_HEIGHT = vmap.size();
+
 	ifs.close();
 	return 1;
 }
