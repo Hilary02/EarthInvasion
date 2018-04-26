@@ -15,5 +15,6 @@ private:
 	int x;
 	int y;
 	int imgSpark;
+	int frame;
 };
 

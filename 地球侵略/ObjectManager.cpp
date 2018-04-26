@@ -12,7 +12,7 @@ ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap, int stage) {
 	for (unsigned int i = 0; i < vmap.size(); i++) {
 		for (unsigned int j = 0; j < vmap[i].size(); j++) {
 			//ここを書き換えないと追加できないのはよくないと思う
-			if (vmap[i][j] == 4 || vmap[i][j] == (int)ObjectID::soldierA || vmap[i][j] == (int)ObjectID::healPot || vmap[i][j] == 99) {
+			if (vmap[i][j] == 6 || vmap[i][j] == 4 || vmap[i][j] == (int)ObjectID::soldierA || vmap[i][j] == (int)ObjectID::healPot || vmap[i][j] == 99) {
 				Object* obje;
 				int y = i * 32;	//y座標
 				int x = j * 32;	//x座標
@@ -21,6 +21,9 @@ ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap, int stage) {
 				switch ((ObjectID)vmap[i][j]) {
 				case ObjectID::spike:
 					obje = new SpikeBlock(x, y, img[9]);
+					break;
+				case ObjectID::spark:
+					obje = new Spark(x, y, img[6]);
 					break;
 				case ObjectID::soldierA:
 					obje = new Enemy(x, y, img[10], ObjectID::soldierA, this);
@@ -48,7 +51,7 @@ ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap, int stage) {
 					obje = new MoveGround(x, y, 2, 0.25, 0, img[3]);
 					break;
 				case ObjectID::lockedDoor:
-					obje = new LockedDoor(x, y, img[6]);
+					obje = new LockedDoor(x, y, img[12]);
 					break;
 				default:
 					break;
@@ -69,12 +72,11 @@ ObjectManager::~ObjectManager() {
 void ObjectManager::Loadimg() {
 	/* ステージによって読み込む画像も変わるのか？ */
 	img[3] = LoadGraph("data/img/moveGround.png");
-	img[6] = LoadGraph("data/img/lockDoor.png");
-
+	img[6] = LoadGraph("data/img/spark.png");
 	img[9] = LoadGraph("data/img/togetoge.png");
 	img[10] = LoadGraph("data/img/enemy1Wait.png");
 	img[11] = LoadGraph("data/img/");
-	img[12] = LoadGraph("data/img/");
+	img[12] = LoadGraph("data/img/lockDoor.png");
 	img[13] = LoadGraph("data/img/");
 	img[14] = LoadGraph("data/img/");
 	img[20] = LoadGraph("data/img/healPot.png");
