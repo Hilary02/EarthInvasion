@@ -1,12 +1,32 @@
 #pragma once
 
 enum class ObjectID {
-	none = 0,
-	soldierA = 4,	//一般兵士
-	healPot = 5,	//回復アイテム
-	spike = 9,		//とげとげ
-	lockedDoor = 6,	//閉じている扉
-	moveingFloor = 8,//動く床
+	none = 0, //何もない空間
+	inVisibleWall = 1, //見えない壁
+	ground = 2, //地面
+	colorDifGround = 3, //色違い地面
+	spike = 4,		//とげとげ
+	reverseSpike = 5, //逆とげ
+	spark = 6, //ビリビリ
+	fire = 7, //炎
+
+	hell = 9, //奈落（即死）
+
+	moveingFloor = 10,//動く床
+
+	difMoveGround = 11,//逆向きに動く地面（仮）
+	lockedDoor = 12,	//閉じている扉
+	alienLaser = 13, //エイリアンレーザー
+	
+	soldierA = 20,	//一般兵士
+	ltv = 21,  //中将
+	soldierB = 22, //ベテラン兵
+	venomMan = 23, //毒人間
+	caster = 24, //魔法使い
+
+	healPot = 30,	//回復アイテム
+	detoxificationPot = 31, //解毒薬
+
 	goal = 99,		//ゴール
 	playerBullet = 100,	//プレイヤーが撃った弾
 	enemyBullet = 104,	//兵士Aが撃った弾

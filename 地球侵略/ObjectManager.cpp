@@ -11,21 +11,22 @@ ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap, int stage) {
 	Loadimg();
 	for (unsigned int i = 0; i < vmap.size(); i++) {
 		for (unsigned int j = 0; j < vmap[i].size(); j++) {
-			if (vmap[i][j] == 4 || vmap[i][j] == 5 || vmap[i][j] == 9 || vmap[i][j] == 99) {
+			//ここを書き換えないと追加できないのはよくないと思う
+			if (vmap[i][j] == 4 || vmap[i][j] == (int)ObjectID::soldierA || vmap[i][j] == (int)ObjectID::healPot || vmap[i][j] == 99) {
 				Object* obje;
 				int y = i * 32;	//y座標
 				int x = j * 32;	//x座標
 				int path = 0;	//画像ハンドル
 				path = img[vmap[i][j]];
 				switch ((ObjectID)vmap[i][j]) {
+				case ObjectID::spike:
+					obje = new SpikeBlock(x, y, img[9]);
+					break;
 				case ObjectID::soldierA:
 					obje = new Enemy(x, y, img[10], ObjectID::soldierA, this);
 					break;
 				case ObjectID::healPot:
 					obje = new Item(x, y, img[20]);
-					break;
-				case ObjectID::spike:
-					obje = new SpikeBlock(x, y, img[9]);
 					break;
 				case ObjectID::goal:	//暫定ゴール
 					obje = new  Goal(x, y, img[21], stageId);
@@ -36,18 +37,18 @@ ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap, int stage) {
 				objects.push_back(obje);
 			}
 
-			if (vmap[i][j] == 6 || vmap[i][j] == 8) {
+			if (10 <= vmap[i][j] && vmap[i][j] <= 19) {
 				Object* obje;
 				int y = i * 32;	//y座標
 				int x = j * 32;	//x座標
 				int path = 0;	//画像ハンドル
 				path = img[vmap[i][j]];
 				switch ((ObjectID)vmap[i][j]) {
-				case ObjectID::lockedDoor:
-					obje = new LockedDoor(x, y, img[6]);
-					break;
 				case ObjectID::moveingFloor:	//動く床
 					obje = new MoveGround(x, y, 2, 0.25, 0, img[3]);
+					break;
+				case ObjectID::lockedDoor:
+					obje = new LockedDoor(x, y, img[6]);
 					break;
 				default:
 					break;
