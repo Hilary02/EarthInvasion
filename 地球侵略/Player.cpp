@@ -286,7 +286,7 @@ bool Player::MapHitCheck(int movedX, int movedY, char check)
 	case 0:
 		return true;
 		break;
-	case 1:
+	case (int)ObjectID::inVisibleWall:
 		if (check == 'x') {
 			if (movedX - x2 > 0)
 				cMove = movedX - x2 - (movedX % 32 + 1);
@@ -304,7 +304,7 @@ bool Player::MapHitCheck(int movedX, int movedY, char check)
 		}
 		return false;
 		break;
-	case 2:
+	case (int)ObjectID::ground:
 		if (check == 'x') {
 			if (movedX - x2 > 0)
 				cMove = movedX - x2 - (movedX % 32 + 1);
@@ -323,7 +323,7 @@ bool Player::MapHitCheck(int movedX, int movedY, char check)
 
 		return false;
 		break;
-	case 7:
+	case (int)ObjectID::colorDifGround:
 		if (check == 'x') {
 			if (movedX - x2 > 0)
 				cMove = movedX - x2 - (movedX % 32 + 1);
@@ -341,7 +341,7 @@ bool Player::MapHitCheck(int movedX, int movedY, char check)
 		}
 		return false;
 		break;
-	case 9:
+	case (int)ObjectID::spike:
 		if (movedY - y2 > 0) {
 			cMove = (movedY - y2) - (movedY % 32 + 1);
 		}

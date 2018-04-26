@@ -126,7 +126,7 @@ int Stage_Base::readMap(std::string file) {
 int Stage_Base::loadImg() {
 	//‰æ‘œ‚Ìİ’è
 	chipImg[2] = LoadGraph("data/img/groundFloor.png");
-	chipImg[7] = LoadGraph("data/img/airFloor.png");
+	chipImg[3] = LoadGraph("data/img/airFloor.png");
 	bgHand = LoadGraph("data/img/bg_factory.png");
 	int t;
 	GetGraphSize(bgHand, &bgWidth, &t);
