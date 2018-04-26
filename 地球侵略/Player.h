@@ -25,7 +25,7 @@ private:
 	int y1 = 0;
 	int y2 = 0;
 	int y3 = 0;
-	const int MOVE = 2;
+	const int MOVE = 3;
 	int drawCount = 0;
 	int cMove = 0;
 	void PerDecision();
