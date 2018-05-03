@@ -24,6 +24,7 @@ public:
 	void scrollMap();	// プレイヤーの座標から表示するマップの起点を決定する関数．
 
 private:
+	int readStage(std::string file);
 	int readMap(std::string file);
 	int loadImg();
 	int drawInfo();

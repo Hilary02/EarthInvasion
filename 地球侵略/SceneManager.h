@@ -6,6 +6,7 @@
 enum class scene : unsigned char {
 	None,
 	Title,
+	Select,
 	Game,
 	Config,
 	GameOver,
@@ -24,14 +25,14 @@ class SceneManager {
 public:
 	SceneManager();
 	~SceneManager();
-	void ChangeScene(scene,int param=0);
+	void ChangeScene(scene, int param = 0);
 	void update();
 	void Draw();
 
 private:
-	Scene_Frame* nowScene;    //シーン管理ポインタ
+	Scene_Frame * nowScene;    //シーン管理ポインタ
 	scene nextScene;    //次のシーン管理変数
-	int param=0;
+	int param = 0;
 };
 
 //SceneManager.cppで定義
