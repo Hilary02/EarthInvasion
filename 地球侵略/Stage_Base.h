@@ -44,9 +44,6 @@ private:
 	int playerY;
 	int time;
 
-
-
-
 	int lockdoor[3];        //ドア用格納配列
 	int moveground[2];      //動く床用配列
 

@@ -16,8 +16,9 @@ Stage_Base::Stage_Base(int stage) {
 
 	//マップ地形の読み込み
 	//ここを複数ステージ用に書き換え
-	readStageData(0);
-
+	if (readStageData(stage) == -1) {
+		printfDx("Read Error");
+	}
 	objectMgr = new ObjectManager(vmap, stageId);
 	//プレイヤー呼び出し
 	this->player = objectMgr->getPlayer();
@@ -98,15 +99,15 @@ void Stage_Base::scrollMap() {
 int Stage_Base::readStageData(int stage) {
 	std::string first = "data/stagedata/";
 	std::string type = "summary";
-	std::string id = std::to_string(0);	//ここをidに
+	std::string id = std::to_string(stage);	//ここをidに
 	std::string csv = ".csv";
 
 	std::string path = first + type + id + csv;
-	readSummary(path);
+	if(readSummary(path) ==-1) return -1;
 
 	type = "map";
 	path = first + type + id + csv;
-	readMap(path);
+	if (readMap(path) == -1) return -1;
 
 	return 0;
 }
