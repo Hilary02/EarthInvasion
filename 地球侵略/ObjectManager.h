@@ -5,14 +5,6 @@
 #include "Object.h"
 #include "Player.h"
 #include "Enemy.h"
-#include "Item.h"
-#include "MoveGround.h"
-#include "SpikeBlock.h"
-#include "IObjectManager.h"
-#include "Goal.h"
-#include "LockedDoor.h"
-
-
 
 class ObjectManager :
 	private IObjectManager {
@@ -26,9 +18,6 @@ public:
 
 	void update();
 	void Draw(int drawX, int drawY);
-
-	//std::map<int, int> img;
-	//‚±‚ê‚Í–³’ƒ‚©‚È getter‚Í‚Ü‚½Œã‚Å
 
 	//Object‚ğ’¼Ú“n‚µ‚Ä’Ç‰Á
 	void addObject(Object* obj) override;

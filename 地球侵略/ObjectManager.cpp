@@ -5,6 +5,13 @@
 #include <string>
 #include <sstream> //文字ストリーム
 
+#include "Item.h"
+#include "MoveGround.h"
+#include "SpikeBlock.h"
+#include "IObjectManager.h"
+#include "Goal.h"
+#include "LockedDoor.h"
+
 ObjectManager::ObjectManager() {
 	terrain.clear();
 }
@@ -16,29 +23,10 @@ ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap, int stage) {
 	for (unsigned int i = 0; i < vmap.size(); i++) {
 		for (unsigned int j = 0; j < vmap[i].size(); j++) {
 			//ここを書き換えないと追加できないのはよくないと思う
-			if (vmap[i][j] == 4 || vmap[i][j] == (int)ObjectID::soldierA || vmap[i][j] == (int)ObjectID::healPot || vmap[i][j] == 99) {
-				Object* obje;
+			if (4 <= vmap[i][j] && vmap[i][j] <= 9 || 20 <= vmap[i][j] && vmap[i][j] <= 39 || vmap[i][j] == 99) {
 				int y = i * 32;	//y座標
 				int x = j * 32;	//x座標
-				int path = 0;	//画像ハンドル
-				//path = img[vmap[i][j]];
-				switch ((ObjectID)vmap[i][j]) {
-				case ObjectID::spike:
-					obje = new SpikeBlock(x, y, img[ObjectID::spike]);
-					break;
-				case ObjectID::soldierA:
-					obje = new Enemy(x, y, img[ObjectID::soldierA], ObjectID::soldierA, this);
-					break;
-				case ObjectID::healPot:
-					obje = new Item(x, y, img[ObjectID::healPot]);
-					break;
-				case ObjectID::goal:	//暫定ゴール
-					obje = new  Goal(x, y, img[ObjectID::goal], stageId);
-					break;
-				default:
-					break;
-				}
-				objects.push_back(obje);
+				addObject(vmap[i][j], x, y);
 			}
 
 			if (10 <= vmap[i][j] && vmap[i][j] <= 19) {
@@ -46,7 +34,6 @@ ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap, int stage) {
 				int y = i * 32;	//y座標
 				int x = j * 32;	//x座標
 				int path = 0;	//画像ハンドル
-				//path = img[vmap[i][j]];
 				switch ((ObjectID)vmap[i][j]) {
 				case ObjectID::moveingFloor:	//動く床
 					obje = new MoveGround(x, y, 2, 0.25, 0, img[ObjectID::moveingFloor]);
@@ -139,18 +126,40 @@ void ObjectManager::Draw(int drawX, int drawY) {
 
 void ObjectManager::addObject(Object* obj) {
 	objects.push_back(obj);
-
 }
 
-
 void ObjectManager::addObject(int id, int x, int y, int hp, int moveUL, int moveRD, int etc1, int etc2) {
-
+	Object* obj;
+	switch ((ObjectID)id) {
+	case ObjectID::spike:
+		obj = new SpikeBlock(x, y, img[ObjectID::spike]);
+		break;
+	case ObjectID::soldierA:
+		//Enemyのコンストラクタをオーバーライドしてパラメータを渡せるようにしたい
+		obj = new Enemy(x, y, img[ObjectID::soldierA], ObjectID::soldierA, this);
+		break;
+	case ObjectID::healPot:
+		obj = new Item(x, y, img[ObjectID::healPot]);
+		break;
+	case ObjectID::goal:
+		obj = new Goal(x, y, img[ObjectID::goal], stageId);
+		break;
+	default:
+		break;
+	}
+	objects.push_back(obj);
 }
 
 std::vector<Object*>& ObjectManager::getObjectList() { return objects; }
 std::vector<Object*>& ObjectManager::getTerrainList() { return terrain; }
-int ObjectManager::getImageHandle(ObjectID id){
 
-	return 0;
+int ObjectManager::getImageHandle(ObjectID id) {
+	if (img.count(id) == 1) {
+		return img[id];
+	}
+	else {
+		printfDx("Don't have Handle!");
+		return 0;
+	}
 }
 Player* ObjectManager::getPlayer() { return player; }

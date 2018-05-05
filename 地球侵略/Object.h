@@ -19,7 +19,7 @@ enum class state {
 class Object {
 public:
 	Object();
-	Object(int x, int y, int handle);
+	Object(int x, int y);
 	~Object();
 	virtual int update(const Collision & playerCol);
 	virtual void Draw(int drawX, int drawY);
@@ -43,6 +43,7 @@ protected:
 	int colYSize = 64;
 	ObjectID id;
 
+	IObjectManager *iobj;
 	//ç¿ïW
 	int x, y;
 
