@@ -251,7 +251,7 @@ int Player::update() {
 		if (collision->doCollisonCheck(o->collision->hitRange)) { //当たり判定をとる
 			switch (o->getId()) {
 			case ObjectID::soldierA: //兵士
-				if (o->state != state::dead && !collision->playerState)modHp(-1);
+				if (o->state == State::alive && !collision->playerState)modHp(-1);
 				break;
 			case ObjectID::healPot: //回復ポッド
 				modHp(5);

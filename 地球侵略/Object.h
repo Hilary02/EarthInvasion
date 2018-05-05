@@ -5,7 +5,7 @@
 #include "IObjectManager.h"
 
 //Enemy‚È‚Ç‚ÌŠÇ——p‚É
-enum class state {
+enum class State {
 	none,
 	alive,
 	dead,
@@ -33,19 +33,18 @@ public:
 
 	Collision* collision;
 	//‚»‚Ì‚¤‚¿private‚É•Ï‚¦‚é
-	state state = state::none;
+	State state = State::none;
 
 protected:
+	//À•W
+	int x, y;
+	int imgHandle;
+	ObjectID id;
+	IObjectManager *iobj;
+
 	//“–‚½‚è”»’è‚Ì‘å‚«‚³
 	int colXOffset = 0;
 	int colYOffset = 0;
 	int colXSize = 32;
 	int colYSize = 64;
-	ObjectID id;
-
-	IObjectManager *iobj;
-	//À•W
-	int x, y;
-
-	int imgHandle;
 };
