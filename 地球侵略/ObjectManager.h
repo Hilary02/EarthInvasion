@@ -19,9 +19,9 @@ public:
 	void update();
 	void Draw(int drawX, int drawY);
 
-	//Object‚ğ’¼Ú“n‚µ‚Ä’Ç‰Á
+	//Object?ğ’¼Ú“n???Ä’Ç‰?
 	void addObject(Object* obj) override;
-	//ƒpƒ‰ƒ[ƒ^w’è‚ÅObject’Ç‰Á moveUL,RD‚Í‚»‚ê‚¼‚êˆÚ“®ãŒÀ‚Ì‹——£‚ğw’è‚·‚éBˆµ‚¢•û‚ÍObjectŸ‘æB
+	//?p?????[?^?w??Object?Ç‰? moveUL,RD?Í‚??ê‚¼???????Ì‹?????w?è‚·??????????bject????
 	void addObject(int id, int x, int y, int hp = -1, int moveUL = -1, int moveRD = -1, int etc1 = -1, int etc2 = -1);
 
 	std::vector<Object*>& getObjectList() override;

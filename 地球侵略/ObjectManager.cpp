@@ -8,6 +8,7 @@
 #include "Item.h"
 #include "MoveGround.h"
 #include "SpikeBlock.h"
+#include "spark.h"
 #include "IObjectManager.h"
 #include "Goal.h"
 #include "LockedDoor.h"
@@ -22,7 +23,6 @@ ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap, int stage) {
 	Loadimg();
 	for (unsigned int i = 0; i < vmap.size(); i++) {
 		for (unsigned int j = 0; j < vmap[i].size(); j++) {
-			//ここを書き換えないと追加できないのはよくないと思う
 			if (4 <= vmap[i][j] && vmap[i][j] <= 9 || 20 <= vmap[i][j] && vmap[i][j] <= 39 || vmap[i][j] == 99) {
 				int y = i * 32;	//y座標
 				int x = j * 32;	//x座標
@@ -85,6 +85,7 @@ int ObjectManager::readScenario(std::string file) {
 void ObjectManager::Loadimg() {
 	/* ステージによって読み込む画像も変わるのか？ */
 	img[ObjectID::spike] = LoadGraph("data/img/togetoge.png");
+	img[ObjectID::spark] = LoadGraph("data/img/spark.png");
 	img[ObjectID::moveingFloor] = LoadGraph("data/img/moveGround.png");
 	img[ObjectID::lockedDoor] = LoadGraph("data/img/lockDoor.png");
 
@@ -134,6 +135,9 @@ void ObjectManager::addObject(int id, int x, int y, int hp, int moveUL, int move
 	switch ((ObjectID)id) {
 	case ObjectID::spike:
 		obj = new SpikeBlock(x, y, img[ObjectID::spike]);
+		break;
+	case ObjectID::spark:
+		obj = new Spark(x, y, img[ObjectID::spark]);
 		break;
 	case ObjectID::soldierA:
 		//Enemyのコンストラクタをオーバーライドしてパラメータを渡せるようにしたい

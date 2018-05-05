@@ -44,6 +44,7 @@
     <ClCompile Include="Scene_Select.cpp" />
     <ClCompile Include="Scene_Title.cpp" />
     <ClCompile Include="SoundManager.cpp" />
+    <ClCompile Include="Spark.cpp" />
     <ClCompile Include="SpikeBlock.cpp" />
     <ClCompile Include="Stage_Base.cpp" />
     <ClCompile Include="TextBox.cpp" />
@@ -79,6 +80,7 @@
     <ClInclude Include="Scene_Title.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="SoundManager.h" />
+    <ClInclude Include="Spark.h" />
     <ClInclude Include="SpikeBlock.h" />
     <ClInclude Include="Stage_Base.h" />
     <ClInclude Include="TextBox.h" />
