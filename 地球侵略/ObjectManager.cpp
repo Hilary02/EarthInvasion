@@ -8,7 +8,7 @@
 #include "Item.h"
 #include "MoveGround.h"
 #include "SpikeBlock.h"
-#include "spark.h"
+#include "Spark.h"
 #include "IObjectManager.h"
 #include "Goal.h"
 #include "LockedDoor.h"

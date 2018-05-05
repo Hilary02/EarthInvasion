@@ -30,7 +30,7 @@ void AntiAlienLaser::update(const Collision) {
 void AntiAlienLaser::Draw(int drawX, int drawY) {
 	int tempX = x - drawX;
 	int tempY = y - drawY;
-
+	/*
 	switch (id) {
 	case 1:
 		if (timer) {
@@ -44,11 +44,14 @@ void AntiAlienLaser::Draw(int drawX, int drawY) {
 		break;
 
 	}
+	*/
 }
 
 void loadImg() {
-	LoadDivGraph("data/img/LaserA_Wait.png", 1, 1, 1, 32, 64, laserImg);
+	/*
+	LoadDivGraph("data/img/LaserA_Wait.png", 1, 1, 1, 32, 64, laserImg[0]);
 	LoadDivGraph("data/img/LaserA_Shoot.png", 1, 1, 1, 64, 32, laserImg[1]);
 	LoadDivGraph("data/img/LaserB_Wait.png", 1, 1, 1, 32, 64, laserImg[10]);
 	LoadDivGraph("data/img/LaserB_shoot.png", 1, 1, 1, 32, 64, laserImg[11]);
+	*/
 }

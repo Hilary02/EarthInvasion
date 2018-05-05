@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AntiAlienLaser.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="Creature.cpp" />
@@ -51,6 +52,7 @@
     <ClCompile Include="WindowData.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AntiAlienLaser.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="Collision.h" />
     <ClInclude Include="Creature.h" />
@@ -78,7 +80,6 @@
     <ClInclude Include="Scene_Gameover.h" />
     <ClInclude Include="Scene_Select.h" />
     <ClInclude Include="Scene_Title.h" />
-    <ClInclude Include="Singleton.h" />
     <ClInclude Include="SoundManager.h" />
     <ClInclude Include="Spark.h" />
     <ClInclude Include="SpikeBlock.h" />
