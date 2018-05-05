@@ -2,6 +2,7 @@
 #include <DxLib.h>
 #include "Collision.h"
 #include "ObjectID.h"
+#include "IObjectManager.h"
 
 //Enemy‚È‚Ç‚ÌŠÇ——p‚É
 enum class state {

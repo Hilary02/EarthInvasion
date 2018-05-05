@@ -135,7 +135,7 @@ int Player::update() {
 			bulletCT = 0;
 			Bullet* objBull = new Bullet(x, y, bulletHandle, right, ObjectID::playerBullet);
 			bullets.push_back(objBull);
-			IobjMgr->setObjectList(objBull);
+			IobjMgr->addObject(objBull);
 		}
 	}
 

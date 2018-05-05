@@ -1,6 +1,6 @@
 #include "Enemy.h"
 #include "DxLib.h"
-#include "ObjectManager.h"
+//#include "ObjectManager.h"
 #include "KeyManager.h"
 
 Enemy::Enemy() {}
@@ -211,7 +211,7 @@ void Enemy::AtackCommon()
 		atkCt = 0;
 		Bullet* objBull = new Bullet(x, y, bulletHandle, isRight, ObjectID::enemyBullet);
 		bullets.push_back(objBull);
-		IobjMgr->setObjectList(objBull);
+		IobjMgr->addObject(objBull);
 	}
 }
 

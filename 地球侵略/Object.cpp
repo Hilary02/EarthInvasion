@@ -5,7 +5,6 @@ Object::Object()
 }
 
 Object::Object(int x, int y, int handle) {
-
 }
 
 Object::~Object() {
