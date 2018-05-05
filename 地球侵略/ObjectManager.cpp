@@ -42,6 +42,7 @@ ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap, int stage) {
 					obje = new LockedDoor(x, y, img[ObjectID::lockedDoor]);
 					break;
 				default:
+					return;
 					break;
 				}
 				terrain.push_back(obje);	//こちらは地形に保存
@@ -145,6 +146,7 @@ void ObjectManager::addObject(int id, int x, int y, int hp, int moveUL, int move
 		obj = new Goal(x, y, img[ObjectID::goal], stageId);
 		break;
 	default:
+		return;
 		break;
 	}
 	objects.push_back(obj);
