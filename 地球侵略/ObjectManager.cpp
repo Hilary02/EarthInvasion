@@ -29,7 +29,7 @@ ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap, int stage) {
 					obje = new Item(x, y, img[20]);
 					break;
 				case ObjectID::goal:	//暫定ゴール
-					obje = new  Goal(x, y, img[21], stageId);
+					obje = new  Goal(x, y, img[99], stageId);
 					break;
 				default:
 					break;
@@ -48,7 +48,7 @@ ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap, int stage) {
 					obje = new MoveGround(x, y, 2, 0.25, 0, img[3]);
 					break;
 				case ObjectID::lockedDoor:
-					obje = new LockedDoor(x, y, img[6]);
+					obje = new LockedDoor(x, y, img[int(ObjectID::lockedDoor)]);
 					break;
 				default:
 					break;
@@ -69,16 +69,16 @@ ObjectManager::~ObjectManager() {
 void ObjectManager::Loadimg() {
 	/* ステージによって読み込む画像も変わるのか？ */
 	img[3] = LoadGraph("data/img/moveGround.png");
-	img[6] = LoadGraph("data/img/lockDoor.png");
-
+	img[(int)(ObjectID::lockedDoor)] = LoadGraph("data/img/lockDoor.png");
+	printfDx("%d", (ObjectID::lockedDoor));
 	img[9] = LoadGraph("data/img/togetoge.png");
 	img[10] = LoadGraph("data/img/enemy1Wait.png");
 	img[11] = LoadGraph("data/img/");
 	img[12] = LoadGraph("data/img/");
 	img[13] = LoadGraph("data/img/");
 	img[14] = LoadGraph("data/img/");
-	img[20] = LoadGraph("data/img/healPot.png");
-	img[21] = LoadGraph("data/img/clear.png"); //ゴール
+	img[30] = LoadGraph("data/img/healPot.png");
+	img[99] = LoadGraph("data/img/clear.png"); //ゴール
 }
 
 void ObjectManager::update() {
