@@ -134,7 +134,7 @@ int Player::update() {
 			bulletCT = 0;
 			Bullet* objBull = new Bullet(x, y, bulletHandle, right, ObjectID::playerBullet);
 			bullets.push_back(objBull);
-			IobjMgr->setObjectList(objBull);
+			IobjMgr->addObject(objBull);
 		}
 	}
 
@@ -249,12 +249,15 @@ int Player::update() {
 		if (collision->doCollisonCheck(o->collision->hitRange)) { //当たり判定をとる
 			switch (o->getId()) {
 			case ObjectID::soldierA: //兵士
-				if (o->state != state::dead && !collision->playerState)modHp(-1);
+				if (o->state == State::alive && !collision->playerState)modHp(-1);
 				break;
 			case ObjectID::healPot: //回復ポッド
 				modHp(5);
 				break;
 			case ObjectID::spike: //とげとげ
+				modHp(-1);
+				break;
+			case ObjectID::spark:
 				modHp(-1);
 				break;
 			case ObjectID::enemyBullet: //一般兵の弾

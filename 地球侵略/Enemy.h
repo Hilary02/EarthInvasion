@@ -45,7 +45,6 @@ private:
 	bool drawIcon = false;
 	bool isPlayerAtk = false;
 	bool isRight = false;
-	bool dead = false;
 	bool isMove = true;
 	bool isAtacck = false;
 	bool isNotice = false;

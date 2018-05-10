@@ -1,6 +1,5 @@
 #include "Enemy.h"
 #include "DxLib.h"
-#include "ObjectManager.h"
 #include "KeyManager.h"
 
 Enemy::Enemy() {}
@@ -35,19 +34,21 @@ Enemy::Enemy(int x, int y, int img, ObjectID id, IObjectManager* Iobj) {
 	iconHandle = LoadGraph("data/img/exclamation.png");
 	collision = new Collision(16, 0, 20, 64);
 	AttackBox = new Collision(32, colYOffset, -160, colYSize);
+	state = State::alive;
 }
 
 int Enemy::update(const Collision & playerCol) {
-	counter++;
-	atkCt += addCount;
-	HpCt += addCount;
-	collision->updatePos(x, y);
-	AttackBox->updatePos(x, y);
-	collisionCheck(playerCol);
-
 	DeadCheck();
-	if (!dead)
+	if (state == State::alive)
 	{
+		counter++;
+		atkCt += addCount;
+		HpCt += addCount;
+		collision->updatePos(x, y);
+		AttackBox->updatePos(x, y);
+		collisionCheck(playerCol);
+		isRight = IsRangeCheck();
+
 		for (auto &bull : bullets)
 		{
 			index++;
@@ -58,6 +59,11 @@ int Enemy::update(const Collision & playerCol) {
 
 		}
 		index = -1;
+	}
+	if (state == State::respawn
+		&& abs(playerCol.hitRange.xPos - this->x) >= 600) {
+		state = State::alive;
+		hp = 3;
 	}
 
 	if (endNotice == 0xFFFFFF) {}
@@ -73,7 +79,7 @@ int Enemy::update(const Collision & playerCol) {
 		if (collision->doCollisonCheck(o->collision->hitRange)) { //当たり判定をとる
 			switch (o->getId()) {
 			case ObjectID::playerBullet: //プレイヤーの弾
-				if (state != state::dead)modHp(-3);
+				if (state == State::alive)modHp(-3);
 				break;
 			default:
 				break;
@@ -81,14 +87,12 @@ int Enemy::update(const Collision & playerCol) {
 		}
 	}
 
-	if (dead) {
-		//（死亡状態 かつ）寄生キー，接触中
-		if (keyM.GetKeyFrame(KEY_INPUT_X) >= 1) {
-			if (collision->doCollisonCheck((playerCol.hitRange))) {
-				remove = true;
-			}
-		}
+	if (state == State::dead
+		&& keyM.GetKeyFrame(KEY_INPUT_X) >= 1
+		&& collision->doCollisonCheck((playerCol.hitRange))) {
+		state = State::respawn;
 	}
+
 	if (remove) {
 		removeCount--;
 		if (removeCount == 0) return -1;
@@ -118,18 +122,18 @@ int Enemy::update(const Collision & playerCol) {
 void Enemy::Draw(int drawX, int drawY) {
 	//DrawBox(collision->hitRange.xPos + collision->hitRange.xOffset - drawX, collision->hitRange.yPos + collision->hitRange.yOffset - drawY, collision->hitRange.xPos + collision->hitRange.xOffset + collision->hitRange.xSize - drawX, collision->hitRange.yPos + collision->hitRange.yOffset + collision->hitRange.ySize - drawY, 0xFF00FF, false);
 	//DrawBox(AttackBox->hitRange.xPos + AttackBox->hitRange.xOffset -drawX, AttackBox->hitRange.yPos + AttackBox->hitRange.yOffset - drawY, AttackBox->hitRange.xPos + AttackBox->hitRange.xOffset - drawX+AttackBox->hitRange.xSize, AttackBox->hitRange.yPos + AttackBox->hitRange.yOffset - drawY+AttackBox->hitRange.ySize, 0x00FF00, false);
-
-	isRight = IsRangeCheck();
-	if (isRight)
-	{
-		DrawTurnGraph(x - drawX, y - drawY, imgHandle, true);
-	}
-	else
-	{
-		DrawGraph(x - drawX, y - drawY, imgHandle, true);
-	}
-	if (drawIcon) {
-		DrawGraph(x - drawX + 20, y - drawY - 20, iconHandle, TRUE);
+	if (state != State::respawn) {
+		if (isRight)
+		{
+			DrawTurnGraph(x - drawX, y - drawY, imgHandle, true);
+		}
+		else
+		{
+			DrawGraph(x - drawX, y - drawY, imgHandle, true);
+		}
+		if (drawIcon) {
+			DrawGraph(x - drawX + 20, y - drawY - 20, iconHandle, TRUE);
+		}
 	}
 
 }
@@ -137,7 +141,6 @@ void Enemy::Draw(int drawX, int drawY) {
 void Enemy::collisionCheck(const Collision & target) {
 	int isCol = collision->doCollisonCheck((target.hitRange));
 	int attackR = AttackBox->doCollisonCheck((target.hitRange));
-
 
 	if (!isPlayerAtk) {
 
@@ -173,7 +176,7 @@ void Enemy::collisionCheck(const Collision & target) {
 
 void Enemy::MoveCommon()
 {
-	if (!isMove && !dead)
+	if (!isMove && state == State::alive)
 	{
 		drawcount = 0;
 		isMove = true;
@@ -181,7 +184,7 @@ void Enemy::MoveCommon()
 	}
 
 	movedis = 1;
-	if (dead)movedis = 0;
+	if (state == State::dead)movedis = 0;
 
 	if (isRight)
 	{
@@ -192,14 +195,14 @@ void Enemy::MoveCommon()
 		x -= movedis;
 	}
 	imgHandle = walkHandle[(drawcount / 8) % 8];
-	drawcount += addCount;
+	if (state == State::alive) drawcount += addCount;
 
 	//if (drawcount == 72) drawcount = 0;
 }
 
 void Enemy::AtackCommon()
 {
-	if (!isAtacck && !dead)
+	if (!isAtacck && state == State::alive)
 	{
 		drawcount = 0;
 		isMove = false;
@@ -207,27 +210,28 @@ void Enemy::AtackCommon()
 	}
 	movedis = 0;
 	imgHandle = atackHandle[(drawcount / 12) % 8];
-	drawcount += addCount;
-	if (atkCt > 104 && !dead && drawcount > 48)
+	if (state == State::alive) drawcount += addCount;
+	if (atkCt > 104 && state == State::alive && drawcount > 48)
 	{
 		atkCt = 0;
 		Bullet* objBull = new Bullet(x, y, bulletHandle, isRight, ObjectID::enemyBullet);
 		bullets.push_back(objBull);
-		IobjMgr->setObjectList(objBull);
+		IobjMgr->addObject(objBull);
 	}
 }
 
 void Enemy::DeadCheck() {
-	if (getHp() <= 0) {
-		if (!dead) drawcount = 0, dead = true;
-		if (drawcount > 84) addCount = 0;
-		imgHandle = deadHandle[(drawcount / 12) % 8];
-		drawcount += addCount;
-		state = state::dead;
+	if (this->hp <= 0 && state == State::alive) {
+		state = State::dead;
+		drawcount = 0;
 		for (auto &bull : bullets) {
 			bull->setState(-1);
 		}
 		bullets.clear();
+	}
+	if (state == State::dead) {
+		if (drawcount < 84) { drawcount++; }
+		imgHandle = deadHandle[(drawcount / 12) % 8];
 	}
 }
 
@@ -244,5 +248,10 @@ bool Enemy::IsRangeCheck() {
 }
 
 bool Enemy::getDeadState() {
-	return dead;
+	if (state != State::alive) {
+		return true;
+	}
+	else {
+		return false;
+	}
 }

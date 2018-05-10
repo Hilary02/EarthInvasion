@@ -5,14 +5,6 @@
 #include "Object.h"
 #include "Player.h"
 #include "Enemy.h"
-#include "Item.h"
-#include "MoveGround.h"
-#include "SpikeBlock.h"
-#include "IObjectManager.h"
-#include "Goal.h"
-#include "LockedDoor.h"
-
-
 
 class ObjectManager :
 	private IObjectManager {
@@ -21,20 +13,21 @@ public:
 	ObjectManager(std::vector<std::vector <int>> vmap, int stage);
 	~ObjectManager();
 
+	int readScenario(std::string file);
 	void Loadimg();
 
 	void update();
 	void Draw(int drawX, int drawY);
 
-	std::map<int, int> img;
-	//Ç±ÇÍÇÕñ≥íÉÇ©Ç» getterÇÕÇ‹ÇΩå„Ç≈
-
-	Player* getPlayer();
-
-	void setObjectList(Object* obj) override;
+	//Object?íºê⁄ìn???ƒí«â?
+	void addObject(Object* obj) override;
+	//?p?????[?^?w??Object?«â? moveUL,RD?ÕÇ??ÍÇº???????Ãã?????w?ËÇ∑??????????bject????
+	void addObject(int id, int x, int y, int hp = -1, int moveUL = -1, int moveRD = -1, int etc1 = -1, int etc2 = -1);
 
 	std::vector<Object*>& getObjectList() override;
-	std::vector<Object*>& getTerrainList()override;
+	std::vector<Object*>& getTerrainList() override;
+	int getImageHandle(ObjectID id) override;
+	Player* getPlayer();
 
 
 private:
@@ -42,4 +35,5 @@ private:
 	Player *player;
 	std::vector<Object*> objects;
 	std::vector<Object*> terrain;
+	std::map<ObjectID, int> img;
 };
