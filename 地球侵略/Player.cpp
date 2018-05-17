@@ -21,7 +21,7 @@ Player::~Player() {
 int Player::update() {
 	debugMode();
 	PerDecision();
-	if (!isAttack && !isDead && isMoving == 'N') { 
+	if (!isAttack && !isDead && isMoving == 'N') {
 		if (keyM.GetKeyFrame(KEY_INPUT_LEFT) >= 1) {
 			right = false;
 			xyCheck = 'x';
@@ -42,7 +42,7 @@ int Player::update() {
 				x += cMove;
 			}
 		}
-		if (!isJumping && !isLiquid) { 
+		if (!isJumping && !isLiquid) {
 			if (keyM.GetKeyFrame(KEY_INPUT_UP) == 1) {
 				isJumping = true;
 				jumpPower = -6;
@@ -193,7 +193,7 @@ int Player::update() {
 		isJumping = false;
 		jumpPower = 0;
 	}
-	
+
 	collision->updatePos(x, y);
 
 	//地形オブジェクトとの当たり判定をとり，位置の修正
@@ -241,7 +241,7 @@ int Player::update() {
 		if (collision->doCollisonCheck(o->collision->hitRange)) { //当たり判定をとる
 			switch (o->getId()) {
 			case ObjectID::soldierA: //兵士
-				if (o->state == State::alive && !(collision->playerState==1))modHp(-1);
+				if (o->state == State::alive && !(collision->playerState == 1))modHp(-1);
 				break;
 			case ObjectID::healPot: //回復ポッド
 				modHp(5);
@@ -428,7 +428,7 @@ void Player::Draw(int drawX, int drawY) {
 		}
 		break;
 
-	case 'A':	
+	case 'A':
 		if (isJumping) {
 			if (jumpPower <= 1 && jumpPower >= -1)
 				MyDraw(tempX, tempY, jump[11], right);
@@ -476,7 +476,7 @@ void Player::Draw(int drawX, int drawY) {
 		}
 		break;
 
-	case'B':	
+	case'B':
 		if (isJumping) {
 
 		}
@@ -493,7 +493,7 @@ void Player::Draw(int drawX, int drawY) {
 		}
 		break;
 
-	case'C':	
+	case'C':
 		if (isJumping) {
 
 		}
@@ -508,7 +508,7 @@ void Player::Draw(int drawX, int drawY) {
 		}
 		break;
 
-	case'W':	
+	case'W':
 		if (keyM.GetKeyFrame(KEY_INPUT_RIGHT) >= 1) {
 			drawCount = keyM.GetKeyFrame(KEY_INPUT_RIGHT) / 15 % 4;
 			DrawGraph(tempX, tempY, move[drawCount], TRUE);

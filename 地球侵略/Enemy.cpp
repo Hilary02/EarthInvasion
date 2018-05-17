@@ -28,11 +28,11 @@ Enemy::Enemy(int x, int y, int img, ObjectID id, IObjectManager* Iobj) {
 		spped = 2;
 		atkInterval = 52;
 	}
-	
+
 	LoadDivGraph("data/img/enemy1Walk.png", 8, 4, 2, 64, 64, walkHandle);
 	LoadDivGraph("data/img/enemy1WaitForAtack.png", 4, 4, 1, 64, 64, atackHandle);
 	LoadDivGraph("data/img/enemy1Atack.png", 4, 4, 1, 64, 64, &atackHandle[4]);
-	LoadDivGraph("data/img/enemy1Die.png", 8, 4, 2, 64	, 64, deadHandle);
+	LoadDivGraph("data/img/enemy1Die.png", 8, 4, 2, 64, 64, deadHandle);
 	bulletHandle = LoadGraph("data/img/bullet.png");
 	damegeHandle = LoadGraph("data/img/enemy1Damage.png");
 	iconHandle = LoadGraph("data/img/exclamation.png");
@@ -58,7 +58,7 @@ int Enemy::update(const Collision & playerCol) {
 			index++;
 			if (!bull->isOutOfRange() || bull->collisionCheck(playerCol))
 			{
-				bullets.erase(bullets.begin() + index);
+				bull->setState(-1);
 			}
 
 		}
@@ -193,7 +193,7 @@ void Enemy::MoveCommon()
 	if (isRight)
 	{
 		x += movedis;
-	}	
+	}
 	else
 	{
 		x -= movedis;

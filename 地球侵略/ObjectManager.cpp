@@ -104,6 +104,7 @@ void ObjectManager::update() {
 		int n = obj->update(*(player->collision));
 		if (n == -1) {
 			objects.erase(objects.begin() + i);
+			i--;
 		}
 		i++;
 	}
@@ -112,6 +113,7 @@ void ObjectManager::update() {
 		int n = ter->update(*(player->collision));
 		if (n == -1) {
 			terrain.erase(terrain.begin() + i);
+			i--;
 		}
 		i++;
 	}
