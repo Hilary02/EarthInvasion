@@ -154,7 +154,7 @@ int Player::update() {
 				switch (o->getId())
 				{
 				case ObjectID::soldierA:
-					bull->setState(-1);
+					if (o->state == State::alive)bull->setState(-1);
 					break;
 				default:
 					break;
@@ -192,18 +192,7 @@ int Player::update() {
 		isJumping = false;
 		jumpPower = 0;
 	}
-
-	updateCT += 1;
-	if (!collision->playerState)
-	{
-		collision->updatePos(x, y);
-	}
-	else if (collision->playerState && updateCT > 60)
-	{
-		collision->playerState = 0;
-		updateCT = 0;
-	}
-
+	
 	//地形オブジェクトとの当たり判定をとり，位置の修正
 	for (auto t : IobjMgr->getTerrainList()) {
 		if (collision->doCollisonCheck(t->collision->hitRange)) {
@@ -249,7 +238,7 @@ int Player::update() {
 		if (collision->doCollisonCheck(o->collision->hitRange)) { //当たり判定をとる
 			switch (o->getId()) {
 			case ObjectID::soldierA: //兵士
-				if (o->state == State::alive && !collision->playerState)modHp(-1);
+				if (o->state == State::alive && !(collision->playerState==1))modHp(-1);
 				break;
 			case ObjectID::healPot: //回復ポッド
 				modHp(5);
@@ -267,7 +256,20 @@ int Player::update() {
 				break;
 			}
 		}
+
 	}
+
+	updateCT += 1;
+	if (!collision->playerState)
+	{
+		collision->updatePos(x, y);
+	}
+	else if (collision->playerState && updateCT > 60)
+	{
+		collision->playerState = 0;
+		updateCT = 0;
+	}
+
 
 
 
