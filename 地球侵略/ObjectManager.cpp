@@ -26,6 +26,7 @@ ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap, int stage) {
 			if (4 <= vmap[i][j] && vmap[i][j] <= 9 || 20 <= vmap[i][j] && vmap[i][j] <= 39 || vmap[i][j] == 99) {
 				int y = i * 32;	//y座標
 				int x = j * 32;	//x座標
+
 				addObject(vmap[i][j], x, y);
 			}
 
