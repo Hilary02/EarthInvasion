@@ -104,7 +104,7 @@ int Player::update() {
 			drawCount = 0;
 		}
 	}
-	collision->updatePos(x, y);
+	//collision->updatePos(x, y);
 
 	//通常状態の攻撃処理 
 	if (isAttack && plState == 'N' && drawCount >= 25 && drawCount <= 32) {
@@ -164,6 +164,7 @@ int Player::update() {
 	}
 	bulletindex = -1;
 
+	//ジャンプ中の処理
 	if (isJumping) {
 		xyCheck = 'y';
 		if ((MapHitCheck(x1, y2 + jumpPower, xyCheck) && MapHitCheck(x2, y2 + jumpPower, xyCheck) && MapHitCheck(x3, y2 + jumpPower, xyCheck))
@@ -193,6 +194,8 @@ int Player::update() {
 		jumpPower = 0;
 	}
 	
+	collision->updatePos(x, y);
+
 	//地形オブジェクトとの当たり判定をとり，位置の修正
 	for (auto t : IobjMgr->getTerrainList()) {
 		if (collision->doCollisonCheck(t->collision->hitRange)) {
@@ -260,18 +263,11 @@ int Player::update() {
 	}
 
 	updateCT += 1;
-	if (!collision->playerState)
-	{
-		collision->updatePos(x, y);
-	}
-	else if (collision->playerState && updateCT > 60)
+	if (collision->playerState && updateCT > 60)
 	{
 		collision->playerState = 0;
 		updateCT = 0;
 	}
-
-
-
 
 	if (hp <= 0 && !isDead) {
 		isDead = true;
@@ -360,7 +356,7 @@ bool Player::MapHitCheck(int movedX, int movedY, char check)
 }
 
 void Player::Draw(int drawX, int drawY) {
-	//DrawBox(collision->hitRange.xPos + collision->hitRange.xOffset - drawX, collision->hitRange.yPos + collision->hitRange.yOffset - drawY, collision->hitRange.xPos + collision->hitRange.xOffset + collision->hitRange.xSize - drawX, collision->hitRange.yPos + collision->hitRange.yOffset + collision->hitRange.ySize - drawY, 0xFF00FF, false);
+	DrawBox(collision->hitRange.xPos + collision->hitRange.xOffset - drawX, collision->hitRange.yPos + collision->hitRange.yOffset - drawY, collision->hitRange.xPos + collision->hitRange.xOffset + collision->hitRange.xSize - drawX, collision->hitRange.yPos + collision->hitRange.yOffset + collision->hitRange.ySize - drawY, 0xFF00FF, false);
 
 	int tempX = x - drawX;
 	int tempY = y - drawY;
