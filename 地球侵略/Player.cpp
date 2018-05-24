@@ -255,6 +255,9 @@ int Player::update() {
 			case ObjectID::enemyBullet: //一般兵の弾
 				modHp(-3);
 				break;
+			case ObjectID::fire:
+				modHp(-1);
+				break;
 			default:
 				break;
 			}

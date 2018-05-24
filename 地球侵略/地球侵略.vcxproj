@@ -24,6 +24,7 @@
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="Creature.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="Fire.cpp" />
     <ClCompile Include="FPS.cpp" />
     <ClCompile Include="GameMain.cpp" />
     <ClCompile Include="Goal.cpp" />
@@ -57,6 +58,7 @@
     <ClInclude Include="Collision.h" />
     <ClInclude Include="Creature.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="Fire.h" />
     <ClInclude Include="FPS.h" />
     <ClInclude Include="GameMain.h" />
     <ClInclude Include="Goal.h" />

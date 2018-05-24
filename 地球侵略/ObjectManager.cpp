@@ -9,6 +9,7 @@
 #include "MoveGround.h"
 #include "SpikeBlock.h"
 #include "Spark.h"
+#include "Fire.h"
 #include "IObjectManager.h"
 #include "Goal.h"
 #include "LockedDoor.h"
@@ -87,6 +88,7 @@ void ObjectManager::Loadimg() {
 	/* ステージによって読み込む画像も変わるのか？ */
 	img[ObjectID::spike] = LoadGraph("data/img/togetoge.png");
 	img[ObjectID::spark] = LoadGraph("data/img/spark.png");
+	img[ObjectID::fire] = LoadGraph("data/img/fire.png");
 	img[ObjectID::moveingFloor] = LoadGraph("data/img/moveGround.png");
 	img[ObjectID::lockedDoor] = LoadGraph("data/img/lockDoor.png");
 
@@ -142,6 +144,9 @@ void ObjectManager::addObject(int id, int x, int y, int hp, int moveUL, int move
 		break;
 	case ObjectID::spark:
 		obj = new Spark(x, y, img[ObjectID::spark]);
+		break;
+	case ObjectID::fire:
+		obj = new Fire(x, y, img[ObjectID::fire]);
 		break;
 	case ObjectID::soldierA:
 		//Enemyのコンストラクタをオーバーライドしてパラメータを渡せるようにしたい
