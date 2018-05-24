@@ -27,6 +27,7 @@ ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap, int stage) {
 			if (4 <= vmap[i][j] && vmap[i][j] <= 9 || 20 <= vmap[i][j] && vmap[i][j] <= 39 || vmap[i][j] == 99) {
 				int y = i * 32;	//y座標
 				int x = j * 32;	//x座標
+
 				addObject(vmap[i][j], x, y);
 			}
 
@@ -92,6 +93,7 @@ void ObjectManager::Loadimg() {
 	img[ObjectID::lockedDoor] = LoadGraph("data/img/lockDoor.png");
 
 	img[ObjectID::soldierA] = LoadGraph("data/img/enemy1Wait.png");
+	img[ObjectID::soldierB] = LoadGraph("data/img/enemy1Wait.png");
 	img[ObjectID::healPot] = LoadGraph("data/img/healPot.png");
 	img[ObjectID::goal] = LoadGraph("data/img/clear.png");
 }
@@ -104,6 +106,7 @@ void ObjectManager::update() {
 		int n = obj->update(*(player->collision));
 		if (n == -1) {
 			objects.erase(objects.begin() + i);
+			i--;
 		}
 		i++;
 	}
@@ -112,6 +115,7 @@ void ObjectManager::update() {
 		int n = ter->update(*(player->collision));
 		if (n == -1) {
 			terrain.erase(terrain.begin() + i);
+			i--;
 		}
 		i++;
 	}
@@ -147,6 +151,10 @@ void ObjectManager::addObject(int id, int x, int y, int hp, int moveUL, int move
 	case ObjectID::soldierA:
 		//Enemyのコンストラクタをオーバーライドしてパラメータを渡せるようにしたい
 		obj = new Enemy(x, y, img[ObjectID::soldierA], ObjectID::soldierA, this);
+		break;
+	case ObjectID::soldierB:
+		//Enemyのコンストラクタをオーバーライドしてパラメータを渡せるようにしたい
+		obj = new Enemy(x, y, img[ObjectID::soldierB], ObjectID::soldierB, this);
 		break;
 	case ObjectID::healPot:
 		obj = new Item(x, y, img[ObjectID::healPot]);

@@ -8,7 +8,8 @@ SpikeBlock::SpikeBlock(int x, int y, int img) {
 	this->y = y;
 	this->imgSpike = img;
 	this->id = ObjectID::spike;
-	collision = new Collision(0 - 2, 0 - 2, 256, 64);
+
+	collision = new Collision(0 - 2, 0 - 2, 32, 16);
 }
 
 int SpikeBlock::update(const Collision & playerCol)
@@ -19,8 +20,7 @@ int SpikeBlock::update(const Collision & playerCol)
 	return 0;
 }
 
-void SpikeBlock::Draw(int drawX, int drawY)
-{
+void SpikeBlock::Draw(int drawX, int drawY) {
 	DrawGraph(x - drawX, y - drawY, imgSpike, true);
 }
 

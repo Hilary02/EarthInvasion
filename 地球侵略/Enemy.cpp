@@ -18,7 +18,17 @@ Enemy::Enemy(int x, int y, int img, ObjectID id, IObjectManager* Iobj) {
 	{
 		setHp(3);
 		setAtk(3);
+		spped = 1;
+		atkInterval = 104;
 	}
+	else if (id == ObjectID::soldierB)
+	{
+		setHp(15);
+		setAtk(5);
+		spped = 2;
+		atkInterval = 52;
+	}
+
 	LoadDivGraph("data/img/enemy1Walk.png", 8, 4, 2, 64, 64, walkHandle);
 	LoadDivGraph("data/img/enemy1WaitForAtack.png", 4, 4, 1, 64, 64, atackHandle);
 	LoadDivGraph("data/img/enemy1Atack.png", 4, 4, 1, 64, 64, &atackHandle[4]);
@@ -46,15 +56,11 @@ int Enemy::update(const Collision & playerCol) {
 		for (auto &bull : bullets)
 		{
 			index++;
-			if (!bull->Update())
+			if (!bull->isOutOfRange() || bull->collisionCheck(playerCol))
 			{
-				bullets.erase(bullets.begin() + index);
+				bull->setState(-1);
 			}
 
-			if (bull->collisionCheck(playerCol))
-			{
-				bullets.erase(bullets.begin() + index);
-			}
 		}
 		index = -1;
 	}
@@ -181,7 +187,7 @@ void Enemy::MoveCommon()
 		isAtacck = false;
 	}
 
-	movedis = 1;
+	movedis = spped;
 	if (state == State::dead)movedis = 0;
 
 	if (isRight)
@@ -195,7 +201,6 @@ void Enemy::MoveCommon()
 	imgHandle = walkHandle[(drawcount / 8) % 8];
 	if (state == State::alive) drawcount += addCount;
 
-	//if (drawcount == 72) drawcount = 0;
 }
 
 void Enemy::AtackCommon()
@@ -208,14 +213,16 @@ void Enemy::AtackCommon()
 	}
 	movedis = 0;
 	imgHandle = atackHandle[(drawcount / 12) % 8];
+	hundleIndex = (drawcount / 12) % 8;
 	if (state == State::alive) drawcount += addCount;
-	if (atkCt > 104 && state == State::alive && drawcount > 48)
+	if (atkCt > atkInterval && state == State::alive && hundleIndex == 5)
 	{
 		atkCt = 0;
 		Bullet* objBull = new Bullet(x, y, bulletHandle, isRight, ObjectID::enemyBullet);
 		bullets.push_back(objBull);
 		IobjMgr->addObject(objBull);
 	}
+	if ((drawcount / 12) > 8 && hundleIndex == 0)drawcount = 0; //drawcountのリセット
 }
 
 void Enemy::DeadCheck() {
