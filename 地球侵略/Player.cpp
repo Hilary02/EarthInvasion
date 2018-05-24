@@ -106,6 +106,38 @@ int Player::update() {
 	}
 	//collision->updatePos(x, y);
 
+	//ジャンプ中の処理
+	if (isJumping) {
+		xyCheck = 'y';
+		if ((MapHitCheck(x1, y2 + jumpPower, xyCheck) && MapHitCheck(x2, y2 + jumpPower, xyCheck) && MapHitCheck(x3, y2 + jumpPower, xyCheck))
+			&& (MapHitCheck(x1, y1 + jumpPower, xyCheck) && MapHitCheck(x2, y1 + jumpPower, xyCheck) && MapHitCheck(x3, y1 + jumpPower, xyCheck))) {
+			y += jumpPower;
+			clock++;
+			if (clock >= 5) {
+				if (jumpPower <= 4)
+					jumpPower += 1;
+				clock = 0;
+			}
+		}
+		else {
+			y += cMove;
+		}
+	}
+	else {
+		jumpPower = 0;
+	}
+
+	xyCheck = 'y';
+	if (MapHitCheck(x1, y2 + 1, xyCheck) && MapHitCheck(x2, y2 + 1, xyCheck) && MapHitCheck(x3, y2 + 1, xyCheck)) {
+		isJumping = true;
+	}
+	else if (jumpPower > 0) {
+		isJumping = false;
+		jumpPower = 0;
+	}
+
+	collision->updatePos(x, y);
+
 	//通常状態の攻撃処理 
 	if (isAttack && plState == 'N' && drawCount >= 25 && drawCount <= 32) {
 		collision->playerState = 1;
@@ -163,38 +195,6 @@ int Player::update() {
 		}
 	}
 	bulletindex = -1;
-
-	//ジャンプ中の処理
-	if (isJumping) {
-		xyCheck = 'y';
-		if ((MapHitCheck(x1, y2 + jumpPower, xyCheck) && MapHitCheck(x2, y2 + jumpPower, xyCheck) && MapHitCheck(x3, y2 + jumpPower, xyCheck))
-			&& (MapHitCheck(x1, y1 + jumpPower, xyCheck) && MapHitCheck(x2, y1 + jumpPower, xyCheck) && MapHitCheck(x3, y1 + jumpPower, xyCheck))) {
-			y += jumpPower;
-			clock++;
-			if (clock >= 5) {
-				if (jumpPower <= 4)
-					jumpPower += 1;
-				clock = 0;
-			}
-		}
-		else {
-			y += cMove;
-		}
-	}
-	else {
-		jumpPower = 0;
-	}
-
-	xyCheck = 'y';
-	if (MapHitCheck(x1, y2 + 1, xyCheck) && MapHitCheck(x2, y2 + 1, xyCheck) && MapHitCheck(x3, y2 + 1, xyCheck)) {
-		isJumping = true;
-	}
-	else if (jumpPower > 0) {
-		isJumping = false;
-		jumpPower = 0;
-	}
-
-	collision->updatePos(x, y);
 
 	//地形オブジェクトとの当たり判定をとり，位置の修正
 	for (auto t : IobjMgr->getTerrainList()) {
