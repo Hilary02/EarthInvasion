@@ -21,8 +21,7 @@ Player::~Player() {
 int Player::update() {
 	debugMode();
 	PerDecision();
-	//?L?[???͂̏???
-	if (!isAttack && !isDead && isMoving == 'N') { //???[?V???????Ǝ??S???̓L?[???͖???
+	if (!isAttack && !isDead && isMoving == 'N') {
 		if (keyM.GetKeyFrame(KEY_INPUT_LEFT) >= 1) {
 			right = false;
 			xyCheck = 'x';
@@ -43,7 +42,7 @@ int Player::update() {
 				x += cMove;
 			}
 		}
-		if (!isJumping && !isLiquid) { //?W?????v?Ɖt?󉻂??Ă鎞?ɓ????Ȃ?
+		if (!isJumping && !isLiquid) {
 			if (keyM.GetKeyFrame(KEY_INPUT_UP) == 1) {
 				isJumping = true;
 				jumpPower = -6;
@@ -52,7 +51,7 @@ int Player::update() {
 				isAttack = true;
 				drawCount = 0;
 			}
-			if (plState == 'N') { //?????????݂̂ł??鏈??
+			if (plState == 'N') {
 				if (keyM.GetKeyFrame(KEY_INPUT_DOWN) >= 1) {
 					isLiquid = true;
 					isMoving = 'L';
@@ -105,6 +104,38 @@ int Player::update() {
 			drawCount = 0;
 		}
 	}
+	//collision->updatePos(x, y);
+
+	//ジャンプ中の処理
+	if (isJumping) {
+		xyCheck = 'y';
+		if ((MapHitCheck(x1, y2 + jumpPower, xyCheck) && MapHitCheck(x2, y2 + jumpPower, xyCheck) && MapHitCheck(x3, y2 + jumpPower, xyCheck))
+			&& (MapHitCheck(x1, y1 + jumpPower, xyCheck) && MapHitCheck(x2, y1 + jumpPower, xyCheck) && MapHitCheck(x3, y1 + jumpPower, xyCheck))) {
+			y += jumpPower;
+			clock++;
+			if (clock >= 5) {
+				if (jumpPower <= 4)
+					jumpPower += 1;
+				clock = 0;
+			}
+		}
+		else {
+			y += cMove;
+		}
+	}
+	else {
+		jumpPower = 0;
+	}
+
+	xyCheck = 'y';
+	if (MapHitCheck(x1, y2 + 1, xyCheck) && MapHitCheck(x2, y2 + 1, xyCheck) && MapHitCheck(x3, y2 + 1, xyCheck)) {
+		isJumping = true;
+	}
+	else if (jumpPower > 0) {
+		isJumping = false;
+		jumpPower = 0;
+	}
+
 	collision->updatePos(x, y);
 
 	//通常状態の攻撃処理 
@@ -135,7 +166,7 @@ int Player::update() {
 			bulletCT = 0;
 			Bullet* objBull = new Bullet(x, y, bulletHandle, right, ObjectID::playerBullet);
 			bullets.push_back(objBull);
-			IobjMgr->setObjectList(objBull);
+			IobjMgr->addObject(objBull);
 		}
 	}
 
@@ -143,7 +174,7 @@ int Player::update() {
 	for (auto &bull : bullets)
 	{
 		bulletindex++;
-		if (!bull->Update())
+		if (!bull->isOutOfRange())
 		{
 			bullets.erase(bullets.begin() + bulletindex);
 		}
@@ -155,7 +186,7 @@ int Player::update() {
 				switch (o->getId())
 				{
 				case ObjectID::soldierA:
-					bull->setState(-1);
+					if (o->state == State::alive)bull->setState(-1);
 					break;
 				default:
 					break;
@@ -164,47 +195,6 @@ int Player::update() {
 		}
 	}
 	bulletindex = -1;
-
-	//?W?????v???̏???
-	if (isJumping) {
-		xyCheck = 'y';
-		if ((MapHitCheck(x1, y2 + jumpPower, xyCheck) && MapHitCheck(x2, y2 + jumpPower, xyCheck) && MapHitCheck(x3, y2 + jumpPower, xyCheck))
-			&& (MapHitCheck(x1, y1 + jumpPower, xyCheck) && MapHitCheck(x2, y1 + jumpPower, xyCheck) && MapHitCheck(x3, y1 + jumpPower, xyCheck))) {
-			y += jumpPower;
-			clock++;
-			if (clock >= 5) {
-				if (jumpPower <= 4)
-					jumpPower += 1;
-				clock = 0;
-			}
-		}
-		else {
-			y += cMove;
-		}
-	}
-	else {
-		jumpPower = 0;
-	}
-
-	xyCheck = 'y';
-	if (MapHitCheck(x1, y2 + 1, xyCheck) && MapHitCheck(x2, y2 + 1, xyCheck) && MapHitCheck(x3, y2 + 1, xyCheck)) {
-		isJumping = true;
-	}
-	else if (jumpPower > 0) {
-		isJumping = false;
-		jumpPower = 0;
-	}
-
-	updateCT += 1;
-	if (!collision->playerState)
-	{
-		collision->updatePos(x, y);
-	}
-	else if (collision->playerState && updateCT > 60)
-	{
-		collision->playerState = 0;
-		updateCT = 0;
-	}
 
 	//地形オブジェクトとの当たり判定をとり，位置の修正
 	for (auto t : IobjMgr->getTerrainList()) {
@@ -251,7 +241,7 @@ int Player::update() {
 		if (collision->doCollisonCheck(o->collision->hitRange)) { //当たり判定をとる
 			switch (o->getId()) {
 			case ObjectID::soldierA: //兵士
-				if (o->state != state::dead && !collision->playerState)modHp(-1);
+				if (o->state == State::alive && !(collision->playerState == 1))modHp(-1);
 				break;
 			case ObjectID::healPot: //回復ポッド
 				modHp(5);
@@ -265,13 +255,22 @@ int Player::update() {
 			case ObjectID::enemyBullet: //一般兵の弾
 				modHp(-3);
 				break;
+			case ObjectID::fire:
+				modHp(-1);
+				break;
 			default:
 				break;
 			}
 		}
+
 	}
 
-
+	updateCT += 1;
+	if (collision->playerState && updateCT > 60)
+	{
+		collision->playerState = 0;
+		updateCT = 0;
+	}
 
 	if (hp <= 0 && !isDead) {
 		isDead = true;
@@ -360,7 +359,7 @@ bool Player::MapHitCheck(int movedX, int movedY, char check)
 }
 
 void Player::Draw(int drawX, int drawY) {
-	//DrawBox(collision->hitRange.xPos + collision->hitRange.xOffset - drawX, collision->hitRange.yPos + collision->hitRange.yOffset - drawY, collision->hitRange.xPos + collision->hitRange.xOffset + collision->hitRange.xSize - drawX, collision->hitRange.yPos + collision->hitRange.yOffset + collision->hitRange.ySize - drawY, 0xFF00FF, false);
+	DrawBox(collision->hitRange.xPos + collision->hitRange.xOffset - drawX, collision->hitRange.yPos + collision->hitRange.yOffset - drawY, collision->hitRange.xPos + collision->hitRange.xOffset + collision->hitRange.xSize - drawX, collision->hitRange.yPos + collision->hitRange.yOffset + collision->hitRange.ySize - drawY, 0xFF00FF, false);
 
 	int tempX = x - drawX;
 	int tempY = y - drawY;
@@ -432,7 +431,7 @@ void Player::Draw(int drawX, int drawY) {
 		}
 		break;
 
-	case 'A':	//????A
+	case 'A':
 		if (isJumping) {
 			if (jumpPower <= 1 && jumpPower >= -1)
 				MyDraw(tempX, tempY, jump[11], right);
@@ -480,7 +479,7 @@ void Player::Draw(int drawX, int drawY) {
 		}
 		break;
 
-	case'B':	//????B
+	case'B':
 		if (isJumping) {
 
 		}
@@ -497,7 +496,7 @@ void Player::Draw(int drawX, int drawY) {
 		}
 		break;
 
-	case'C':	//????C
+	case'C':
 		if (isJumping) {
 
 		}
@@ -512,7 +511,7 @@ void Player::Draw(int drawX, int drawY) {
 		}
 		break;
 
-	case'W':	//????
+	case'W':
 		if (keyM.GetKeyFrame(KEY_INPUT_RIGHT) >= 1) {
 			drawCount = keyM.GetKeyFrame(KEY_INPUT_RIGHT) / 15 % 4;
 			DrawGraph(tempX, tempY, move[drawCount], TRUE);
@@ -608,35 +607,24 @@ void Player::modHp(int mod) {
 		hp += mod;
 	}
 }
-//?摜?ǂݍ???
+
 void Player::LoadImg()
 {
-	//?????j???[?g????
+
 	LoadDivGraph("data/img/eeyanWait.png", 4, 4, 1, 64, 64, wait);
-	//??????s
 	LoadDivGraph("data/img/eeyanMove.png", 4, 4, 1, 64, 64, move);
-	//?????W?????v
 	LoadDivGraph("data/img/eeyanJump.png", 4, 4, 1, 64, 64, jump);
-	//?????t??
 	LoadDivGraph("data/img/eeyanEkijouka.png", 4, 4, 1, 64, 64, liquid);
 	LoadDivGraph("data/img/eeyanEkijoukaMove.png", 4, 4, 1, 64, 64, &liquid[5]);
-	//?????U??
 	LoadDivGraph("data/img/eeyanAttack.png", 8, 4, 2, 64, 64, attack);
-	//??????
 	LoadDivGraph("data/img/eeyanParasite.png", 8, 4, 2, 64, 64, parasite);
 	LoadDivGraph("data/img/eeyanParasiteOut.png", 8, 4, 2, 64, 64, &parasite[10]);
-	//???????S
 	LoadDivGraph("data/img/eeyanDie.png", 16, 4, 4, 64, 64, die);
 
-	//????A?j???[?g????
 	LoadDivGraph("data/img/enemy1WaitP.png", 1, 1, 1, 64, 64, &wait[10]);
-	//????A??s
 	LoadDivGraph("data/img/enemy1WalkP.png", 8, 4, 2, 64, 64, &move[10]);
-	//????A?W?????v
 	LoadDivGraph("data/img/enemy1JumpP.png", 4, 4, 1, 64, 64, &jump[10]);
-	//????A?U??
 	LoadDivGraph("data/img/enemy1WaitForAtackP.png", 4, 4, 1, 64, 64, &attack[10]);
 	LoadDivGraph("data/img/enemy1AtackP.png", 4, 4, 1, 64, 64, &attack[14]);
-	//????A???S
 	LoadDivGraph("data/img/enemy1DieP.png", 8, 4, 2, 64, 64, &die[20]);
 }

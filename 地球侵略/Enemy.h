@@ -42,16 +42,17 @@ private:
 	int count = 0;  // enemyのdrawcountを所々でplayerの様に0に戻すとこれいらない
 	int counter = 0;	//カウンタ系統一したほうがいいのでは？
 	int endNotice = 0xFFFFFF;
+	int spped = 0;
+	int atkInterval = 0;
+	int hundleIndex = 0; //if文の画像配列のindex判定に使用
 	bool drawIcon = false;
 	bool isPlayerAtk = false;
 	bool isRight = false;
-	bool dead = false;
 	bool isMove = true;
 	bool isAtacck = false;
 	bool isNotice = false;
 
 	int index = -1;
-	//bool rangeFlg;
 
 	std::vector<Bullet*> bullets;
 

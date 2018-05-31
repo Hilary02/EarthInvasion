@@ -1,11 +1,18 @@
 #include "SoundManager.h"
+#include "SaveData.h"
 
 SoundManager SoundM;
 
-SoundManager::SoundManager(){}
+SoundManager::SoundManager() {
+	SaveData::get_instance().load();
+	bgmVolume = SaveData::get_instance().getBGMVol();
+	seVolume = SaveData::get_instance().getSEVol();
+}
 
-
-SoundManager::~SoundManager(){
+SoundManager::~SoundManager() {
+	SaveData::get_instance().setBGMVol(bgmVolume);
+	SaveData::get_instance().setSEVol(seVolume);
+	SaveData::get_instance().save();
 	DeleteSoundMem(bgm);
 	DeleteSoundMem(se);
 }
@@ -14,7 +21,7 @@ void SoundManager::SetSound(int bgm) {					//SetSound(LoadSoundMem("File")
 	StopSoundMem(this->bgm);
 	DeleteSoundMem(this->bgm);		//後片付けは大事．解放しないとメモリリークの原因になる．
 	SoundManager::bgm = bgm;
-	ChangeVolumeSoundMem(bgmVolume,SoundManager::bgm);
+	ChangeVolumeSoundMem(bgmVolume, SoundManager::bgm);
 }
 
 void SoundManager::SoundVolume(int number) {

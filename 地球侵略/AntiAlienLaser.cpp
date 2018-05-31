@@ -13,7 +13,7 @@ AntiAlienLaser::~AntiAlienLaser()
 
 AntiAlienLaser::AntiAlienLaser(int x, int y, int hundle, ObjectID id)
 {
-	loadImg();
+	LoadImg();
 	this->x = x;
 	this->y = y;
 	this->imgHandle = hundle;
@@ -34,7 +34,8 @@ int AntiAlienLaser::update(const Collision &pl) {
 	return 1;
 }
 
-void AntiAlienLaser::Draw(int drawX, int drawY) {
+void AntiAlienLaser::Draw(int drawX, int drawY)
+{
 	int tempX = x - drawX;
 	int tempY = y - drawY;
 
@@ -46,19 +47,17 @@ void AntiAlienLaser::Draw(int drawX, int drawY) {
 		for (int i = 0; i < 5; i++) {
 			DrawGraph(tempX, tempY + i * 64 + 32, laserImg[(timer - 240) / 15 % 4 + 5], TRUE);
 		}
+		if (timer >= 420)
+			timer = 0;
+		DrawBox(collision->hitRange.xPos + collision->hitRange.xOffset - drawX,
+			collision->hitRange.yPos + collision->hitRange.yOffset - drawY,
+			collision->hitRange.xPos + collision->hitRange.xOffset + collision->hitRange.xSize - drawX,
+			collision->hitRange.yPos + collision->hitRange.yOffset + collision->hitRange.ySize - drawY,
+			0xFF00FF, false);
 	}
-	if (timer >= 420)
-		timer = 0;
-	DrawGraph(tempX, tempY, laserImg[0], TRUE);
-	DrawBox(collision->hitRange.xPos + collision->hitRange.xOffset - drawX,
-		collision->hitRange.yPos + collision->hitRange.yOffset - drawY,
-		collision->hitRange.xPos + collision->hitRange.xOffset + collision->hitRange.xSize - drawX,
-		collision->hitRange.yPos + collision->hitRange.yOffset + collision->hitRange.ySize - drawY,
-		0xFF00FF, false);
 }
 
-
-void AntiAlienLaser::loadImg() {
+void AntiAlienLaser::LoadImg() {
 	LoadDivGraph("data/img/LaserA_Wait.png", 1, 1, 1, 64, 32, laserImg);
 	LoadDivGraph("data/img/LaserA_Shoot.png", 1, 1, 1, 64, 32, &laserImg[1]);
 	LoadDivGraph("data/img/LaserBeemA.png", 4, 4, 1, 64, 64, &laserImg[5]);

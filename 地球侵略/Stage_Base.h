@@ -24,6 +24,8 @@ public:
 	void scrollMap();	// プレイヤーの座標から表示するマップの起点を決定する関数．
 
 private:
+	int readStageData(int id);
+	int readSummary(std::string file);
 	int readMap(std::string file);
 	int loadImg();
 	int drawInfo();
@@ -35,6 +37,12 @@ private:
 	int chipImg[10];		//マップチップ格納用配列
 	int bgHand;				//背景画像格納配列
 	int bgWidth;
+
+	int chipsetId;
+	int bgmId;
+	int playerX;
+	int playerY;
+	int time;
 
 	int lockdoor[3];        //ドア用格納配列
 	int moveground[2];      //動く床用配列
@@ -59,7 +67,6 @@ private:
 
 	//制限時間（）
 
-	LONGLONG time;
 	LONGLONG timeLimit;
 	int leftTime;
 
