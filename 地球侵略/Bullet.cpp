@@ -4,23 +4,6 @@ Bullet::Bullet()
 {
 }
 
-/*Bullet::Bullet(int x, int y , int Hundle, bool isRight)
-{
-	if (isRight)
-	{
-		this->x = x + 60;
-	}
-	else
-	{
-		this->x = x;
-	}
-	this->y = y + 30;
-	this->imgHandle = Hundle;
-	isR = isRight;
-
-	collision = new Collision(0, 0, 16, 16);
-}*/
-
 Bullet::Bullet(int x, int y, int Hundle, bool isRight, ObjectID id)
 {
 	if (isRight)
@@ -44,21 +27,10 @@ Bullet::~Bullet()
 {
 }
 
-bool Bullet::Update()
+bool Bullet::isOutOfRange()
 {
-	collision->updatePos(x, y);
-
-	if (isR) {
-		x += MOVEDIS;
-	}
-	else
-	{
-		x -= MOVEDIS;
-	}
-	remit++;
 	if (remit > 120)
 	{
-		//remit = 0;
 		return false;
 	}
 	else
@@ -77,8 +49,19 @@ void Bullet::Draw(int drawX, int drawY)
 
 int Bullet::update(const Collision & playerCol)
 {
-	collision->updatePos(x, y);
+	//collision->updatePos(x, y);
 	int isCol = collision->doCollisonCheck((playerCol.hitRange));
+	collision->updatePos(x, y);
+
+	if (isR) {
+		x += MOVEDIS;
+	}
+	else
+	{
+		x -= MOVEDIS;
+	}
+	remit++;
+
 	if (isCol)
 	{
 		CT++;

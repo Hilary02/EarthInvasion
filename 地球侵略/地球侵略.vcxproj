@@ -19,10 +19,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AntiAlienLaser.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="Creature.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="Fire.cpp" />
     <ClCompile Include="FPS.cpp" />
     <ClCompile Include="GameMain.cpp" />
     <ClCompile Include="Goal.cpp" />
@@ -41,6 +43,7 @@
     <ClCompile Include="Scene_Frame.cpp" />
     <ClCompile Include="Scene_Game.cpp" />
     <ClCompile Include="Scene_Gameover.cpp" />
+    <ClCompile Include="Scene_Select.cpp" />
     <ClCompile Include="Scene_Title.cpp" />
     <ClCompile Include="SoundManager.cpp" />
     <ClCompile Include="Spark.cpp" />
@@ -50,10 +53,12 @@
     <ClCompile Include="WindowData.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AntiAlienLaser.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="Collision.h" />
     <ClInclude Include="Creature.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="Fire.h" />
     <ClInclude Include="FPS.h" />
     <ClInclude Include="GameMain.h" />
     <ClInclude Include="Goal.h" />
@@ -75,8 +80,8 @@
     <ClInclude Include="Scene_Frame.h" />
     <ClInclude Include="Scene_Game.h" />
     <ClInclude Include="Scene_Gameover.h" />
+    <ClInclude Include="Scene_Select.h" />
     <ClInclude Include="Scene_Title.h" />
-    <ClInclude Include="Singleton.h" />
     <ClInclude Include="SoundManager.h" />
     <ClInclude Include="Spark.h" />
     <ClInclude Include="SpikeBlock.h" />

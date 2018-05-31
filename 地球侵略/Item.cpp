@@ -17,6 +17,7 @@ Item::Item(int x, int y, int img)
 	this->y = y;
 	this->imgHandle = img;
 	this->id = ObjectID::healPot;
+
 	collision = new Collision(0, 0, 64, 64);
 }
 

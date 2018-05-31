@@ -30,7 +30,7 @@ private:
 	int cMove = 0;
 	void PerDecision();
 	void LoadImg();
-	bool MapHitCheck(int , int , char);
+	bool MapHitCheck(int, int, char);
 	void MyDraw(int, int, int, bool);
 	int jumpPower = 0;
 	double speed = 10.0;
@@ -50,7 +50,7 @@ private:
 	int parasite[20];
 	int die[30];
 
-	int invalidDamageTime=120;
+	int invalidDamageTime = 120;
 
 	int updateCT = 51;
 	//bulletŠÖ˜A‚Ì•Ï”

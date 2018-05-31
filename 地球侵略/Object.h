@@ -2,9 +2,10 @@
 #include <DxLib.h>
 #include "Collision.h"
 #include "ObjectID.h"
+#include "IObjectManager.h"
 
 //Enemy‚È‚Ç‚ÌŠÇ——p‚É
-enum class state {
+enum class State {
 	none,
 	alive,
 	dead,
@@ -18,7 +19,7 @@ enum class state {
 class Object {
 public:
 	Object();
-	Object(int x, int y, int handle);
+	Object(int x, int y);
 	~Object();
 	virtual int update(const Collision & playerCol);
 	virtual void Draw(int drawX, int drawY);
@@ -32,18 +33,18 @@ public:
 
 	Collision* collision;
 	//‚»‚Ì‚¤‚¿private‚É•Ï‚¦‚é
-	state state = state::none;
+	State state = State::none;
 
 protected:
+	//À•W
+	int x, y;
+	int imgHandle;
+	ObjectID id;
+	IObjectManager *iobj;
+
 	//“–‚½‚è”»’è‚Ì‘å‚«‚³
 	int colXOffset = 0;
 	int colYOffset = 0;
 	int colXSize = 32;
 	int colYSize = 64;
-	ObjectID id;
-
-	//À•W
-	int x, y;
-
-	int imgHandle;
 };

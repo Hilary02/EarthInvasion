@@ -12,19 +12,20 @@ Stage_Base::Stage_Base() {}
 
 Stage_Base::Stage_Base(int stage) {
 	stageId = stage;
-	SoundM.SetSound(LoadSoundMem("data/mc/ビルの屋上、危険伴わず.wav"));
+	SoundM.SetSound(LoadSoundMem("data/mc/stageBGM1.ogg"));
 
 	//マップ地形の読み込み
 	//ここを複数ステージ用に書き換え
-	readMap("data/map/stage0.csv");
+	if (readStageData(stage) == -1) {
+		printfDx("Read Error");
+	}
 	objectMgr = new ObjectManager(vmap, stageId);
 	//プレイヤー呼び出し
 	this->player = objectMgr->getPlayer();
+	player->setAbsolutePos(playerX, playerY);
 
 
 	//制限時間 ttp://nanoappli.com/blog/archives/3229
-	time = 180'000;
-	//DXライブラリの機能ではなくC++の機能で実装したい
 	//現在，一時停止とか完全に無視して時間が進む
 	timeLimit = GetNowCount() + time;
 
@@ -88,10 +89,50 @@ void Stage_Base::scrollMap() {
 	int baseDrawX = player->getX() - 100;
 	int baseDrawY = player->getY() - 300;
 	int limitDrawX = MAP_WIDTH * CHIPSIZE - window.WINDOW_WIDTH;
-	int limitDrawY = MAP_HEIGHT* CHIPSIZE - window.WINDOW_HEIGHT + 150;
+	int limitDrawY = MAP_HEIGHT * CHIPSIZE - window.WINDOW_HEIGHT + 150;
 
 	drawX = min(max(0, baseDrawX), limitDrawX);
 	drawY = min(max(0, baseDrawY), limitDrawY);
+}
+
+//もっとスマートな方法ないかな？
+int Stage_Base::readStageData(int stage) {
+	std::string first = "data/stagedata/";
+	std::string type = "summary";
+	std::string id = std::to_string(stage);	//ここをidに
+	std::string csv = ".csv";
+
+	std::string path = first + type + id + csv;
+	if(readSummary(path) ==-1) return -1;
+
+	type = "map";
+	path = first + type + id + csv;
+	if (readMap(path) == -1) return -1;
+
+	return 0;
+}
+
+int Stage_Base::readSummary(std::string file) {
+	std::string str;	//行を格納
+	std::string buf;	//値を格納
+	std::vector<int> splited;
+
+	std::ifstream ifs(file);	//ファイルのオープン
+	if (!ifs) return -1;
+
+	getline(ifs, str);	//先頭行の読み飛ばし
+	getline(ifs, str);	//2行目だけ読む
+	std::istringstream stream(str);
+	while (getline(stream, buf, ',')) {
+		splited.push_back(std::stoi(buf));
+	}
+
+	chipsetId = splited[0];
+	bgmId = splited[1];
+	playerX = splited[2];
+	playerY = splited[3];
+	time = splited[4] * 1000;	//msに変換
+	return 0;
 }
 
 int Stage_Base::readMap(std::string file) {
@@ -145,7 +186,7 @@ int Stage_Base::drawInfo() {
 	//HP表示欄 MAX15まで
 	DrawFormatString(infoX + 40, infoY + 40, 0x000000, "HP:");
 	for (int i = 0; i < 15; i++) {
-		int x = infoX + 65 + i*(hpbar_width + 2);
+		int x = infoX + 65 + i * (hpbar_width + 2);
 		if (i < player->getHp()) {
 			DrawGraph(x, infoY + 40, img_hpbar, false);
 		}
