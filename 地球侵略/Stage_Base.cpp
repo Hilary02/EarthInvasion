@@ -12,7 +12,7 @@ Stage_Base::Stage_Base() {}
 
 Stage_Base::Stage_Base(int stage) {
 	stageId = stage;
-	SoundM.SetSound(LoadSoundMem("data/mc/ビルの屋上、危険伴わず.wav"));
+	SoundM.SetSound(LoadSoundMem("data/mc/stageBGM1.ogg"));
 
 	//マップ地形の読み込み
 	//ここを複数ステージ用に書き換え

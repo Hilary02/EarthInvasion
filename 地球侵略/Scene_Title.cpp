@@ -20,7 +20,7 @@ RootmenuElement TitleMenu[TITLE_NUM] = {	//ÀÛ‚Ì’l‚Ìİ’è
 };
 
 Scene_Title::Scene_Title() {
-	SoundM.SetSound(LoadSoundMem("data/mc/ƒƒjƒ…[‰æ–Ê.wav"));
+	SoundM.SetSound(LoadSoundMem("data/mc/menu1.ogg"));
 	bg = LoadGraph("data/img/bg_title.png");
 	cursor = LoadGraph("data/img/cursor.png");
 }
