@@ -218,7 +218,7 @@ void Enemy::AtackCommon()
 	if (atkCt > atkInterval && state == State::alive && hundleIndex == 5)
 	{
 		atkCt = 0;
-		Bullet* objBull = new Bullet(x, y, bulletHandle, isRight, ObjectID::enemyBullet);
+		Bullet* objBull = new Bullet(x, y, bulletHandle, isRight, ObjectID::enemyBulletA);
 		bullets.push_back(objBull);
 		IobjMgr->addObject(objBull);
 	}

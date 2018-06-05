@@ -291,7 +291,7 @@ int Player::update() {
 			case ObjectID::spark:
 				modHp(-1);
 				break;
-			case ObjectID::enemyBullet: //一般兵の弾
+			case ObjectID::enemyBulletA: //一般兵の弾
 				modHp(-3);
 				break;
 			case ObjectID::fire:

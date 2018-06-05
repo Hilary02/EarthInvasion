@@ -29,5 +29,6 @@ enum class ObjectID {
 
 	goal = 99,		//ƒS[ƒ‹
 	playerBullet = 100,	//ƒvƒŒƒCƒ„[‚ªŒ‚‚Á‚½’e
-	enemyBullet = 104,	//•ºmA‚ªŒ‚‚Á‚½’e
+	enemyBulletA = 104,	//•ºmA‚ªŒ‚‚Á‚½’e
+	enemyBulletB = 105, //•ºmB‚ªŒ‚‚Á‚½’e
 };
