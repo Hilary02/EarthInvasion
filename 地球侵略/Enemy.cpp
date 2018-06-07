@@ -45,7 +45,6 @@ int Enemy::update(const Collision & playerCol) {
 	DeadCheck();
 	if (state == State::alive)
 	{
-		counter++;
 		atkCt += addCount;
 		HpCt += addCount;
 		collision->updatePos(x, y);
@@ -68,13 +67,16 @@ int Enemy::update(const Collision & playerCol) {
 		&& abs(playerCol.hitRange.xPos - this->x) >= 600) {
 		state = State::alive;
 		hp = 3;
+		remove = false;
+		noticed = 0;
 	}
-
-	if (endNotice == 0xFFFFFF) {}
-	else if (counter <= endNotice) { drawIcon = true; }
-	else {
-		drawIcon = false;
-		isNotice = true;
+	if (noticed == 1) {
+		noticeCount--;
+		drawIcon = true;
+		if (noticeCount == 0) {
+			noticed = 2;
+			drawIcon = false;
+		}
 	}
 
 
@@ -91,15 +93,20 @@ int Enemy::update(const Collision & playerCol) {
 		}
 	}
 
+	clsDx();
+	printfDx("%d", playerCol.playerParasite);
+
 	if (state == State::dead
 		&& keyM.GetKeyFrame(KEY_INPUT_X) >= 1
-		&& collision->doCollisonCheck((playerCol.hitRange))) {
-		state = State::respawn;
+		&& collision->doCollisonCheck((playerCol.hitRange))
+		&& playerCol.playerParasite == 0) {
+		remove = true;
+		removeCount = 65;
 	}
 
 	if (remove) {
 		removeCount--;
-		if (removeCount == 0) return -1;
+		if (removeCount == 0) state = State::respawn;
 	}
 
 	//プレイヤーを流用．これCreatureクラスにいれるべきじゃね ？
@@ -155,13 +162,14 @@ void Enemy::collisionCheck(const Collision & target) {
 			modHp(mod);
 		}
 		else if (attackR) {
-			if (isNotice) {
+			if (noticed == 2) {		//発見済
 				movedis = 0;
 				AtackCommon();
 			}
-			else {
+			else if (noticed == 0) {	//初回の発見処理
 				movedis = 0;
-				if (endNotice == 0xFFFFFF) { endNotice = counter + 90; }
+				noticed = 1;
+				noticeCount = 45;
 			}
 		}
 		else {
@@ -229,6 +237,7 @@ void Enemy::DeadCheck() {
 	if (this->hp <= 0 && state == State::alive) {
 		state = State::dead;
 		drawcount = 0;
+		drawIcon = false;
 		for (auto &bull : bullets) {
 			bull->setState(-1);
 		}

@@ -40,8 +40,6 @@ private:
 	int atkCt = 181;
 	int HpCt = 61;
 	int count = 0;  // enemyのdrawcountを所々でplayerの様に0に戻すとこれいらない
-	int counter = 0;	//カウンタ系統一したほうがいいのでは？
-	int endNotice = 0xFFFFFF;
 	int spped = 0;
 	int atkInterval = 0;
 	int hundleIndex = 0; //if文の画像配列のindex判定に使用
@@ -50,13 +48,15 @@ private:
 	bool isRight = false;
 	bool isMove = true;
 	bool isAtacck = false;
-	bool isNotice = false;
+
+	int  noticed = 0;	//ええやん発見関係。0=未発見、1=気づき中、2=気づき済
+	int noticeCount = 0;
 
 	int index = -1;
 
 	std::vector<Bullet*> bullets;
 
 	Collision* AttackBox;
-	bool remove = false;
-	int removeCount = 70;
+	bool remove = false;	//リスポーン関連
+	int removeCount = 65;
 };
