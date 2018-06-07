@@ -27,6 +27,7 @@ Enemy::Enemy(int x, int y, int img, ObjectID id, IObjectManager* Iobj) {
 		setAtk(5);
 		spped = 2;
 		atkInterval = 52;
+		addCount = 2;
 	}
 
 	LoadDivGraph("data/img/enemy1Walk.png", 8, 4, 2, 64, 64, walkHandle);
