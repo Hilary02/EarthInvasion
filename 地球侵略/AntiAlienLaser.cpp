@@ -25,14 +25,22 @@ AntiAlienLaser::AntiAlienLaser(int x, int y, int hundle, ObjectID id)
 }
 
 int AntiAlienLaser::update(const Collision &pl) {
-	if (abs(pl.hitRange.xPos - this->x) >= 400) {
+	if (abs(pl.hitRange.xPos - this->x) <= 400) {
 		timer++;
 	}
 	else {
 		timer = 0;
 	}
+
+	if (timer > 240 && timer < 420) {
+		collision->updatePos(x-9, y);
+		collision->hitRange.xSize = 46;
+		collision->hitRange.ySize = 352;
+	}
 	return 1;
 }
+
+
 
 void AntiAlienLaser::Draw(int drawX, int drawY)
 {
