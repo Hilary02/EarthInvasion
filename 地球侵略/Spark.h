@@ -15,5 +15,7 @@ private:
 	int x;
 	int y;
 	int imgSpark;
-	int frame;
+	int frame = 0;
+	int biribiriHandle[4];
 };
+

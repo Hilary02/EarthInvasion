@@ -14,15 +14,15 @@ public:
 	int ySize;
 };
 
-class Collision{
+class Collision {
 public:
 	Collision();
-	Collision(int xOffset,int yOffset,int xSize,int ySize);
+	Collision(int xOffset, int yOffset, int xSize, int ySize);
 	~Collision();
 	HitRange hitRange;
 	void updatePos(int x, int y);
 	void xFlip();
 	int doCollisonCheck(const HitRange& target);
-	int playerParasite;	//プレイヤーの状態を衝突相手に知らせるための変数．
+	int playerParasite = 0;	//プレイヤーの状態を衝突相手に知らせるための変数．
 	int playerState; //攻撃状態かどうかとか記録
 };

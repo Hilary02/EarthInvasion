@@ -19,7 +19,10 @@ Player::~Player() {
 }
 
 int Player::update() {
-	debugMode();
+	if (preParasite != 0) {
+		collision->playerParasite = preParasite; //当たり判定に寄生状態を記録
+		preParasite = 0;
+	}
 	PerDecision();
 	if (!isAttack && !isDead && isMoving == 'N') {
 		if (keyM.GetKeyFrame(KEY_INPUT_LEFT) >= 1) {
@@ -74,7 +77,7 @@ int Player::update() {
 									plState = 'A';
 									isMoving = 'I';
 									drawCount = 0;
-									collision->playerParasite = 1; //当たり判定に寄生状態を記録
+									preParasite = 1;
 								}
 								break;
 							}
@@ -197,6 +200,45 @@ int Player::update() {
 	bulletindex = -1;
 
 	//地形オブジェクトとの当たり判定をとり，位置の修正
+	for (auto t : IobjMgr->getObjectList()) {
+		if (collision->doCollisonCheck(t->collision->hitRange)) {
+			switch (t->getId()) {
+			case ObjectID::spark: //扉
+			{
+				int leftTX = t->collision->hitRange.xPos + t->collision->hitRange.xOffset;
+				int leftPX = collision->hitRange.xPos + collision->hitRange.xOffset;
+				int topTY = t->collision->hitRange.yPos + t->collision->hitRange.yOffset;
+				int topPY = collision->hitRange.yPos + collision->hitRange.yOffset;
+
+
+				if (topPY > topTY + 20) {
+					y = topTY + t->collision->hitRange.ySize - collision->hitRange.yOffset;
+					jumpPower = 0;
+				}
+				else if (leftPX < leftTX) {
+					x = leftTX - collision->hitRange.xSize - collision->hitRange.xOffset;
+				}
+				else if (leftPX > leftTX) {
+					x = leftTX + t->collision->hitRange.xSize - collision->hitRange.xOffset;
+				}
+
+
+
+
+
+				isAttack = false;
+
+				break;
+			}
+			default:
+				break;
+			}
+		}
+	}
+
+
+
+	//地形オブジェクトとの当たり判定をとり，位置の修正
 	for (auto t : IobjMgr->getTerrainList()) {
 		if (collision->doCollisonCheck(t->collision->hitRange)) {
 			switch (t->getId()) {
@@ -252,7 +294,7 @@ int Player::update() {
 			case ObjectID::spark:
 				modHp(-1);
 				break;
-			case ObjectID::enemyBullet: //一般兵の弾
+			case ObjectID::enemyBulletA: //一般兵の弾
 				modHp(-3);
 				break;
 			case ObjectID::fire:
@@ -556,12 +598,6 @@ void Player::MyDraw(int tempX, int tempY, int movement, bool lrFlag) {
 		else {
 			DrawTurnGraph(tempX, tempY, movement, TRUE);
 		}
-	}
-}
-
-void Player::debugMode() {
-	if (keyM.GetKeyFrame(KEY_INPUT_K) == 1) {
-		hp = 0;
 	}
 }
 
