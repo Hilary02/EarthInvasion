@@ -20,6 +20,8 @@ public:
 	virtual void modHp(int mod);
 	// UŒ‚—Í‚ğİ’è(‚±‚ê‚àŒp³‚³‚¹‚½) byJ
 	virtual void setAtk(int newAtk);
+	//UŒ‚—Í‚ğæ“¾
+	virtual int getAtk();
 	// ‘Ì—Í‚ğæ“¾‚·‚é
 	int getHp();
 

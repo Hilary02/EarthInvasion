@@ -27,6 +27,11 @@ void Creature::setAtk(int newAtk) {
 	attack = newAtk;
 }
 
+int Creature::getAtk()
+{
+	return attack;
+}
+
 
 // ‘Ì—Í‚ğæ“¾‚·‚é‚Æ‚«
 int Creature::getHp() {
