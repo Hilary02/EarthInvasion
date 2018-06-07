@@ -83,7 +83,10 @@ int Enemy::update(const Collision & playerCol) {
 		if (collision->doCollisonCheck(o->collision->hitRange)) { //当たり判定をとる
 			switch (o->getId()) {
 			case ObjectID::playerBullet: //プレイヤーの弾
-				if (state == State::alive)modHp(-3);
+				if (state == State::alive && HpCt > 30) {
+					modHp( -((Bullet*)o)->getAtk() );
+					HpCt = 0;
+				}
 				break;
 			default:
 				break;
@@ -218,7 +221,7 @@ void Enemy::AtackCommon()
 	if (atkCt > atkInterval && state == State::alive && hundleIndex == 5)
 	{
 		atkCt = 0;
-		Bullet* objBull = new Bullet(x, y, bulletHandle, isRight, ObjectID::enemyBullet);
+		Bullet* objBull = new Bullet(x, y, getAtk(), bulletHandle, isRight, ObjectID::enemyBullet);
 		bullets.push_back(objBull);
 		IobjMgr->addObject(objBull);
 	}

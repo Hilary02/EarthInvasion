@@ -4,16 +4,11 @@ Bullet::Bullet()
 {
 }
 
-Bullet::Bullet(int x, int y, int Hundle, bool isRight, ObjectID id)
+Bullet::Bullet(int x, int y, int atk, int Hundle, bool isRight, ObjectID id)
 {
-	if (isRight)
-	{
-		this->x = x + 60;
-	}
-	else
-	{
-		this->x = x;
-	}
+	if (isRight){this->x = x + 60;}
+	else{this->x = x;}
+	this->atk = atk;
 	this->y = y + 30;
 	this->imgHandle = Hundle;
 	isR = isRight;
@@ -53,23 +48,15 @@ int Bullet::update(const Collision & playerCol)
 	int isCol = collision->doCollisonCheck((playerCol.hitRange));
 	collision->updatePos(x, y);
 
-	if (isR) {
-		x += MOVEDIS;
-	}
-	else
-	{
-		x -= MOVEDIS;
-	}
+	if (isR) x += MOVEDIS;
+	else{x -= MOVEDIS;}
 	remit++;
 
 	if (isCol)
 	{
+		//’e‚ªHP‚É‰e‹¿‚ğ—^‚¦‚é‘O‚ÉÁ‚¦‚½‚½‚ß,‚»‚Ì‘Îˆ
 		CT++;
-		if (CT > 1)
-		{
-			st = -1;
-			return st;
-		}
+		if (CT > 1)st = -1;
 		return st;
 	}
 	else if (remit > 120)
@@ -100,4 +87,9 @@ bool Bullet::collisionCheck(const Collision & target)
 void Bullet::setState(int st)
 {
 	this->st = st;
+}
+
+int Bullet::getAtk()
+{
+	return atk;
 }
