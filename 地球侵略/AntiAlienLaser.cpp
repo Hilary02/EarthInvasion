@@ -19,12 +19,13 @@ AntiAlienLaser::AntiAlienLaser(int x, int y, int hundle, ObjectID id)
 	this->imgHandle = hundle;
 	this->id = id;
 
-	collision = new Collision(x, y, 128, 256);
+	collision = new Collision(0, 0, 128, 256);
 
 	
 }
 
 int AntiAlienLaser::update(const Collision &pl) {
+	collision->updatePos(x, y);
 	if (abs(pl.hitRange.xPos - this->x) <= 400) {
 		timer++;
 	}
@@ -33,9 +34,14 @@ int AntiAlienLaser::update(const Collision &pl) {
 	}
 
 	if (timer > 240 && timer < 420) {
-		collision->updatePos(x-9, y);
+		collision->updatePos(x + 9, y);
 		collision->hitRange.xSize = 46;
 		collision->hitRange.ySize = 352;
+	}
+	else {
+		collision->updatePos(x, y);
+		collision->hitRange.xSize = 64;
+		collision->hitRange.ySize = 32;
 	}
 	return 1;
 }
@@ -57,12 +63,12 @@ void AntiAlienLaser::Draw(int drawX, int drawY)
 		}
 		if (timer >= 420)
 			timer = 0;
-		DrawBox(collision->hitRange.xPos + collision->hitRange.xOffset - drawX,
-			collision->hitRange.yPos + collision->hitRange.yOffset - drawY,
-			collision->hitRange.xPos + collision->hitRange.xOffset + collision->hitRange.xSize - drawX,
-			collision->hitRange.yPos + collision->hitRange.yOffset + collision->hitRange.ySize - drawY,
-			0xFF00FF, false);
 	}
+	DrawBox(collision->hitRange.xPos + collision->hitRange.xOffset - drawX,
+		collision->hitRange.yPos + collision->hitRange.yOffset - drawY,
+		collision->hitRange.xPos + collision->hitRange.xOffset + collision->hitRange.xSize - drawX,
+		collision->hitRange.yPos + collision->hitRange.yOffset + collision->hitRange.ySize - drawY,
+		0xFF00FF, false);
 }
 
 void AntiAlienLaser::LoadImg() {
