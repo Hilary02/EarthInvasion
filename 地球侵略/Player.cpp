@@ -15,6 +15,7 @@ Player::Player(std::vector<std::vector <int>> const &vmap, IObjectManager* Iobj)
 	collision = new Collision(colXOffset, colYOffset, colXSize, colYSize);
 }
 
+
 Player::~Player() {
 }
 
@@ -78,6 +79,7 @@ int Player::update() {
 									isMoving = 'I';
 									drawCount = 0;
 									preParasite = 1;
+									setAtk(ene->getAtk());
 								}
 								break;
 							}
@@ -167,7 +169,7 @@ int Player::update() {
 		if (bulletCT > 60)
 		{
 			bulletCT = 0;
-			Bullet* objBull = new Bullet(x, y, bulletHandle, right, ObjectID::playerBullet);
+			Bullet* objBull = new Bullet(x, y, getAtk(), bulletHandle, right, ObjectID::playerBullet);
 			bullets.push_back(objBull);
 			IobjMgr->addObject(objBull);
 		}
@@ -189,6 +191,9 @@ int Player::update() {
 				switch (o->getId())
 				{
 				case ObjectID::soldierA:
+					if (o->state == State::alive)bull->setState(-1);
+					break;
+				case ObjectID::soldierB:
 					if (o->state == State::alive)bull->setState(-1);
 					break;
 				default:
@@ -294,10 +299,10 @@ int Player::update() {
 			case ObjectID::spark:
 				modHp(-1);
 				break;
-			case ObjectID::enemyBulletA: //一般兵の弾
-				modHp(-3);
+			case ObjectID::enemyBullet: //一般兵の弾
+				modHp( -((Bullet*)o)->getAtk() );
 				break;
-			case ObjectID::fire:
+			case ObjectID::fire: 
 				modHp(-1);
 				break;
 			default:
