@@ -38,7 +38,10 @@ ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap, int stage) {
 				int path = 0;	//画像ハンドル
 				switch ((ObjectID)vmap[i][j]) {
 				case ObjectID::moveingFloor:	//動く床
-					obje = new MoveGround(x, y, 2, 0.25, 0, img[ObjectID::moveingFloor]);
+					obje = new MoveGround(x, y, 2, 0.25, 0, true, img[ObjectID::moveingFloor]);
+					break;
+				case ObjectID::difMoveGround:	//逆向きに動く床
+					obje = new MoveGround(x, y, 0, 2.25, 0, false, img[ObjectID::moveingFloor]);
 					break;
 				case ObjectID::lockedDoor:
 					obje = new LockedDoor(x, y, img[ObjectID::lockedDoor]);
