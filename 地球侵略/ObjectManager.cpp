@@ -13,6 +13,7 @@
 #include "IObjectManager.h"
 #include "Goal.h"
 #include "LockedDoor.h"
+#include "AntiAlienLaser.h"
 
 ObjectManager::ObjectManager() {
 	terrain.clear();
@@ -45,6 +46,9 @@ ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap, int stage) {
 					break;
 				case ObjectID::lockedDoor:
 					obje = new LockedDoor(x, y, img[ObjectID::lockedDoor]);
+					break;
+				case ObjectID::alienLaser:
+					obje = new AntiAlienLaser(x, y, img[ObjectID::alienLaser], ObjectID::alienLaser);
 					break;
 				default:
 					obje = new Item(x, y, img[ObjectID::healPot]);	//生成されるべきでない
@@ -99,6 +103,7 @@ void ObjectManager::Loadimg() {
 	img[ObjectID::soldierB] = LoadGraph("data/img/enemy1Wait.png");
 	img[ObjectID::healPot] = LoadGraph("data/img/healPot.png");
 	img[ObjectID::goal] = LoadGraph("data/img/clear.png");
+	img[ObjectID::alienLaser] = LoadGraph("data/img/LaserA_Wait.png");
 }
 
 void ObjectManager::update() {

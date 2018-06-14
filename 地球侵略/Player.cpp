@@ -15,11 +15,15 @@ Player::Player(std::vector<std::vector <int>> const &vmap, IObjectManager* Iobj)
 	collision = new Collision(colXOffset, colYOffset, colXSize, colYSize);
 }
 
+
 Player::~Player() {
 }
 
 int Player::update() {
-	debugMode();
+	if (preParasite != 0) {
+		collision->playerParasite = preParasite; //当たり判定に寄生状態を記録
+		preParasite = 0;
+	}
 	PerDecision();
 	if (!isAttack && !isDead && isMoving == 'N') {
 		if (keyM.GetKeyFrame(KEY_INPUT_LEFT) >= 1) {
@@ -74,7 +78,8 @@ int Player::update() {
 									plState = 'A';
 									isMoving = 'I';
 									drawCount = 0;
-									collision->playerParasite = 1; //当たり判定に寄生状態を記録
+									preParasite = 1;
+									setAtk(ene->getAtk());
 								}
 								break;
 							}
@@ -164,7 +169,7 @@ int Player::update() {
 		if (bulletCT > 60)
 		{
 			bulletCT = 0;
-			Bullet* objBull = new Bullet(x, y, bulletHandle, right, ObjectID::playerBullet);
+			Bullet* objBull = new Bullet(x, y, getAtk(), bulletHandle, right, ObjectID::playerBullet);
 			bullets.push_back(objBull);
 			IobjMgr->addObject(objBull);
 		}
@@ -188,6 +193,9 @@ int Player::update() {
 				case ObjectID::soldierA:
 					if (o->state == State::alive)bull->setState(-1);
 					break;
+				case ObjectID::soldierB:
+					if (o->state == State::alive)bull->setState(-1);
+					break;
 				default:
 					break;
 				}
@@ -208,7 +216,7 @@ int Player::update() {
 				int topPY = collision->hitRange.yPos + collision->hitRange.yOffset;
 
 
-				if (topPY > topTY+20) {
+				if (topPY > topTY + 20) {
 					y = topTY + t->collision->hitRange.ySize - collision->hitRange.yOffset;
 					jumpPower = 0;
 				}
@@ -268,7 +276,7 @@ int Player::update() {
 				}
 			}
 			break;
-			
+
 			default:
 				break;
 			}
@@ -292,9 +300,9 @@ int Player::update() {
 				modHp(-1);
 				break;
 			case ObjectID::enemyBullet: //一般兵の弾
-				modHp(-3);
+				modHp( -((Bullet*)o)->getAtk() );
 				break;
-			case ObjectID::fire:
+			case ObjectID::fire: 
 				modHp(-1);
 				break;
 			default:
@@ -595,12 +603,6 @@ void Player::MyDraw(int tempX, int tempY, int movement, bool lrFlag) {
 		else {
 			DrawTurnGraph(tempX, tempY, movement, TRUE);
 		}
-	}
-}
-
-void Player::debugMode() {
-	if (keyM.GetKeyFrame(KEY_INPUT_K) == 1) {
-		hp = 0;
 	}
 }
 
