@@ -67,6 +67,17 @@ int Enemy::update(const Collision & playerCol) {
 	if (state == State::respawn
 		&& abs(playerCol.hitRange.xPos - this->x) >= 600) {
 		state = State::alive;
+		switch (id) {
+		case ObjectID::soldierA:
+			hp = 3;
+			break;
+		case ObjectID::soldierB:
+			hp = 15;
+			break;
+		default:
+			printf("");
+			break;
+		}
 		hp = 3;
 		remove = false;
 		noticed = 0;
@@ -87,7 +98,7 @@ int Enemy::update(const Collision & playerCol) {
 			switch (o->getId()) {
 			case ObjectID::playerBullet: //プレイヤーの弾
 				if (state == State::alive && HpCt > 30) {
-					modHp( -((Bullet*)o)->getAtk() );
+					modHp(-((Bullet*)o)->getAtk());
 					HpCt = 0;
 				}
 				break;

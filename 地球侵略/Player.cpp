@@ -83,6 +83,18 @@ int Player::update() {
 								}
 								break;
 							}
+							case ObjectID::soldierB: //ベテラン兵
+							{
+								Enemy* ene = (Enemy*)o;
+								if (ene->getDeadState() == true) {
+									plState = 'B';
+									isMoving = 'I';
+									drawCount = 0;
+									preParasite = 2;
+									setAtk(ene->getAtk());
+								}
+								break;
+							}
 							default:
 								break;
 							}
@@ -164,7 +176,7 @@ int Player::update() {
 
 	//一般兵状態の攻撃処理 
 	bulletCT += 1;
-	if (isAttack && plState == 'A' && drawCount >= 25 && drawCount <= 32)
+	if (isAttack &&( plState == 'A' || plState == 'B' )&& drawCount >= 25 && drawCount <= 32)
 	{
 		if (bulletCT > 60)
 		{
@@ -299,10 +311,16 @@ int Player::update() {
 			case ObjectID::spark:
 				modHp(-1);
 				break;
-			case ObjectID::enemyBullet: //一般兵の弾
-				modHp( -((Bullet*)o)->getAtk() );
+			case ObjectID::abyss:	//奈落。ゲームオーバー
+				isDead = true;
+				isMoving = 'D';
+				drawCount = 0;
+				SceneM.ChangeScene(scene::GameOver);
 				break;
-			case ObjectID::fire: 
+			case ObjectID::enemyBullet: //一般兵の弾
+				modHp(-((Bullet*)o)->getAtk());
+				break;
+			case ObjectID::fire:
 				modHp(-1);
 				break;
 			default:
@@ -479,6 +497,7 @@ void Player::Draw(int drawX, int drawY) {
 		break;
 
 	case 'A':
+	case 'B':
 		if (isJumping) {
 			if (jumpPower <= 1 && jumpPower >= -1)
 				MyDraw(tempX, tempY, jump[11], right);
@@ -526,7 +545,7 @@ void Player::Draw(int drawX, int drawY) {
 		}
 		break;
 
-	case'B':
+	/*case'B':
 		if (isJumping) {
 
 		}
@@ -542,7 +561,7 @@ void Player::Draw(int drawX, int drawY) {
 			if (drawCount == 60) drawCount = 0;
 		}
 		break;
-
+*/
 	case'C':
 		if (isJumping) {
 

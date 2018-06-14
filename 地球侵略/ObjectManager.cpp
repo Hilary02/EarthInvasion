@@ -8,6 +8,7 @@
 #include "Item.h"
 #include "MoveGround.h"
 #include "SpikeBlock.h"
+#include "Abyss.h"
 #include "Spark.h"
 #include "Fire.h"
 #include "IObjectManager.h"
@@ -147,6 +148,9 @@ void ObjectManager::addObject(int id, int x, int y, int hp, int moveUL, int move
 		break;
 	case ObjectID::fire:
 		obj = new Fire(x, y, img[ObjectID::fire]);
+		break;
+	case ObjectID::abyss:
+		obj = new Abyss(x, y, img[ObjectID::abyss]);
 		break;
 	case ObjectID::soldierA:
 		//Enemyのコンストラクタをオーバーライドしてパラメータを渡せるようにしたい

@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Abyss.cpp" />
     <ClCompile Include="AntiAlienLaser.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Collision.cpp" />
@@ -53,6 +54,7 @@
     <ClCompile Include="WindowData.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Abyss.h" />
     <ClInclude Include="AntiAlienLaser.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="Collision.h" />
