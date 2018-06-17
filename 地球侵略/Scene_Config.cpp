@@ -72,14 +72,7 @@ void Scene_Config::MoveCursor() {
 		}
 	}
 	if (keyM.GetKeyFrame(KEY_INPUT_ESCAPE) == 1) {
-		switch (nowSelect) {
-			//case KEY:
-			//case PAD:
-			//	isKeyConfig = false;
-			//	break;
-		default:
-			break;
-		}
+		SceneM.ChangeScene(scene::Title);
 	}
 }
 

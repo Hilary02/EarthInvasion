@@ -92,11 +92,11 @@ int Enemy::update(const Collision & playerCol) {
 	}
 
 
-	//ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¨ã®å½“ãŸã‚Šåˆ¤å®šã‚’ã¨ã‚Šï¼Œãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼è‡ªèº«ã«å½±éŸ¿ã™ã‚‹å‡¦ç†ã‚’è¡Œã†
+	//ƒIƒuƒWƒFƒNƒg‚Æ‚Ì“–‚½‚è”»’è‚ğ‚Æ‚èCƒvƒŒƒCƒ„[©g‚É‰e‹¿‚·‚éˆ—‚ğs‚¤
 	for (auto o : IobjMgr->getObjectList()) {
-		if (collision->doCollisonCheck(o->collision->hitRange)) { //å½“ãŸã‚Šåˆ¤å®šã‚’ã¨ã‚‹
+		if (collision->doCollisonCheck(o->collision->hitRange)) { //“–‚½‚è”»’è‚ğ‚Æ‚é
 			switch (o->getId()) {
-			case ObjectID::playerBullet: //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®å¼¾
+			case ObjectID::playerBullet: //ƒvƒŒƒCƒ„[‚Ì’e
 				if (state == State::alive && HpCt > 30) {
 					modHp(-((Bullet*)o)->getAtk());
 					HpCt = 0;
@@ -124,11 +124,11 @@ int Enemy::update(const Collision & playerCol) {
 		if (removeCount == 0) state = State::respawn;
 	}
 
-	//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚’æµç”¨ï¼ã“ã‚ŒCreatureã‚¯ãƒ©ã‚¹ã«ã„ã‚Œã‚‹ã¹ãã˜ã‚ƒã­ ï¼Ÿ
+	//ƒvƒŒƒCƒ„[‚ğ—¬—pD‚±‚êCreatureƒNƒ‰ƒX‚É‚¢‚ê‚é‚×‚«‚¶‚á‚Ë H
 	for (auto t : IobjMgr->getTerrainList()) {
 		if (collision->doCollisonCheck(t->collision->hitRange)) {
 			switch (t->getId()) {
-			case ObjectID::lockedDoor: //æ‰‰
+			case ObjectID::lockedDoor: //”à
 			{
 				int leftTX = t->collision->hitRange.xPos + t->collision->hitRange.xOffset;
 				int leftPX = collision->hitRange.xPos + collision->hitRange.xOffset;
@@ -177,11 +177,11 @@ void Enemy::collisionCheck(const Collision & target) {
 			modHp(mod);
 		}
 		else if (attackR) {
-			if (noticed == 2) {		//ç™ºè¦‹æ¸ˆ
+			if (noticed == 2) {		//”­Œ©Ï
 				movedis = 0;
 				AtackCommon();
 			}
-			else if (noticed == 0) {	//åˆå›ã®ç™ºè¦‹å‡¦ç†
+			else if (noticed == 0) {	//‰‰ñ‚Ì”­Œ©ˆ—
 				movedis = 0;
 				noticed = 1;
 				noticeCount = 45;
@@ -245,7 +245,7 @@ void Enemy::AtackCommon()
 		bullets.push_back(objBull);
 		IobjMgr->addObject(objBull);
 	}
-	if ((drawcount / 12) > 8 && hundleIndex == 0)drawcount = 0; //drawcountã®ãƒªã‚»ãƒƒãƒˆ
+	if ((drawcount / 12) > 8 && hundleIndex == 0)drawcount = 0; //drawcount‚ÌƒŠƒZƒbƒg
 }
 
 void Enemy::DeadCheck() {
