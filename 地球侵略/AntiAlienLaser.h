@@ -7,11 +7,12 @@ public:
 	AntiAlienLaser();
 	~AntiAlienLaser();
 	AntiAlienLaser(int, int, int, ObjectID id);
-	void AntiAlienLaser::update(const Collision);
-	void AntiAlienLaser::Draw(int, int);
+	int AntiAlienLaser::update(const Collision &pl);
+	void Draw(int, int);
+	void LoadImg();
 
 private:
 	int timer = 0;
 	int laserImg[20];
-	void loadImg();
+	
 };

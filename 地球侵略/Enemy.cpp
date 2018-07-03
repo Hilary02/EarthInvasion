@@ -49,7 +49,6 @@ int Enemy::update(const Collision & playerCol) {
 	DeadCheck();
 	if (state == State::alive)
 	{
-		counter++;
 		atkCt += addCount;
 		HpCt += addCount;
 		isRight = IsRangeCheck();
@@ -71,24 +70,38 @@ int Enemy::update(const Collision & playerCol) {
 	if (state == State::respawn
 		&& abs(playerCol.hitRange.xPos - this->x) >= 600) {
 		state = State::alive;
+		switch (id) {
+		case ObjectID::soldierA:
+			hp = 3;
+			break;
+		case ObjectID::soldierB:
+			hp = 15;
+			break;
+		default:
+			printf("");
+			break;
+		}
 		hp = 3;
+		remove = false;
+		noticed = 0;
+	}
+	if (noticed == 1) {
+		noticeCount--;
+		drawIcon = true;
+		if (noticeCount == 0) {
+			noticed = 2;
+			drawIcon = false;
+		}
 	}
 
-	if (endNotice == 0xFFFFFF) {}
-	else if (counter <= endNotice) { drawIcon = true; }
-	else {
-		drawIcon = false;
-		isNotice = true;
-	}
 
-
-	//ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¨ã®å½“ãŸã‚Šåˆ¤å®šã‚’ã¨ã‚Šï¼Œãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼è‡ªèº«ã«å½±éŸ¿ã™ã‚‹å‡¦ç†ã‚’è¡Œã†
+	//ƒIƒuƒWƒFƒNƒg‚Æ‚Ì“–‚½‚è”»’è‚ð‚Æ‚èCƒvƒŒƒCƒ„[Ž©g‚É‰e‹¿‚·‚éˆ—‚ðs‚¤
 	for (auto o : IobjMgr->getObjectList()) {
-		if (collision->doCollisonCheck(o->collision->hitRange)) { //å½“ãŸã‚Šåˆ¤å®šã‚’ã¨ã‚‹
+		if (collision->doCollisonCheck(o->collision->hitRange)) { //“–‚½‚è”»’è‚ð‚Æ‚é
 			switch (o->getId()) {
-			case ObjectID::playerBullet: //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®å¼¾
+			case ObjectID::playerBullet: //ƒvƒŒƒCƒ„[‚Ì’e
 				if (state == State::alive && HpCt > 30) {
-					modHp( -((Bullet*)o)->getAtk() );
+					modHp(-((Bullet*)o)->getAtk());
 					HpCt = 0;
 				}
 				break;
@@ -98,22 +111,27 @@ int Enemy::update(const Collision & playerCol) {
 		}
 	}
 
+	clsDx();
+	printfDx("%d", playerCol.playerParasite);
+
 	if (state == State::dead
 		&& keyM.GetKeyFrame(KEY_INPUT_X) >= 1
-		&& collision->doCollisonCheck((playerCol.hitRange))) {
-		state = State::respawn;
+		&& collision->doCollisonCheck((playerCol.hitRange))
+		&& playerCol.playerParasite == 0) {
+		remove = true;
+		removeCount = 65;
 	}
 
 	if (remove) {
 		removeCount--;
-		if (removeCount == 0) return -1;
+		if (removeCount == 0) state = State::respawn;
 	}
 
-	//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚’æµç”¨ï¼Žã“ã‚ŒCreatureã‚¯ãƒ©ã‚¹ã«ã„ã‚Œã‚‹ã¹ãã˜ã‚ƒã­ ï¼Ÿ
+	//ƒvƒŒƒCƒ„[‚ð—¬—pD‚±‚êCreatureƒNƒ‰ƒX‚É‚¢‚ê‚é‚×‚«‚¶‚á‚Ë H
 	for (auto t : IobjMgr->getTerrainList()) {
 		if (collision->doCollisonCheck(t->collision->hitRange)) {
 			switch (t->getId()) {
-			case ObjectID::lockedDoor: //æ‰‰
+			case ObjectID::lockedDoor: //”à
 			{
 				int leftTX = t->collision->hitRange.xPos + t->collision->hitRange.xOffset;
 				int leftPX = collision->hitRange.xPos + collision->hitRange.xOffset;
@@ -164,13 +182,14 @@ void Enemy::collisionCheck(const Collision & target) {
 			modHp(mod);
 		}
 		else if (attackR) {
-			if (isNotice) {
+			if (noticed == 2) {		//”­Œ©Ï
 				movedis = 0;
 				AtackCommon();
 			}
-			else {
+			else if (noticed == 0) {	//‰‰ñ‚Ì”­Œ©ˆ—
 				movedis = 0;
-				if (endNotice == 0xFFFFFF) { endNotice = counter + 90; }
+				noticed = 1;
+				noticeCount = 45;
 			}
 		}
 		else {
@@ -231,13 +250,14 @@ void Enemy::AtackCommon()
 		bullets.push_back(objBull);
 		IobjMgr->addObject(objBull);
 	}
-	if ((drawcount / 12) > 8 && hundleIndex == 0)drawcount = 0; //drawcountã®ãƒªã‚»ãƒƒãƒˆ
+	if ((drawcount / 12) > 8 && hundleIndex == 0)drawcount = 0; //drawcount‚ÌƒŠƒZƒbƒg
 }
 
 void Enemy::DeadCheck() {
 	if (this->hp <= 0 && state == State::alive) {
 		state = State::dead;
 		drawcount = 0;
+		drawIcon = false;
 		for (auto &bull : bullets) {
 			bull->setState(-1);
 		}

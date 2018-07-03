@@ -3,6 +3,8 @@
 Scene_Config::Scene_Config() {
 	nowSelect = BGM;
 	nowDraw = VOL_CON;
+	bg = LoadGraph("data/img/bg_config.png");
+	cursor = LoadGraph("data/img/cursor.png");
 }
 
 Scene_Config::~Scene_Config() {
@@ -16,6 +18,7 @@ void Scene_Config::update() {
 }
 
 void Scene_Config::Draw() {
+	DrawGraph(0, 0, bg, TRUE);
 	SetFontSize(30);
 	DrawFormatString(20, 20, GetColor(255, 255, 255), "コンフィグ");
 
@@ -69,14 +72,7 @@ void Scene_Config::MoveCursor() {
 		}
 	}
 	if (keyM.GetKeyFrame(KEY_INPUT_ESCAPE) == 1) {
-		switch (nowSelect) {
-			//case KEY:
-			//case PAD:
-			//	isKeyConfig = false;
-			//	break;
-		default:
-			break;
-		}
+		SceneM.ChangeScene(scene::Title);
 	}
 }
 

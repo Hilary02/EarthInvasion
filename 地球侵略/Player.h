@@ -51,6 +51,7 @@ private:
 	int die[30];
 
 	int invalidDamageTime = 120;
+	int preParasite = 0;
 
 	int updateCT = 51;
 	//bulletŠÖ˜A‚Ì•Ï”
@@ -58,5 +59,4 @@ private:
 	int bulletCT = 61;
 	int bulletHandle = LoadGraph("data/img/bullet.png");
 	int bulletindex = -1;
-	void debugMode();
 };

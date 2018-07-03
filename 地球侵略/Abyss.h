@@ -1,21 +1,18 @@
 #pragma once
-#include "DxLib.h"
 #include "Object.h"
-class Spark :
+class Abyss :
 	public Object
 {
 public:
-	Spark();
-	~Spark();
-	Spark(int x, int y, int img);
+	Abyss();
+	~Abyss();
+	Abyss(int x, int y, int img);
 	int update(const Collision & playerCol) override;
 	void Draw(int drawX, int drawY) override;
 	void collisionCheck(const Collision& target);
 private:
 	int x;
 	int y;
-	int imgSpark;
-	int frame = 0;
-	int biribiriHandle[4];
+	int img;
 };
 

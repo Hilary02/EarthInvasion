@@ -1,18 +1,20 @@
 #include "ObjectManager.h"
 #include <memory>
 #include <fstream>
-#include <iostream>//ãƒ•ã‚¡ã‚¤ãƒ«å…¥å‡ºåŠ›
+#include <iostream>//ƒtƒ@ƒCƒ‹“üo—Í
 #include <string>
-#include <sstream> //æ–‡å­—ã‚¹ãƒˆãƒªãƒ¼ãƒ 
+#include <sstream> //•¶šƒXƒgƒŠ[ƒ€
 
 #include "Item.h"
 #include "MoveGround.h"
 #include "SpikeBlock.h"
+#include "Abyss.h"
 #include "Spark.h"
 #include "Fire.h"
 #include "IObjectManager.h"
 #include "Goal.h"
 #include "LockedDoor.h"
+#include "AntiAlienLaser.h"
 
 ObjectManager::ObjectManager() {
 	terrain.clear();
@@ -26,29 +28,35 @@ ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap, int stage) {
 	for (unsigned int i = 0; i < vmap.size(); i++) {
 		for (unsigned int j = 0; j < vmap[i].size(); j++) {
 			if (4 <= vmap[i][j] && vmap[i][j] <= 9 || 20 <= vmap[i][j] && vmap[i][j] <= 39 || vmap[i][j] == 99) {
-				int y = i * 32;	//yåº§æ¨™
-				int x = j * 32;	//xåº§æ¨™
+				int y = i * 32;	//yÀ•W
+				int x = j * 32;	//xÀ•W
 
 				addObject(vmap[i][j], x, y);
 			}
 
 			if (10 <= vmap[i][j] && vmap[i][j] <= 19) {
 				Object* obje;
-				int y = i * 32;	//yåº§æ¨™
-				int x = j * 32;	//xåº§æ¨™
-				int path = 0;	//ç”»åƒãƒãƒ³ãƒ‰ãƒ«
+				int y = i * 32;	//yÀ•W
+				int x = j * 32;	//xÀ•W
+				int path = 0;	//‰æ‘œƒnƒ“ƒhƒ‹
 				switch ((ObjectID)vmap[i][j]) {
-				case ObjectID::moveingFloor:	//å‹•ãåºŠ
-					obje = new MoveGround(x, y, 2, 0.25, 0, img[ObjectID::moveingFloor]);
+				case ObjectID::moveingFloor:	//“®‚­°
+					obje = new MoveGround(x, y, 2, 0.25, 0, true, img[ObjectID::moveingFloor]);
+					break;
+				case ObjectID::difMoveGround:	//‹tŒü‚«‚É“®‚­°
+					obje = new MoveGround(x, y, 0, 2.25, 0, false, img[ObjectID::moveingFloor]);
 					break;
 				case ObjectID::lockedDoor:
 					obje = new LockedDoor(x, y, img[ObjectID::lockedDoor]);
 					break;
+				case ObjectID::alienLaser:
+					obje = new AntiAlienLaser(x, y, img[ObjectID::alienLaser], ObjectID::alienLaser);
+					break;
 				default:
-					obje = new Item(x, y, img[ObjectID::healPot]);	//ç”Ÿæˆã•ã‚Œã‚‹ã¹ãã§ãªã„
+					obje = new Item(x, y, img[ObjectID::healPot]);	//¶¬‚³‚ê‚é‚×‚«‚Å‚È‚¢
 					break;
 				}
-				terrain.push_back(obje);	//ã“ã¡ã‚‰ã¯åœ°å½¢ã«ä¿å­˜
+				terrain.push_back(obje);	//‚±‚¿‚ç‚Í’nŒ`‚É•Û‘¶
 			}
 		}
 	}
@@ -61,10 +69,10 @@ ObjectManager::~ObjectManager() {
 }
 
 int ObjectManager::readScenario(std::string file) {
-	std::string str;	//è¡Œã‚’æ ¼ç´
-	std::string buf;	//å€¤ã‚’æ ¼ç´
+	std::string str;	//s‚ğŠi”[
+	std::string buf;	//’l‚ğŠi”[
 	int temp;
-	std::ifstream ifs(file);	//ãƒ•ã‚¡ã‚¤ãƒ«ã®ã‚ªãƒ¼ãƒ—ãƒ³
+	std::ifstream ifs(file);	//ƒtƒ@ƒCƒ‹‚ÌƒI[ƒvƒ“
 	if (!ifs) return -1;
 
 	while (getline(ifs, str)) {
@@ -72,7 +80,7 @@ int ObjectManager::readScenario(std::string file) {
 		std::istringstream stream(str);
 		while (getline(stream, buf, ',')) {
 			if (buf.size() != 0) {
-				temp = std::stoi(buf);		//intå‹ã«å¤‰æ›´
+				temp = std::stoi(buf);		//intŒ^‚É•ÏX
 			}
 			else {
 				temp = 0;
@@ -86,7 +94,7 @@ int ObjectManager::readScenario(std::string file) {
 }
 
 void ObjectManager::Loadimg() {
-	/* ã‚¹ãƒ†ãƒ¼ã‚¸ã«ã‚ˆã£ã¦èª­ã¿è¾¼ã‚€ç”»åƒã‚‚å¤‰ã‚ã‚‹ã®ã‹ï¼Ÿ */
+	/* ƒXƒe[ƒW‚É‚æ‚Á‚Ä“Ç‚İ‚Ş‰æ‘œ‚à•Ï‚í‚é‚Ì‚©H */
 	img[ObjectID::spike] = LoadGraph("data/img/togetoge.png");
 	img[ObjectID::spark] = LoadGraph("data/img/spark.png");
 	img[ObjectID::fire] = LoadGraph("data/img/fire.png");
@@ -97,6 +105,7 @@ void ObjectManager::Loadimg() {
 	img[ObjectID::soldierB] = LoadGraph("data/img/enemy1Wait.png");
 	img[ObjectID::healPot] = LoadGraph("data/img/healPot.png");
 	img[ObjectID::goal] = LoadGraph("data/img/clear.png");
+	img[ObjectID::alienLaser] = LoadGraph("data/img/LaserA_Wait.png");
 }
 
 void ObjectManager::update() {
@@ -149,12 +158,15 @@ void ObjectManager::addObject(int id, int x, int y, int hp, int moveUL, int move
 	case ObjectID::fire:
 		obj = new Fire(x, y, img[ObjectID::fire]);
 		break;
+	case ObjectID::abyss:
+		obj = new Abyss(x, y, img[ObjectID::abyss]);
+		break;
 	case ObjectID::soldierA:
-		//Enemyã®ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã‚’ã‚ªãƒ¼ãƒãƒ¼ãƒ©ã‚¤ãƒ‰ã—ã¦ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã‚’æ¸¡ã›ã‚‹ã‚ˆã†ã«ã—ãŸã„
+		//Enemy‚ÌƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ğƒI[ƒo[ƒ‰ƒCƒh‚µ‚Äƒpƒ‰ƒ[ƒ^‚ğ“n‚¹‚é‚æ‚¤‚É‚µ‚½‚¢
 		obj = new Enemy(x, y, img[ObjectID::soldierA], ObjectID::soldierA, this);
 		break;
 	case ObjectID::soldierB:
-		//Enemyã®ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã‚’ã‚ªãƒ¼ãƒãƒ¼ãƒ©ã‚¤ãƒ‰ã—ã¦ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã‚’æ¸¡ã›ã‚‹ã‚ˆã†ã«ã—ãŸã„
+		//Enemy‚ÌƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ğƒI[ƒo[ƒ‰ƒCƒh‚µ‚Äƒpƒ‰ƒ[ƒ^‚ğ“n‚¹‚é‚æ‚¤‚É‚µ‚½‚¢
 		obj = new Enemy(x, y, img[ObjectID::soldierB], ObjectID::soldierB, this);
 		break;
 	case ObjectID::healPot:
@@ -164,7 +176,7 @@ void ObjectManager::addObject(int id, int x, int y, int hp, int moveUL, int move
 		obj = new Goal(x, y, img[ObjectID::goal], stageId);
 		break;
 	default:
-		obj = new Item(x, y, img[ObjectID::healPot]);	//ç”Ÿæˆã•ã‚Œã‚‹ã¹ãã§ãªã„
+		obj = new Item(x, y, img[ObjectID::healPot]);	//¶¬‚³‚ê‚é‚×‚«‚Å‚È‚¢
 		break;
 	}
 	objects.push_back(obj);

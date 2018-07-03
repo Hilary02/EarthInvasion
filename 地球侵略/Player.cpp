@@ -20,7 +20,10 @@ Player::~Player() {
 }
 
 int Player::update() {
-	debugMode();
+	if (preParasite != 0) {
+		collision->playerParasite = preParasite; //“–‚½‚è”»’è‚ÉŠñ¶ó‘Ô‚ğ‹L˜^
+		preParasite = 0;
+	}
 	PerDecision();
 	if (!isAttack && !isDead && isMoving == 'N') {
 		if (keyM.GetKeyFrame(KEY_INPUT_LEFT) >= 1) {
@@ -59,24 +62,36 @@ int Player::update() {
 					drawCount = 0;
 				}
 
-				/*NOTE:è¦ªã‚¯ãƒ©ã‚¹ã§å®šç¾©ã—ãŸå¤‰æ•°ã‚’å­ãŒåŒåã§å†å®šç¾©ã—ã¦ã—ã¾ã†ã¨
-				è¦ªã‚¯ãƒ©ã‚¹ã®ãƒã‚¤ãƒ³ã‚¿å‹ã‹ã‚‰ã‚¢ã‚¯ã‚»ã‚¹ã—ãŸã¨ãã«å‚ç…§ã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã™ã‚‹ï¼
-				ãƒ‡ãƒãƒƒã‚¬ã§ã¿ã¦åˆã‚ã¦æ°—ãŒä»˜ã„ãŸ				*/
-				//å¯„ç”Ÿã‚­ãƒ¼
+				/*NOTE:eƒNƒ‰ƒX‚Å’è‹`‚µ‚½•Ï”‚ğq‚ª“¯–¼‚ÅÄ’è‹`‚µ‚Ä‚µ‚Ü‚¤‚Æ
+				eƒNƒ‰ƒX‚Ìƒ|ƒCƒ“ƒ^Œ^‚©‚çƒAƒNƒZƒX‚µ‚½‚Æ‚«‚ÉQÆƒGƒ‰[‚ª”­¶‚·‚éD
+				ƒfƒoƒbƒK‚Å‚İ‚Ä‰‚ß‚Ä‹C‚ª•t‚¢‚½				*/
+				//Šñ¶ƒL[
 				if (keyM.GetKeyFrame(KEY_INPUT_X) >= 1) {
 					for (auto o : IobjMgr->getObjectList()) {
-						if (collision->doCollisonCheck(o->collision->hitRange)) { //å½“ãŸã‚Šåˆ¤å®šã‚’ã¨ã‚‹
+						if (collision->doCollisonCheck(o->collision->hitRange)) { //“–‚½‚è”»’è‚ğ‚Æ‚é
 
 							switch (o->getId()) {
-							case ObjectID::soldierA: //å…µå£«
+							case ObjectID::soldierA: //•ºm
 							{
-								Enemy* ene = (Enemy*)o;	//ã„ã„ã®ã‹ãªï¼Ÿ
+								Enemy* ene = (Enemy*)o;	//‚¢‚¢‚Ì‚©‚ÈH
 								if (ene->getDeadState() == true) {
 									plState = 'A';
 									isMoving = 'I';
 									drawCount = 0;
+									preParasite = 1;
 									setAtk(ene->getAtk());
-									collision->playerParasite = 1; //å½“ãŸã‚Šåˆ¤å®šã«å¯„ç”ŸçŠ¶æ…‹ã‚’è¨˜éŒ²
+								}
+								break;
+							}
+							case ObjectID::soldierB: //ƒxƒeƒ‰ƒ“•º
+							{
+								Enemy* ene = (Enemy*)o;
+								if (ene->getDeadState() == true) {
+									plState = 'B';
+									isMoving = 'I';
+									drawCount = 0;
+									preParasite = 2;
+									setAtk(ene->getAtk());
 								}
 								break;
 							}
@@ -88,7 +103,7 @@ int Player::update() {
 				}
 			}
 
-			//å¯„ç”Ÿè§£é™¤
+			//Šñ¶‰ğœ
 			if (keyM.GetKeyFrame(KEY_INPUT_DOWN) >= 45 && plState != 'N') {
 				plState = 'N';
 				isMoving = 'O';
@@ -97,7 +112,7 @@ int Player::update() {
 			}
 		}
 	}
-	//?t?ó‰»‰???Ì???
+	//Šñ¶”»’è
 	if (keyM.GetKeyFrame(KEY_INPUT_DOWN) == 0 && isLiquid) {
 		xyCheck = 'N';
 		if (MapHitCheck(x1, y, xyCheck) && MapHitCheck(x2, y, xyCheck) && MapHitCheck(x3, y, xyCheck)) {
@@ -108,7 +123,7 @@ int Player::update() {
 	}
 	//collision->updatePos(x, y);
 
-	//ã‚¸ãƒ£ãƒ³ãƒ—ä¸­ã®å‡¦ç†
+	//ƒWƒƒƒ“ƒv’†‚Ìˆ—
 	if (isJumping) {
 		xyCheck = 'y';
 		if ((MapHitCheck(x1, y2 + jumpPower, xyCheck) && MapHitCheck(x2, y2 + jumpPower, xyCheck) && MapHitCheck(x3, y2 + jumpPower, xyCheck))
@@ -140,7 +155,7 @@ int Player::update() {
 
 	collision->updatePos(x, y);
 
-	//é€šå¸¸çŠ¶æ…‹ã®æ”»æ’ƒå‡¦ç† 
+	//’Êíó‘Ô‚ÌUŒ‚ˆ— 
 	if (isAttack && plState == 'N' && drawCount >= 25 && drawCount <= 32) {
 		collision->playerState = 1;
 		if (right)
@@ -159,9 +174,9 @@ int Player::update() {
 		collision->hitRange.xSize = 32;
 	}
 
-	//ä¸€èˆ¬å…µçŠ¶æ…‹ã®æ”»æ’ƒå‡¦ç† 
+	//ˆê”Ê•ºó‘Ô‚ÌUŒ‚ˆ— 
 	bulletCT += 1;
-	if (isAttack && plState == 'A' && drawCount >= 25 && drawCount <= 32)
+	if (isAttack &&( plState == 'A' || plState == 'B' )&& drawCount >= 25 && drawCount <= 32)
 	{
 		if (bulletCT > 60)
 		{
@@ -172,7 +187,7 @@ int Player::update() {
 		}
 	}
 
-	//å¼¾ã®å‡¦ç†
+	//’e‚Ìˆ—
 	for (auto &bull : bullets)
 	{
 		bulletindex++;
@@ -201,11 +216,50 @@ int Player::update() {
 	}
 	bulletindex = -1;
 
-	//åœ°å½¢ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¨ã®å½“ãŸã‚Šåˆ¤å®šã‚’ã¨ã‚Šï¼Œä½ç½®ã®ä¿®æ­£
+	//’nŒ`ƒIƒuƒWƒFƒNƒg‚Æ‚Ì“–‚½‚è”»’è‚ğ‚Æ‚èCˆÊ’u‚ÌC³
+	for (auto t : IobjMgr->getObjectList()) {
+		if (collision->doCollisonCheck(t->collision->hitRange)) {
+			switch (t->getId()) {
+			case ObjectID::spark: //”à
+			{
+				int leftTX = t->collision->hitRange.xPos + t->collision->hitRange.xOffset;
+				int leftPX = collision->hitRange.xPos + collision->hitRange.xOffset;
+				int topTY = t->collision->hitRange.yPos + t->collision->hitRange.yOffset;
+				int topPY = collision->hitRange.yPos + collision->hitRange.yOffset;
+
+
+				if (topPY > topTY + 20) {
+					y = topTY + t->collision->hitRange.ySize - collision->hitRange.yOffset;
+					jumpPower = 0;
+				}
+				else if (leftPX < leftTX) {
+					x = leftTX - collision->hitRange.xSize - collision->hitRange.xOffset;
+				}
+				else if (leftPX > leftTX) {
+					x = leftTX + t->collision->hitRange.xSize - collision->hitRange.xOffset;
+				}
+
+
+
+
+
+				isAttack = false;
+
+				break;
+			}
+			default:
+				break;
+			}
+		}
+	}
+
+
+
+	//’nŒ`ƒIƒuƒWƒFƒNƒg‚Æ‚Ì“–‚½‚è”»’è‚ğ‚Æ‚èCˆÊ’u‚ÌC³
 	for (auto t : IobjMgr->getTerrainList()) {
 		if (collision->doCollisonCheck(t->collision->hitRange)) {
 			switch (t->getId()) {
-			case ObjectID::lockedDoor: //æ‰‰
+			case ObjectID::lockedDoor: //”à
 			{
 				int leftTX = t->collision->hitRange.xPos + t->collision->hitRange.xOffset;
 				int leftPX = collision->hitRange.xPos + collision->hitRange.xOffset;
@@ -220,7 +274,7 @@ int Player::update() {
 
 				break;
 			}
-			case ObjectID::moveingFloor: //å‹•ãåºŠ
+			case ObjectID::moveingFloor: //“®‚­°
 			{
 				int topTY = t->collision->hitRange.yPos + t->collision->hitRange.yOffset;
 				int underTY = t->collision->hitRange.yPos + t->collision->hitRange.yOffset + t->collision->hitRange.ySize;
@@ -228,7 +282,7 @@ int Player::update() {
 				int underPY = collision->hitRange.yPos + collision->hitRange.yOffset + collision->hitRange.ySize;
 
 
-				if (underPY <= underTY + 8/*å°‘ã—å¸ã„è¾¼ã¾ã‚Œã‚‹*/) {
+				if (underPY <= underTY + 8/*­‚µ‹z‚¢‚Ü‚ê‚é*/) {
 					y = topTY - collision->hitRange.ySize + 2;
 					isJumping = false;
 				}
@@ -241,26 +295,32 @@ int Player::update() {
 		}
 	}
 
-	//ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¨ã®å½“ãŸã‚Šåˆ¤å®šã‚’ã¨ã‚Šï¼Œãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼è‡ªèº«ã«å½±éŸ¿ã™ã‚‹å‡¦ç†ã‚’è¡Œã†
+	//ƒIƒuƒWƒFƒNƒg‚Æ‚Ì“–‚½‚è”»’è‚ğ‚Æ‚èCƒvƒŒƒCƒ„[©g‚É‰e‹¿‚·‚éˆ—‚ğs‚¤
 	for (auto o : IobjMgr->getObjectList()) {
-		if (collision->doCollisonCheck(o->collision->hitRange)) { //å½“ãŸã‚Šåˆ¤å®šã‚’ã¨ã‚‹
+		if (collision->doCollisonCheck(o->collision->hitRange)) { //“–‚½‚è”»’è‚ğ‚Æ‚é
 			switch (o->getId()) {
-			case ObjectID::soldierA: //å…µå£«
+			case ObjectID::soldierA: //•ºm
 				if (o->state == State::alive && !(collision->playerState == 1))modHp(-1);
 				break;
-			case ObjectID::healPot: //å›å¾©ãƒãƒƒãƒ‰
+			case ObjectID::healPot: //‰ñ•œƒ|ƒbƒh
 				modHp(5);
 				break;
-			case ObjectID::spike: //ã¨ã’ã¨ã’
+			case ObjectID::spike: //‚Æ‚°‚Æ‚°
 				modHp(-1);
 				break;
 			case ObjectID::spark:
 				modHp(-1);
 				break;
-			case ObjectID::enemyBullet: //æ•µã®å¼¾
-				modHp( -((Bullet*)o)->getAtk() );
+			case ObjectID::abyss:	//“Ş—BƒQ[ƒ€ƒI[ƒo[
+				isDead = true;
+				isMoving = 'D';
+				drawCount = 0;
+				SceneM.ChangeScene(scene::GameOver);
 				break;
-			case ObjectID::fire: 
+			case ObjectID::enemyBullet: //ˆê”Ê•º‚Ì’e
+				modHp(-((Bullet*)o)->getAtk());
+				break;
+			case ObjectID::fire:
 				modHp(-1);
 				break;
 			default:
@@ -281,11 +341,11 @@ int Player::update() {
 		isDead = true;
 		isMoving = 'D';
 		drawCount = 0;
-		//ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼å‡¦ç†ï¼ã“ã“ã§ã‚„ã£ã¦ã„ã„ã®ã‹ï¼Ÿ
+		//ƒQ[ƒ€ƒI[ƒo[ˆ—D‚±‚±‚Å‚â‚Á‚Ä‚¢‚¢‚Ì‚©H
 		SceneM.ChangeScene(scene::GameOver);
 	}
 
-	invalidDamageTime++;	//ç„¡æ•µæ™‚é–“
+	invalidDamageTime++;	//–³“GŠÔ
 	return 0;
 }
 
@@ -437,6 +497,7 @@ void Player::Draw(int drawX, int drawY) {
 		break;
 
 	case 'A':
+	case 'B':
 		if (isJumping) {
 			if (jumpPower <= 1 && jumpPower >= -1)
 				MyDraw(tempX, tempY, jump[11], right);
@@ -484,7 +545,7 @@ void Player::Draw(int drawX, int drawY) {
 		}
 		break;
 
-	case'B':
+	/*case'B':
 		if (isJumping) {
 
 		}
@@ -500,7 +561,7 @@ void Player::Draw(int drawX, int drawY) {
 			if (drawCount == 60) drawCount = 0;
 		}
 		break;
-
+*/
 	case'C':
 		if (isJumping) {
 
@@ -542,7 +603,7 @@ void Player::Draw(int drawX, int drawY) {
 }
 
 void Player::MyDraw(int tempX, int tempY, int movement, bool lrFlag) {
-	//ä¿®æ­£è¦ç´ 
+	//C³—v‘f
 
 	if (invalidDamageTime < 120 && (invalidDamageTime / 20) % 2 > 0) {
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 170);
@@ -561,12 +622,6 @@ void Player::MyDraw(int tempX, int tempY, int movement, bool lrFlag) {
 		else {
 			DrawTurnGraph(tempX, tempY, movement, TRUE);
 		}
-	}
-}
-
-void Player::debugMode() {
-	if (keyM.GetKeyFrame(KEY_INPUT_K) == 1) {
-		hp = 0;
 	}
 }
 
@@ -600,7 +655,7 @@ void Player::PerDecision()
 	y3 = y + ((sizeY1 + sizeY2) / 2);
 }
 
-//ä½“åŠ›ã®å¤‰æ›´ ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’å—ã‘ã‚‹ã¨ãã ã‘120ãƒ•ãƒ¬ãƒ¼ãƒ ã®ç„¡æ•µæ™‚é–“
+//‘Ì—Í‚Ì•ÏX ƒ_ƒ[ƒW‚ğó‚¯‚é‚Æ‚«‚¾‚¯120ƒtƒŒ[ƒ€‚Ì–³“GŠÔ
 void Player::modHp(int mod) {
 	if (mod < 0) {
 		if (invalidDamageTime >= 120) {

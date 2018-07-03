@@ -19,9 +19,9 @@ public:
 	void update();
 	void Draw(int drawX, int drawY);
 
-	//Object?ğ’¼Ú“n???Ä’Ç‰?
+	//ì¬Ï‚İObject‚Ì’¼Ú’Ç‰Á
 	void addObject(Object* obj) override;
-	//?p?????[?^?w??Object?Ç‰? moveUL,RD?Í‚??ê‚¼???????Ì‹?????w?è‚·??????????bject????
+	//Objectƒpƒ‰ƒ[ƒ^w’è‚Å’Ç‰Á
 	void addObject(int id, int x, int y, int hp = -1, int moveUL = -1, int moveRD = -1, int etc1 = -1, int etc2 = -1);
 	//æ•µå…µã®å‹•ãç¯„å›²è¨ˆç®—
 	void enemyMoveRangeCalc(int x, int y, int *minX, int *maxX);
