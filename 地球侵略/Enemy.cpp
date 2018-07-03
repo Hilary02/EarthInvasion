@@ -14,6 +14,8 @@ Enemy::Enemy(int x, int y, int img, ObjectID id, IObjectManager* Iobj) {
 	this->y = y;
 	this->imgHandle = img;
 	this->id = id;
+	IobjMgr->enemyMoveRangeCalc(x, y, &minX, &maxX);
+	
 	if (id == ObjectID::soldierA)
 	{
 		setHp(3);
@@ -38,7 +40,8 @@ Enemy::Enemy(int x, int y, int img, ObjectID id, IObjectManager* Iobj) {
 	damegeHandle = LoadGraph("data/img/enemy1Damage.png");
 	iconHandle = LoadGraph("data/img/exclamation.png");
 	collision = new Collision(16, 0, 20, 64);
-	AttackBox = new Collision(32, colYOffset, -160, colYSize);
+	//AttackBox = new Collision(32, colYOffset, -160, colYSize);
+	AttackBox = new Collision(0, 0, 0, 0);
 	state = State::alive;
 }
 
@@ -49,10 +52,10 @@ int Enemy::update(const Collision & playerCol) {
 		counter++;
 		atkCt += addCount;
 		HpCt += addCount;
+		isRight = IsRangeCheck();
 		collision->updatePos(x, y);
 		AttackBox->updatePos(x, y);
 		collisionCheck(playerCol);
-		isRight = IsRangeCheck();
 
 		for (auto &bull : bullets)
 		{
@@ -143,6 +146,8 @@ void Enemy::Draw(int drawX, int drawY) {
 			DrawGraph(x - drawX + 20, y - drawY - 20, iconHandle, TRUE);
 		}
 	}
+	//clsDx();
+	//printfDx("%d,%d", dis, isRight);
 
 }
 
@@ -245,9 +250,16 @@ void Enemy::DeadCheck() {
 }
 
 bool Enemy::IsRangeCheck() {
-	dis += movedis;
-	if (moveRange < dis) {
-		dis = 0;
+	if (isRight)
+	{
+		dis += movedis;
+	}
+	else
+	{
+		dis -= movedis;
+	}
+
+	if (maxX < dis || minX > dis) {
 		AttackBox->xFlip();
 		return !isRight;
 	}

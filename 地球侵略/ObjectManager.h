@@ -23,11 +23,14 @@ public:
 	void addObject(Object* obj) override;
 	//?p?????[?^?w??Object?ǉ? moveUL,RD?͂??ꂼ???????̋?????w?肷??????????bject????
 	void addObject(int id, int x, int y, int hp = -1, int moveUL = -1, int moveRD = -1, int etc1 = -1, int etc2 = -1);
+	//敵兵の動く範囲計算
+	void enemyMoveRangeCalc(int x, int y, int *minX, int *maxX);
 
 	std::vector<Object*>& getObjectList() override;
 	std::vector<Object*>& getTerrainList() override;
 	int getImageHandle(ObjectID id) override;
 	Player* getPlayer();
+	std::vector<std::vector <int>> vmap;
 
 
 private:

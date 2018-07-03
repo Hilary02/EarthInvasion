@@ -20,6 +20,7 @@ ObjectManager::ObjectManager() {
 
 ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap, int stage) {
 	this->player = new Player(vmap, this);
+	this->vmap = vmap;
 	stageId = stage;
 	Loadimg();
 	for (unsigned int i = 0; i < vmap.size(); i++) {
@@ -167,6 +168,34 @@ void ObjectManager::addObject(int id, int x, int y, int hp, int moveUL, int move
 		break;
 	}
 	objects.push_back(obj);
+}
+
+void ObjectManager::enemyMoveRangeCalc(int x, int y, int *minX, int *maxX)
+{
+	int indexX = x / 32;
+	int indexY = y / 32;
+	*maxX = 5 * 32;
+	*minX = -5 * 32;
+	//現在はエネミーの初期位置がxが５以下などの限界値付近ならたぶんエラーが発生
+	for (int i = 0; i <= 5; i++) {
+		if (vmap[indexY][indexX + i] > 0 && vmap[indexY][indexX + i] < 20 ||
+			vmap[indexY + 1][indexX + i] > 0 && vmap[indexY + 1][indexX + i] < 20 ||
+			vmap[indexY + 2][indexX + i] == 0) {
+			//そのままiの値で計算すると壁などに埋まってしまうため(i-1),(i+1)
+			*maxX = (i - 1) * 32;
+			break;
+		}
+	}
+
+	for (int i = 0; i >= -5; i--) {
+		if (vmap[indexY][indexX + i] > 0 && vmap[indexY][indexX + i] < 20 ||
+			vmap[indexY + 1][indexX + i] > 0 && vmap[indexY + 1][indexX + i] < 20 ||
+			vmap[indexY + 2][indexX + i] == 0) {
+			*minX = i * 32;
+			break;
+		}
+	}
+
 }
 
 std::vector<Object*>& ObjectManager::getObjectList() { return objects; }
