@@ -188,12 +188,12 @@ void ObjectManager::enemyMoveRangeCalc(int x, int y, int *minX, int *maxX)
 	int indexY = y / 32;
 	*maxX = 5 * 32;
 	*minX = -5 * 32;
-	//現在はエネミーの初期位置がxが５以下などの限界値付近ならたぶんエラーが発生
+	//現在はエネミーの初期位置がxが５以下などの限界値付近ならたぶんエラーが発甁E
 	for (int i = 0; i <= 5; i++) {
 		if (vmap[indexY][indexX + i] > 0 && vmap[indexY][indexX + i] < 20 ||
 			vmap[indexY + 1][indexX + i] > 0 && vmap[indexY + 1][indexX + i] < 20 ||
 			vmap[indexY + 2][indexX + i] == 0) {
-			//そのままiの値で計算すると壁などに埋まってしまうため(i-1),(i+1)
+			//そ�Eままiの値で計算すると壁などに埋まってしまぁE��めEi-1),(i+1)
 			*maxX = (i - 1) * 32;
 			break;
 		}
