@@ -29,6 +29,13 @@ Enemy::Enemy(int x, int y, int img, ObjectID id, IObjectManager* Iobj) {
 		atkInterval = 52;
 		addCount = 2;
 	}
+	else if (id == ObjectID::venomMan) {
+		setHp(3);
+		setAtk(0);
+		spped = 1;
+		atkInterval = 104;
+		int r = rand() % 2;
+	}
 
 	LoadDivGraph("data/img/enemy1Walk.png", 8, 4, 2, 64, 64, walkHandle);
 	LoadDivGraph("data/img/enemy1WaitForAtack.png", 4, 4, 1, 64, 64, atackHandle);
