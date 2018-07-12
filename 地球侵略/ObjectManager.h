@@ -23,7 +23,7 @@ public:
 	void addObject(Object* obj) override;
 	//Objectƒpƒ‰ƒ[ƒ^w’è‚Å’Ç‰Á
 	void addObject(int id, int x, int y, int hp = -1, int moveUL = -1, int moveRD = -1, int etc1 = -1, int etc2 = -1);
-	//æ•µå…µã®å‹•ãç¯„å›²è¨ˆç®—
+	//æ•µå…µã®å‹•ãç¯E›²è¨ˆç®E
 	void enemyMoveRangeCalc(int x, int y, int *minX, int *maxX);
 
 	std::vector<Object*>& getObjectList() override;
