@@ -14,6 +14,9 @@ void Scene_Config::update() {
 	if (keyM.GetKeyFrame(KEY_INPUT_ESCAPE) == 1) {
 		SceneM.ChangeScene(scene::Title);
 	}
+	if (keyM.GetKeyFrame(KEY_INPUT_X) == 1) {
+		SceneM.ChangeScene(scene::Title);
+	}
 	MoveCursor();
 }
 
@@ -53,10 +56,10 @@ void Scene_Config::MoveCursor() {
 	//ボリューム調節機能．同じ処理になるのでポインタを利用して圧縮を図った．
 	//配列でも問題ない気がしたが別段問題はないと思う．
 	if (nowSelect == BGM) {
-		SoundM.SoundVolume(0);
+		SoundM.SoundVolume(Stype::BGM);
 	}
 	if (nowSelect == SE) {
-		SoundM.SoundVolume(1);
+		SoundM.SoundVolume(Stype::SE);
 	}
 	if (keyM.GetKeyFrame(KEY_INPUT_Z) == 1) {
 		switch (nowSelect) {

@@ -21,43 +21,40 @@ void SoundManager::SetSound(int bgm) {					//SetSound(LoadSoundMem("File")
 	StopSoundMem(this->bgm);
 	DeleteSoundMem(this->bgm);		//後片付けは大事．解放しないとメモリリークの原因になる．
 	SoundManager::bgm = bgm;
-	ChangeVolumeSoundMem(bgmVolume, SoundManager::bgm);
+	myChangeVolumeSoundMem(bgmVolume, SoundManager::bgm);
 }
 
-void SoundManager::SoundVolume(int number) {
-	if (number == 0) {
+void SoundManager::SoundVolume(Stype num) {
+	bool isVolChanged = false;
+	if (num == Stype::BGM) {
 		volume = &bgmVolume;
 		sound = &bgm;
-		bool isVolChanged = false;
-		if (keyM.GetKeyFrame(KEY_INPUT_RIGHT) >= 1) {
-			*volume = ((*volume)++ < 255) ? (*volume)++ : 255;//音量を上げる.Max255
+		if (keyM.GetKeyFrame(KEY_INPUT_RIGHT) == 1) {
+			*volume = ((*volume)++ < 10) ? (*volume)++ : 10;//音量を上げる.Max10
 			isVolChanged = true;
 		}
-		else if (keyM.GetKeyFrame(KEY_INPUT_LEFT) >= 1) {
+		else if (keyM.GetKeyFrame(KEY_INPUT_LEFT) == 1) {
 			*volume = ((*volume)-- > 0) ? (*volume)-- : 0;//音量を下げる.Min0
 			isVolChanged = true;
-		}
-		if (isVolChanged) {
-			ChangeVolumeSoundMem(*volume, *sound);				//メモリ上の音量変更
-			isVolChanged = false;
 		}
 	}
-	else {
+	else if (num == Stype::SE) {
 		volume = &seVolume;
 		sound = &se;
-		bool isVolChanged = false;
-		if (keyM.GetKeyFrame(KEY_INPUT_RIGHT) >= 1) {
-			*volume = ((*volume)++ < 255) ? (*volume)++ : 255;//音量を上げる.Max255
+		if (keyM.GetKeyFrame(KEY_INPUT_RIGHT) == 1) {
+			*volume = ((*volume)++ < 10) ? (*volume)++ : 10;//音量を上げる.Max10
 			isVolChanged = true;
 		}
-		else if (keyM.GetKeyFrame(KEY_INPUT_LEFT) >= 1) {
+		else if (keyM.GetKeyFrame(KEY_INPUT_LEFT) == 1) {
 			*volume = ((*volume)-- > 0) ? (*volume)-- : 0;//音量を下げる.Min0
 			isVolChanged = true;
 		}
-		if (isVolChanged) {
-			Se(LoadSoundMem("data/mc/pick up.wav"));
-			isVolChanged = false;
-		}
+	}
+
+	if (isVolChanged) {
+		Se(LoadSoundMem("data/mc/pick up.wav"));
+		myChangeVolumeSoundMem(*volume, *sound);				//メモリ上の音量変更
+		isVolChanged = false;
 	}
 }
 
@@ -69,13 +66,19 @@ int SoundManager::Volume(int number) {
 		return seVolume;
 	}
 }
+
 void SoundManager::SoundPlayer() {
 	if (CheckSoundMem(bgm) == 0) {
 		PlaySoundMem(bgm, DX_PLAYTYPE_LOOP, TRUE);
 	}
 }
 
-void SoundManager::Se(int se) {								//Se(LoadSoundMem("File")
-	ChangeVolumeSoundMem(SoundManager::seVolume, se);
+void SoundManager::Se(int se) {								
+	//Se(LoadSoundMem("File");
+	myChangeVolumeSoundMem(SoundManager::seVolume, se);
 	PlaySoundMem(se, DX_PLAYTYPE_BACK, TRUE);
+}
+
+void SoundManager::myChangeVolumeSoundMem(int vol, int handle) {
+	ChangeVolumeSoundMem(255 * vol / 10, handle);
 }
