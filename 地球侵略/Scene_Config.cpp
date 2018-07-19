@@ -5,6 +5,7 @@ Scene_Config::Scene_Config() {
 	nowDraw = VOL_CON;
 	bg = LoadGraph("data/img/bg_config.png");
 	cursor = LoadGraph("data/img/cursor.png");
+	volBar = LoadGraph("data/img/volBar.png");
 }
 
 Scene_Config::~Scene_Config() {
@@ -23,23 +24,22 @@ void Scene_Config::update() {
 void Scene_Config::Draw() {
 	DrawGraph(0, 0, bg, TRUE);
 	SetFontSize(30);
-	DrawFormatString(20, 20, GetColor(255, 255, 255), "コンフィグ");
+	DrawFormatString(80, 50, GetColor(255, 255, 255), "コンフィグ");
 
-	for (int i = 0; i < MENU_NUM; i++) {
-		if (i == nowSelect) {
-			MenuElement[i].x = 380; // 座標を左にする
-		}
-		else {
-			MenuElement[i].x = 400;
-		}
-	}
 	for (int i = 0; i < MENU_NUM; i++) { // メニュー項目を描画
 		DrawFormatString(MenuElement[i].x, MenuElement[i].y, 0xFFFFFF, MenuElement[i].name);
 	}
 
-	//音量を表示　関数に切り分けるかも
-	DrawFormatString(430, 280, GetColor(255, 255, 255), ": %d", SoundM.Volume(0));
-	DrawFormatString(430, 340, GetColor(255, 255, 255), ": %d", SoundM.Volume(1));
+	//カーソルを表示
+	DrawGraph(MenuElement[nowSelect].x - 34, MenuElement[nowSelect].y + 4, cursor, false);
+
+	//音量ゲージを表示
+	for (int i = 0; i < SoundM.Volume(0); i++) {
+		DrawGraph(530 + 25 * i, 270, volBar, false);
+	}
+	for (int i = 0; i < SoundM.Volume(1); i++) {
+		DrawGraph(530 + 25 * i, 330, volBar, false);
+	}
 
 	SetFontSize(16);
 }
