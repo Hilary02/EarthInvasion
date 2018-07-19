@@ -12,12 +12,6 @@ Scene_Config::~Scene_Config() {
 }
 
 void Scene_Config::update() {
-	if (keyM.GetKeyFrame(KEY_INPUT_ESCAPE) == 1) {
-		SceneM.ChangeScene(scene::Title);
-	}
-	if (keyM.GetKeyFrame(KEY_INPUT_X) == 1) {
-		SceneM.ChangeScene(scene::Title);
-	}
 	MoveCursor();
 }
 
@@ -63,26 +57,18 @@ void Scene_Config::MoveCursor() {
 	}
 	if (keyM.GetKeyFrame(KEY_INPUT_Z) == 1) {
 		switch (nowSelect) {
-			//case KEY:
-			//	isKeyConfig = true;
-			//	break;
-			//case PAD:
-			//	break;
 		case EXIT:
 			SceneM.ChangeScene(scene::Title);
+			break;
 		default:
 			break;
 		}
 	}
 	if (keyM.GetKeyFrame(KEY_INPUT_ESCAPE) == 1) {
-		switch (nowSelect) {
-			//case KEY:
-			//case PAD:
-			//	isKeyConfig = false;
-			//	break;
-		default:
-			break;
-		}
+		SceneM.ChangeScene(scene::Title);
+	}
+	if (keyM.GetKeyFrame(KEY_INPUT_X) == 1) {
+		SceneM.ChangeScene(scene::Title);
 	}
 }
 
