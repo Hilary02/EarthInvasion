@@ -22,7 +22,9 @@ public:
 	bool getDeadState();
 
 private:
-	const int moveRange = 300;
+	int moveRange = 300;
+	int minX = 0;
+	int maxX = 0;
 	const int mod = -1;
 
 	int drawcount = 0;
@@ -34,7 +36,7 @@ private:
 	int deadHandle[8];
 	int atackRen = -128;
 	int invalidDamageTime = 60;
-	int dis = 150;
+	int dis = 0;
 	int movedis = 1;
 	int addCount = 1;
 	int atkCt = 181;

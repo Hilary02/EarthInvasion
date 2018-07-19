@@ -14,6 +14,8 @@ Enemy::Enemy(int x, int y, int img, ObjectID id, IObjectManager* Iobj) {
 	this->y = y;
 	this->imgHandle = img;
 	this->id = id;
+	IobjMgr->enemyMoveRangeCalc(x, y, &minX, &maxX);
+	
 	if (id == ObjectID::soldierA)
 	{
 		setHp(3);
@@ -38,7 +40,8 @@ Enemy::Enemy(int x, int y, int img, ObjectID id, IObjectManager* Iobj) {
 	damegeHandle = LoadGraph("data/img/enemy1Damage.png");
 	iconHandle = LoadGraph("data/img/exclamation.png");
 	collision = new Collision(16, 0, 20, 64);
-	AttackBox = new Collision(32, colYOffset, -160, colYSize);
+	//AttackBox = new Collision(32, colYOffset, -160, colYSize);
+	AttackBox = new Collision(0, 0, 0, 0);
 	state = State::alive;
 }
 
@@ -48,10 +51,10 @@ int Enemy::update(const Collision & playerCol) {
 	{
 		atkCt += addCount;
 		HpCt += addCount;
+		isRight = IsRangeCheck();
 		collision->updatePos(x, y);
 		AttackBox->updatePos(x, y);
 		collisionCheck(playerCol);
-		isRight = IsRangeCheck();
 
 		for (auto &bull : bullets)
 		{
@@ -92,11 +95,11 @@ int Enemy::update(const Collision & playerCol) {
 	}
 
 
-	//ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¨ã®å½“ãŸã‚Šåˆ¤å®šã‚’ã¨ã‚Šï¼Œãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼è‡ªèº«ã«å½±éŸ¿ã™ã‚‹å‡¦ç†ã‚’è¡Œã†
+	//ƒIƒuƒWƒFƒNƒg‚Æ‚Ì“–‚½‚è”»’è‚ð‚Æ‚èCƒvƒŒƒCƒ„[Ž©g‚É‰e‹¿‚·‚éˆ—‚ðs‚¤
 	for (auto o : IobjMgr->getObjectList()) {
-		if (collision->doCollisonCheck(o->collision->hitRange)) { //å½“ãŸã‚Šåˆ¤å®šã‚’ã¨ã‚‹
+		if (collision->doCollisonCheck(o->collision->hitRange)) { //“–‚½‚è”»’è‚ð‚Æ‚é
 			switch (o->getId()) {
-			case ObjectID::playerBullet: //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®å¼¾
+			case ObjectID::playerBullet: //ƒvƒŒƒCƒ„[‚Ì’e
 				if (state == State::alive && HpCt > 30) {
 					modHp(-((Bullet*)o)->getAtk());
 					HpCt = 0;
@@ -124,11 +127,11 @@ int Enemy::update(const Collision & playerCol) {
 		if (removeCount == 0) state = State::respawn;
 	}
 
-	//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚’æµç”¨ï¼Žã“ã‚ŒCreatureã‚¯ãƒ©ã‚¹ã«ã„ã‚Œã‚‹ã¹ãã˜ã‚ƒã­ ï¼Ÿ
+	//ƒvƒŒƒCƒ„[‚ð—¬—pD‚±‚êCreatureƒNƒ‰ƒX‚É‚¢‚ê‚é‚×‚«‚¶‚á‚Ë H
 	for (auto t : IobjMgr->getTerrainList()) {
 		if (collision->doCollisonCheck(t->collision->hitRange)) {
 			switch (t->getId()) {
-			case ObjectID::lockedDoor: //æ‰‰
+			case ObjectID::lockedDoor: //”à
 			{
 				int leftTX = t->collision->hitRange.xPos + t->collision->hitRange.xOffset;
 				int leftPX = collision->hitRange.xPos + collision->hitRange.xOffset;
@@ -161,6 +164,8 @@ void Enemy::Draw(int drawX, int drawY) {
 			DrawGraph(x - drawX + 20, y - drawY - 20, iconHandle, TRUE);
 		}
 	}
+	//clsDx();
+	//printfDx("%d,%d", dis, isRight);
 
 }
 
@@ -177,11 +182,11 @@ void Enemy::collisionCheck(const Collision & target) {
 			modHp(mod);
 		}
 		else if (attackR) {
-			if (noticed == 2) {		//ç™ºè¦‹æ¸ˆ
+			if (noticed == 2) {		//”­Œ©Ï
 				movedis = 0;
 				AtackCommon();
 			}
-			else if (noticed == 0) {	//åˆå›žã®ç™ºè¦‹å‡¦ç†
+			else if (noticed == 0) {	//‰‰ñ‚Ì”­Œ©ˆ—
 				movedis = 0;
 				noticed = 1;
 				noticeCount = 45;
@@ -245,7 +250,7 @@ void Enemy::AtackCommon()
 		bullets.push_back(objBull);
 		IobjMgr->addObject(objBull);
 	}
-	if ((drawcount / 12) > 8 && hundleIndex == 0)drawcount = 0; //drawcountã®ãƒªã‚»ãƒƒãƒˆ
+	if ((drawcount / 12) > 8 && hundleIndex == 0)drawcount = 0; //drawcount‚ÌƒŠƒZƒbƒg
 }
 
 void Enemy::DeadCheck() {
@@ -265,9 +270,16 @@ void Enemy::DeadCheck() {
 }
 
 bool Enemy::IsRangeCheck() {
-	dis += movedis;
-	if (moveRange < dis) {
-		dis = 0;
+	if (isRight)
+	{
+		dis += movedis;
+	}
+	else
+	{
+		dis -= movedis;
+	}
+
+	if (maxX < dis || minX > dis) {
 		AttackBox->xFlip();
 		return !isRight;
 	}
