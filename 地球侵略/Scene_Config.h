@@ -10,10 +10,16 @@ public:
 	~Scene_Config();
 	void update();
 	void Draw();
+	// キー入力に応じてコンフィグ操作を行う関数
+	void MoveCursor();
 private:
+private:
+	int bg;
+	int cursor;
+	int volBar;
 	const static int MENU_NUM = 3;
 	enum OPTION_SELECT {
-		BGM, SE,  EXIT //オプションメニュー
+		BGM, SE, EXIT //オプションメニュー
 	};
 	enum OPTION_DRAW {
 		VOL_CON, KEY_CON   //PADの設定は保留
@@ -25,17 +31,12 @@ private:
 	} MenuElement_t;
 
 	MenuElement_t MenuElement[MENU_NUM] = {	//実際の位置や値の設定
-		{ 400, 280, "BGM" },
-		{ 400, 340, "SE" },	
-		//{ 400, 340, "KEY" },
-		//{ 400, 370, "PAD" },
-		{ 400, 400, "Back to Title" }
+		{ 470, 280, "BGM" },
+		{ 470, 340, "SE" },
+		{ 470, 400, "Back to Title" }
 	};
 	int nowSelect;
 	int nowDraw;
 	bool isKeyConfig = false;
-public:
-	// キー入力に応じてコンフィグ操作を行う関数
-	void MoveCursor();
 };
 
