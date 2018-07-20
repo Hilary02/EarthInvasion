@@ -66,6 +66,7 @@
     <ClInclude Include="Goal.h" />
     <ClInclude Include="IObjectManager.h" />
     <ClInclude Include="ISceneManager.h" />
+    <ClInclude Include="IStageBase.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="KeyManager.h" />
     <ClInclude Include="LockedDoor.h" />

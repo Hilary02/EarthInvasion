@@ -9,6 +9,7 @@ Scene_Config::Scene_Config() {
 }
 
 Scene_Config::~Scene_Config() {
+	InitGraph();
 }
 
 void Scene_Config::update() {

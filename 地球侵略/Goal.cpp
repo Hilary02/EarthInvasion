@@ -20,7 +20,7 @@ int Goal::update(const Collision & playerCol) {
 		//‚ß‚¿‚á‚­‚¿‚á
 		savedata.setClearFlag(stageId, 1);
 		savedata.save();
-		SceneM.ChangeScene(scene::Clear);
+		//SceneM.ChangeScene(scene::Clear);
 	}
 	else {
 		//d DrawBox(100, 20, 100, 200, 0xFF0000, false);

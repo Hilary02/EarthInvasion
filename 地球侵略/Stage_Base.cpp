@@ -48,7 +48,11 @@ void Stage_Base::update() {
 	}
 
 	drawChipNum = 0;
-	objectMgr->update();
+
+	//死んでもクリアしてもなければオブジェクトを更新
+	if (!isDeadAnimation && !isClearAnimation) {
+		objectMgr->update();
+	}
 	scrollMap();	//プレイヤー座標に応じた表示範囲の変更
 }
 
@@ -94,6 +98,12 @@ void Stage_Base::scrollMap() {
 	drawX = min(max(0, baseDrawX), limitDrawX);
 	drawY = min(max(0, baseDrawY), limitDrawY);
 }
+void Stage_Base::PlayAnimation(int type) {
+	if (!isDeadAnimation && !isClearAnimation) {
+		if (type == 0) isDeadAnimation = true;
+		if (type == 1) isClearAnimation = true;
+	}
+}
 
 //もっとスマートな方法ないかな？
 int Stage_Base::readStageData(int stage) {
@@ -103,7 +113,7 @@ int Stage_Base::readStageData(int stage) {
 	std::string csv = ".csv";
 
 	std::string path = first + type + id + csv;
-	if(readSummary(path) ==-1) return -1;
+	if (readSummary(path) == -1) return -1;
 
 	type = "map";
 	path = first + type + id + csv;

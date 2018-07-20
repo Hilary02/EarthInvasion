@@ -17,10 +17,11 @@ public:
 
 private:
 	std::string text = "GameOver...";
-	int moveTo = 200;
+	int moveTo = 0;
 	double speed = 0.6;
 	double acceleration = 0.5;
-	int y = 0;
+	int y = -600;
+	int img;
 	//‚±‚ê‚à‚Ç‚±‚©‚©‚ç‚Á‚Ä‚­‚é
 	int Frame = 0;
 
