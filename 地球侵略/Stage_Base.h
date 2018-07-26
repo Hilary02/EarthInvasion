@@ -82,4 +82,6 @@ private:
 	//アニメ再生フラグ
 	bool isClearAnimation = false;
 	bool isDeadAnimation = false;
+
+	int img_clear;
 };

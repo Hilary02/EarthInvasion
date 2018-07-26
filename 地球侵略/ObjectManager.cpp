@@ -20,9 +20,10 @@ ObjectManager::ObjectManager() {
 	terrain.clear();
 }
 
-ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap, int stage) {
-	this->player = new Player(vmap, this);
+ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap, int stage, IStageBase* stageBase) {
+	this->player = new Player(vmap, this,stageBase);
 	this->vmap = vmap;
+	this->stageBase = stageBase;
 	stageId = stage;
 	Loadimg();
 	for (unsigned int i = 0; i < vmap.size(); i++) {
@@ -173,7 +174,7 @@ void ObjectManager::addObject(int id, int x, int y, int hp, int moveUL, int move
 		obj = new Item(x, y, img[ObjectID::healPot]);
 		break;
 	case ObjectID::goal:
-		obj = new Goal(x, y, img[ObjectID::goal], stageId);
+		obj = new Goal(x, y, img[ObjectID::goal], stageId, stageBase);
 		break;
 	default:
 		obj = new Item(x, y, img[ObjectID::healPot]);	//¶¬‚³‚ê‚é‚×‚«‚Å‚È‚¢

@@ -2,13 +2,14 @@
 #include "Creature.h"
 #include "Bullet.h"
 #include <vector>
+#include "IStageBase.h"
 
 class Player :
 	public Creature
 {
 public:
-	Player(const std::vector<std::vector <int>>  &vmap, IObjectManager* Iobj);
-	//Player(int x, int y);
+	Player(const std::vector<std::vector <int>>  &vmap, IObjectManager* Iobj,IStageBase* stage);
+	//Player(int x, int y)
 	~Player();
 	int update();
 	void Draw(int, int);
@@ -17,6 +18,7 @@ public:
 	int getHp();
 	void modHp(int mod) override;
 private:
+	IStageBase* Istage;
 	std::vector<std::vector <int>> vmap;
 	int clock = 0;
 	int x1 = 0;

@@ -4,8 +4,9 @@
 #include "ObjectManager.h"
 #include "SceneManager.h"
 
-Player::Player(std::vector<std::vector <int>> const &vmap, IObjectManager* Iobj) {
+Player::Player(std::vector<std::vector <int>> const &vmap, IObjectManager* Iobj, IStageBase* stage) {
 	LoadImg();
+	this->Istage = stage;
 	this->IobjMgr = Iobj;
 	this->vmap = vmap;
 
@@ -176,7 +177,7 @@ int Player::update() {
 
 	//一般兵状態の攻撃処理 
 	bulletCT += 1;
-	if (isAttack &&( plState == 'A' || plState == 'B' )&& drawCount >= 25 && drawCount <= 32)
+	if (isAttack && (plState == 'A' || plState == 'B') && drawCount >= 25 && drawCount <= 32)
 	{
 		if (bulletCT > 60)
 		{
@@ -342,7 +343,8 @@ int Player::update() {
 		isMoving = 'D';
 		drawCount = 0;
 		//ゲームオーバー処理．ここでやっていいのか？
-		SceneM.ChangeScene(scene::GameOver);
+		//SceneM.ChangeScene(scene::GameOver);
+		Istage->PlayAnimation(deadAnime);	//ゲームオーバー演出に入る
 	}
 
 	invalidDamageTime++;	//無敵時間
@@ -545,23 +547,23 @@ void Player::Draw(int drawX, int drawY) {
 		}
 		break;
 
-	/*case'B':
-		if (isJumping) {
+		/*case'B':
+			if (isJumping) {
 
-		}
-		else if (keyM.GetKeyFrame(KEY_INPUT_RIGHT) >= 1) {
-			drawCount = keyM.GetKeyFrame(KEY_INPUT_RIGHT) / 15 % 4;
-			DrawGraph(tempX, tempY, move[drawCount], TRUE);
-		}
-		else {
-			DrawGraph(tempX, tempY, wait[drawCount % 4], TRUE);
-			drawCount++;
+			}
+			else if (keyM.GetKeyFrame(KEY_INPUT_RIGHT) >= 1) {
+				drawCount = keyM.GetKeyFrame(KEY_INPUT_RIGHT) / 15 % 4;
+				DrawGraph(tempX, tempY, move[drawCount], TRUE);
+			}
+			else {
+				DrawGraph(tempX, tempY, wait[drawCount % 4], TRUE);
+				drawCount++;
 
 
-			if (drawCount == 60) drawCount = 0;
-		}
-		break;
-*/
+				if (drawCount == 60) drawCount = 0;
+			}
+			break;
+	*/
 	case'C':
 		if (isJumping) {
 

@@ -1,4 +1,8 @@
 #pragma once
+enum anime {
+	deadAnime,
+	clearAnime
+};
 
 class IStageBase {
 public:
