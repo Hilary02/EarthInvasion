@@ -100,10 +100,10 @@ void ObjectManager::Loadimg() {
 	img[ObjectID::fire] = LoadGraph("data/img/fire.png");
 	img[ObjectID::moveingFloor] = LoadGraph("data/img/moveGround.png");
 	img[ObjectID::lockedDoor] = LoadGraph("data/img/lockDoor.png");
-
 	img[ObjectID::soldierA] = LoadGraph("data/img/enemy1Wait.png");
 	img[ObjectID::soldierB] = LoadGraph("data/img/enemy1Wait.png");
 	img[ObjectID::healPot] = LoadGraph("data/img/healPot.png");
+	img[ObjectID::detoxificationPot] = LoadGraph("data/img/curePot.png");
 	img[ObjectID::goal] = LoadGraph("data/img/clear.png");
 	img[ObjectID::alienLaser] = LoadGraph("data/img/LaserA_Wait.png");
 }
@@ -169,8 +169,14 @@ void ObjectManager::addObject(int id, int x, int y, int hp, int moveUL, int move
 		//Enemyのコンストラクタをオーバーライドしてパラメータを渡せるようにしたい
 		obj = new Enemy(x, y, img[ObjectID::soldierB], ObjectID::soldierB, this);
 		break;
+	case ObjectID::venomMan:
+		obj = new Enemy(x, y, img[ObjectID::soldierA], ObjectID::venomMan, this);
+		break;
 	case ObjectID::healPot:
 		obj = new Item(x, y, img[ObjectID::healPot]);
+		break;
+	case ObjectID::detoxificationPot:
+		obj = new Item(x, y, img[ObjectID::detoxificationPot]);
 		break;
 	case ObjectID::goal:
 		obj = new Goal(x, y, img[ObjectID::goal], stageId);

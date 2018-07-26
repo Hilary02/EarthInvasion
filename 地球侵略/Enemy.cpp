@@ -36,7 +36,6 @@ Enemy::Enemy(int x, int y, int img, ObjectID id, IObjectManager* Iobj) {
 		setAtk(0);
 		spped = 1;
 		atkInterval = 104;
-		int r = rand() % 2;
 	}
 
 	LoadDivGraph("data/img/enemy1Walk.png", 8, 4, 2, 64, 64, walkHandle);
@@ -83,6 +82,9 @@ int Enemy::update(const Collision & playerCol) {
 			break;
 		case ObjectID::soldierB:
 			hp = 15;
+			break;
+		case ObjectID::venomMan:
+			hp = 3;
 			break;
 		default:
 			printf("");

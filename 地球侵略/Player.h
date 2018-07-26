@@ -43,12 +43,17 @@ private:
 	char xyCheck = 'N';
 	char plState = 'N';
 	int wait[20];
+	int poisonWait[1];
 	int move[20];
+	int poisonMove[8];
 	int attack[20];
+	int poisonAttack[8];
 	int jump[20];
+	int poisonJump[4];
 	int liquid[10];
 	int parasite[20];
 	int die[30];
+	int poisonDie[8];
 
 	int invalidDamageTime = 120;
 	int preParasite = 0;

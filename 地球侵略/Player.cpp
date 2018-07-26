@@ -95,6 +95,18 @@ int Player::update() {
 								}
 								break;
 							}
+							case ObjectID::venomMan: // 毒人間
+							{
+								Enemy* ene = (Enemy*)o;
+								if (ene->getDeadState() == true) {
+									plState = 'V';
+									isMoving = 'I';
+									drawCount = 0;
+									preParasite = 1;
+									setAtk(ene->getAtk());
+								}
+								break;
+							}
 							default:
 								break;
 							}
@@ -102,9 +114,9 @@ int Player::update() {
 					}
 				}
 			}
-
+		
 			//寄生解除
-			if (keyM.GetKeyFrame(KEY_INPUT_DOWN) >= 45 && plState != 'N') {
+			if (keyM.GetKeyFrame(KEY_INPUT_DOWN) >= 45 && plState != 'N' && plState != 'V') {
 				plState = 'N';
 				isMoving = 'O';
 				drawCount = 0;
@@ -186,6 +198,11 @@ int Player::update() {
 			IobjMgr->addObject(objBull);
 		}
 	}
+	
+	//毒状態
+	if (plState == 'V') {
+		modHp(-1);
+	}
 
 	//弾の処理
 	for (auto &bull : bullets)
@@ -220,7 +237,7 @@ int Player::update() {
 	for (auto t : IobjMgr->getObjectList()) {
 		if (collision->doCollisonCheck(t->collision->hitRange)) {
 			switch (t->getId()) {
-			case ObjectID::spark: //扉
+			case ObjectID::spark: //
 			{
 				int leftTX = t->collision->hitRange.xPos + t->collision->hitRange.xOffset;
 				int leftPX = collision->hitRange.xPos + collision->hitRange.xOffset;
@@ -304,6 +321,12 @@ int Player::update() {
 				break;
 			case ObjectID::healPot: //回復ポッド
 				modHp(5);
+				break;
+			case ObjectID::detoxificationPot://毒消し
+				plState = 'N';
+				isMoving = 'O';
+				drawCount = 0;
+				collision->playerParasite = 0;
 				break;
 			case ObjectID::spike: //とげとげ
 				modHp(-1);
@@ -545,6 +568,53 @@ void Player::Draw(int drawX, int drawY) {
 		}
 		break;
 
+	case 'V':
+		if (isJumping) {
+			if (jumpPower <= 1 && jumpPower >= -1)
+				MyDraw(tempX, tempY, poisonJump[1], false);
+			else if (jumpPower > 1)
+				MyDraw(tempX, tempY, poisonJump[2], false);
+			else if (jumpPower < -1)
+				MyDraw(tempX, tempY, poisonJump[0], false);
+		}
+		else if (isMoving == 'I') {
+			MyDraw(tempX, tempY, parasite[drawCount / 8 % 8], right);
+			drawCount++;
+			if (drawCount >= 64) isMoving = 'N';
+		}
+		else if (isAttack) {
+			if (keyM.GetKeyFrame(KEY_INPUT_LEFT) == 0 && keyM.GetKeyFrame(KEY_INPUT_RIGHT) == 0) {
+				MyDraw(tempX, tempY, poisonAttack[drawCount / 8 % 8], false);
+				drawCount++;
+				if (drawCount >= 64) isAttack = false;
+			}
+			else {
+				MyDraw(tempX, tempY, poisonAttack[drawCount / 8 % 4], false);
+				drawCount++;
+				if (drawCount >= 32) isAttack = false;
+			}
+
+		}
+		else if (isMoving == 'D') {
+			MyDraw(tempX, tempY, poisonDie[drawCount / 8 % 8], false);
+			drawCount++;
+			if (drawCount >= 64) isMoving = 'N';
+		}
+		else if (isDead) {
+			MyDraw(tempX, tempY, poisonDie[7], false);
+		}
+		else if (keyM.GetKeyFrame(KEY_INPUT_RIGHT) >= 1) {
+			drawCount = keyM.GetKeyFrame(KEY_INPUT_RIGHT) / 15 % 8;
+			MyDraw(tempX, tempY, poisonMove[drawCount], false);
+		}
+		else if (keyM.GetKeyFrame(KEY_INPUT_LEFT) >= 1) {
+			drawCount = keyM.GetKeyFrame(KEY_INPUT_LEFT) / 15 % 8;
+			MyDraw(tempX, tempY,poisonMove[drawCount], false);
+		}
+		else {
+			MyDraw(tempX, tempY, poisonWait[0], false);
+		}
+		break;
 	/*case'B':
 		if (isJumping) {
 
@@ -687,4 +757,11 @@ void Player::LoadImg()
 	LoadDivGraph("data/img/enemy1WaitForAtackP.png", 4, 4, 1, 64, 64, &attack[10]);
 	LoadDivGraph("data/img/enemy1AtackP.png", 4, 4, 1, 64, 64, &attack[14]);
 	LoadDivGraph("data/img/enemy1DieP.png", 8, 4, 2, 64, 64, &die[20]);
+
+	LoadDivGraph("data/img/enemy1WaitPoison.png", 1, 1, 1, 64, 64, poisonWait);
+	LoadDivGraph("data/img/enemy1WalkPoison.png", 8, 4, 2, 64, 64, poisonMove);
+	LoadDivGraph("data/img/enemy1JumpPoison.png", 4, 4, 1, 64, 64, poisonJump);
+	LoadDivGraph("data/img/enemy1WaitForAtackPoison.png", 4, 4, 1, 64, 64, poisonAttack);
+	LoadDivGraph("data/img/enemy1AtackPoison.png", 4, 4, 1, 64, 64, &poisonAttack[4]);
+	LoadDivGraph("data/img/enemy1DiePoison.png", 8, 4, 2, 64, 64, poisonDie);
 }
