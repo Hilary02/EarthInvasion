@@ -87,6 +87,32 @@ void Stage_Base::draw() {
 
 	if (isClearAnimation) {
 		DrawGraph(0, 0, img_clear, true);
+		animationCounter++;
+		if (animationCounter % 2 == 0) {
+			player->setAbsolutePos(player->getX(), player->getY() - 1);
+		}
+		int br = 255 - animationCounter;
+		SetDrawBright(br, br, br);
+
+		printfDx("%d\n", br);
+		if (br <= 0) {
+			SetDrawBright(255, 255, 255);
+
+			SceneM.ChangeScene(scene::Clear);
+		}
+	}
+	if (isDeadAnimation) {
+		animationCounter++;
+		player->setAbsolutePos(player->getX(), player->getY() + 3);
+		int br = 255 - animationCounter * 3;
+		SetDrawBright(br, br, br);
+
+		printfDx("%d\n", br);
+		if (br <= 0) {
+			SetDrawBright(255, 255, 255);
+
+			SceneM.ChangeScene(scene::GameOver);
+		}
 	}
 
 	//デバッグ情報

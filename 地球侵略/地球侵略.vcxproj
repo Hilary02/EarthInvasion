@@ -50,7 +50,6 @@
     <ClCompile Include="Spark.cpp" />
     <ClCompile Include="SpikeBlock.cpp" />
     <ClCompile Include="Stage_Base.cpp" />
-    <ClCompile Include="StageAnimater.cpp" />
     <ClCompile Include="TextBox.cpp" />
     <ClCompile Include="WindowData.cpp" />
   </ItemGroup>
@@ -90,7 +89,6 @@
     <ClInclude Include="Spark.h" />
     <ClInclude Include="SpikeBlock.h" />
     <ClInclude Include="Stage_Base.h" />
-    <ClInclude Include="StageAnimater.h" />
     <ClInclude Include="TextBox.h" />
     <ClInclude Include="WindowData.h" />
   </ItemGroup>

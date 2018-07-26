@@ -667,6 +667,7 @@ void Player::modHp(int mod) {
 	}
 	else {
 		hp += mod;
+		if (hp > 16) { hp = 15; }
 	}
 }
 
