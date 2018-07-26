@@ -175,6 +175,9 @@ void ObjectManager::addObject(int id, int x, int y, int hp, int moveUL, int move
 	case ObjectID::goal:
 		obj = new Goal(x, y, img[ObjectID::goal], stageId);
 		break;
+	case ObjectID::alienLaser:
+		obj = new AntiAlienLaser(x, y, img[ObjectID::alienLaser], ObjectID::alienLaser);
+		break;
 	default:
 		obj = new Item(x, y, img[ObjectID::healPot]);	//ê∂ê¨Ç≥ÇÍÇÈÇ◊Ç´Ç≈Ç»Ç¢
 		break;
