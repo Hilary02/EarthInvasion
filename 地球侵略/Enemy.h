@@ -42,7 +42,7 @@ private:
 	int atkCt = 181;
 	int HpCt = 61;
 	int count = 0;  // enemyのdrawcountを所々でplayerの様に0に戻すとこれいらない
-	int spped = 0;
+	int movespeed = 0;
 	int atkInterval = 0;
 	int hundleIndex = 0; //if文の画像配列のindex判定に使用
 	bool drawIcon = false;
@@ -55,6 +55,8 @@ private:
 	int noticeCount = 0;
 
 	int index = -1;
+
+	int rct = 100; //エネミーのrangeチェックの際にプレイヤーが発見するとくるくる回るバグを力技で修正（後で直す
 
 	std::vector<Bullet*> bullets;
 

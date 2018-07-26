@@ -52,6 +52,7 @@
     <ClCompile Include="Stage_Base.cpp" />
     <ClCompile Include="TextBox.cpp" />
     <ClCompile Include="WindowData.cpp" />
+    <ClCompile Include="Witch.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Abyss.h" />
@@ -90,6 +91,7 @@
     <ClInclude Include="Stage_Base.h" />
     <ClInclude Include="TextBox.h" />
     <ClInclude Include="WindowData.h" />
+    <ClInclude Include="Witch.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
