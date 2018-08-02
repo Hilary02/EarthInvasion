@@ -14,7 +14,7 @@ bool WindowData::ask_screenmode() {
 WindowData::WindowData() :
 	WINDOW_WIDTH(800),
 	WINDOW_HEIGHT(600),
-	TITLE("地球侵略だぁぁぁ！ 体験版") {
+	TITLE("地球侵略だぁぁぁ！ ver1.0") {
 }
 
 

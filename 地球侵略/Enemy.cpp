@@ -15,7 +15,7 @@ Enemy::Enemy(int x, int y, int img, ObjectID id, IObjectManager* Iobj) {
 	this->imgHandle = img;
 	this->id = id;
 	IobjMgr->enemyMoveRangeCalc(x, y, &minX, &maxX);
-	
+
 	if (id == ObjectID::soldierA)
 	{
 		setHp(3);
@@ -40,8 +40,7 @@ Enemy::Enemy(int x, int y, int img, ObjectID id, IObjectManager* Iobj) {
 	damegeHandle = LoadGraph("data/img/enemy1Damage.png");
 	iconHandle = LoadGraph("data/img/exclamation.png");
 	collision = new Collision(16, 0, 20, 64);
-	//AttackBox = new Collision(32, colYOffset, -160, colYSize);
-	AttackBox = new Collision(0, 0, 0, 0);
+	AttackBox = new Collision(32, colYOffset, -160, colYSize);
 	state = State::alive;
 }
 
