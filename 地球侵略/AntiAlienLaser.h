@@ -13,6 +13,6 @@ public:
 
 private:
 	int timer = 0;
-	int laserImg[20];
+	int laserImg[30];
 	
 };
