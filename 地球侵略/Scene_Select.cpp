@@ -47,7 +47,7 @@ void Scene_Select::update() {
 		if (keyM.GetKeyFrame(KEY_INPUT_LEFT) == 1) { nextSelect = stageFrameData[selecting].L; }
 		if (keyM.GetKeyFrame(KEY_INPUT_RIGHT) == 1) { nextSelect = stageFrameData[selecting].R; }
 		if (clearState[nextSelect] == 1 || clearState[nextSelect] == 2) {	//選択できるステージだった場合 
-			SoundM.Se(LoadSoundMem("data/mc/pick up.wav"));
+			SoundM.Se("data/mc/pick up.wav");
 			selecting = nextSelect;
 		}
 	}

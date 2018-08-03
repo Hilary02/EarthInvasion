@@ -180,6 +180,9 @@ void ObjectManager::addObject(int id, int x, int y, int hp, int moveUL, int move
 	case ObjectID::goal:
 		obj = new Goal(x, y, img[ObjectID::goal], stageId, stageBase);
 		break;
+	case ObjectID::alienLaser:
+		obj = new AntiAlienLaser(x, y, img[ObjectID::alienLaser], ObjectID::alienLaser);
+		break;
 	default:
 		obj = new Item(x, y, img[ObjectID::healPot]);	//生成されるべきでない
 		break;
@@ -193,12 +196,12 @@ void ObjectManager::enemyMoveRangeCalc(int x, int y, int *minX, int *maxX)
 	int indexY = y / 32;
 	*maxX = 5 * 32;
 	*minX = -5 * 32;
-	//迴ｾ蝨ｨ縺ｯ繧ｨ繝阪Α繝ｼ縺ｮ蛻晄悄菴咲ｽｮ縺警縺鯉ｼ穂ｻ･荳九↑縺ｩ縺ｮ髯千阜蛟､莉倩ｿ代↑繧峨◆縺ｶ繧薙お繝ｩ繝ｼ縺檎匱逕・
+	//ステージの端に敵を配置しないでほしい
 	for (int i = 0; i <= 5; i++) {
 		if (vmap[indexY][indexX + i] > 0 && vmap[indexY][indexX + i] < 20 ||
 			vmap[indexY + 1][indexX + i] > 0 && vmap[indexY + 1][indexX + i] < 20 ||
 			vmap[indexY + 2][indexX + i] == 0) {
-			//縺昴・縺ｾ縺ｾi縺ｮ蛟､縺ｧ險育ｮ励☆繧九→螢√↑縺ｩ縺ｫ蝓九∪縺｣縺ｦ縺励∪縺・◆繧・i-1),(i+1)
+			//はみ出ないように(i-1)してるはずなんだけどな
 			*maxX = (i - 1) * 32;
 			break;
 		}

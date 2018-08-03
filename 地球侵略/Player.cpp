@@ -291,6 +291,13 @@ int Player::update() {
 			}
 			break;
 
+			//追加した
+			case ObjectID::alienLaser:
+				modHp(-100);
+				break;
+
+
+
 			default:
 				break;
 			}
@@ -323,6 +330,9 @@ int Player::update() {
 				modHp(-((Bullet*)o)->getAtk());
 				break;
 			case ObjectID::fire:
+				modHp(-1);
+				break;
+			case ObjectID::alienLaser:
 				modHp(-1);
 				break;
 			default:

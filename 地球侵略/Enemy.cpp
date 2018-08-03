@@ -20,24 +20,30 @@ Enemy::Enemy(int x, int y, int img, ObjectID id, IObjectManager* Iobj) {
 	{
 		setHp(3);
 		setAtk(3);
-		spped = 1;
+		movespeed = 1;
 		atkInterval = 104;
+		LoadDivGraph("data/img/enemy1Walk.png", 8, 4, 2, 64, 64, walkHandle);
+		LoadDivGraph("data/img/enemy1WaitForAtack.png", 4, 4, 1, 64, 64, atackHandle);
+		LoadDivGraph("data/img/enemy1Atack.png", 4, 4, 1, 64, 64, &atackHandle[4]);
+		LoadDivGraph("data/img/enemy1Die.png", 8, 4, 2, 64, 64, deadHandle);
+		damegeHandle = LoadGraph("data/img/enemy1Damage.png");
 	}
 	else if (id == ObjectID::soldierB)
 	{
 		setHp(15);
 		setAtk(5);
-		spped = 2;
+		movespeed = 2;
 		atkInterval = 52;
 		addCount = 2;
+		LoadDivGraph("data/img/enemy3Walk.png", 8, 4, 2, 64, 64, walkHandle);
+		LoadDivGraph("data/img/enemy3WaitForAtack.png", 4, 4, 1, 64, 64, atackHandle);
+		LoadDivGraph("data/img/enemy3Atack.png", 4, 4, 1, 64, 64, &atackHandle[4]);
+		LoadDivGraph("data/img/enemy3Die.png", 8, 4, 2, 64, 64, deadHandle);
+		damegeHandle = LoadGraph("data/img/enemy3Damage.png");
 	}
 
-	LoadDivGraph("data/img/enemy1Walk.png", 8, 4, 2, 64, 64, walkHandle);
-	LoadDivGraph("data/img/enemy1WaitForAtack.png", 4, 4, 1, 64, 64, atackHandle);
-	LoadDivGraph("data/img/enemy1Atack.png", 4, 4, 1, 64, 64, &atackHandle[4]);
-	LoadDivGraph("data/img/enemy1Die.png", 8, 4, 2, 64, 64, deadHandle);
+
 	bulletHandle = LoadGraph("data/img/bullet.png");
-	damegeHandle = LoadGraph("data/img/enemy1Damage.png");
 	iconHandle = LoadGraph("data/img/exclamation.png");
 	collision = new Collision(16, 0, 20, 64);
 	AttackBox = new Collision(32, colYOffset, -160, colYSize);
@@ -186,6 +192,8 @@ void Enemy::collisionCheck(const Collision & target) {
 				AtackCommon();
 			}
 			else if (noticed == 0) {	//‰‰ñ‚Ì”­Œ©ˆ—
+				if (dis > maxX)dis = maxX - 5;
+				else if (dis < minX) dis = minX + 5;
 				movedis = 0;
 				noticed = 1;
 				noticeCount = 45;
@@ -214,7 +222,7 @@ void Enemy::MoveCommon()
 		isAtacck = false;
 	}
 
-	movedis = spped;
+	movedis = movespeed;
 	if (state == State::dead)movedis = 0;
 
 	if (isRight)
@@ -232,6 +240,9 @@ void Enemy::MoveCommon()
 
 void Enemy::AtackCommon()
 {
+	if (dis > maxX)dis =maxX - 5;
+	else if (dis < minX) dis =minX+ 5;
+	
 	if (!isAtacck && state == State::alive)
 	{
 		drawcount = 0;
@@ -277,7 +288,7 @@ bool Enemy::IsRangeCheck() {
 	{
 		dis -= movedis;
 	}
-
+	rct++;
 	if (maxX < dis || minX > dis) {
 		AttackBox->xFlip();
 		return !isRight;
