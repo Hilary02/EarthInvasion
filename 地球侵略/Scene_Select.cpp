@@ -58,6 +58,9 @@ void Scene_Select::update() {
 	if (keyM.GetKeyFrame(KEY_INPUT_Z) == 1) {
 		SceneM.ChangeScene(scene::Game, selecting);
 	}
+	if (keyM.GetKeyFrame(KEY_INPUT_X) == 1) {
+		SceneM.ChangeScene(scene::Title);
+	}
 }
 
 void Scene_Select::Draw()
