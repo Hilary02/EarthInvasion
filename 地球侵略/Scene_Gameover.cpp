@@ -28,7 +28,7 @@ void Scene_Gameover::Draw() {
 	DrawGraph(0, y, img, true);
 
 	if (canDrawButton) {
-		DrawFormatString(200, 300, 0xFFFFFF, "Zキーでタイトルに戻る");
+		DrawFormatString(200, 500, 0xFFFFFF, "Zキーでステージセレクトに戻る");
 	}
 	SetFontSize(-1);
 }
