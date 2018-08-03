@@ -36,7 +36,7 @@ void Scene_Title::update() {
 		if (nowSelect == 1 && false) {
 			nowSelect = (nowSelect + 1) % TITLE_NUM;				//選択状態を一つ下げる
 		}
-		SoundM.Se(LoadSoundMem("data/mc/pick up.wav"));
+		SoundM.Se("data/mc/pick up.wav");
 	}
 	if (keyM.GetKeyFrame(KEY_INPUT_UP) == 1 || (keyM.GetKeyFrame(KEY_INPUT_UP) >= 15 && keyM.GetKeyFrame(KEY_INPUT_UP) % 4 == 0)) {		//上キーが押されていたら
 		nowSelect = (nowSelect + (TITLE_NUM - 1)) % TITLE_NUM;	//選択状態を一つ上げる
@@ -44,7 +44,7 @@ void Scene_Title::update() {
 			nowSelect = (nowSelect + (TITLE_NUM - 1)) % TITLE_NUM;	//選択状態を一つ上げる
 
 		}
-		SoundM.Se(LoadSoundMem("data/mc/pick up.wav"));
+		SoundM.Se("data/mc/pick up.wav");
 	}
 	if (keyM.GetKeyFrame(KEY_INPUT_Z) == 1) {
 		switch (nowSelect) {

@@ -15,6 +15,7 @@ SoundManager::~SoundManager() {
 	SaveData::get_instance().save();
 	DeleteSoundMem(bgm);
 	DeleteSoundMem(se);
+	seCache.clear();
 }
 
 void SoundManager::SetSound(int bgm) {					//SetSound(LoadSoundMem("File")
@@ -52,31 +53,39 @@ void SoundManager::SoundVolume(Stype num) {
 	}
 
 	if (isVolChanged) {
-		Se(LoadSoundMem("data/mc/pick up.wav"));
+		Se("data/mc/pick up.wav");
 		myChangeVolumeSoundMem(*volume, *sound);				//ƒƒ‚ƒŠã‚Ì‰¹—Ê•ÏX
 		isVolChanged = false;
 	}
 }
 
 int SoundManager::Volume(int number) {
-	if (number == 0) {
-		return bgmVolume;
-	}
-	else {
-		return seVolume;
-	}
+	if (number == 0) { return bgmVolume; }
+	else { return seVolume; }
 }
 
 void SoundManager::SoundPlayer() {
-	if (CheckSoundMem(bgm) == 0) {
-		PlaySoundMem(bgm, DX_PLAYTYPE_LOOP, TRUE);
-	}
+	if (CheckSoundMem(bgm) == 0) { PlaySoundMem(bgm, DX_PLAYTYPE_LOOP, TRUE); }
 }
 
-void SoundManager::Se(int se) {
+void SoundManager::Se(int handle) {
 	//Se(LoadSoundMem("File");
-	myChangeVolumeSoundMem(SoundManager::seVolume, se);
-	PlaySoundMem(se, DX_PLAYTYPE_BACK, TRUE);
+	myChangeVolumeSoundMem(SoundManager::seVolume, handle);
+	PlaySoundMem(handle, DX_PLAYTYPE_BACK, TRUE);
+}
+
+void SoundManager::Se(std::string path) {
+	auto itr = seCache.find(path);
+	int handle;
+	if (itr != seCache.end()) {
+		handle = itr->second;
+	}
+	else {
+		seCache[path] = LoadSoundMem(path.c_str());
+		handle = seCache[path];
+	}
+	myChangeVolumeSoundMem(SoundManager::seVolume, handle);
+	PlaySoundMem(handle, DX_PLAYTYPE_BACK, TRUE);
 }
 
 void SoundManager::myChangeVolumeSoundMem(int vol, int handle) {
