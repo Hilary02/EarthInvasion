@@ -37,6 +37,7 @@
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="ObjectManager.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="RobotEnemy.cpp" />
     <ClCompile Include="SaveData.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Scene_Clear.cpp" />
@@ -67,7 +68,6 @@
     <ClInclude Include="Goal.h" />
     <ClInclude Include="IObjectManager.h" />
     <ClInclude Include="ISceneManager.h" />
-    <ClInclude Include="IStageBase.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="KeyManager.h" />
     <ClInclude Include="LockedDoor.h" />
@@ -77,6 +77,7 @@
     <ClInclude Include="ObjectID.h" />
     <ClInclude Include="ObjectManager.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="RobotEnemy.h" />
     <ClInclude Include="SaveData.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Scene_Clear.h" />
