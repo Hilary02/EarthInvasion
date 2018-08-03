@@ -13,6 +13,8 @@ Player::Player(std::vector<std::vector <int>> const &vmap, IObjectManager* Iobj,
 	this->hp = 10;
 	colXOffset = 16;
 	colXSize = 30;
+	colYSize = 44;
+	colYOffset = 64 - colYSize;
 	collision = new Collision(colXOffset, colYOffset, colXSize, colYSize);
 }
 
@@ -275,16 +277,15 @@ int Player::update() {
 
 				break;
 			}
-			case ObjectID::moveingFloor: //“®‚­°
+			case ObjectID::movingFloor: //“®‚­°
 			{
-				int topTY = t->collision->hitRange.yPos + t->collision->hitRange.yOffset;
+				int topTY = t->collision->hitRange.yPos;
 				int underTY = t->collision->hitRange.yPos + t->collision->hitRange.yOffset + t->collision->hitRange.ySize;
-				int topPY = collision->hitRange.yPos + collision->hitRange.yOffset;
+				int topPY = collision->hitRange.yPos;
 				int underPY = collision->hitRange.yPos + collision->hitRange.yOffset + collision->hitRange.ySize;
 
-
 				if (underPY <= underTY + 8/*­‚µ‹z‚¢ž‚Ü‚ê‚é*/) {
-					y = topTY - collision->hitRange.ySize + 2;
+					y = topTY - collision->hitRange.yOffset - collision->hitRange.ySize + 2;
 					isJumping = false;
 				}
 			}
