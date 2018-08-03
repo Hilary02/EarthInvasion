@@ -1,7 +1,8 @@
 #include "Scene_Gameover.h"
 
-Scene_Gameover::Scene_Gameover() {
+Scene_Gameover::Scene_Gameover(int param) {
 	img = LoadGraph("data/img/gameover.png");
+	stage = param;
 }
 
 
@@ -18,7 +19,7 @@ void Scene_Gameover::update() {
 	}
 	if (abs(speed) <= 0.2) canDrawButton = true;
 	if (canDrawButton  && keyM.GetKeyFrame(KEY_INPUT_Z)) {
-		SceneM.ChangeScene(scene::Title);
+		SceneM.ChangeScene(scene::Select, stage);
 	}
 }
 

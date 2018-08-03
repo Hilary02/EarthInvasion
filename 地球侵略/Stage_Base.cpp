@@ -98,20 +98,20 @@ void Stage_Base::draw() {
 		if (br <= 0) {
 			SetDrawBright(255, 255, 255);
 
-			SceneM.ChangeScene(scene::Clear);
+			SceneM.ChangeScene(scene::Select, stageId);
 		}
 	}
 	if (isDeadAnimation) {
 		animationCounter++;
 		player->setAbsolutePos(player->getX(), player->getY() + 3);
-		int br = 255 - animationCounter * 3;
+		int br = 255 - animationCounter * 2;
 		SetDrawBright(br, br, br);
 
 		printfDx("%d\n", br);
 		if (br <= 0) {
 			SetDrawBright(255, 255, 255);
 
-			SceneM.ChangeScene(scene::GameOver);
+			SceneM.ChangeScene(scene::GameOver, stageId);
 		}
 	}
 

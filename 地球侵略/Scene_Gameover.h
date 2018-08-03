@@ -10,7 +10,7 @@ class Scene_Gameover :
 	public Scene_Frame
 {
 public:
-	Scene_Gameover();
+	Scene_Gameover(int param = 0);
 	~Scene_Gameover();
 	void update();
 	void Draw();
@@ -24,7 +24,8 @@ private:
 	int img;
 	//‚±‚ê‚à‚Ç‚±‚©‚©‚ç‚Á‚Ä‚­‚é
 	int Frame = 0;
+	int stage = 0;
 
-	bool canDrawButton=false;
+	bool canDrawButton = false;
 };
 

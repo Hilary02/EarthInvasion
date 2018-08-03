@@ -27,6 +27,9 @@ Scene_Select::Scene_Select(int param) {
 	3:うっすら表示(直近のボスステージ)
 	*/
 	bg = LoadGraph("data/img/bg_stageselect.png");
+	if (1 <= param && param <= 13) {
+		selecting = param;
+	}
 }
 
 

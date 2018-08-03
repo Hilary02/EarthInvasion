@@ -8,7 +8,7 @@ class Player :
 	public Creature
 {
 public:
-	Player(const std::vector<std::vector <int>>  &vmap, IObjectManager* Iobj,IStageBase* stage);
+	Player(const std::vector<std::vector <int>>  &vmap, IObjectManager* Iobj, IStageBase* stage);
 	//Player(int x, int y)
 	~Player();
 	int update();
@@ -16,9 +16,9 @@ public:
 	int getX();
 	int getY();
 	int getHp();
-	void modHp(int mod) override;
+	void modHp(int mod, bool through = false) override;
 private:
-	IStageBase* Istage;
+	IStageBase * Istage;
 	std::vector<std::vector <int>> vmap;
 	int clock = 0;
 	int x1 = 0;

@@ -314,10 +314,10 @@ int Player::update() {
 				modHp(-1);
 				break;
 			case ObjectID::abyss:	//奈落。ゲームオーバー
-				isDead = true;
+				//isDead = true;
 				isMoving = 'D';
 				drawCount = 0;
-				SceneM.ChangeScene(scene::GameOver);
+				modHp(-99, true);
 				break;
 			case ObjectID::enemyBullet: //一般兵の弾
 				modHp(-((Bullet*)o)->getAtk());
@@ -659,9 +659,12 @@ void Player::PerDecision()
 }
 
 //体力の変更 ダメージを受けるときだけ120フレームの無敵時間
-void Player::modHp(int mod) {
+void Player::modHp(int mod, bool through) {
 	if (mod < 0) {
-		if (invalidDamageTime >= 120) {
+		if (through) {
+			hp += mod;
+		}
+		else if (invalidDamageTime >= 120) {
 			invalidDamageTime = 0;
 			hp += mod;
 		}
