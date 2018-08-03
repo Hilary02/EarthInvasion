@@ -73,12 +73,12 @@ void SoundManager::SoundPlayer() {
 	}
 }
 
-void SoundManager::Se(int se) {								
+void SoundManager::Se(int se) {
 	//Se(LoadSoundMem("File");
 	myChangeVolumeSoundMem(SoundManager::seVolume, se);
 	PlaySoundMem(se, DX_PLAYTYPE_BACK, TRUE);
 }
 
 void SoundManager::myChangeVolumeSoundMem(int vol, int handle) {
-	ChangeVolumeSoundMem(255 * vol / 10, handle);
+	ChangeVolumeSoundMem(255 * log10(vol), handle);
 }
