@@ -5,6 +5,7 @@
 #include <string>
 #include <sstream> //ï∂éöÉXÉgÉäÅ[ÉÄ
 
+#include "Witch.h"
 #include "Item.h"
 #include "MoveGround.h"
 #include "SpikeBlock.h"
@@ -102,10 +103,11 @@ void ObjectManager::Loadimg() {
 	img[ObjectID::lockedDoor] = LoadGraph("data/img/lockDoor.png");
 
 	img[ObjectID::soldierA] = LoadGraph("data/img/enemy1Wait.png");
-	img[ObjectID::soldierB] = LoadGraph("data/img/enemy1Wait.png");
+	img[ObjectID::soldierB] = LoadGraph("data/img/enemy3Wait.png");
 	img[ObjectID::healPot] = LoadGraph("data/img/healPot.png");
 	img[ObjectID::goal] = LoadGraph("data/img/clear.png");
 	img[ObjectID::alienLaser] = LoadGraph("data/img/LaserA_Wait.png");
+	img[ObjectID::witch] = LoadGraph("data/img/enemy2wait.png");
 }
 
 void ObjectManager::update() {
@@ -177,6 +179,9 @@ void ObjectManager::addObject(int id, int x, int y, int hp, int moveUL, int move
 		break;
 	case ObjectID::alienLaser:
 		obj = new AntiAlienLaser(x, y, img[ObjectID::alienLaser], ObjectID::alienLaser);
+		break;
+	case ObjectID::witch:
+		obj = new Witch(x,y,img[ObjectID::witch],this);
 		break;
 	default:
 		obj = new Item(x, y, img[ObjectID::healPot]);	//ê∂ê¨Ç≥ÇÍÇÈÇ◊Ç´Ç≈Ç»Ç¢

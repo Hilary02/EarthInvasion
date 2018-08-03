@@ -21,7 +21,7 @@ enum class ObjectID {
 	ltv = 21,  //中将
 	soldierB = 22, //ベテラン兵
 	venomMan = 23, //毒人間
-	caster = 24, //魔法使い
+	witch = 24, //魔法使い
 
 	healPot = 30,	//回復アイテム
 	detoxificationPot = 31, //解毒薬
