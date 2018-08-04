@@ -11,13 +11,13 @@ public:
 	~Enemy();
 	Enemy(int x, int y, int img, ObjectID id, IObjectManager* Iobj);
 
-	int update(const Collision & playerCol) override;
-	void Draw(int drawX, int drawY) override;
-	void collisionCheck(const Collision& target);
-	void MoveCommon();
-	void AtackCommon();
-	void DeadCheck();
-	bool IsRangeCheck();
+	virtual int update(const Collision & playerCol) override;
+	virtual void Draw(int drawX, int drawY) override;
+	virtual	void collisionCheck(const Collision& target);
+	virtual void MoveCommon();
+	virtual void AtackCommon();
+	virtual void DeadCheck();
+	virtual bool IsRangeCheck();
 	int enemyID;
 	bool getDeadState();
 
