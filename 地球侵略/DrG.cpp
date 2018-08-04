@@ -11,12 +11,13 @@ DrG::DrG(int x, int y, int img, ObjectID id, IObjectManager * Iobj) {
 	this->x = x;
 	this->y = y;
 	this->imgHandle = img;
+	this->id = id;
 	setHp(5);
 	LoadDivGraph("data/img/DrG/enemy5Wait.png", 2, 2, 1, 64, 64, img_wait);
 	img_damage = LoadGraph("data/img/DrG/enemy5Damage.png");
 	LoadDivGraph("data/img/DrG/enemy5Die.png", 4, 4, 1, 64, 64, img_die);
 	collision = new Collision(20, 16, 20, 48);
-	state == State::alive;
+	state = State::alive;
 }
 
 int DrG::update(const Collision & playerCol) {
