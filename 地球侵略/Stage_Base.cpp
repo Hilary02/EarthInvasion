@@ -75,6 +75,10 @@ void Stage_Base::draw() {
 			}
 		}
 	}
+	//チュートリアルのやつ
+	if (stageId == 0) {
+		DrawRotaGraph(625, 88, 0.5, 0, img_tutorial, TRUE);
+	}
 	objectMgr->Draw(drawX, drawY);
 	drawInfo();
 
@@ -103,7 +107,7 @@ int Stage_Base::readStageData(int stage) {
 	std::string csv = ".csv";
 
 	std::string path = first + type + id + csv;
-	if(readSummary(path) ==-1) return -1;
+	if (readSummary(path) == -1) return -1;
 
 	type = "map";
 	path = first + type + id + csv;
@@ -175,7 +179,7 @@ int Stage_Base::loadImg() {
 	//InfoArea用
 	img_hpbar = LoadGraph("data/img/hpbar.png");
 	img_hpbar_empty = LoadGraph("data/img/hpbar_empty.png");
-
+	img_tutorial = LoadGraph("data/img/tutorial.png");
 
 	return 1;
 }
