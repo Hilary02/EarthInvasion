@@ -24,6 +24,7 @@
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="Creature.cpp" />
+    <ClCompile Include="DrG.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Fire.cpp" />
     <ClCompile Include="FPS.cpp" />
@@ -60,6 +61,7 @@
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="Collision.h" />
     <ClInclude Include="Creature.h" />
+    <ClInclude Include="DrG.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Fire.h" />
     <ClInclude Include="FPS.h" />

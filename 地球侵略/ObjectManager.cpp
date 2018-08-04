@@ -15,6 +15,7 @@
 #include "Goal.h"
 #include "LockedDoor.h"
 #include "AntiAlienLaser.h"
+#include "DrG.h"
 
 ObjectManager::ObjectManager() {
 	terrain.clear();
@@ -28,7 +29,7 @@ ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap, int stage, ISt
 	Loadimg();
 	for (unsigned int i = 0; i < vmap.size(); i++) {
 		for (unsigned int j = 0; j < vmap[i].size(); j++) {
-			if (4 <= vmap[i][j] && vmap[i][j] <= 9 || 20 <= vmap[i][j] && vmap[i][j] <= 39 || vmap[i][j] == 99) {
+			if (4 <= vmap[i][j] && vmap[i][j] <= 9 || 20 <= vmap[i][j] && vmap[i][j] <= 40 || vmap[i][j] == 99) {
 				int y = i * 32;	//y座標
 				int x = j * 32;	//x座標
 
@@ -182,6 +183,10 @@ void ObjectManager::addObject(int id, int x, int y, int hp, int moveUL, int move
 		break;
 	case ObjectID::alienLaser:
 		obj = new AntiAlienLaser(x, y, img[ObjectID::alienLaser], ObjectID::alienLaser);
+		break;
+	case ObjectID::DrG:
+		//ボス1
+		obj = new DrG(x, y, img[ObjectID::soldierA], ObjectID::DrG, this);
 		break;
 	default:
 		obj = new Item(x, y, img[ObjectID::healPot]);	//生成されるべきでない
