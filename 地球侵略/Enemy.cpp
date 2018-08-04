@@ -15,7 +15,7 @@ Enemy::Enemy(int x, int y, int img, ObjectID id, IObjectManager* Iobj) {
 	this->imgHandle = img;
 	this->id = id;
 	IobjMgr->enemyMoveRangeCalc(x, y, &minX, &maxX);
-	
+
 	if (id == ObjectID::soldierA)
 	{
 		setHp(3);

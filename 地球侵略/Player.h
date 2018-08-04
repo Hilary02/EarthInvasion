@@ -2,21 +2,23 @@
 #include "Creature.h"
 #include "Bullet.h"
 #include <vector>
+#include "IStageBase.h"
 
 class Player :
 	public Creature
 {
 public:
-	Player(const std::vector<std::vector <int>>  &vmap, IObjectManager* Iobj);
-	//Player(int x, int y);
+	Player(const std::vector<std::vector <int>>  &vmap, IObjectManager* Iobj, IStageBase* stage);
+	//Player(int x, int y)
 	~Player();
 	int update();
 	void Draw(int, int);
 	int getX();
 	int getY();
 	int getHp();
-	void modHp(int mod) override;
+	void modHp(int mod, bool through = false) override;
 private:
+	IStageBase * Istage;
 	std::vector<std::vector <int>> vmap;
 	int clock = 0;
 	int x1 = 0;
@@ -42,13 +44,25 @@ private:
 	char isMoving = 'N';
 	char xyCheck = 'N';
 	char plState = 'N';
-	int wait[20];
-	int move[20];
-	int attack[20];
-	int jump[20];
+
+	//‰æ‘œƒnƒ“ƒhƒ‹
+	int wait[4];
+	int enemyWait;
+	int veteranWait;
+	int move[4];
+	int enemyMove[8];
+	int veteranMove[8];
+	int attack[8];
+	int enemyAttack[8];
+	int veteranAttack[8];
+	int jump[4];
+	int enemyJump[4];
+	int veteranJump[4];
 	int liquid[10];
-	int parasite[20];
-	int die[30];
+	int parasite[8];
+	int die[16];
+	int enemyDie[8];
+	int veteranDie[8];
 
 	int invalidDamageTime = 120;
 	int preParasite = 0;

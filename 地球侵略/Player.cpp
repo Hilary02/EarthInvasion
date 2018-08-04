@@ -4,14 +4,17 @@
 #include "ObjectManager.h"
 #include "SceneManager.h"
 
-Player::Player(std::vector<std::vector <int>> const &vmap, IObjectManager* Iobj) {
+Player::Player(std::vector<std::vector <int>> const &vmap, IObjectManager* Iobj, IStageBase* stage) {
 	LoadImg();
+	this->Istage = stage;
 	this->IobjMgr = Iobj;
 	this->vmap = vmap;
 
 	this->hp = 10;
 	colXOffset = 16;
 	colXSize = 30;
+	colYSize = 44;
+	colYOffset = 64 - colYSize;
 	collision = new Collision(colXOffset, colYOffset, colXSize, colYSize);
 }
 
@@ -176,7 +179,7 @@ int Player::update() {
 
 	//一般兵状態の攻撃処理 
 	bulletCT += 1;
-	if (isAttack &&( plState == 'A' || plState == 'B' )&& drawCount >= 25 && drawCount <= 32)
+	if (isAttack && (plState == 'A' || plState == 'B') && drawCount >= 25 && drawCount <= 32)
 	{
 		if (bulletCT > 60)
 		{
@@ -217,45 +220,6 @@ int Player::update() {
 	bulletindex = -1;
 
 	//地形オブジェクトとの当たり判定をとり，位置の修正
-	for (auto t : IobjMgr->getObjectList()) {
-		if (collision->doCollisonCheck(t->collision->hitRange)) {
-			switch (t->getId()) {
-			case ObjectID::spark: //扉
-			{
-				int leftTX = t->collision->hitRange.xPos + t->collision->hitRange.xOffset;
-				int leftPX = collision->hitRange.xPos + collision->hitRange.xOffset;
-				int topTY = t->collision->hitRange.yPos + t->collision->hitRange.yOffset;
-				int topPY = collision->hitRange.yPos + collision->hitRange.yOffset;
-
-
-				if (topPY > topTY + 20) {
-					y = topTY + t->collision->hitRange.ySize - collision->hitRange.yOffset;
-					jumpPower = 0;
-				}
-				else if (leftPX < leftTX) {
-					x = leftTX - collision->hitRange.xSize - collision->hitRange.xOffset;
-				}
-				else if (leftPX > leftTX) {
-					x = leftTX + t->collision->hitRange.xSize - collision->hitRange.xOffset;
-				}
-
-
-
-
-
-				isAttack = false;
-
-				break;
-			}
-			default:
-				break;
-			}
-		}
-	}
-
-
-
-	//地形オブジェクトとの当たり判定をとり，位置の修正
 	for (auto t : IobjMgr->getTerrainList()) {
 		if (collision->doCollisonCheck(t->collision->hitRange)) {
 			switch (t->getId()) {
@@ -274,16 +238,15 @@ int Player::update() {
 
 				break;
 			}
-			case ObjectID::moveingFloor: //動く床
+			case ObjectID::movingFloor: //動く床
 			{
-				int topTY = t->collision->hitRange.yPos + t->collision->hitRange.yOffset;
+				int topTY = t->collision->hitRange.yPos;
 				int underTY = t->collision->hitRange.yPos + t->collision->hitRange.yOffset + t->collision->hitRange.ySize;
-				int topPY = collision->hitRange.yPos + collision->hitRange.yOffset;
+				int topPY = collision->hitRange.yPos;
 				int underPY = collision->hitRange.yPos + collision->hitRange.yOffset + collision->hitRange.ySize;
 
-
 				if (underPY <= underTY + 8/*少し吸い込まれる*/) {
-					y = topTY - collision->hitRange.ySize + 2;
+					y = topTY - collision->hitRange.yOffset - collision->hitRange.ySize + 2;
 					isJumping = false;
 				}
 			}
@@ -315,14 +278,11 @@ int Player::update() {
 			case ObjectID::spike: //とげとげ
 				modHp(-1);
 				break;
-			case ObjectID::spark:
-				modHp(-1);
-				break;
 			case ObjectID::abyss:	//奈落。ゲームオーバー
-				isDead = true;
+				//isDead = true;
 				isMoving = 'D';
 				drawCount = 0;
-				SceneM.ChangeScene(scene::GameOver);
+				modHp(-99, true);
 				break;
 			case ObjectID::enemyBullet: //一般兵の弾
 				modHp(-((Bullet*)o)->getAtk());
@@ -333,6 +293,29 @@ int Player::update() {
 			case ObjectID::alienLaser:
 				modHp(-1);
 				break;
+			case ObjectID::spark: //ビリビリ
+			{
+				modHp(-1);
+				int leftTX = o->collision->hitRange.xPos + o->collision->hitRange.xOffset;
+				int leftPX = collision->hitRange.xPos + collision->hitRange.xOffset;
+				int topTY = o->collision->hitRange.yPos + o->collision->hitRange.yOffset;
+				int topPY = collision->hitRange.yPos + collision->hitRange.yOffset;
+
+
+				if (topPY > topTY + 20) {
+					y = topTY + o->collision->hitRange.ySize - collision->hitRange.yOffset;
+					jumpPower = 0;
+				}
+				else if (leftPX < leftTX) {
+					x = leftTX - collision->hitRange.xSize - collision->hitRange.xOffset;
+				}
+				else if (leftPX > leftTX) {
+					x = leftTX + o->collision->hitRange.xSize - collision->hitRange.xOffset;
+				}
+
+				isAttack = false;
+				break;
+			}
 			default:
 				break;
 			}
@@ -352,7 +335,8 @@ int Player::update() {
 		isMoving = 'D';
 		drawCount = 0;
 		//ゲームオーバー処理．ここでやっていいのか？
-		SceneM.ChangeScene(scene::GameOver);
+		//SceneM.ChangeScene(scene::GameOver);
+		Istage->PlayAnimation(deadAnime);	//ゲームオーバー演出に入る
 	}
 
 	invalidDamageTime++;	//無敵時間
@@ -441,6 +425,7 @@ void Player::Draw(int drawX, int drawY) {
 
 	switch (plState) {
 	case 'N':	//????
+		//ジャンプの画像が全部使ってない!?
 		if (isJumping) {
 			if (jumpPower <= 1 && jumpPower >= -1)
 				MyDraw(tempX, tempY, jump[1], right);
@@ -507,14 +492,13 @@ void Player::Draw(int drawX, int drawY) {
 		break;
 
 	case 'A':
-	case 'B':
 		if (isJumping) {
 			if (jumpPower <= 1 && jumpPower >= -1)
-				MyDraw(tempX, tempY, jump[11], right);
+				MyDraw(tempX, tempY, enemyJump[1], right);
 			else if (jumpPower > 1)
-				MyDraw(tempX, tempY, jump[12], right);
+				MyDraw(tempX, tempY, enemyJump[2], right);
 			else if (jumpPower < -1)
-				MyDraw(tempX, tempY, jump[10], right);
+				MyDraw(tempX, tempY, enemyJump[0], right);
 		}
 		else if (isMoving == 'I') {
 			MyDraw(tempX, tempY, parasite[drawCount / 8 % 8], right);
@@ -523,55 +507,84 @@ void Player::Draw(int drawX, int drawY) {
 		}
 		else if (isAttack) {
 			if (keyM.GetKeyFrame(KEY_INPUT_LEFT) == 0 && keyM.GetKeyFrame(KEY_INPUT_RIGHT) == 0) {
-				MyDraw(tempX, tempY, attack[drawCount / 8 % 8 + 10], right);
+				MyDraw(tempX, tempY, enemyAttack[drawCount / 8 % 8], right);
 				drawCount++;
 				if (drawCount >= 64) isAttack = false;
 			}
 			else {
-				MyDraw(tempX, tempY, attack[drawCount / 8 % 4 + 14], right);
+				MyDraw(tempX, tempY, enemyAttack[drawCount / 8 % 4 ], right);
 				drawCount++;
 				if (drawCount >= 32) isAttack = false;
 			}
 
 		}
 		else if (isMoving == 'D') {
-			MyDraw(tempX, tempY, die[drawCount / 8 % 8 + 20], right);
+			MyDraw(tempX, tempY, enemyDie[drawCount / 8 % 8 ], right);
 			drawCount++;
 			if (drawCount >= 64) isMoving = 'N';
 		}
 		else if (isDead) {
-			MyDraw(tempX, tempY, die[27], right);
+			MyDraw(tempX, tempY, enemyDie[7], right);
 		}
 		else if (keyM.GetKeyFrame(KEY_INPUT_RIGHT) >= 1) {
 			drawCount = keyM.GetKeyFrame(KEY_INPUT_RIGHT) / 15 % 8;
-			MyDraw(tempX, tempY, move[drawCount + 10], right);
+			MyDraw(tempX, tempY, enemyMove[drawCount], right);
 		}
 		else if (keyM.GetKeyFrame(KEY_INPUT_LEFT) >= 1) {
 			drawCount = keyM.GetKeyFrame(KEY_INPUT_LEFT) / 15 % 8;
-			MyDraw(tempX, tempY, move[drawCount + 10], right);
+			MyDraw(tempX, tempY, enemyMove[drawCount], right);
 		}
 		else {
-			MyDraw(tempX, tempY, wait[10], right);
+			MyDraw(tempX, tempY, enemyWait, right);
 		}
 		break;
-
-	/*case'B':
+	case 'B':
 		if (isJumping) {
+			if (jumpPower <= 1 && jumpPower >= -1)
+				MyDraw(tempX, tempY, veteranJump[1], right);
+			else if (jumpPower > 1)
+				MyDraw(tempX, tempY, veteranJump[2], right);
+			else if (jumpPower < -1)
+				MyDraw(tempX, tempY, veteranJump[0], right);
+		}
+		else if (isMoving == 'I') {
+			MyDraw(tempX, tempY, parasite[drawCount / 8 % 8], right);
+			drawCount++;
+			if (drawCount >= 64) isMoving = 'N';
+		}
+		else if (isAttack) {
+			if (keyM.GetKeyFrame(KEY_INPUT_LEFT) == 0 && keyM.GetKeyFrame(KEY_INPUT_RIGHT) == 0) {
+				MyDraw(tempX, tempY, veteranAttack[drawCount / 8 % 8], right);
+				drawCount++;
+				if (drawCount >= 64) isAttack = false;
+			}
+			else {
+				MyDraw(tempX, tempY, veteranAttack[drawCount / 8 % 4], right);
+				drawCount++;
+				if (drawCount >= 32) isAttack = false;
+			}
 
+		}
+		else if (isMoving == 'D') {
+			MyDraw(tempX, tempY, veteranDie[drawCount / 8 % 8], right);
+			drawCount++;
+			if (drawCount >= 64) isMoving = 'N';
+		}
+		else if (isDead) {
+			MyDraw(tempX, tempY, veteranDie[7], right);
 		}
 		else if (keyM.GetKeyFrame(KEY_INPUT_RIGHT) >= 1) {
-			drawCount = keyM.GetKeyFrame(KEY_INPUT_RIGHT) / 15 % 4;
-			DrawGraph(tempX, tempY, move[drawCount], TRUE);
+			drawCount = keyM.GetKeyFrame(KEY_INPUT_RIGHT) / 15 % 8;
+			MyDraw(tempX, tempY, veteranMove[drawCount], right);
+		}
+		else if (keyM.GetKeyFrame(KEY_INPUT_LEFT) >= 1) {
+			drawCount = keyM.GetKeyFrame(KEY_INPUT_LEFT) / 15 % 8;
+			MyDraw(tempX, tempY, veteranMove[drawCount], right);
 		}
 		else {
-			DrawGraph(tempX, tempY, wait[drawCount % 4], TRUE);
-			drawCount++;
-
-
-			if (drawCount == 60) drawCount = 0;
+			MyDraw(tempX, tempY, veteranWait, right);
 		}
 		break;
-*/
 	case'C':
 		if (isJumping) {
 
@@ -666,15 +679,19 @@ void Player::PerDecision()
 }
 
 //体力の変更 ダメージを受けるときだけ120フレームの無敵時間
-void Player::modHp(int mod) {
+void Player::modHp(int mod, bool through) {
 	if (mod < 0) {
-		if (invalidDamageTime >= 120) {
+		if (through) {
+			hp += mod;
+		}
+		else if (invalidDamageTime >= 120) {
 			invalidDamageTime = 0;
 			hp += mod;
 		}
 	}
 	else {
 		hp += mod;
+		if (hp > 16) { hp = 15; }
 	}
 }
 
@@ -691,10 +708,19 @@ void Player::LoadImg()
 	LoadDivGraph("data/img/eeyanParasiteOut.png", 8, 4, 2, 64, 64, &parasite[10]);
 	LoadDivGraph("data/img/eeyanDie.png", 16, 4, 4, 64, 64, die);
 
-	LoadDivGraph("data/img/enemy1WaitP.png", 1, 1, 1, 64, 64, &wait[10]);
-	LoadDivGraph("data/img/enemy1WalkP.png", 8, 4, 2, 64, 64, &move[10]);
-	LoadDivGraph("data/img/enemy1JumpP.png", 4, 4, 1, 64, 64, &jump[10]);
-	LoadDivGraph("data/img/enemy1WaitForAtackP.png", 4, 4, 1, 64, 64, &attack[10]);
-	LoadDivGraph("data/img/enemy1AtackP.png", 4, 4, 1, 64, 64, &attack[14]);
-	LoadDivGraph("data/img/enemy1DieP.png", 8, 4, 2, 64, 64, &die[20]);
+	enemyWait = LoadGraph("data/img/enemy1WaitP.png", 0);
+	//LoadDivGraph("data/img/enemy1WaitP.png", 1, 1, 1, 64, 64, enemyWait);
+	LoadDivGraph("data/img/enemy1WalkP.png", 8, 4, 2, 64, 64, enemyMove);
+	LoadDivGraph("data/img/enemy1JumpP.png", 4, 4, 1, 64, 64, enemyJump);
+	LoadDivGraph("data/img/enemy1WaitForAtackP.png", 4, 4, 1, 64, 64, enemyAttack);
+	LoadDivGraph("data/img/enemy1AtackP.png", 4, 4, 1, 64, 64, &enemyAttack[4]);
+	LoadDivGraph("data/img/enemy1DieP.png", 8, 4, 2, 64, 64, enemyDie);
+
+	veteranWait = LoadGraph("data/img/enemy3WaitP.png", 0);
+	//LoadDivGraph("data/img/enemy3WaitP.png", 1, 1, 1, 64, 64, veteranWait);
+	LoadDivGraph("data/img/enemy3WalkP.png", 8, 4, 2, 64, 64, veteranMove);
+	LoadDivGraph("data/img/enemy3JumpP.png", 4, 4, 1, 64, 64, veteranJump);
+	LoadDivGraph("data/img/enemy3WaitForAtackP.png", 4, 4, 1, 64, 64, veteranAttack);
+	LoadDivGraph("data/img/enemy3AtackP.png", 4, 4, 1, 64, 64, &veteranAttack[4]);
+	LoadDivGraph("data/img/enemy3DieP.png", 8, 4, 2, 64, 64, veteranDie);
 }

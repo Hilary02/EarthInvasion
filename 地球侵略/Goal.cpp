@@ -1,12 +1,14 @@
 #include "Goal.h"
 #include "DxLib.h"
 #include "SceneManager.h"
+#include "IStageBase.h"
 
-Goal::Goal(int x, int y, int handle, int stage) {
+Goal::Goal(int x, int y, int handle, int stageID, IStageBase* stage) {
 	this->x = x;
 	this->y = y;
 	this->imgHandle = handle;
-	this->stageId = stage;
+	this->stageId = stageID;
+	this->Istage = stage;
 	this->id = ObjectID::goal;
 	collision = new Collision(0, 0, 64, 128);
 }
@@ -20,7 +22,8 @@ int Goal::update(const Collision & playerCol) {
 		//‚ß‚¿‚á‚­‚¿‚á
 		savedata.setClearFlag(stageId, 1);
 		savedata.save();
-		SceneM.ChangeScene(scene::Clear);
+		//SceneM.ChangeScene(scene::Clear);
+		Istage->PlayAnimation(clearAnime);	//ƒNƒŠƒA‰‰o‚É“ü‚é
 	}
 	else {
 		//d DrawBox(100, 20, 100, 200, 0xFF0000, false);

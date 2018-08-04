@@ -19,7 +19,7 @@ Stage_Base::Stage_Base(int stage) {
 	if (readStageData(stage) == -1) {
 		printfDx("Read Error");
 	}
-	objectMgr = new ObjectManager(vmap, stageId);
+	objectMgr = new ObjectManager(vmap, stageId, this);
 	//プレイヤー呼び出し
 	this->player = objectMgr->getPlayer();
 	player->setAbsolutePos(playerX, playerY);
@@ -41,15 +41,21 @@ Stage_Base::~Stage_Base() {
 }
 
 void Stage_Base::update() {
-	//タイマー
-	leftTime = int(timeLimit - GetNowCount());
-	if (leftTime <= 0) {
-		SceneM.ChangeScene(scene::GameOver);
-	}
+	if (!(isDeadAnimation || isClearAnimation)) { //どちらもFalse ->アニメなしなら
+		//タイマー
+		leftTime = int(timeLimit - GetNowCount());
+		if (leftTime <= 0) {
+			SceneM.ChangeScene(scene::GameOver);
+		}
 
-	drawChipNum = 0;
-	objectMgr->update();
-	scrollMap();	//プレイヤー座標に応じた表示範囲の変更
+		drawChipNum = 0;
+
+		//死んでもクリアしてもなければオブジェクトを更新
+		if (!isDeadAnimation && !isClearAnimation) {
+			objectMgr->update();
+		}
+		scrollMap();	//プレイヤー座標に応じた表示範囲の変更
+	}
 }
 
 void Stage_Base::draw() {
@@ -82,6 +88,37 @@ void Stage_Base::draw() {
 	objectMgr->Draw(drawX, drawY);
 	drawInfo();
 
+
+	if (isClearAnimation) {
+		DrawGraph(0, 0, img_clear, true);
+		animationCounter++;
+		if (animationCounter % 2 == 0) {
+			player->setAbsolutePos(player->getX(), player->getY() - 1);
+		}
+		int br = 255 - animationCounter;
+		SetDrawBright(br, br, br);
+
+		printfDx("%d\n", br);
+		if (br <= 0) {
+			SetDrawBright(255, 255, 255);
+
+			SceneM.ChangeScene(scene::Select, stageId);
+		}
+	}
+	if (isDeadAnimation) {
+		animationCounter++;
+		player->setAbsolutePos(player->getX(), player->getY() + 3);
+		int br = 255 - animationCounter * 2;
+		SetDrawBright(br, br, br);
+
+		printfDx("%d\n", br);
+		if (br <= 0) {
+			SetDrawBright(255, 255, 255);
+
+			SceneM.ChangeScene(scene::GameOver, stageId);
+		}
+	}
+
 	//デバッグ情報
 //d	DrawFormatString(0, 30, GetColor(255, 125, 255), "マップ表示原点：%d  ,%d", drawX, drawY);
 //d	DrawFormatString(0, 50, GetColor(255, 125, 255), "表示画像数：%d", drawChipNum);
@@ -97,6 +134,13 @@ void Stage_Base::scrollMap() {
 
 	drawX = min(max(0, baseDrawX), limitDrawX);
 	drawY = min(max(0, baseDrawY), limitDrawY);
+}
+
+void Stage_Base::PlayAnimation(int type) {
+	if (!isDeadAnimation && !isClearAnimation) {
+		if (type == 0) isDeadAnimation = true;
+		if (type == 1) isClearAnimation = true;
+	}
 }
 
 //もっとスマートな方法ないかな？
@@ -180,7 +224,7 @@ int Stage_Base::loadImg() {
 	img_hpbar = LoadGraph("data/img/hpbar.png");
 	img_hpbar_empty = LoadGraph("data/img/hpbar_empty.png");
 	img_tutorial = LoadGraph("data/img/tutorial.png");
-
+	img_clear = LoadGraph("data/img/clear_img.png");
 	return 1;
 }
 

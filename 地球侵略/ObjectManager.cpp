@@ -20,9 +20,10 @@ ObjectManager::ObjectManager() {
 	terrain.clear();
 }
 
-ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap, int stage) {
-	this->player = new Player(vmap, this);
+ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap, int stage, IStageBase* stageBase) {
+	this->player = new Player(vmap, this, stageBase);
 	this->vmap = vmap;
+	this->stageBase = stageBase;
 	stageId = stage;
 	Loadimg();
 	for (unsigned int i = 0; i < vmap.size(); i++) {
@@ -40,11 +41,11 @@ ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap, int stage) {
 				int x = j * 32;	//x座標
 				int path = 0;	//画像ハンドル
 				switch ((ObjectID)vmap[i][j]) {
-				case ObjectID::moveingFloor:	//動く床
-					obje = new MoveGround(x, y, 2, 0.25, 0, true, img[ObjectID::moveingFloor]);
+				case ObjectID::movingFloor:	//動く床
+					obje = new MoveGround(x, y, 2, 0.25, 0, true, img[ObjectID::movingFloor]);
 					break;
 				case ObjectID::difMoveGround:	//逆向きに動く床
-					obje = new MoveGround(x, y, 0, 2.25, 0, false, img[ObjectID::moveingFloor]);
+					obje = new MoveGround(x, y, 0, 2.25, 0, false, img[ObjectID::movingFloor]);
 					break;
 				case ObjectID::lockedDoor:
 					obje = new LockedDoor(x, y, img[ObjectID::lockedDoor]);
@@ -95,10 +96,11 @@ int ObjectManager::readScenario(std::string file) {
 
 void ObjectManager::Loadimg() {
 	/* ステージによって読み込む画像も変わるのか？ */
-	img[ObjectID::spike] = LoadGraph("data/img/togetoge.png");
+	img[ObjectID::spike] = LoadGraph("data/img/spike.png");
+	img[ObjectID::spike_flip] = LoadGraph("data/img/spike_flip.png");
 	img[ObjectID::spark] = LoadGraph("data/img/spark.png");
 	img[ObjectID::fire] = LoadGraph("data/img/fire.png");
-	img[ObjectID::moveingFloor] = LoadGraph("data/img/moveGround.png");
+	img[ObjectID::movingFloor] = LoadGraph("data/img/movingFloor.png");
 	img[ObjectID::lockedDoor] = LoadGraph("data/img/lockDoor.png");
 
 	img[ObjectID::soldierA] = LoadGraph("data/img/enemy1Wait.png");
@@ -152,6 +154,9 @@ void ObjectManager::addObject(int id, int x, int y, int hp, int moveUL, int move
 	case ObjectID::spike:
 		obj = new SpikeBlock(x, y, img[ObjectID::spike]);
 		break;
+	case ObjectID::spike_flip:
+		obj = new SpikeBlock(x, y, img[ObjectID::spike_flip], true);
+		break;
 	case ObjectID::spark:
 		obj = new Spark(x, y, img[ObjectID::spark]);
 		break;
@@ -173,7 +178,7 @@ void ObjectManager::addObject(int id, int x, int y, int hp, int moveUL, int move
 		obj = new Item(x, y, img[ObjectID::healPot]);
 		break;
 	case ObjectID::goal:
-		obj = new Goal(x, y, img[ObjectID::goal], stageId);
+		obj = new Goal(x, y, img[ObjectID::goal], stageId, stageBase);
 		break;
 	case ObjectID::alienLaser:
 		obj = new AntiAlienLaser(x, y, img[ObjectID::alienLaser], ObjectID::alienLaser);

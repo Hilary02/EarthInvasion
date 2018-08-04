@@ -17,7 +17,7 @@ int LockedDoor::update(const Collision & playerCol) {
 	collision->updatePos(x, y);
 	//ƒvƒŒƒCƒ„[‚ª•ºŽmó‘Ô‚È‚çŽ©•ª‚ðÁ‚·
 	int isCol = collision->doCollisonCheck(playerCol.hitRange);
-	if (isCol == 1 && playerCol.playerParasite == 1) {
+	if (isCol == 1 && playerCol.playerParasite != 0) {
 		open = true;
 	}
 	if (open) openAnimation();

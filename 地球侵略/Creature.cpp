@@ -1,6 +1,6 @@
 #include "Creature.h"
 
-Creature::Creature(){
+Creature::Creature() {
 
 	hp = 1;
 	attack = 0;
@@ -13,12 +13,12 @@ Creature::~Creature()
 
 
 // ‘Ì—Í‚ğ•ÏX
-void Creature::setHp(int newHp){
+void Creature::setHp(int newHp) {
 	hp = newHp;
 }
 
 
-void Creature::modHp(int mod){
+void Creature::modHp(int mod, bool through) {
 	hp += mod;
 }
 

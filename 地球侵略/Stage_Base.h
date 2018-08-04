@@ -5,6 +5,8 @@
 #include "WindowData.h"
 #include "ObjectManager.h"
 #include "SaveData.h"
+#include "IStageBase.h"
+
 /**
 Stageクラスはまず地形を読み込む．
 Playerクラス，ObjectManagerクラスに主人公の移動とそれ以外の処理を投げるので
@@ -13,7 +15,8 @@ Playerクラス，ObjectManagerクラスに主人公の移動とそれ以外の処理を投げるので
 マップチップのデータが1-9で足りているため，20番以降を用いて敵情報の保存とかできるかもしれない．
 別ファイルでも管理もできるが，マップ座標をいちいち調べながら打たなければいけなくなる．
 */
-class Stage_Base {
+class Stage_Base :
+	public IStageBase {
 public:
 	Stage_Base();
 	Stage_Base(int stage);
@@ -22,6 +25,9 @@ public:
 	void update();	//更新処理
 	void draw();	//描画処理
 	void scrollMap();	// プレイヤーの座標から表示するマップの起点を決定する関数．
+
+	/*0ならゲームオーバー、1ならクリア そのうち直すかも */
+	void PlayAnimation(int type);
 
 private:
 	int readStageData(int id);
@@ -73,4 +79,10 @@ private:
 
 	//デバッグ用データ
 	int drawChipNum = 0;
+
+	//アニメ再生フラグ
+	bool isClearAnimation = false;
+	bool isDeadAnimation = false;
+	int animationCounter = 0;
+	int img_clear;
 };

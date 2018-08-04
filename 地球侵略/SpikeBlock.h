@@ -8,7 +8,7 @@ class SpikeBlock :
 public:
 	SpikeBlock();
 	~SpikeBlock();
-	SpikeBlock(int x, int y, int img);
+	SpikeBlock(int x, int y, int img, bool flip = false);
 	int update(const Collision & playerCol) override;
 	void Draw(int drawX, int drawY) override;
 	void collisionCheck(const Collision& target);
@@ -16,4 +16,5 @@ private:
 	int x;
 	int y;
 	int imgSpike;
+	int flip = false;
 };
