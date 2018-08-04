@@ -6,8 +6,8 @@ Bullet::Bullet()
 
 Bullet::Bullet(int x, int y, int atk, int Hundle, bool isRight, ObjectID id)
 {
-	if (isRight){this->x = x + 60;}
-	else{this->x = x;}
+	if (isRight) { this->x = x + 60; }
+	else { this->x = x; }
 	this->atk = atk;
 	this->y = y + 30;
 	this->imgHandle = Hundle;
@@ -49,7 +49,7 @@ int Bullet::update(const Collision & playerCol)
 	collision->updatePos(x, y);
 
 	if (isR) x += MOVEDIS;
-	else{x -= MOVEDIS;}
+	else { x -= MOVEDIS; }
 	remit++;
 
 	if (isCol)
@@ -84,12 +84,6 @@ bool Bullet::collisionCheck(const Collision & target)
 	}
 }
 
-void Bullet::setState(int st)
-{
-	this->st = st;
-}
+void Bullet::setState(int st) { this->st = st; }
 
-int Bullet::getAtk()
-{
-	return atk;
-}
+int Bullet::getAtk() { return atk; }

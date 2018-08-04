@@ -18,7 +18,7 @@ Item::Item(int x, int y, int img)
 	this->imgHandle = img;
 	this->id = ObjectID::healPot;
 
-	collision = new Collision(0, 0, 64, 64);
+	collision = new Collision(0, 0, 32, 32);
 }
 
 int Item::update(const Collision & playerCol)
@@ -30,14 +30,12 @@ int Item::update(const Collision & playerCol)
 
 void Item::Draw(int drawX, int drawY)
 {
-
 	DrawGraph(x - drawX, y - drawY, imgHandle, true);
 }
 
 int Item::collisionCheck(const Collision & target) {
 	int isCol = collision->doCollisonCheck((target.hitRange));
 	if (isCol) {
-
 		//delete this;
 		return -1;
 	}

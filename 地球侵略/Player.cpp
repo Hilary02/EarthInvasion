@@ -211,6 +211,7 @@ int Player::update() {
 				case ObjectID::soldierB:
 					if (o->state == State::alive)bull->setState(-1);
 					break;
+
 				default:
 					break;
 				}

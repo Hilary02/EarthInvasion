@@ -114,23 +114,24 @@ void ObjectManager::Loadimg() {
 void ObjectManager::update() {
 	player->update();
 
-	int i = 0;
-	for (auto &obj : objects) {
-		int n = obj->update(*(player->collision));
+	std::vector<Object*>::iterator it;
+	for (it = objects.begin(); it != objects.end();) {
+		int n = (*it)->update(*(player->collision));
 		if (n == -1) {
-			objects.erase(objects.begin() + i);
-			i--;
+			it = objects.erase(it);
 		}
-		i++;
+		else {
+			it++;
+		}
 	}
-	i = 0;
-	for (auto &ter : terrain) {
-		int n = ter->update(*(player->collision));
+	for (it = terrain.begin(); it != terrain.end();) {
+		int n = (*it)->update(*(player->collision));
 		if (n == -1) {
-			terrain.erase(terrain.begin() + i);
-			i--;
+			it = terrain.erase(it);
 		}
-		i++;
+		else {
+			it++;
+		}
 	}
 }
 
@@ -184,10 +185,10 @@ void ObjectManager::addObject(int id, int x, int y, int hp, int moveUL, int move
 	case ObjectID::alienLaser:
 		obj = new AntiAlienLaser(x, y, img[ObjectID::alienLaser], ObjectID::alienLaser);
 		break;
-	case ObjectID::DrG:
-		//ボス1
-		obj = new DrG(x, y, img[ObjectID::soldierA], ObjectID::DrG, this);
+	case ObjectID::DrG:		//ボス1
+		obj = new DrG(x, y, img[ObjectID::DrG], ObjectID::DrG, this);
 		break;
+
 	default:
 		obj = new Item(x, y, img[ObjectID::healPot]);	//生成されるべきでない
 		break;
