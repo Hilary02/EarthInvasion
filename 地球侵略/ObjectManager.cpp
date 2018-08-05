@@ -134,14 +134,13 @@ void ObjectManager::update() {
 }
 
 void ObjectManager::Draw(int drawX, int drawY) {
-	player->Draw(drawX, drawY);
-
 	for (auto obj : objects) {
 		obj->Draw(drawX, drawY);
 	}
 	for (auto &ter : terrain) {
 		ter->Draw(drawX, drawY);
 	}
+	player->Draw(drawX, drawY);
 }
 
 void ObjectManager::addObject(Object* obj) {

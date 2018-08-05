@@ -16,6 +16,7 @@ private:
 	int stageId;
 	SaveData &savedata = SaveData::get_instance();
 	IStageBase* Istage;
-
+	int img_ufo[4];
+	int counter = 0;
 };
 
