@@ -5,6 +5,7 @@
 #include "Object.h"
 #include "Player.h"
 #include "Enemy.h"
+#include "RobotEnemy.h"
 #include "IStageBase.h"
 
 class ObjectManager :

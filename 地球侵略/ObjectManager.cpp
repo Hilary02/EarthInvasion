@@ -108,6 +108,7 @@ void ObjectManager::Loadimg() {
 	img[ObjectID::healPot] = LoadGraph("data/img/healPot.png");
 	img[ObjectID::goal] = LoadGraph("data/img/clear.png");
 	img[ObjectID::alienLaser] = LoadGraph("data/img/LaserA_Wait.png");
+	img[ObjectID::robotEnemy] = LoadGraph("data/img/enemy4Wait.png");
 }
 
 void ObjectManager::update() {
@@ -173,6 +174,9 @@ void ObjectManager::addObject(int id, int x, int y, int hp, int moveUL, int move
 	case ObjectID::soldierB:
 		//Enemyのコンストラクタをオーバーライドしてパラメータを渡せるようにしたい
 		obj = new Enemy(x, y, img[ObjectID::soldierB], ObjectID::soldierB, this);
+		break;
+	case ObjectID::robotEnemy:
+		obj = new RobotEnemy(x, y, img[ObjectID::robotEnemy], this);
 		break;
 	case ObjectID::healPot:
 		obj = new Item(x, y, img[ObjectID::healPot]);
