@@ -51,6 +51,7 @@ private:
 	int liquid[10];
 	int parasite[20];
 	int die[30];
+	int img_gauge;
 
 	int invalidDamageTime = 120;
 	int preParasite = 0;

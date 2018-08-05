@@ -576,6 +576,10 @@ void Player::Draw(int drawX, int drawY) {
 		break;
 	}
 
+	//Šñ¶‰ðœƒo[
+	if (keyM.GetKeyFrame(KEY_INPUT_DOWN) >= 1 && plState != 'N') {
+		DrawExtendGraph(tempX + 16, tempY - 18, tempX + 16 + 50 * (1 - (double)keyM.GetKeyFrame(KEY_INPUT_DOWN) / 45), tempY - 4, img_gauge, false);
+	}
 
 
 }
@@ -669,4 +673,5 @@ void Player::LoadImg()
 	LoadDivGraph("data/img/enemy1WaitForAtackP.png", 4, 4, 1, 64, 64, &attack[10]);
 	LoadDivGraph("data/img/enemy1AtackP.png", 4, 4, 1, 64, 64, &attack[14]);
 	LoadDivGraph("data/img/enemy1DieP.png", 8, 4, 2, 64, 64, &die[20]);
+	img_gauge = LoadGraph("data/img/gauge.png");
 }
