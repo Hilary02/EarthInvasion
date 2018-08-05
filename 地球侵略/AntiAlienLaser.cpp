@@ -1,5 +1,6 @@
 #include "AntiAlienLaser.h"
 #include "DxLib.h"
+#include "SoundManager.h"
 
 
 AntiAlienLaser::AntiAlienLaser()
@@ -62,6 +63,7 @@ void AntiAlienLaser::Draw(int drawX, int drawY)
 	else {
 		DrawGraph(tempX, tempY, laserImg[1], TRUE);
 		for (int i = 0; i < 5; i++) {
+			SoundM.Se("data/se/laser.wav");
 			DrawGraph(tempX, tempY + i * 64 + 32, laserImg[(timer - 240) / 15 % 4 + 5], TRUE);
 		}
 		if (timer >= 420)

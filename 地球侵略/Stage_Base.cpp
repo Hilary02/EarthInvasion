@@ -12,7 +12,7 @@ Stage_Base::Stage_Base() {}
 
 Stage_Base::Stage_Base(int stage) {
 	stageId = stage;
-	SoundM.SetSound(LoadSoundMem("data/mc/stageBGM1.ogg"));
+	SoundM.SetSound(LoadSoundMem("data/mc/工場道中.ogg"));
 
 	//マップ地形の読み込み
 	//ここを複数ステージ用に書き換え
@@ -97,6 +97,7 @@ void Stage_Base::draw() {
 		printfDx("%d\n", br);
 		if (br <= 0) {
 			SetDrawBright(255, 255, 255);
+			SoundM.SetSound(LoadSoundMem("data/mc/menu1.ogg"));
 
 			SceneM.ChangeScene(scene::Select, stageId);
 		}
@@ -134,8 +135,15 @@ void Stage_Base::scrollMap() {
 
 void Stage_Base::PlayAnimation(int type) {
 	if (!isDeadAnimation && !isClearAnimation) {
-		if (type == 0) isDeadAnimation = true;
-		if (type == 1) isClearAnimation = true;
+		if (type == 0) {
+			SoundM.SetSound(LoadSoundMem("data/mc/GameOver.ogg"));
+			isDeadAnimation = true;
+		}
+		if (type == 1) {
+#include "SceneManager.h"
+			SoundM.SetSound(LoadSoundMem("data/mc/Clear.ogg"));
+			isClearAnimation = true;
+		}
 	}
 }
 

@@ -328,6 +328,7 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Witch.h" />
+    <ClInclude Include="IStageBase.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ソース ファイル">

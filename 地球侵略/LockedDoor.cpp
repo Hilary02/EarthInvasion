@@ -1,4 +1,5 @@
 #include "LockedDoor.h"
+#include "SoundManager.h"
 
 LockedDoor::LockedDoor() {}
 
@@ -34,5 +35,8 @@ void LockedDoor::Draw(int drawX, int drawY) {
 
 void LockedDoor::openAnimation() {
 	if (y >= moveTo) { y--; }
-	if (y <= moveTo) remove = true;
+	if (y <= moveTo) {
+		SoundM.Se("data/se/door.wav");
+		remove = true;
+	}
 }

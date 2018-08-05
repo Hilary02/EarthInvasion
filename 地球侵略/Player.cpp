@@ -52,10 +52,12 @@ int Player::update() {
 		if (!isJumping && !isLiquid) {
 			if (keyM.GetKeyFrame(KEY_INPUT_UP) == 1) {
 				isJumping = true;
+				SoundM.Se("data/se/jump.wav");
 				jumpPower = -6;
 			}
 			if (keyM.GetKeyFrame(KEY_INPUT_Z) == 1) {
 				isAttack = true;
+				SoundM.Se("data/se/Atack.wav");
 				drawCount = 0;
 			}
 			if (plState == 'N') {
@@ -350,6 +352,7 @@ int Player::update() {
 	}
 
 	if (hp <= 0 && !isDead) {
+		SoundM.Se("data/se/death.wav");
 		isDead = true;
 		isMoving = 'D';
 		drawCount = 0;
