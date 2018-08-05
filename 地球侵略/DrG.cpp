@@ -1,7 +1,6 @@
 #include "DrG.h"
 #include "Bullet.h"
 
-
 DrG::DrG() {}
 
 DrG::~DrG() {}
@@ -24,20 +23,13 @@ int DrG::update(const Collision & playerCol) {
 	collision->updatePos(x, y);
 	counter++;
 	invulnerable--;
-	imgHandle = img_wait[0];
-	if ((counter / 25) % 2 == 0) {
-		imgHandle = img_wait[0];
-	}
-	else {
-		imgHandle = img_wait[1];
-	}
 	//オブジェクトとの当たり判定
 	for (auto o : IobjMgr->getObjectList()) {
 		switch (o->getId()) {
 		case ObjectID::playerBullet: //プレイヤーの弾
 			if (collision->doCollisonCheck(o->collision->hitRange)) { //当たり判定をとる
 				if (state == State::alive && invulnerable <= 0) {
-					modHp(-((Bullet*)o)->getAtk());
+					modHp(-1);
 					invulnerable = invulnerableTime;
 				}
 			}
@@ -46,11 +38,39 @@ int DrG::update(const Collision & playerCol) {
 			break;
 		}
 	}
+	if (state == State::alive && hp <= 0) {
+		state = State::dead;
+	}
+	if (state == State::dead && deadcounter < 79) {
+		deadcounter++;
+	}
+
+	//表示画像の変更
+	imgHandle = img_wait[0];
+	if (state == State::alive) {
+		if (invulnerable >= 0) {
+			imgHandle = img_damage;
+		}
+		else if ((counter / 25) % 2 == 0) {
+			imgHandle = img_wait[0];
+		}
+		else {
+			imgHandle = img_wait[1];
+		}
+	}
+	else if (state == State::dead) {
+		imgHandle = img_die[deadcounter / 20];
+	}
+
 
 	return 0;
 }
 
 void DrG::Draw(int drawX, int drawY) {
 	DrawBox(collision->hitRange.xPos + collision->hitRange.xOffset - drawX, collision->hitRange.yPos + collision->hitRange.yOffset - drawY, collision->hitRange.xPos + collision->hitRange.xOffset + collision->hitRange.xSize - drawX, collision->hitRange.yPos + collision->hitRange.yOffset + collision->hitRange.ySize - drawY, 0xFF00FF, false);
+	if (invulnerable > 0 && (invulnerable / 20) % 2 > 0) {
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 170);
+	}
 	DrawGraph(x - drawX, y - drawY, imgHandle, true);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }

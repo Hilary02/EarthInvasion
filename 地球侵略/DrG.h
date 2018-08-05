@@ -14,11 +14,11 @@ private:
 	int img_wait[2];
 	int img_damage;
 	int img_die[4];
-	int hp = 5;
 	int counter = 0;
 
 	int spawnTime;
 	int invulnerable = 0;
-	const int invulnerableTime = 60;
+	const int invulnerableTime = 240;
+	int deadcounter = 0;
 };
 
