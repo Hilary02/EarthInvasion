@@ -163,18 +163,18 @@ int Player::update() {
 
 	//’Êíó‘Ô‚ÌUŒ‚ˆ— 
 	if (isAttack && plState == 'N' && drawCount >= 25 && drawCount <= 32) {
-		collision->playerState = 1;
 		if (right)
 		{
-			collision->updatePos(x, y);
-			collision->hitRange.xSize = 100;
+			collision->updatePos(x + 10, y);
+			collision->hitRange.xSize = 80;
 		}
 		else if (!right)
 		{
 			collision->updatePos(x - 70, y);
-			collision->hitRange.xSize = 100;
+			collision->hitRange.xSize = 60;
 
 		}
+		collision->playerState = 1;
 	}
 	else {
 		collision->hitRange.xSize = 32;
