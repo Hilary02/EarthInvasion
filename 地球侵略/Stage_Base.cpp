@@ -18,6 +18,9 @@ Stage_Base::Stage_Base(int stage) {
 		printfDx("Read Error");
 	}
 	SoundM.SetMusic(LoadSoundMem(bgmPath.c_str()));
+	//地形画像の読み込み
+	//TODO:ステージごとの引数をつける
+	loadImg();
 	objectMgr = new ObjectManager(vmap, stageId, this);
 	//プレイヤー呼び出し
 	this->player = objectMgr->getPlayer();
@@ -28,9 +31,6 @@ Stage_Base::Stage_Base(int stage) {
 	//現在，一時停止とか完全に無視して時間が進む
 	timeLimit = GetNowCount() + time;
 
-	//地形画像の読み込み
-	//TODO:ステージごとの引数をつける
-	loadImg();
 }
 
 Stage_Base::~Stage_Base() {
@@ -146,7 +146,7 @@ void Stage_Base::scrollMap() {
 void Stage_Base::PlayAnimation(int type) {
 	if (!isDeadAnimation && !isClearAnimation) {
 		if (type == 0) {
-			SoundM.SetMusic(LoadSoundMem("data/mc/GameOver.ogg"),false);
+			SoundM.SetMusic(LoadSoundMem("data/mc/GameOver.ogg"), false);
 			isDeadAnimation = true;
 		}
 		if (type == 1) {
@@ -184,14 +184,15 @@ int Stage_Base::readSummary(std::string file) {
 	getline(ifs, str);	//先頭行の読み飛ばし
 	getline(ifs, str);	//2行目だけ読む
 	std::istringstream stream(str);
-	for (int i = 0; i < 5; i++) {
+	for (int i = 0; i < 6; i++) {
 		getline(stream, buf, ',');
 		switch (i) {
 		case 0: chipsetPath = buf; break;
-		case 1: bgmPath = buf; break;
-		case 2:	playerX = std::stoi(buf); break;
-		case 3:	playerY = std::stoi(buf); break;
-		case 4:	time = std::stoi(buf) * 1000; break;	//ms
+		case 1: bgPath = buf; break;
+		case 2: bgmPath = buf; break;
+		case 3:	playerX = std::stoi(buf); break;
+		case 4:	playerY = std::stoi(buf); break;
+		case 5:	time = std::stoi(buf) * 1000; break;	//ms
 		default: break;
 		}
 	}
@@ -231,7 +232,9 @@ int Stage_Base::loadImg() {
 	//画像の設定
 	chipImg[2] = LoadGraph("data/img/groundFloor.png");
 	chipImg[3] = LoadGraph("data/img/airFloor.png");
-	bgHand = LoadGraph("data/img/bg_factory.png");
+
+	bgHand = LoadGraph(bgPath.c_str());
+
 	int t;
 	GetGraphSize(bgHand, &bgWidth, &t);
 

@@ -45,6 +45,7 @@ private:
 	int bgWidth;
 
 	std::string chipsetPath;
+	std::string bgPath;
 	std::string bgmPath;
 	int playerX;
 	int playerY;
