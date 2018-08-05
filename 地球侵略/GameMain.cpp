@@ -7,7 +7,7 @@
 
 
 GameMain::GameMain(){
-	SoundM.SetSound(LoadSoundMem("data/mc/メニュー画面.wav"));
+	SoundM.SetMusic(LoadSoundMem("data/mc/メニュー画面.wav"));
 }
 
 

@@ -18,11 +18,17 @@ SoundManager::~SoundManager() {
 	seCache.clear();
 }
 
-void SoundManager::SetSound(int bgm) {					//SetSound(LoadSoundMem("File")
+void SoundManager::SetMusic(int bgm, bool loopFlag) {					//SetMusic(LoadSoundMem("File")
 	StopSoundMem(this->bgm);
 	DeleteSoundMem(this->bgm);		//後片付けは大事．解放しないとメモリリークの原因になる．
 	SoundManager::bgm = bgm;
-	myChangeVolumeSoundMem(bgmVolume, SoundManager::bgm);
+	myChangeVolumeSoundMem(bgmVolume, bgm);
+	if (loopFlag) {
+		PlaySoundMem(this->bgm, DX_PLAYTYPE_LOOP);
+	}
+	else {
+		PlaySoundMem(bgm, DX_PLAYTYPE_BACK);
+	}
 }
 
 void SoundManager::SoundVolume(Stype num) {
@@ -65,7 +71,7 @@ int SoundManager::Volume(int number) {
 }
 
 void SoundManager::SoundPlayer() {
-	if (CheckSoundMem(bgm) == 0) { PlaySoundMem(bgm, DX_PLAYTYPE_LOOP, TRUE); }
+//	if (CheckSoundMem(bgm) == 0) { PlaySoundMem(bgm, DX_PLAYTYPE_LOOP, TRUE); }
 }
 
 void SoundManager::Se(int handle) {

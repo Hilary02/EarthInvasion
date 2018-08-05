@@ -17,7 +17,7 @@ Stage_Base::Stage_Base(int stage) {
 	if (readStageData(stage) == -1) {
 		printfDx("Read Error");
 	}
-	SoundM.SetSound(LoadSoundMem(bgmPath.c_str()));
+	SoundM.SetMusic(LoadSoundMem(bgmPath.c_str()));
 	objectMgr = new ObjectManager(vmap, stageId, this);
 	//プレイヤー呼び出し
 	this->player = objectMgr->getPlayer();
@@ -83,20 +83,31 @@ void Stage_Base::draw() {
 	objectMgr->Draw(drawX, drawY);
 	drawInfo();
 
-
 	if (isClearAnimation) {
 		DrawGraph(0, 0, img_clear, true);
-		animationCounter++;
-		if (animationCounter % 2 == 0) {
+		ChangeFontType(DX_FONTTYPE_EDGE);
+		DrawString(250, 400, "Zキーでセレクト画面へ", 0xFFFFFF);
+		ChangeFontType(DX_FONTTYPE_NORMAL);
+		if (animationCounter <= 500) {
+			animationCounter++;
+		}
+		if (keyM.GetKeyFrame(KEY_INPUT_Z) >= 1 || animationCounter >= 500) {
+			isfadeOut = true;
+		}
+		if (isfadeOut) {
+			fadeCounter += 5;
+		}
+
+		if (animationCounter <= 255 && animationCounter % 2 == 0) {
 			player->setAbsolutePos(player->getX(), player->getY() - 1);
 		}
-		int br = 255 - animationCounter;
+		int br = 255 - fadeCounter;
 		SetDrawBright(br, br, br);
 
-		printfDx("%d\n", br);
+		printfDx("%d\n", animationCounter);
 		if (br <= 0) {
-			SetDrawBright(255, 255, 255);
-			SoundM.SetSound(LoadSoundMem("data/mc/menu1.ogg"));
+			//SetDrawBright(255, 255, 255);
+			SoundM.SetMusic(LoadSoundMem("data/mc/menu1.ogg"));
 
 			SceneM.ChangeScene(scene::Select, stageId);
 		}
@@ -135,12 +146,11 @@ void Stage_Base::scrollMap() {
 void Stage_Base::PlayAnimation(int type) {
 	if (!isDeadAnimation && !isClearAnimation) {
 		if (type == 0) {
-			SoundM.SetSound(LoadSoundMem("data/mc/GameOver.ogg"));
+			SoundM.SetMusic(LoadSoundMem("data/mc/GameOver.ogg"),false);
 			isDeadAnimation = true;
 		}
 		if (type == 1) {
-#include "SceneManager.h"
-			SoundM.SetSound(LoadSoundMem("data/mc/Clear.ogg"));
+			SoundM.SetMusic(LoadSoundMem("data/mc/Clear.ogg"), false);
 			isClearAnimation = true;
 		}
 	}

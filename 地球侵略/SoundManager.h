@@ -11,7 +11,7 @@ class SoundManager {
 public:
 	SoundManager();
 	~SoundManager();
-	void SetSound(int bgm);
+	void SetMusic(int bgm,bool loopFlag = true);
 	void SoundVolume(Stype num);
 	int Volume(int number);
 	void SoundPlayer();

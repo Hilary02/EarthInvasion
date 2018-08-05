@@ -83,5 +83,7 @@ private:
 	bool isClearAnimation = false;
 	bool isDeadAnimation = false;
 	int animationCounter = 0;
+	bool isfadeOut = false;
+	int fadeCounter = 0;
 	int img_clear;
 };
