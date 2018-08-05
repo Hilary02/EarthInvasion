@@ -4,9 +4,14 @@
 SoundManager SoundM;
 
 SoundManager::SoundManager() {
-	SaveData::get_instance().load();
-	bgmVolume = SaveData::get_instance().getBGMVol();
-	seVolume = SaveData::get_instance().getSEVol();
+	if (SaveData::get_instance().load() == 0) {
+		bgmVolume = SaveData::get_instance().getBGMVol();
+		seVolume = SaveData::get_instance().getSEVol();
+	}
+	else {
+		bgmVolume = 5;
+		seVolume = 5;
+	}
 }
 
 SoundManager::~SoundManager() {
@@ -71,7 +76,7 @@ int SoundManager::Volume(int number) {
 }
 
 void SoundManager::SoundPlayer() {
-//	if (CheckSoundMem(bgm) == 0) { PlaySoundMem(bgm, DX_PLAYTYPE_LOOP, TRUE); }
+	//	if (CheckSoundMem(bgm) == 0) { PlaySoundMem(bgm, DX_PLAYTYPE_LOOP, TRUE); }
 }
 
 void SoundManager::Se(int handle) {
