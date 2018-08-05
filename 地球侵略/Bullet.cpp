@@ -86,12 +86,6 @@ bool Bullet::collisionCheck(const Collision & target)
 	}
 }
 
-void Bullet::setState(int st)
-{
-	this->st = st;
-}
+void Bullet::setState(int st) { this->st = st; }
 
-int Bullet::getAtk()
-{
-	return atk;
-}
+int Bullet::getAtk() { return atk; }

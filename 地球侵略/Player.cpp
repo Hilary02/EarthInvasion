@@ -194,24 +194,17 @@ int Player::update() {
 	}
 
 	//’e‚Ìˆ—
-	for (auto &bull : bullets)
-	{
+	for (auto &bull : bullets) {
 		bulletindex++;
-		if (!bull->isOutOfRange())
-		{
-			bullets.erase(bullets.begin() + bulletindex);
+		if (!bull->isOutOfRange()) {
+			bull->setState(-1);
 		}
-
-		for (auto o : IobjMgr->getObjectList())
-		{
-			if (bull->collision->doCollisonCheck(o->collision->hitRange))
-			{
-				switch (o->getId())
-				{
+		for (auto o : IobjMgr->getObjectList()) {
+			if (bull->collision->doCollisonCheck(o->collision->hitRange)) {
+				switch (o->getId()) {
 				case ObjectID::soldierA:
-					if (o->state == State::alive)bull->setState(-1);
-					break;
 				case ObjectID::soldierB:
+				case ObjectID::DrG:
 					if (o->state == State::alive)bull->setState(-1);
 					break;
 				default:
@@ -306,6 +299,7 @@ int Player::update() {
 		if (collision->doCollisonCheck(o->collision->hitRange)) { //“–‚½‚è”»’è‚ð‚Æ‚é
 			switch (o->getId()) {
 			case ObjectID::soldierA: //•ºŽm
+			case ObjectID::soldierB:
 				if (o->state == State::alive && !(collision->playerState == 1))modHp(-1);
 				break;
 			case ObjectID::healPot: //‰ñ•œƒ|ƒbƒh

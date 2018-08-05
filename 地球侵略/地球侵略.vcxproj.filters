@@ -89,6 +89,9 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Witch.cpp" />
+    <ClCompile Include="DrG.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Collision.cpp">
@@ -329,6 +332,9 @@
     </ClInclude>
     <ClInclude Include="Witch.h" />
     <ClInclude Include="IStageBase.h" />
+    <ClInclude Include="DrG.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ソース ファイル">

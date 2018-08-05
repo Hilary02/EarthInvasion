@@ -219,8 +219,8 @@ int Stage_Base::readMap(std::string file) {
 		}
 		vmap.push_back(splited);
 	}
-	MAP_WIDTH = vmap[0].size();	//マップ幅の代表として一番最初を格納
-	MAP_HEIGHT = vmap.size();
+	MAP_WIDTH = (int)(vmap[0].size());	//マップ幅の代表として一番最初を格納
+	MAP_HEIGHT = (int)(vmap.size());
 
 	ifs.close();
 	return 1;

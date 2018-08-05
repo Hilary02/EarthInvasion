@@ -45,7 +45,7 @@ Enemy::Enemy(int x, int y, int img, ObjectID id, IObjectManager* Iobj) {
 
 	bulletHandle = LoadGraph("data/img/bullet.png");
 	iconHandle = LoadGraph("data/img/exclamation.png");
-	collision = new Collision(16, 0, 20, 64);
+	collision = new Collision(20, 0, 20, 64);
 	AttackBox = new Collision(32, colYOffset, -160, colYSize);
 	state = State::alive;
 }
