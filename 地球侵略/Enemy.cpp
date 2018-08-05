@@ -116,8 +116,8 @@ int Enemy::update(const Collision & playerCol) {
 		}
 	}
 
-	clsDx();
-	printfDx("%d", playerCol.playerParasite);
+	//clsDx();
+	//printfDx("%d", playerCol.playerParasite);
 
 	if (state == State::dead
 		&& keyM.GetKeyFrame(KEY_INPUT_X) >= 1
@@ -240,9 +240,9 @@ void Enemy::MoveCommon()
 
 void Enemy::AtackCommon()
 {
-	if (dis > maxX)dis =maxX - 5;
-	else if (dis < minX) dis =minX+ 5;
-	
+	if (dis > maxX)dis = maxX - 5;
+	else if (dis < minX) dis = minX + 5;
+
 	if (!isAtacck && state == State::alive)
 	{
 		drawcount = 0;

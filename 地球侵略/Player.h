@@ -34,7 +34,7 @@ private:
 	void LoadImg();
 	bool MapHitCheck(int, int, char);
 	void MyDraw(int, int, int, bool);
-	int jumpPower = 0;
+	double jumpPower = 0;
 	double speed = 10.0;
 	bool right = true;
 	bool isJumping = false;

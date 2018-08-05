@@ -54,6 +54,7 @@ int Player::update() {
 				isJumping = true;
 				SoundM.Se("data/se/jump.wav");
 				jumpPower = -6;
+				clock = 0;
 			}
 			if (keyM.GetKeyFrame(KEY_INPUT_Z) == 1) {
 				isAttack = true;
@@ -361,6 +362,8 @@ int Player::update() {
 
 bool Player::MapHitCheck(int movedX, int movedY, char check)
 {
+	clsDx();
+	printfDx("%d,%d", x, x % 32);
 	switch (vmap[movedY / 32][movedX / 32]) {
 	case (int)ObjectID::inVisibleWall:
 	case (int)ObjectID::ground:
@@ -368,8 +371,14 @@ bool Player::MapHitCheck(int movedX, int movedY, char check)
 		if (check == 'x') {
 			if (movedX - x2 > 0)
 				cMove = movedX - x2 - (movedX % 32 + 1);
-			else if (movedX - x1 < 0)
-				cMove = x1 % 32;			//ここを左右で対応を変えれば行けるはず
+			else if (movedX - x1 < 0) {
+				if (13 <= x % 32 && x % 32 <= 16 && isLiquid) {	//左移動
+					cMove = x1 % 32 - 19;
+				}
+				else {
+					cMove = x1 % 32;			//ここを左右で対応を変えれば行けるはず
+				}
+			}
 		}
 		if (check == 'y') {
 			if (movedY - y2 > 0) {
@@ -396,6 +405,7 @@ bool Player::MapHitCheck(int movedX, int movedY, char check)
 }
 
 void Player::Draw(int drawX, int drawY) {
+
 	DrawBox(collision->hitRange.xPos + collision->hitRange.xOffset - drawX, collision->hitRange.yPos + collision->hitRange.yOffset - drawY, collision->hitRange.xPos + collision->hitRange.xOffset + collision->hitRange.xSize - drawX, collision->hitRange.yPos + collision->hitRange.yOffset + collision->hitRange.ySize - drawY, 0xFF00FF, false);
 
 	int tempX = x - drawX;
@@ -561,14 +571,6 @@ void Player::Draw(int drawX, int drawY) {
 		}
 		break;
 	}
-
-
-	// DrawFormatString(100, 100, 0xFFFFFF, "%d,%d", tempX, tempY);
-	//d	DrawFormatString(100, 80, 0xFFFFFF, "Player:%d,%d", (int)x, (int)y);
-	//d DrawFormatString(100, 100, 0xFFFFFF, "MapChip:%d,%d", (int)(x / 32), (int)(y / 32));
-	//d if (isJumping) DrawFormatString(300, 80, 0xFFFFFF, "?W?????v??,%d",jumpPower);
-	//d if (isAttack) DrawFormatString(300, 100, 0xFFFFFF, "?A?^?b?N??");
-	//d if (isDead) DrawFormatString(300, 120, 0xFFFFFF, "????);
 
 
 

@@ -92,9 +92,7 @@ void Scene_Select::Draw()
 	int col_red = 0xFF0000;
 	int col_yel = 0xFFFF00;
 
-	clsDx();
 	for (int i = 1; i <= 13; i++) {
-		printfDx("%d,", clearState[i]);
 		int bx = stageFrameData[i].x;
 		int by = stageFrameData[i].y;
 		int color = col_blk;
