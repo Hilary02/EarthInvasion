@@ -28,7 +28,7 @@ ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap, int stage, ISt
 	Loadimg();
 	for (unsigned int i = 0; i < vmap.size(); i++) {
 		for (unsigned int j = 0; j < vmap[i].size(); j++) {
-			if (4 <= vmap[i][j] && vmap[i][j] <= 9 || 20 <= vmap[i][j] && vmap[i][j] <= 39 || vmap[i][j] == 99) {
+			if (4 <= vmap[i][j] && vmap[i][j] <= 9 || 20 <= vmap[i][j] && vmap[i][j] <= 45 || vmap[i][j] == 99) {
 				int y = i * 32;	//yÀ•W
 				int x = j * 32;	//xÀ•W
 

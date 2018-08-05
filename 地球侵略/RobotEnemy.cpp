@@ -27,6 +27,7 @@ RobotEnemy::~RobotEnemy(){}
 
 int RobotEnemy::update(const Collision & playerCol)
 {
+	Enemy::update(playerCol);
 	return 0;
 }
 
