@@ -12,13 +12,12 @@ Stage_Base::Stage_Base() {}
 
 Stage_Base::Stage_Base(int stage) {
 	stageId = stage;
-	SoundM.SetSound(LoadSoundMem("data/mc/工場道中.ogg"));
-
 	//マップ地形の読み込み
 	//ここを複数ステージ用に書き換え
 	if (readStageData(stage) == -1) {
 		printfDx("Read Error");
 	}
+	SoundM.SetSound(LoadSoundMem(bgmPath.c_str()));
 	objectMgr = new ObjectManager(vmap, stageId, this);
 	//プレイヤー呼び出し
 	this->player = objectMgr->getPlayer();
@@ -175,15 +174,17 @@ int Stage_Base::readSummary(std::string file) {
 	getline(ifs, str);	//先頭行の読み飛ばし
 	getline(ifs, str);	//2行目だけ読む
 	std::istringstream stream(str);
-	while (getline(stream, buf, ',')) {
-		splited.push_back(std::stoi(buf));
+	for (int i = 0; i < 5; i++) {
+		getline(stream, buf, ',');
+		switch (i) {
+		case 0: chipsetPath = buf; break;
+		case 1: bgmPath = buf; break;
+		case 2:	playerX = std::stoi(buf); break;
+		case 3:	playerY = std::stoi(buf); break;
+		case 4:	time = std::stoi(buf) * 1000; break;	//ms
+		default: break;
+		}
 	}
-
-	chipsetId = splited[0];
-	bgmId = splited[1];
-	playerX = splited[2];
-	playerY = splited[3];
-	time = splited[4] * 1000;	//msに変換
 	return 0;
 }
 

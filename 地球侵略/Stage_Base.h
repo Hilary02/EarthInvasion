@@ -44,8 +44,8 @@ private:
 	int bgHand;				//”wŒi‰æ‘œŠi”[”z—ñ
 	int bgWidth;
 
-	int chipsetId;
-	int bgmId;
+	std::string chipsetPath;
+	std::string bgmPath;
 	int playerX;
 	int playerY;
 	int time;
