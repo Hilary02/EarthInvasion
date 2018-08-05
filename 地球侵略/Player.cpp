@@ -225,7 +225,7 @@ int Player::update() {
 	for (auto t : IobjMgr->getObjectList()) {
 		if (collision->doCollisonCheck(t->collision->hitRange)) {
 			switch (t->getId()) {
-			case ObjectID::spark: //扉
+			case ObjectID::spark: //ビリビリ
 			{
 				int leftTX = t->collision->hitRange.xPos + t->collision->hitRange.xOffset;
 				int leftPX = collision->hitRange.xPos + collision->hitRange.xOffset;
@@ -244,10 +244,6 @@ int Player::update() {
 					x = leftTX + t->collision->hitRange.xSize - collision->hitRange.xOffset;
 				}
 
-
-
-
-
 				isAttack = false;
 
 				break;
@@ -257,8 +253,6 @@ int Player::update() {
 			}
 		}
 	}
-
-
 
 	//地形オブジェクトとの当たり判定をとり，位置の修正
 	for (auto t : IobjMgr->getTerrainList()) {
@@ -368,52 +362,14 @@ int Player::update() {
 bool Player::MapHitCheck(int movedX, int movedY, char check)
 {
 	switch (vmap[movedY / 32][movedX / 32]) {
-	case 0:
-		return true;
-		break;
 	case (int)ObjectID::inVisibleWall:
-		if (check == 'x') {
-			if (movedX - x2 > 0)
-				cMove = movedX - x2 - (movedX % 32 + 1);
-			else if (movedX - x1 < 0)
-				cMove = x1 % 32;
-		}
-		if (check == 'y') {
-			if (movedY - y2 > 0) {
-				cMove = (movedY - y2) - (movedY % 32 + 1);
-			}
-			else if (movedY - y1 < 0) {
-				cMove = y1 % 32;
-				jumpPower = 0;
-			}
-		}
-		return false;
-		break;
 	case (int)ObjectID::ground:
-		if (check == 'x') {
-			if (movedX - x2 > 0)
-				cMove = movedX - x2 - (movedX % 32 + 1);
-			else if (movedX - x1 < 0)
-				cMove = x1 % 32;
-		}
-		if (check == 'y') {
-			if (movedY - y2 > 0) {
-				cMove = (movedY - y2) - (movedY % 32 + 1);
-			}
-			else if (movedY - y1 < 0) {
-				cMove = y1 % 32;
-				jumpPower = 0;
-			}
-		}
-
-		return false;
-		break;
 	case (int)ObjectID::colorDifGround:
 		if (check == 'x') {
 			if (movedX - x2 > 0)
 				cMove = movedX - x2 - (movedX % 32 + 1);
 			else if (movedX - x1 < 0)
-				cMove = x1 % 32;
+				cMove = x1 % 32;			//ここを左右で対応を変えれば行けるはず
 		}
 		if (check == 'y') {
 			if (movedY - y2 > 0) {
