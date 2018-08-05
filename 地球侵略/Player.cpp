@@ -15,11 +15,14 @@ Player::Player(std::vector<std::vector <int>> const &vmap, IObjectManager* Iobj,
 	colXSize = 30;
 	colYSize = 44;
 	colYOffset = 64 - colYSize;
-	collision = new Collision(colXOffset, colYOffset, colXSize, colYSize);
+	eeyanCol = new Collision(colXOffset, colYOffset, colXSize, colYSize);
+	liquidCol = new Collision(10, 48, 40, 16);
 }
 
-
 Player::~Player() {
+	delete eeyanCol;
+	delete liquidCol;
+	collision = new Collision();	//‚Ş‚è‚­‚è
 }
 
 int Player::update() {
@@ -127,7 +130,14 @@ int Player::update() {
 			drawCount = 0;
 		}
 	}
-	//collision->updatePos(x, y);
+
+	if (isLiquid) {
+		collision = liquidCol;
+	}
+	else {
+		collision = eeyanCol;
+	}
+	collision->updatePos(x, y);
 
 	//ƒWƒƒƒ“ƒv’†‚Ìˆ—
 	if (isJumping) {
