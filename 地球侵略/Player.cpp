@@ -26,6 +26,8 @@ Player::~Player() {
 }
 
 int Player::update() {
+	//ƒƒ{ƒbƒg•º‚Ì‹­§Šñ¶‰ðœ
+
 	if (preParasite != 0) {
 		collision->playerParasite = preParasite; //“–‚½‚è”»’è‚ÉŠñ¶ó‘Ô‚ð‹L˜^
 		preParasite = 0;
@@ -104,10 +106,11 @@ int Player::update() {
 								}
 								break;
 							}
-							case ObjectID::robotEnemy: //•ºŽm
+							case ObjectID::robotEnemy: //ƒƒ{ƒbƒg•ºŽm
 							{
 								Enemy* ene = (Enemy*)o;	//‚¢‚¢‚Ì‚©‚ÈH
 								if (ene->getDeadState() == true) {
+									removeCT = 0;
 									plState = 'R';
 									isMoving = 'I';
 									drawCount = 0;
@@ -131,6 +134,13 @@ int Player::update() {
 				drawCount = 0;
 				collision->playerParasite = 0;
 			}
+			else if (removeCT >= 600 && plState == 'R') {
+				plState = 'N';
+				isMoving = 'O';
+				drawCount = 0;
+				collision->playerParasite = 0;
+			}
+
 		}
 	}
 	//Šñ¶”»’è
@@ -204,7 +214,7 @@ int Player::update() {
 
 	//ˆê”Ê•ºó‘Ô‚ÌUŒ‚ˆ— 
 	bulletCT += 1;
-	if (isAttack && (plState == 'A' || plState == 'B') && drawCount >= 25 && drawCount <= 32)
+	if (isAttack && (plState == 'A' || plState == 'B' || plState == 'R') && drawCount >= 25 && drawCount <= 32)
 	{
 		if (bulletCT > 60)
 		{
@@ -227,6 +237,9 @@ int Player::update() {
 				case ObjectID::soldierA:
 				case ObjectID::soldierB:
 				case ObjectID::DrG:
+					if (o->state == State::alive)bull->setState(-1);
+					break;
+				case ObjectID::robotEnemy:
 					if (o->state == State::alive)bull->setState(-1);
 					break;
 				default:
@@ -608,6 +621,54 @@ void Player::Draw(int drawX, int drawY) {
 			MyDraw(tempX, tempY, veteranWait, right);
 		}
 		break;
+	case 'R':
+		removeCT += 1;
+		if (isJumping) {
+			if (jumpPower <= 1 && jumpPower >= -1)
+				MyDraw(tempX, tempY, robotJump[1], right);
+			else if (jumpPower > 1)
+				MyDraw(tempX, tempY, robotJump[2], right);
+			else if (jumpPower < -1)
+				MyDraw(tempX, tempY, robotJump[0], right);
+		}
+		else if (isMoving == 'I') {
+			MyDraw(tempX, tempY, parasite[drawCount / 8 % 8], right);
+			drawCount++;
+			if (drawCount >= 64) isMoving = 'N';
+		}
+		else if (isAttack) {
+			if (keyM.GetKeyFrame(KEY_INPUT_LEFT) == 0 && keyM.GetKeyFrame(KEY_INPUT_RIGHT) == 0) {
+				MyDraw(tempX, tempY, robotAttack[drawCount / 8 % 8], right);
+				drawCount++;
+				if (drawCount >= 64) isAttack = false;
+			}
+			else {
+				MyDraw(tempX, tempY, robotAttack[drawCount / 8 % 4], right);
+				drawCount++;
+				if (drawCount >= 32) isAttack = false;
+			}
+
+		}
+		else if (isMoving == 'D') {
+			MyDraw(tempX, tempY, robotDie[drawCount / 8 % 8], right);
+			drawCount++;
+			if (drawCount >= 64) isMoving = 'N';
+		}
+		else if (isDead) {
+			MyDraw(tempX, tempY, robotDie[7], right);
+		}
+		else if (keyM.GetKeyFrame(KEY_INPUT_RIGHT) >= 1) {
+			drawCount = keyM.GetKeyFrame(KEY_INPUT_RIGHT) / 15 % 8;
+			MyDraw(tempX, tempY, robotMove[drawCount], right);
+		}
+		else if (keyM.GetKeyFrame(KEY_INPUT_LEFT) >= 1) {
+			drawCount = keyM.GetKeyFrame(KEY_INPUT_LEFT) / 15 % 8;
+			MyDraw(tempX, tempY, robotMove[drawCount], right);
+		}
+		else {
+			MyDraw(tempX, tempY, robotWait, right);
+		}
+		break;
 	case'C':
 		if (isJumping) {
 
@@ -683,7 +744,7 @@ void Player::PerDecision()
 		sizeY1 = 48;
 		sizeY2 = 63;
 	}
-	if (plState == 'A' || plState == 'B' || plState == 'C') {
+	if (plState == 'A' || plState == 'B' || plState == 'C' || plState == 'R') {
 		sizeX1 = 23;
 		sizeX2 = 45;
 		sizeY1 = 4;

@@ -81,4 +81,5 @@ private:
 	int bulletindex = -1;
 	Collision *eeyanCol;
 	Collision *liquidCol;
+	int removeCT = 0;
 };

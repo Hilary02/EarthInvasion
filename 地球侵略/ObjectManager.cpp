@@ -177,7 +177,7 @@ void ObjectManager::addObject(int id, int x, int y, int hp, int moveUL, int move
 		obj = new Enemy(x, y, img[ObjectID::soldierB], ObjectID::soldierB, this);
 		break;
 	case ObjectID::robotEnemy:
-		obj = new RobotEnemy(x, y, img[ObjectID::robotEnemy], this);
+		obj = new RobotEnemy(x, y, img[ObjectID::robotEnemy], ObjectID::robotEnemy, this);
 		break;
 	case ObjectID::healPot:
 		obj = new Item(x, y, img[ObjectID::healPot]);

@@ -83,7 +83,7 @@ int Enemy::update(const Collision & playerCol) {
 			hp = 15;
 			break;
 		default:
-			printf("");
+			printf("");	
 			break;
 		}
 		hp = 3;

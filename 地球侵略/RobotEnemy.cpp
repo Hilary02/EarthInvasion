@@ -2,10 +2,11 @@
 
 
 
-RobotEnemy::RobotEnemy(int x, int y, int img, IObjectManager* Iobj){
+RobotEnemy::RobotEnemy(int x, int y, int img, ObjectID id, IObjectManager* Iobj){
 	this->IobjMgr = Iobj;
 	this->x = x;
 	this->y = y;
+	this->id = id;
 	this->imgHandle = img;
 	IobjMgr->enemyMoveRangeCalc(x, y, &minX, &maxX);
 	setHp(3);
@@ -18,6 +19,7 @@ RobotEnemy::RobotEnemy(int x, int y, int img, IObjectManager* Iobj){
 	LoadDivGraph("data/img/enemy4Die.png", 8, 4, 2, 64, 64, deadHandle);
 	damegeHandle = LoadGraph("data/img/enemy4Damage.png");
 	bulletHandle = LoadGraph("data/img/bullet.png");
+	iconHandle = LoadGraph("data/img/exclamation.png");
 	collision = new Collision(16, 0, 20, 64);
 	AttackBox = new Collision(32, colYOffset, -160, colYSize);
 	state = State::alive;
@@ -29,6 +31,21 @@ RobotEnemy::~RobotEnemy(){}
 int RobotEnemy::update(const Collision & playerCol)
 {
 	Enemy::update(playerCol);
+	if (state == State::respawn) { robotReCT += 1; }
+
+	if (state == State::respawn&& robotReCT >= 600) {
+		state = State::alive;
+		robotReCT = 0;
+		switch (id) {
+		case ObjectID::robotEnemy:
+			hp = 3;
+			break;
+		default:
+			printf("");
+			break;
+		}
+	}
+
 	return 0;
 }
 
