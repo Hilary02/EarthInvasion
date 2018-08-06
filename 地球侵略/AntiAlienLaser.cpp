@@ -69,11 +69,11 @@ void AntiAlienLaser::Draw(int drawX, int drawY)
 		if (timer >= 420)
 			timer = 0;
 	}
-	DrawBox(collision->hitRange.xPos + collision->hitRange.xOffset - drawX,
+/*	DrawBox(collision->hitRange.xPos + collision->hitRange.xOffset - drawX,
 		collision->hitRange.yPos + collision->hitRange.yOffset - drawY,
 		collision->hitRange.xPos + collision->hitRange.xOffset + collision->hitRange.xSize - drawX,
 		collision->hitRange.yPos + collision->hitRange.yOffset + collision->hitRange.ySize - drawY,
-		0xFF00FF, false);
+		0xFF00FF, false);*/
 }
 
 void AntiAlienLaser::LoadImg() {

@@ -108,7 +108,7 @@ void Stage_Base::draw() {
 		int br = 255 - fadeCounter;
 		SetDrawBright(br, br, br);
 
-		printfDx("%d\n", animationCounter);
+		//printfDx("%d\n", animationCounter);
 		if (br <= 0) {
 			//SetDrawBright(255, 255, 255);
 			SoundM.SetMusic(LoadSoundMem("data/mc/menu1.ogg"));
@@ -121,8 +121,6 @@ void Stage_Base::draw() {
 		player->setAbsolutePos(player->getX(), player->getY() + 3);
 		int br = 255 - animationCounter * 2;
 		SetDrawBright(br, br, br);
-
-		printfDx("%d\n", br);
 		if (br <= 0) {
 			SetDrawBright(255, 255, 255);
 

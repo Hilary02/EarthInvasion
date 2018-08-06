@@ -5,7 +5,7 @@ DrG::DrG() {}
 
 DrG::~DrG() {}
 
-DrG::DrG(int x, int y, int img, ObjectID id, IObjectManager * Iobj) {
+DrG::DrG(int x, int y, int img, ObjectID id, IObjectManager * Iobj, int stageID, IStageBase* stage) {
 	this->IobjMgr = Iobj;
 	this->x = x;
 	this->y = y;
@@ -17,6 +17,9 @@ DrG::DrG(int x, int y, int img, ObjectID id, IObjectManager * Iobj) {
 	LoadDivGraph("data/img/DrG/enemy5Die.png", 4, 4, 1, 64, 64, img_die);
 	collision = new Collision(20, 16, 20, 48);
 	state = State::alive;
+
+	this->stageId = stageID;
+	this->Istage = stage;
 }
 
 int DrG::update(const Collision & playerCol) {
@@ -62,12 +65,20 @@ int DrG::update(const Collision & playerCol) {
 		imgHandle = img_die[deadcounter / 20];
 	}
 
+	if (hp <= 0) {
+		//‚ß‚¿‚á‚­‚¿‚á
+		savedata.setClearFlag(stageId, 1);
+		savedata.save();
+		Istage->PlayAnimation(clearAnime);	//ƒNƒŠƒA‰‰o‚É“ü‚é
+	}
+
+
 
 	return 0;
 }
 
 void DrG::Draw(int drawX, int drawY) {
-	DrawBox(collision->hitRange.xPos + collision->hitRange.xOffset - drawX, collision->hitRange.yPos + collision->hitRange.yOffset - drawY, collision->hitRange.xPos + collision->hitRange.xOffset + collision->hitRange.xSize - drawX, collision->hitRange.yPos + collision->hitRange.yOffset + collision->hitRange.ySize - drawY, 0xFF00FF, false);
+	//DrawBox(collision->hitRange.xPos + collision->hitRange.xOffset - drawX, collision->hitRange.yPos + collision->hitRange.yOffset - drawY, collision->hitRange.xPos + collision->hitRange.xOffset + collision->hitRange.xSize - drawX, collision->hitRange.yPos + collision->hitRange.yOffset + collision->hitRange.ySize - drawY, 0xFF00FF, false);
 	if (invulnerable > 0 && (invulnerable / 20) % 2 > 0) {
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 170);
 	}

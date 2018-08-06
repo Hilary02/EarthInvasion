@@ -189,7 +189,7 @@ void ObjectManager::addObject(int id, int x, int y, int hp, int moveUL, int move
 		obj = new AntiAlienLaser(x, y, img[ObjectID::alienLaser], ObjectID::alienLaser);
 		break;
 	case ObjectID::DrG:		//É{ÉX1
-		obj = new DrG(x, y, img[ObjectID::DrG], ObjectID::DrG, this);
+		obj = new DrG(x, y, img[ObjectID::DrG], ObjectID::DrG, this, stageId, stageBase);
 		break;
 
 	default:

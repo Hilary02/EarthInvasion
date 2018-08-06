@@ -19,7 +19,7 @@ int Abyss::update(const Collision & playerCol) {
 
 void Abyss::Draw(int drawX, int drawY) {
 	//ŒŠ‚È‚Ì‚Å‚Æ‚­‚É‰æ‘œ‚Í‚È‚¢H
-	DrawBox(x - drawX, y - drawY, x - drawX+32, y - drawY+32, 0xFF00FF, true);
+//	DrawBox(x - drawX, y - drawY, x - drawX+32, y - drawY+32, 0xFF00FF, true);
 }
 
 void Abyss::collisionCheck(const Collision & target) {}
