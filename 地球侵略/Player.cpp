@@ -749,5 +749,5 @@ void Player::LoadImg()
 	LoadDivGraph("data/img/enemy4WaitForAtackP.png", 4, 4, 1, 64, 64, robotAttack);
 	LoadDivGraph("data/img/enemy4AtackP.png", 4, 4, 1, 64, 64, &robotAttack[4]);
 	LoadDivGraph("data/img/enemy4DieP.png", 8, 4, 2, 64, 64, robotDie);
-
+	img_gauge = LoadGraph("data/img/gauge.png");
 }

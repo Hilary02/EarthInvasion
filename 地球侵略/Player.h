@@ -63,11 +63,12 @@ private:
 	int veteranJump[4];
 	int robotJump[4];
 	int liquid[10];
-	int parasite[8];
+	int parasite[16];
 	int die[16];
 	int enemyDie[8];
 	int veteranDie[8];
 	int robotDie[8];
+	int img_gauge;
 
 	int invalidDamageTime = 120;
 	int preParasite = 0;
