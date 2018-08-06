@@ -25,15 +25,13 @@ RobotEnemy::RobotEnemy(int x, int y, int img, ObjectID id, IObjectManager* Iobj)
 	state = State::alive;
 }
 
-
 RobotEnemy::~RobotEnemy(){}
 
-int RobotEnemy::update(const Collision & playerCol)
-{
+int RobotEnemy::update(const Collision & playerCol){
 	Enemy::update(playerCol);
-	if (state == State::respawn) { robotReCT += 1; }
+	if (state == State::respawn || state == State::dead) { robotReCT += 1; }
 
-	if (state == State::respawn&& robotReCT >= 900) {
+	if ((state == State::respawn || state == State::dead) && robotReCT >= 750) {
 		state = State::alive;
 		robotReCT = 0;
 		switch (id) {
@@ -45,7 +43,6 @@ int RobotEnemy::update(const Collision & playerCol)
 			break;
 		}
 	}
-
 	return 0;
 }
 
@@ -63,14 +60,13 @@ void RobotEnemy::MoveCommon(){
 
 void RobotEnemy::AtackCommon(){
 	Enemy::AtackCommon();
-}	
+}
 
 void RobotEnemy::DeadCheck(){
 	Enemy::DeadCheck();
 }
 
-bool RobotEnemy::IsRangeCheck()
-{
+bool RobotEnemy::IsRangeCheck(){
 	rightFlg = Enemy::IsRangeCheck();
 	return rightFlg;
 }
