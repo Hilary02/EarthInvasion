@@ -104,6 +104,18 @@ int Player::update() {
 								}
 								break;
 							}
+							case ObjectID::robotEnemy: //兵士
+							{
+								Enemy* ene = (Enemy*)o;	//いいのかな？
+								if (ene->getDeadState() == true) {
+									plState = 'R';
+									isMoving = 'I';
+									drawCount = 0;
+									preParasite = 1;
+									setAtk(ene->getAtk());
+								}
+								break;
+							}
 							default:
 								break;
 							}
@@ -318,9 +330,6 @@ int Player::update() {
 			case ObjectID::spike: //とげとげ
 				modHp(-1);
 				break;
-			case ObjectID::spark:
-				modHp(-1);
-				break;
 			case ObjectID::abyss:	//奈落。ゲームオーバー
 				//isDead = true;
 				isMoving = 'D';
@@ -336,6 +345,29 @@ int Player::update() {
 			case ObjectID::alienLaser:
 				modHp(-1);
 				break;
+			case ObjectID::spark: //ビリビリ
+			{
+				modHp(-1);
+				int leftTX = o->collision->hitRange.xPos + o->collision->hitRange.xOffset;
+				int leftPX = collision->hitRange.xPos + collision->hitRange.xOffset;
+				int topTY = o->collision->hitRange.yPos + o->collision->hitRange.yOffset;
+				int topPY = collision->hitRange.yPos + collision->hitRange.yOffset;
+
+
+				if (topPY > topTY + 20) {
+					y = topTY + o->collision->hitRange.ySize - collision->hitRange.yOffset;
+					jumpPower = 0;
+				}
+				else if (leftPX < leftTX) {
+					x = leftTX - collision->hitRange.xSize - collision->hitRange.xOffset;
+				}
+				else if (leftPX > leftTX) {
+					x = leftTX + o->collision->hitRange.xSize - collision->hitRange.xOffset;
+				}
+
+				isAttack = false;
+				break;
+			}
 			default:
 				break;
 			}
@@ -416,6 +448,7 @@ void Player::Draw(int drawX, int drawY) {
 
 	switch (plState) {
 	case 'N':	//????
+		//ジャンプの画像が全部使ってない!?
 		if (isJumping) {
 			if (jumpPower <= 1 && jumpPower >= -1)
 				MyDraw(tempX, tempY, jump[1], right);
@@ -482,14 +515,13 @@ void Player::Draw(int drawX, int drawY) {
 		break;
 
 	case 'A':
-	case 'B':
 		if (isJumping) {
 			if (jumpPower <= 1 && jumpPower >= -1)
-				MyDraw(tempX, tempY, jump[11], right);
+				MyDraw(tempX, tempY, enemyJump[1], right);
 			else if (jumpPower > 1)
-				MyDraw(tempX, tempY, jump[12], right);
+				MyDraw(tempX, tempY, enemyJump[2], right);
 			else if (jumpPower < -1)
-				MyDraw(tempX, tempY, jump[10], right);
+				MyDraw(tempX, tempY, enemyJump[0], right);
 		}
 		else if (isMoving == 'I') {
 			MyDraw(tempX, tempY, parasite[drawCount / 8 % 8], right);
@@ -498,55 +530,84 @@ void Player::Draw(int drawX, int drawY) {
 		}
 		else if (isAttack) {
 			if (keyM.GetKeyFrame(KEY_INPUT_LEFT) == 0 && keyM.GetKeyFrame(KEY_INPUT_RIGHT) == 0) {
-				MyDraw(tempX, tempY, attack[drawCount / 8 % 8 + 10], right);
+				MyDraw(tempX, tempY, enemyAttack[drawCount / 8 % 8], right);
 				drawCount++;
 				if (drawCount >= 64) isAttack = false;
 			}
 			else {
-				MyDraw(tempX, tempY, attack[drawCount / 8 % 4 + 14], right);
+				MyDraw(tempX, tempY, enemyAttack[drawCount / 8 % 4 ], right);
 				drawCount++;
 				if (drawCount >= 32) isAttack = false;
 			}
 
 		}
 		else if (isMoving == 'D') {
-			MyDraw(tempX, tempY, die[drawCount / 8 % 8 + 20], right);
+			MyDraw(tempX, tempY, enemyDie[drawCount / 8 % 8 ], right);
 			drawCount++;
 			if (drawCount >= 64) isMoving = 'N';
 		}
 		else if (isDead) {
-			MyDraw(tempX, tempY, die[27], right);
+			MyDraw(tempX, tempY, enemyDie[7], right);
 		}
 		else if (keyM.GetKeyFrame(KEY_INPUT_RIGHT) >= 1) {
 			drawCount = keyM.GetKeyFrame(KEY_INPUT_RIGHT) / 15 % 8;
-			MyDraw(tempX, tempY, move[drawCount + 10], right);
+			MyDraw(tempX, tempY, enemyMove[drawCount], right);
 		}
 		else if (keyM.GetKeyFrame(KEY_INPUT_LEFT) >= 1) {
 			drawCount = keyM.GetKeyFrame(KEY_INPUT_LEFT) / 15 % 8;
-			MyDraw(tempX, tempY, move[drawCount + 10], right);
+			MyDraw(tempX, tempY, enemyMove[drawCount], right);
 		}
 		else {
-			MyDraw(tempX, tempY, wait[10], right);
+			MyDraw(tempX, tempY, enemyWait, right);
 		}
 		break;
-
-		/*case'B':
-			if (isJumping) {
-
-			}
-			else if (keyM.GetKeyFrame(KEY_INPUT_RIGHT) >= 1) {
-				drawCount = keyM.GetKeyFrame(KEY_INPUT_RIGHT) / 15 % 4;
-				DrawGraph(tempX, tempY, move[drawCount], TRUE);
+	case 'B':
+		if (isJumping) {
+			if (jumpPower <= 1 && jumpPower >= -1)
+				MyDraw(tempX, tempY, veteranJump[1], right);
+			else if (jumpPower > 1)
+				MyDraw(tempX, tempY, veteranJump[2], right);
+			else if (jumpPower < -1)
+				MyDraw(tempX, tempY, veteranJump[0], right);
+		}
+		else if (isMoving == 'I') {
+			MyDraw(tempX, tempY, parasite[drawCount / 8 % 8], right);
+			drawCount++;
+			if (drawCount >= 64) isMoving = 'N';
+		}
+		else if (isAttack) {
+			if (keyM.GetKeyFrame(KEY_INPUT_LEFT) == 0 && keyM.GetKeyFrame(KEY_INPUT_RIGHT) == 0) {
+				MyDraw(tempX, tempY, veteranAttack[drawCount / 8 % 8], right);
+				drawCount++;
+				if (drawCount >= 64) isAttack = false;
 			}
 			else {
-				DrawGraph(tempX, tempY, wait[drawCount % 4], TRUE);
+				MyDraw(tempX, tempY, veteranAttack[drawCount / 8 % 4], right);
 				drawCount++;
-
-
-				if (drawCount == 60) drawCount = 0;
+				if (drawCount >= 32) isAttack = false;
 			}
-			break;
-	*/
+
+		}
+		else if (isMoving == 'D') {
+			MyDraw(tempX, tempY, veteranDie[drawCount / 8 % 8], right);
+			drawCount++;
+			if (drawCount >= 64) isMoving = 'N';
+		}
+		else if (isDead) {
+			MyDraw(tempX, tempY, veteranDie[7], right);
+		}
+		else if (keyM.GetKeyFrame(KEY_INPUT_RIGHT) >= 1) {
+			drawCount = keyM.GetKeyFrame(KEY_INPUT_RIGHT) / 15 % 8;
+			MyDraw(tempX, tempY, veteranMove[drawCount], right);
+		}
+		else if (keyM.GetKeyFrame(KEY_INPUT_LEFT) >= 1) {
+			drawCount = keyM.GetKeyFrame(KEY_INPUT_LEFT) / 15 % 8;
+			MyDraw(tempX, tempY, veteranMove[drawCount], right);
+		}
+		else {
+			MyDraw(tempX, tempY, veteranWait, right);
+		}
+		break;
 	case'C':
 		if (isJumping) {
 
@@ -666,11 +727,27 @@ void Player::LoadImg()
 	LoadDivGraph("data/img/eeyanParasiteOut.png", 8, 4, 2, 64, 64, &parasite[10]);
 	LoadDivGraph("data/img/eeyanDie.png", 16, 4, 4, 64, 64, die);
 
-	LoadDivGraph("data/img/enemy1WaitP.png", 1, 1, 1, 64, 64, &wait[10]);
-	LoadDivGraph("data/img/enemy1WalkP.png", 8, 4, 2, 64, 64, &move[10]);
-	LoadDivGraph("data/img/enemy1JumpP.png", 4, 4, 1, 64, 64, &jump[10]);
-	LoadDivGraph("data/img/enemy1WaitForAtackP.png", 4, 4, 1, 64, 64, &attack[10]);
-	LoadDivGraph("data/img/enemy1AtackP.png", 4, 4, 1, 64, 64, &attack[14]);
-	LoadDivGraph("data/img/enemy1DieP.png", 8, 4, 2, 64, 64, &die[20]);
-	img_gauge = LoadGraph("data/img/gauge.png");
+	enemyWait = LoadGraph("data/img/enemy1WaitP.png", 0);
+	//LoadDivGraph("data/img/enemy1WaitP.png", 1, 1, 1, 64, 64, enemyWait);
+	LoadDivGraph("data/img/enemy1WalkP.png", 8, 4, 2, 64, 64, enemyMove);
+	LoadDivGraph("data/img/enemy1JumpP.png", 4, 4, 1, 64, 64, enemyJump);
+	LoadDivGraph("data/img/enemy1WaitForAtackP.png", 4, 4, 1, 64, 64, enemyAttack);
+	LoadDivGraph("data/img/enemy1AtackP.png", 4, 4, 1, 64, 64, &enemyAttack[4]);
+	LoadDivGraph("data/img/enemy1DieP.png", 8, 4, 2, 64, 64, enemyDie);
+
+	veteranWait = LoadGraph("data/img/enemy3WaitP.png", 0);
+	//LoadDivGraph("data/img/enemy3WaitP.png", 1, 1, 1, 64, 64, veteranWait);
+	LoadDivGraph("data/img/enemy3WalkP.png", 8, 4, 2, 64, 64, veteranMove);
+	LoadDivGraph("data/img/enemy3JumpP.png", 4, 4, 1, 64, 64, veteranJump);
+	LoadDivGraph("data/img/enemy3WaitForAtackP.png", 4, 4, 1, 64, 64, veteranAttack);
+	LoadDivGraph("data/img/enemy3AtackP.png", 4, 4, 1, 64, 64, &veteranAttack[4]);
+	LoadDivGraph("data/img/enemy3DieP.png", 8, 4, 2, 64, 64, veteranDie);
+
+	robotWait = LoadGraph("data/img/enemy4WaitP.png", 0);
+	LoadDivGraph("data/img/enemy4WalkP.png", 8, 4, 2, 64, 64, robotMove);
+	LoadDivGraph("data/img/enemy4JumpP.png", 4, 4, 1, 64, 64, robotJump);
+	LoadDivGraph("data/img/enemy4WaitForAtackP.png", 4, 4, 1, 64, 64, robotAttack);
+	LoadDivGraph("data/img/enemy4AtackP.png", 4, 4, 1, 64, 64, &robotAttack[4]);
+	LoadDivGraph("data/img/enemy4DieP.png", 8, 4, 2, 64, 64, robotDie);
+
 }

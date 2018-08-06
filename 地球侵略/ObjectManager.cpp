@@ -29,7 +29,7 @@ ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap, int stage, ISt
 	Loadimg();
 	for (unsigned int i = 0; i < vmap.size(); i++) {
 		for (unsigned int j = 0; j < vmap[i].size(); j++) {
-			if (4 <= vmap[i][j] && vmap[i][j] <= 9 || 20 <= vmap[i][j] && vmap[i][j] <= 40 || vmap[i][j] == 99) {
+			if (4 <= vmap[i][j] && vmap[i][j] <= 9 || 20 <= vmap[i][j] && vmap[i][j] <= 45 || vmap[i][j] == 99) {
 				int y = i * 32;	//y座標
 				int x = j * 32;	//x座標
 
@@ -109,6 +109,7 @@ void ObjectManager::Loadimg() {
 	img[ObjectID::healPot] = LoadGraph("data/img/healPot.png");
 	img[ObjectID::goal] = LoadGraph("data/img/clear.png");
 	img[ObjectID::alienLaser] = LoadGraph("data/img/LaserA_Wait.png");
+	img[ObjectID::robotEnemy] = LoadGraph("data/img/enemy4Wait.png");
 }
 
 void ObjectManager::update() {
@@ -174,6 +175,9 @@ void ObjectManager::addObject(int id, int x, int y, int hp, int moveUL, int move
 	case ObjectID::soldierB:
 		//Enemyのコンストラクタをオーバーライドしてパラメータを渡せるようにしたい
 		obj = new Enemy(x, y, img[ObjectID::soldierB], ObjectID::soldierB, this);
+		break;
+	case ObjectID::robotEnemy:
+		obj = new RobotEnemy(x, y, img[ObjectID::robotEnemy], this);
 		break;
 	case ObjectID::healPot:
 		obj = new Item(x, y, img[ObjectID::healPot]);

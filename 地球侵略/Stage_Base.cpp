@@ -80,6 +80,10 @@ void Stage_Base::draw() {
 			}
 		}
 	}
+	//チュートリアルのやつ
+	if (stageId == 0) {
+		DrawRotaGraph(625, 88, 0.5, 0, img_tutorial, TRUE);
+	}
 	objectMgr->Draw(drawX, drawY);
 	drawInfo();
 
@@ -241,9 +245,8 @@ int Stage_Base::loadImg() {
 	//InfoArea用
 	img_hpbar = LoadGraph("data/img/hpbar.png");
 	img_hpbar_empty = LoadGraph("data/img/hpbar_empty.png");
-
+	img_tutorial = LoadGraph("data/img/tutorial.png");
 	img_clear = LoadGraph("data/img/clear_img.png");
-
 	return 1;
 }
 

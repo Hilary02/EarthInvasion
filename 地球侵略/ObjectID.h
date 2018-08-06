@@ -27,6 +27,7 @@ enum class ObjectID {
 	detoxificationPot = 31, //解毒薬
 
 	DrG = 40,	//ボス1 Dr.G
+	robotEnemy = 41,
 
 	goal = 99,		//ゴール
 	playerBullet = 100,	//プレイヤーが撃った弾

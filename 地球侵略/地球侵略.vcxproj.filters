@@ -88,10 +88,13 @@
     <ClCompile Include="Abyss.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Witch.cpp" />
     <ClCompile Include="DrG.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="Witch.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="RobotEnemy.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Collision.cpp">
@@ -330,11 +333,14 @@
     <ClInclude Include="Abyss.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Witch.h" />
     <ClInclude Include="IStageBase.h" />
     <ClInclude Include="DrG.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="Witch.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="RobotEnemy.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ソース ファイル">
