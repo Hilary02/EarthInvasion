@@ -49,20 +49,25 @@ private:
 	int wait[4];
 	int enemyWait;
 	int veteranWait;
+	int robotWait;
 	int move[4];
 	int enemyMove[8];
 	int veteranMove[8];
+	int robotMove[8];
 	int attack[8];
 	int enemyAttack[8];
 	int veteranAttack[8];
+	int robotAttack[8];
 	int jump[4];
 	int enemyJump[4];
 	int veteranJump[4];
+	int robotJump[4];
 	int liquid[10];
 	int parasite[8];
 	int die[16];
 	int enemyDie[8];
 	int veteranDie[8];
+	int robotDie[8];
 
 	int invalidDamageTime = 120;
 	int preParasite = 0;
