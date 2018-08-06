@@ -548,14 +548,14 @@ void Player::Draw(int drawX, int drawY) {
 				if (drawCount >= 64) isAttack = false;
 			}
 			else {
-				MyDraw(tempX, tempY, enemyAttack[drawCount / 8 % 4 ], right);
+				MyDraw(tempX, tempY, enemyAttack[drawCount / 8 % 4], right);
 				drawCount++;
 				if (drawCount >= 32) isAttack = false;
 			}
 
 		}
 		else if (isMoving == 'D') {
-			MyDraw(tempX, tempY, enemyDie[drawCount / 8 % 8 ], right);
+			MyDraw(tempX, tempY, enemyDie[drawCount / 8 % 8], right);
 			drawCount++;
 			if (drawCount >= 64) isMoving = 'N';
 		}
@@ -699,7 +699,12 @@ void Player::Draw(int drawX, int drawY) {
 
 	//Šñ¶‰ðœƒo[
 	if (keyM.GetKeyFrame(KEY_INPUT_DOWN) >= 1 && plState != 'N') {
-		DrawExtendGraph(tempX + 16, tempY - 18, tempX + 16 + 50 * (1 - (double)keyM.GetKeyFrame(KEY_INPUT_DOWN) / 45), tempY - 4, img_gauge, false);
+		double size = 0;
+		if ((1 - (double)keyM.GetKeyFrame(KEY_INPUT_DOWN) / 45) > 0) {
+			size = (1 - (double)keyM.GetKeyFrame(KEY_INPUT_DOWN) / 45);
+		}
+
+		DrawExtendGraph(tempX + 16, tempY - 18, tempX + 16 + 50 * size, tempY - 4, img_gauge, false);
 	}
 
 

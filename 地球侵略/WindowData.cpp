@@ -24,7 +24,7 @@ WindowData::~WindowData()
 
 //ウィンドウの初期化処理を行う．
 int WindowData::Init() {
-	//ChangeWindowMode(true);
+	SetMainWindowText(TITLE.c_str());				//c_strでchar型にできる
 	//is_fullscreen = ask_screenmode();  //コメントアウトで強制ウィンドウ
 	if (is_fullscreen) {
 		ChangeWindowMode(FALSE);          //フルスクリーン
@@ -36,7 +36,6 @@ int WindowData::Init() {
 		SetWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 	}
 	if (DxLib_Init() == -1)	return -1;
-	SetMainWindowText(TITLE.c_str());				//c_strでchar型にできる
 	SetBackgroundColor(0, 0, 0);					//背景色を黒に
 	//SetOutApplicationLogValidFlag(false);			//ログ出力
 	//SetTransColor(255, 0, 255);					//透過色未設定
