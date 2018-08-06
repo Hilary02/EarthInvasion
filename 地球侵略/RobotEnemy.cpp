@@ -20,6 +20,7 @@ RobotEnemy::RobotEnemy(int x, int y, int img, IObjectManager* Iobj){
 	bulletHandle = LoadGraph("data/img/bullet.png");
 	collision = new Collision(16, 0, 20, 64);
 	AttackBox = new Collision(32, colYOffset, -160, colYSize);
+	state = State::alive;
 }
 
 
