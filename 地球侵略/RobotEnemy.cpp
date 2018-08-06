@@ -31,6 +31,21 @@ RobotEnemy::~RobotEnemy(){}
 int RobotEnemy::update(const Collision & playerCol)
 {
 	Enemy::update(playerCol);
+	if (state == State::respawn) { robotReCT += 1; }
+
+	if (state == State::respawn&& robotReCT >= 600) {
+		state = State::alive;
+		robotReCT = 0;
+		switch (id) {
+		case ObjectID::robotEnemy:
+			hp = 3;
+			break;
+		default:
+			printf("");
+			break;
+		}
+	}
+
 	return 0;
 }
 

@@ -15,5 +15,6 @@ public:
 	virtual bool IsRangeCheck();
 private:
 	bool rightFlg = false; //1ŽžŠi”[‚Ì‚½‚ß 
+	int robotReCT = 0;
 };
 
