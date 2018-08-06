@@ -98,6 +98,18 @@ int Player::update() {
 								}
 								break;
 							}
+							case ObjectID::robotEnemy: //•ºŽm
+							{
+								Enemy* ene = (Enemy*)o;	//‚¢‚¢‚Ì‚©‚ÈH
+								if (ene->getDeadState() == true) {
+									plState = 'R';
+									isMoving = 'I';
+									drawCount = 0;
+									preParasite = 1;
+									setAtk(ene->getAtk());
+								}
+								break;
+							}
 							default:
 								break;
 							}
@@ -723,4 +735,12 @@ void Player::LoadImg()
 	LoadDivGraph("data/img/enemy3WaitForAtackP.png", 4, 4, 1, 64, 64, veteranAttack);
 	LoadDivGraph("data/img/enemy3AtackP.png", 4, 4, 1, 64, 64, &veteranAttack[4]);
 	LoadDivGraph("data/img/enemy3DieP.png", 8, 4, 2, 64, 64, veteranDie);
+
+	robotWait = LoadGraph("data/img/enemy4WaitP.png", 0);
+	LoadDivGraph("data/img/enemy4WalkP.png", 8, 4, 2, 64, 64, robotMove);
+	LoadDivGraph("data/img/enemy4JumpP.png", 4, 4, 1, 64, 64, robotJump);
+	LoadDivGraph("data/img/enemy4WaitForAtackP.png", 4, 4, 1, 64, 64, robotAttack);
+	LoadDivGraph("data/img/enemy4AtackP.png", 4, 4, 1, 64, 64, &robotAttack[4]);
+	LoadDivGraph("data/img/enemy4DieP.png", 8, 4, 2, 64, 64, robotDie);
+
 }
