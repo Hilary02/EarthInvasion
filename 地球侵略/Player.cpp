@@ -134,7 +134,7 @@ int Player::update() {
 				drawCount = 0;
 				collision->playerParasite = 0;
 			}
-			else if (removeCT >= 600 && plState == 'R') {
+			else if (removeCT >= 900 && plState == 'R') {
 				plState = 'N';
 				isMoving = 'O';
 				drawCount = 0;

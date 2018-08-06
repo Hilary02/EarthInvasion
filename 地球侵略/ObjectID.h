@@ -29,6 +29,7 @@ enum class ObjectID {
 	DrG = 40,	//ボス1 Dr.G
 	robotEnemy = 41,
 
+	bgmChanger = 91,
 	goal = 99,		//ゴール
 	playerBullet = 100,	//プレイヤーが撃った弾
 	enemyBullet = 104,	//兵士が撃った弾

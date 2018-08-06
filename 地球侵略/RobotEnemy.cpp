@@ -33,7 +33,7 @@ int RobotEnemy::update(const Collision & playerCol)
 	Enemy::update(playerCol);
 	if (state == State::respawn) { robotReCT += 1; }
 
-	if (state == State::respawn&& robotReCT >= 600) {
+	if (state == State::respawn&& robotReCT >= 900) {
 		state = State::alive;
 		robotReCT = 0;
 		switch (id) {

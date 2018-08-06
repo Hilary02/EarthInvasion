@@ -95,6 +95,7 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="RobotEnemy.cpp" />
+    <ClCompile Include="BGMChanger.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Collision.cpp">
@@ -333,7 +334,6 @@
     <ClInclude Include="Abyss.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="IStageBase.h" />
     <ClInclude Include="DrG.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -341,6 +341,7 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="RobotEnemy.h" />
+    <ClInclude Include="BGMChanger.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ソース ファイル">
