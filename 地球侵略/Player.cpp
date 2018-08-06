@@ -98,7 +98,7 @@ int Player::update() {
 								}
 								break;
 							}
-							case ObjectID::robotEnemy: //•ºŽm
+							case ObjectID::robotEnemy: //ƒƒ{ƒbƒg•ºŽm
 							{
 								Enemy* ene = (Enemy*)o;	//‚¢‚¢‚Ì‚©‚ÈH
 								if (ene->getDeadState() == true) {

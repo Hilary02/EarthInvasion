@@ -63,7 +63,7 @@ private:
 	int veteranJump[4];
 	int robotJump[4];
 	int liquid[10];
-	int parasite[8];
+	int parasite[16];
 	int die[16];
 	int enemyDie[8];
 	int veteranDie[8];
