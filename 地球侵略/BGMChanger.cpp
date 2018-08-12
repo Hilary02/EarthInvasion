@@ -23,7 +23,7 @@ void BGMChanger::Draw(int drawX, int drawY) {}
 int BGMChanger::collisionCheck(const Collision & target) {
 	int isCol = collision->doCollisonCheck((target.hitRange));
 	if (isCol) {
-		SoundM.SetMusic(LoadSoundMem("data/mc/’n‹…N—ª’†ƒ{ƒX.ogg"));
+		SoundM.SetMusic(LoadSoundMem("data/mc/bossA_boss.ogg"));
 		return -1;
 	}
 	else {
