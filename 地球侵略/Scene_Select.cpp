@@ -27,6 +27,9 @@ Scene_Select::Scene_Select(int param) {
 	3:うっすら表示(直近のボスステージ)
 	*/
 	bg = LoadGraph("data/img/bg_stageselect.png");
+	if (1 <= param && param <= 13) {
+		selecting = param;
+	}
 }
 
 
@@ -44,7 +47,7 @@ void Scene_Select::update() {
 		if (keyM.GetKeyFrame(KEY_INPUT_LEFT) == 1) { nextSelect = stageFrameData[selecting].L; }
 		if (keyM.GetKeyFrame(KEY_INPUT_RIGHT) == 1) { nextSelect = stageFrameData[selecting].R; }
 		if (clearState[nextSelect] == 1 || clearState[nextSelect] == 2) {	//選択できるステージだった場合 
-			SoundM.Se(LoadSoundMem("data/mc/pick up.wav"));
+			SoundM.Se("data/mc/pick up.wav");
 			selecting = nextSelect;
 		}
 	}
@@ -54,6 +57,9 @@ void Scene_Select::update() {
 	}
 	if (keyM.GetKeyFrame(KEY_INPUT_Z) == 1) {
 		SceneM.ChangeScene(scene::Game, selecting);
+	}
+	if (keyM.GetKeyFrame(KEY_INPUT_X) == 1) {
+		SceneM.ChangeScene(scene::Title);
 	}
 }
 
@@ -86,9 +92,7 @@ void Scene_Select::Draw()
 	int col_red = 0xFF0000;
 	int col_yel = 0xFFFF00;
 
-	clsDx();
 	for (int i = 1; i <= 13; i++) {
-		printfDx("%d,", clearState[i]);
 		int bx = stageFrameData[i].x;
 		int by = stageFrameData[i].y;
 		int color = col_blk;

@@ -259,5 +259,8 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+
+
 地球侵略/Log.txt
-save.dat
+地球侵略/save.dat
+地球侵略/除外されたもの/*

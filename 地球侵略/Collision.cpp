@@ -1,7 +1,7 @@
 #include "Collision.h"
 //#include "DxLib.h"  //デバッグ表示をしたいなら追加
 
-Collision::Collision(){}
+Collision::Collision() {}
 
 Collision::Collision(int xOffset, int yOffset, int xSize, int ySize) {
 	hitRange.xOffset = xOffset;
@@ -10,15 +10,15 @@ Collision::Collision(int xOffset, int yOffset, int xSize, int ySize) {
 	hitRange.ySize = ySize;
 }
 
-Collision::~Collision(){}
+Collision::~Collision() {}
 
 void Collision::updatePos(int x, int y) {
 	hitRange.xPos = x;
 	hitRange.yPos = y;
 }
 
-void Collision::xFlip(){
-	hitRange.xSize= -hitRange.xSize;
+void Collision::xFlip() {
+	hitRange.xSize = -hitRange.xSize;
 }
 
 int Collision::doCollisonCheck(const HitRange& target) {

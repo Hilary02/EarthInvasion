@@ -1,5 +1,6 @@
 #include "AntiAlienLaser.h"
 #include "DxLib.h"
+#include "SoundManager.h"
 
 
 AntiAlienLaser::AntiAlienLaser()
@@ -21,7 +22,7 @@ AntiAlienLaser::AntiAlienLaser(int x, int y, int hundle, ObjectID id)
 
 	collision = new Collision(0, 0, 128, 256);
 
-	
+
 }
 
 int AntiAlienLaser::update(const Collision &pl) {
@@ -55,20 +56,24 @@ void AntiAlienLaser::Draw(int drawX, int drawY)
 
 	if (timer <= 240) {
 		DrawGraph(tempX, tempY, laserImg[0], TRUE);
+		if (timer >= 60) {
+			DrawGraph(tempX, tempY + 32, laserImg[(timer - 60) / 5 % 4 + 20], TRUE);
+		}
 	}
 	else {
 		DrawGraph(tempX, tempY, laserImg[1], TRUE);
 		for (int i = 0; i < 5; i++) {
+			SoundM.Se("data/se/laser.wav");
 			DrawGraph(tempX, tempY + i * 64 + 32, laserImg[(timer - 240) / 15 % 4 + 5], TRUE);
 		}
 		if (timer >= 420)
 			timer = 0;
 	}
-	DrawBox(collision->hitRange.xPos + collision->hitRange.xOffset - drawX,
+/*	DrawBox(collision->hitRange.xPos + collision->hitRange.xOffset - drawX,
 		collision->hitRange.yPos + collision->hitRange.yOffset - drawY,
 		collision->hitRange.xPos + collision->hitRange.xOffset + collision->hitRange.xSize - drawX,
 		collision->hitRange.yPos + collision->hitRange.yOffset + collision->hitRange.ySize - drawY,
-		0xFF00FF, false);
+		0xFF00FF, false);*/
 }
 
 void AntiAlienLaser::LoadImg() {
@@ -78,4 +83,5 @@ void AntiAlienLaser::LoadImg() {
 	LoadDivGraph("data/img/LaserB_Wait.png", 1, 1, 1, 32, 64, &laserImg[10]);
 	LoadDivGraph("data/img/LaserB_shoot.png", 1, 1, 1, 32, 64, &laserImg[11]);
 	LoadDivGraph("data/img/LaserBeemB.png", 4, 4, 1, 64, 64, &laserImg[15]);
+	LoadDivGraph("data/img/LaserA_Charge.png", 4, 1, 4, 64, 32, &laserImg[20]);
 }

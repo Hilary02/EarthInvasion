@@ -12,14 +12,16 @@ Stage_Base::Stage_Base() {}
 
 Stage_Base::Stage_Base(int stage) {
 	stageId = stage;
-	SoundM.SetSound(LoadSoundMem("data/mc/stageBGM1.ogg"));
-
 	//マップ地形の読み込み
 	//ここを複数ステージ用に書き換え
 	if (readStageData(stage) == -1) {
 		printfDx("Read Error");
 	}
-	objectMgr = new ObjectManager(vmap, stageId);
+	SoundM.SetMusic(LoadSoundMem(bgmPath.c_str()));
+	//地形画像の読み込み
+	//TODO:ステージごとの引数をつける
+	loadImg();
+	objectMgr = new ObjectManager(vmap, stageId, this);
 	//プレイヤー呼び出し
 	this->player = objectMgr->getPlayer();
 	player->setAbsolutePos(playerX, playerY);
@@ -29,9 +31,6 @@ Stage_Base::Stage_Base(int stage) {
 	//現在，一時停止とか完全に無視して時間が進む
 	timeLimit = GetNowCount() + time;
 
-	//地形画像の読み込み
-	//TODO:ステージごとの引数をつける
-	loadImg();
 }
 
 Stage_Base::~Stage_Base() {
@@ -41,15 +40,21 @@ Stage_Base::~Stage_Base() {
 }
 
 void Stage_Base::update() {
-	//タイマー
-	leftTime = int(timeLimit - GetNowCount());
-	if (leftTime <= 0) {
-		SceneM.ChangeScene(scene::GameOver);
-	}
+	if (!(isDeadAnimation || isClearAnimation)) { //どちらもFalse ->アニメなしなら
+		//タイマー
+		leftTime = int(timeLimit - GetNowCount());
+		if (leftTime <= 0) {
+			SceneM.ChangeScene(scene::GameOver);
+		}
 
-	drawChipNum = 0;
-	objectMgr->update();
-	scrollMap();	//プレイヤー座標に応じた表示範囲の変更
+		drawChipNum = 0;
+
+		//死んでもクリアしてもなければオブジェクトを更新
+		if (!isDeadAnimation && !isClearAnimation) {
+			objectMgr->update();
+		}
+		scrollMap();	//プレイヤー座標に応じた表示範囲の変更
+	}
 }
 
 void Stage_Base::draw() {
@@ -75,8 +80,53 @@ void Stage_Base::draw() {
 			}
 		}
 	}
+	//チュートリアルのやつ
+	if (stageId == 0) {
+		DrawRotaGraph(625, 88, 0.5, 0, img_tutorial, TRUE);
+	}
 	objectMgr->Draw(drawX, drawY);
 	drawInfo();
+
+	if (isClearAnimation) {
+		DrawGraph(0, 0, img_clear, true);
+		ChangeFontType(DX_FONTTYPE_EDGE);
+		DrawString(250, 400, "Zキーでセレクト画面へ", 0xFFFFFF);
+		ChangeFontType(DX_FONTTYPE_NORMAL);
+		if (animationCounter <= 500) {
+			animationCounter++;
+		}
+		if (keyM.GetKeyFrame(KEY_INPUT_Z) >= 1 || animationCounter >= 500) {
+			isfadeOut = true;
+		}
+		if (isfadeOut) {
+			fadeCounter += 5;
+		}
+
+		if (animationCounter <= 255 && animationCounter % 2 == 0) {
+			player->setAbsolutePos(player->getX(), player->getY() - 1);
+		}
+		int br = 255 - fadeCounter;
+		SetDrawBright(br, br, br);
+
+		//printfDx("%d\n", animationCounter);
+		if (br <= 0) {
+			//SetDrawBright(255, 255, 255);
+			SoundM.SetMusic(LoadSoundMem("data/mc/menu1.ogg"));
+
+			SceneM.ChangeScene(scene::Select, stageId);
+		}
+	}
+	if (isDeadAnimation) {
+		animationCounter++;
+		player->setAbsolutePos(player->getX(), player->getY() + 3);
+		int br = 255 - animationCounter * 2;
+		SetDrawBright(br, br, br);
+		if (br <= 0) {
+			SetDrawBright(255, 255, 255);
+
+			SceneM.ChangeScene(scene::GameOver, stageId);
+		}
+	}
 
 	//デバッグ情報
 //d	DrawFormatString(0, 30, GetColor(255, 125, 255), "マップ表示原点：%d  ,%d", drawX, drawY);
@@ -95,6 +145,19 @@ void Stage_Base::scrollMap() {
 	drawY = min(max(0, baseDrawY), limitDrawY);
 }
 
+void Stage_Base::PlayAnimation(int type) {
+	if (!isDeadAnimation && !isClearAnimation) {
+		if (type == 0) {
+			SoundM.SetMusic(LoadSoundMem("data/mc/GameOver.ogg"), false);
+			isDeadAnimation = true;
+		}
+		if (type == 1) {
+			SoundM.SetMusic(LoadSoundMem("data/mc/Clear.ogg"), false);
+			isClearAnimation = true;
+		}
+	}
+}
+
 //もっとスマートな方法ないかな？
 int Stage_Base::readStageData(int stage) {
 	std::string first = "data/stagedata/";
@@ -103,7 +166,7 @@ int Stage_Base::readStageData(int stage) {
 	std::string csv = ".csv";
 
 	std::string path = first + type + id + csv;
-	if(readSummary(path) ==-1) return -1;
+	if (readSummary(path) == -1) return -1;
 
 	type = "map";
 	path = first + type + id + csv;
@@ -123,15 +186,18 @@ int Stage_Base::readSummary(std::string file) {
 	getline(ifs, str);	//先頭行の読み飛ばし
 	getline(ifs, str);	//2行目だけ読む
 	std::istringstream stream(str);
-	while (getline(stream, buf, ',')) {
-		splited.push_back(std::stoi(buf));
+	for (int i = 0; i < 6; i++) {
+		getline(stream, buf, ',');
+		switch (i) {
+		case 0: chipsetPath = buf; break;
+		case 1: bgPath = buf; break;
+		case 2: bgmPath = buf; break;
+		case 3:	playerX = std::stoi(buf); break;
+		case 4:	playerY = std::stoi(buf); break;
+		case 5:	time = std::stoi(buf) * 1000; break;	//ms
+		default: break;
+		}
 	}
-
-	chipsetId = splited[0];
-	bgmId = splited[1];
-	playerX = splited[2];
-	playerY = splited[3];
-	time = splited[4] * 1000;	//msに変換
 	return 0;
 }
 
@@ -156,8 +222,8 @@ int Stage_Base::readMap(std::string file) {
 		}
 		vmap.push_back(splited);
 	}
-	MAP_WIDTH = vmap[0].size();	//マップ幅の代表として一番最初を格納
-	MAP_HEIGHT = vmap.size();
+	MAP_WIDTH = (int)(vmap[0].size());	//マップ幅の代表として一番最初を格納
+	MAP_HEIGHT = (int)(vmap.size());
 
 	ifs.close();
 	return 1;
@@ -168,15 +234,17 @@ int Stage_Base::loadImg() {
 	//画像の設定
 	chipImg[2] = LoadGraph("data/img/groundFloor.png");
 	chipImg[3] = LoadGraph("data/img/airFloor.png");
-	bgHand = LoadGraph("data/img/bg_factory.png");
+
+	bgHand = LoadGraph(bgPath.c_str());
+
 	int t;
 	GetGraphSize(bgHand, &bgWidth, &t);
 
 	//InfoArea用
 	img_hpbar = LoadGraph("data/img/hpbar.png");
 	img_hpbar_empty = LoadGraph("data/img/hpbar_empty.png");
-
-
+	img_tutorial = LoadGraph("data/img/tutorial.png");
+	img_clear = LoadGraph("data/img/clear_img.png");
 	return 1;
 }
 

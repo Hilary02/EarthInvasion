@@ -1,7 +1,7 @@
 #include "Scene_Frame.h"
 
-Scene_Frame::Scene_Frame()
-{
+Scene_Frame::Scene_Frame(){
+	SetDrawBright(255, 255, 255);
 }
 
 

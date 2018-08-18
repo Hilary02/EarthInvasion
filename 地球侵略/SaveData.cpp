@@ -11,8 +11,8 @@ SaveData & SaveData::get_instance() {
 }
 
 int SaveData::makeSave() {
-	content.bgmVolume = 200;
-	content.seVolume = 200;
+	content.bgmVolume = 5;
+	content.seVolume = 5;
 	content.clearFlag[0] = 2;
 	return 0;
 }

@@ -4,22 +4,30 @@
 #include "ObjectManager.h"
 #include "SceneManager.h"
 
-Player::Player(std::vector<std::vector <int>> const &vmap, IObjectManager* Iobj) {
+Player::Player(std::vector<std::vector <int>> const &vmap, IObjectManager* Iobj, IStageBase* stage) {
 	LoadImg();
+	this->Istage = stage;
 	this->IobjMgr = Iobj;
 	this->vmap = vmap;
 
 	this->hp = 10;
 	colXOffset = 16;
 	colXSize = 30;
-	collision = new Collision(colXOffset, colYOffset, colXSize, colYSize);
+	colYSize = 44;
+	colYOffset = 64 - colYSize;
+	eeyanCol = new Collision(colXOffset, colYOffset, colXSize, colYSize);
+	liquidCol = new Collision(10, 48, 40, 16);
 }
 
-
 Player::~Player() {
+	delete eeyanCol;
+	delete liquidCol;
+	collision = new Collision();	//むりくり
 }
 
 int Player::update() {
+	//ロボット兵の強制寄生解除
+
 	if (preParasite != 0) {
 		collision->playerParasite = preParasite; //当たり判定に寄生状態を記録
 		preParasite = 0;
@@ -49,10 +57,13 @@ int Player::update() {
 		if (!isJumping && !isLiquid) {
 			if (keyM.GetKeyFrame(KEY_INPUT_UP) == 1) {
 				isJumping = true;
-				jumpPower = -6;
+				SoundM.Se("data/se/jump.wav");
+				jumpPower = -5.1;
+				clock = 0;
 			}
 			if (keyM.GetKeyFrame(KEY_INPUT_Z) == 1) {
 				isAttack = true;
+				SoundM.Se("data/se/Atack.wav");
 				drawCount = 0;
 			}
 			if (plState == 'N') {
@@ -107,6 +118,19 @@ int Player::update() {
 								}
 								break;
 							}
+							case ObjectID::robotEnemy: //ロボット兵士
+							{
+								Enemy* ene = (Enemy*)o;	//いいのかな？
+								if (ene->getDeadState() == true) {
+									removeCT = 0;
+									plState = 'R';
+									isMoving = 'I';
+									drawCount = 0;
+									preParasite = 1;
+									setAtk(ene->getAtk());
+								}
+								break;
+							}
 							default:
 								break;
 							}
@@ -114,7 +138,7 @@ int Player::update() {
 					}
 				}
 			}
-		
+
 			//寄生解除
 			if (keyM.GetKeyFrame(KEY_INPUT_DOWN) >= 45 && plState != 'N' && plState != 'V') {
 				plState = 'N';
@@ -122,6 +146,13 @@ int Player::update() {
 				drawCount = 0;
 				collision->playerParasite = 0;
 			}
+			else if (removeCT >= 900 && plState == 'R') {
+				plState = 'N';
+				isMoving = 'O';
+				drawCount = 0;
+				collision->playerParasite = 0;
+			}
+
 		}
 	}
 	//寄生判定
@@ -133,7 +164,14 @@ int Player::update() {
 			drawCount = 0;
 		}
 	}
-	//collision->updatePos(x, y);
+
+	if (isLiquid) {
+		collision = liquidCol;
+	}
+	else {
+		collision = eeyanCol;
+	}
+	collision->updatePos(x, y);
 
 	//ジャンプ中の処理
 	if (isJumping) {
@@ -169,18 +207,18 @@ int Player::update() {
 
 	//通常状態の攻撃処理 
 	if (isAttack && plState == 'N' && drawCount >= 25 && drawCount <= 32) {
-		collision->playerState = 1;
 		if (right)
 		{
-			collision->updatePos(x, y);
-			collision->hitRange.xSize = 100;
+			collision->updatePos(x + 10, y);
+			collision->hitRange.xSize = 80;
 		}
 		else if (!right)
 		{
 			collision->updatePos(x - 70, y);
-			collision->hitRange.xSize = 100;
+			collision->hitRange.xSize = 60;
 
 		}
+		collision->playerState = 1;
 	}
 	else {
 		collision->hitRange.xSize = 32;
@@ -188,7 +226,7 @@ int Player::update() {
 
 	//一般兵状態の攻撃処理 
 	bulletCT += 1;
-	if (isAttack &&( plState == 'A' || plState == 'B' )&& drawCount >= 25 && drawCount <= 32)
+	if (isAttack && (plState == 'A' || plState == 'B' || plState == 'R') && drawCount >= 25 && drawCount <= 32)
 	{
 		if (bulletCT > 60)
 		{
@@ -198,31 +236,27 @@ int Player::update() {
 			IobjMgr->addObject(objBull);
 		}
 	}
-	
+
 	//毒状態
 	if (plState == 'V') {
 		modHp(-1);
 	}
 
 	//弾の処理
-	for (auto &bull : bullets)
-	{
+	for (auto &bull : bullets) {
 		bulletindex++;
-		if (!bull->isOutOfRange())
-		{
-			bullets.erase(bullets.begin() + bulletindex);
+		if (!bull->isOutOfRange()) {
+			bull->setState(-1);
 		}
-
-		for (auto o : IobjMgr->getObjectList())
-		{
-			if (bull->collision->doCollisonCheck(o->collision->hitRange))
-			{
-				switch (o->getId())
-				{
+		for (auto o : IobjMgr->getObjectList()) {
+			if (bull->collision->doCollisonCheck(o->collision->hitRange)) {
+				switch (o->getId()) {
 				case ObjectID::soldierA:
+				case ObjectID::soldierB:
+				case ObjectID::DrG:
 					if (o->state == State::alive)bull->setState(-1);
 					break;
-				case ObjectID::soldierB:
+				case ObjectID::robotEnemy:
 					if (o->state == State::alive)bull->setState(-1);
 					break;
 				default:
@@ -237,7 +271,7 @@ int Player::update() {
 	for (auto t : IobjMgr->getObjectList()) {
 		if (collision->doCollisonCheck(t->collision->hitRange)) {
 			switch (t->getId()) {
-			case ObjectID::spark: //
+			case ObjectID::spark: //ビリビリ
 			{
 				int leftTX = t->collision->hitRange.xPos + t->collision->hitRange.xOffset;
 				int leftPX = collision->hitRange.xPos + collision->hitRange.xOffset;
@@ -246,7 +280,7 @@ int Player::update() {
 
 
 				if (topPY > topTY + 20) {
-					y = topTY + t->collision->hitRange.ySize - collision->hitRange.yOffset;
+					//tamesi		//	y = topTY + t->collision->hitRange.ySize - collision->hitRange.yOffset;
 					jumpPower = 0;
 				}
 				else if (leftPX < leftTX) {
@@ -255,10 +289,6 @@ int Player::update() {
 				else if (leftPX > leftTX) {
 					x = leftTX + t->collision->hitRange.xSize - collision->hitRange.xOffset;
 				}
-
-
-
-
 
 				isAttack = false;
 
@@ -269,8 +299,6 @@ int Player::update() {
 			}
 		}
 	}
-
-
 
 	//地形オブジェクトとの当たり判定をとり，位置の修正
 	for (auto t : IobjMgr->getTerrainList()) {
@@ -291,20 +319,26 @@ int Player::update() {
 
 				break;
 			}
-			case ObjectID::moveingFloor: //動く床
+			case ObjectID::movingFloor: //動く床
 			{
-				int topTY = t->collision->hitRange.yPos + t->collision->hitRange.yOffset;
+				int topTY = t->collision->hitRange.yPos;
 				int underTY = t->collision->hitRange.yPos + t->collision->hitRange.yOffset + t->collision->hitRange.ySize;
-				int topPY = collision->hitRange.yPos + collision->hitRange.yOffset;
+				int topPY = collision->hitRange.yPos;
 				int underPY = collision->hitRange.yPos + collision->hitRange.yOffset + collision->hitRange.ySize;
 
-
 				if (underPY <= underTY + 8/*少し吸い込まれる*/) {
-					y = topTY - collision->hitRange.ySize + 2;
+					y = topTY - collision->hitRange.yOffset - collision->hitRange.ySize + 2;
 					isJumping = false;
 				}
 			}
 			break;
+
+			//霑ｽ蜉縺励◆
+			case ObjectID::alienLaser:
+				modHp(-100);
+				break;
+
+
 
 			default:
 				break;
@@ -317,6 +351,7 @@ int Player::update() {
 		if (collision->doCollisonCheck(o->collision->hitRange)) { //当たり判定をとる
 			switch (o->getId()) {
 			case ObjectID::soldierA: //兵士
+			case ObjectID::soldierB:
 				if (o->state == State::alive && !(collision->playerState == 1))modHp(-1);
 				break;
 			case ObjectID::healPot: //回復ポッド
@@ -331,14 +366,11 @@ int Player::update() {
 			case ObjectID::spike: //とげとげ
 				modHp(-1);
 				break;
-			case ObjectID::spark:
-				modHp(-1);
-				break;
 			case ObjectID::abyss:	//奈落。ゲームオーバー
-				isDead = true;
+				//isDead = true;
 				isMoving = 'D';
 				drawCount = 0;
-				SceneM.ChangeScene(scene::GameOver);
+				modHp(-99, true);
 				break;
 			case ObjectID::enemyBullet: //一般兵の弾
 				modHp(-((Bullet*)o)->getAtk());
@@ -346,6 +378,32 @@ int Player::update() {
 			case ObjectID::fire:
 				modHp(-1);
 				break;
+			case ObjectID::alienLaser:
+				modHp(-1);
+				break;
+			case ObjectID::spark: //ビリビリ
+			{
+				modHp(-1);
+				int leftTX = o->collision->hitRange.xPos + o->collision->hitRange.xOffset;
+				int leftPX = collision->hitRange.xPos + collision->hitRange.xOffset;
+				int topTY = o->collision->hitRange.yPos + o->collision->hitRange.yOffset;
+				int topPY = collision->hitRange.yPos + collision->hitRange.yOffset;
+
+
+				if (topPY > topTY + 20) {
+					y = topTY + o->collision->hitRange.ySize - collision->hitRange.yOffset;
+					jumpPower = 0;
+				}
+				else if (leftPX < leftTX) {
+					x = leftTX - collision->hitRange.xSize - collision->hitRange.xOffset;
+				}
+				else if (leftPX > leftTX) {
+					x = leftTX + o->collision->hitRange.xSize - collision->hitRange.xOffset;
+				}
+
+				isAttack = false;
+				break;
+			}
 			default:
 				break;
 			}
@@ -361,11 +419,13 @@ int Player::update() {
 	}
 
 	if (hp <= 0 && !isDead) {
+		SoundM.Se("data/se/death.wav");
 		isDead = true;
 		isMoving = 'D';
 		drawCount = 0;
 		//ゲームオーバー処理．ここでやっていいのか？
-		SceneM.ChangeScene(scene::GameOver);
+		//SceneM.ChangeScene(scene::GameOver);
+		Istage->PlayAnimation(deadAnime);	//ゲームオーバー演出に入る
 	}
 
 	invalidDamageTime++;	//無敵時間
@@ -374,53 +434,22 @@ int Player::update() {
 
 bool Player::MapHitCheck(int movedX, int movedY, char check)
 {
+	clsDx();
 	switch (vmap[movedY / 32][movedX / 32]) {
-	case 0:
-		return true;
-		break;
 	case (int)ObjectID::inVisibleWall:
-		if (check == 'x') {
-			if (movedX - x2 > 0)
-				cMove = movedX - x2 - (movedX % 32 + 1);
-			else if (movedX - x1 < 0)
-				cMove = x1 % 32;
-		}
-		if (check == 'y') {
-			if (movedY - y2 > 0) {
-				cMove = (movedY - y2) - (movedY % 32 + 1);
-			}
-			else if (movedY - y1 < 0) {
-				cMove = y1 % 32;
-				jumpPower = 0;
-			}
-		}
-		return false;
-		break;
 	case (int)ObjectID::ground:
-		if (check == 'x') {
-			if (movedX - x2 > 0)
-				cMove = movedX - x2 - (movedX % 32 + 1);
-			else if (movedX - x1 < 0)
-				cMove = x1 % 32;
-		}
-		if (check == 'y') {
-			if (movedY - y2 > 0) {
-				cMove = (movedY - y2) - (movedY % 32 + 1);
-			}
-			else if (movedY - y1 < 0) {
-				cMove = y1 % 32;
-				jumpPower = 0;
-			}
-		}
-
-		return false;
-		break;
 	case (int)ObjectID::colorDifGround:
 		if (check == 'x') {
 			if (movedX - x2 > 0)
 				cMove = movedX - x2 - (movedX % 32 + 1);
-			else if (movedX - x1 < 0)
-				cMove = x1 % 32;
+			else if (movedX - x1 < 0) {
+				if (13 <= x % 32 && x % 32 <= 16 && isLiquid) {	//左移動
+					cMove = x1 % 32 - 19;
+				}
+				else {
+					cMove = x1 % 32;			//ここを左右で対応を変えれば行けるはず
+				}
+			}
 		}
 		if (check == 'y') {
 			if (movedY - y2 > 0) {
@@ -447,13 +476,15 @@ bool Player::MapHitCheck(int movedX, int movedY, char check)
 }
 
 void Player::Draw(int drawX, int drawY) {
-	DrawBox(collision->hitRange.xPos + collision->hitRange.xOffset - drawX, collision->hitRange.yPos + collision->hitRange.yOffset - drawY, collision->hitRange.xPos + collision->hitRange.xOffset + collision->hitRange.xSize - drawX, collision->hitRange.yPos + collision->hitRange.yOffset + collision->hitRange.ySize - drawY, 0xFF00FF, false);
+
+	//DrawBox(collision->hitRange.xPos + collision->hitRange.xOffset - drawX, collision->hitRange.yPos + collision->hitRange.yOffset - drawY, collision->hitRange.xPos + collision->hitRange.xOffset + collision->hitRange.xSize - drawX, collision->hitRange.yPos + collision->hitRange.yOffset + collision->hitRange.ySize - drawY, 0xFF00FF, false);
 
 	int tempX = x - drawX;
 	int tempY = y - drawY;
 
 	switch (plState) {
 	case 'N':	//????
+		//ジャンプの画像が全部使ってない!?
 		if (isJumping) {
 			if (jumpPower <= 1 && jumpPower >= -1)
 				MyDraw(tempX, tempY, jump[1], right);
@@ -520,14 +551,13 @@ void Player::Draw(int drawX, int drawY) {
 		break;
 
 	case 'A':
-	case 'B':
 		if (isJumping) {
 			if (jumpPower <= 1 && jumpPower >= -1)
-				MyDraw(tempX, tempY, jump[11], right);
+				MyDraw(tempX, tempY, enemyJump[1], right);
 			else if (jumpPower > 1)
-				MyDraw(tempX, tempY, jump[12], right);
+				MyDraw(tempX, tempY, enemyJump[2], right);
 			else if (jumpPower < -1)
-				MyDraw(tempX, tempY, jump[10], right);
+				MyDraw(tempX, tempY, enemyJump[0], right);
 		}
 		else if (isMoving == 'I') {
 			MyDraw(tempX, tempY, parasite[drawCount / 8 % 8], right);
@@ -536,38 +566,37 @@ void Player::Draw(int drawX, int drawY) {
 		}
 		else if (isAttack) {
 			if (keyM.GetKeyFrame(KEY_INPUT_LEFT) == 0 && keyM.GetKeyFrame(KEY_INPUT_RIGHT) == 0) {
-				MyDraw(tempX, tempY, attack[drawCount / 8 % 8 + 10], right);
+				MyDraw(tempX, tempY, enemyAttack[drawCount / 8 % 8], right);
 				drawCount++;
 				if (drawCount >= 64) isAttack = false;
 			}
 			else {
-				MyDraw(tempX, tempY, attack[drawCount / 8 % 4 + 14], right);
+				MyDraw(tempX, tempY, enemyAttack[drawCount / 8 % 4], right);
 				drawCount++;
 				if (drawCount >= 32) isAttack = false;
 			}
 
 		}
 		else if (isMoving == 'D') {
-			MyDraw(tempX, tempY, die[drawCount / 8 % 8 + 20], right);
+			MyDraw(tempX, tempY, enemyDie[drawCount / 8 % 8], right);
 			drawCount++;
 			if (drawCount >= 64) isMoving = 'N';
 		}
 		else if (isDead) {
-			MyDraw(tempX, tempY, die[27], right);
+			MyDraw(tempX, tempY, enemyDie[7], right);
 		}
 		else if (keyM.GetKeyFrame(KEY_INPUT_RIGHT) >= 1) {
 			drawCount = keyM.GetKeyFrame(KEY_INPUT_RIGHT) / 15 % 8;
-			MyDraw(tempX, tempY, move[drawCount + 10], right);
+			MyDraw(tempX, tempY, enemyMove[drawCount], right);
 		}
 		else if (keyM.GetKeyFrame(KEY_INPUT_LEFT) >= 1) {
 			drawCount = keyM.GetKeyFrame(KEY_INPUT_LEFT) / 15 % 8;
-			MyDraw(tempX, tempY, move[drawCount + 10], right);
+			MyDraw(tempX, tempY, enemyMove[drawCount], right);
 		}
 		else {
-			MyDraw(tempX, tempY, wait[10], right);
+			MyDraw(tempX, tempY, enemyWait, right);
 		}
 		break;
-
 	case 'V':
 		if (isJumping) {
 			if (jumpPower <= 1 && jumpPower >= -1)
@@ -609,29 +638,107 @@ void Player::Draw(int drawX, int drawY) {
 		}
 		else if (keyM.GetKeyFrame(KEY_INPUT_LEFT) >= 1) {
 			drawCount = keyM.GetKeyFrame(KEY_INPUT_LEFT) / 15 % 8;
-			MyDraw(tempX, tempY,poisonMove[drawCount], false);
+			MyDraw(tempX, tempY, poisonMove[drawCount], false);
 		}
 		else {
-			MyDraw(tempX, tempY, poisonWait[0], false);
+			MyDraw(tempX, tempY, poisonWait, false);
 		}
 		break;
-	/*case'B':
+	case 'B':
 		if (isJumping) {
+			if (jumpPower <= 1 && jumpPower >= -1)
+				MyDraw(tempX, tempY, veteranJump[1], right);
+			else if (jumpPower > 1)
+				MyDraw(tempX, tempY, veteranJump[2], right);
+			else if (jumpPower < -1)
+				MyDraw(tempX, tempY, veteranJump[0], right);
+		}
+		else if (isMoving == 'I') {
+			MyDraw(tempX, tempY, parasite[drawCount / 8 % 8], right);
+			drawCount++;
+			if (drawCount >= 64) isMoving = 'N';
+		}
+		else if (isAttack) {
+			if (keyM.GetKeyFrame(KEY_INPUT_LEFT) == 0 && keyM.GetKeyFrame(KEY_INPUT_RIGHT) == 0) {
+				MyDraw(tempX, tempY, veteranAttack[drawCount / 8 % 8], right);
+				drawCount++;
+				if (drawCount >= 64) isAttack = false;
+			}
+			else {
+				MyDraw(tempX, tempY, veteranAttack[drawCount / 8 % 4], right);
+				drawCount++;
+				if (drawCount >= 32) isAttack = false;
+			}
 
+		}
+		else if (isMoving == 'D') {
+			MyDraw(tempX, tempY, veteranDie[drawCount / 8 % 8], right);
+			drawCount++;
+			if (drawCount >= 64) isMoving = 'N';
+		}
+		else if (isDead) {
+			MyDraw(tempX, tempY, veteranDie[7], right);
 		}
 		else if (keyM.GetKeyFrame(KEY_INPUT_RIGHT) >= 1) {
-			drawCount = keyM.GetKeyFrame(KEY_INPUT_RIGHT) / 15 % 4;
-			DrawGraph(tempX, tempY, move[drawCount], TRUE);
+			drawCount = keyM.GetKeyFrame(KEY_INPUT_RIGHT) / 15 % 8;
+			MyDraw(tempX, tempY, veteranMove[drawCount], right);
+		}
+		else if (keyM.GetKeyFrame(KEY_INPUT_LEFT) >= 1) {
+			drawCount = keyM.GetKeyFrame(KEY_INPUT_LEFT) / 15 % 8;
+			MyDraw(tempX, tempY, veteranMove[drawCount], right);
 		}
 		else {
-			DrawGraph(tempX, tempY, wait[drawCount % 4], TRUE);
-			drawCount++;
-
-
-			if (drawCount == 60) drawCount = 0;
+			MyDraw(tempX, tempY, veteranWait, right);
 		}
 		break;
-*/
+	case 'R':
+		removeCT += 1;
+		if (isJumping) {
+			if (jumpPower <= 1 && jumpPower >= -1)
+				MyDraw(tempX, tempY, robotJump[1], right);
+			else if (jumpPower > 1)
+				MyDraw(tempX, tempY, robotJump[2], right);
+			else if (jumpPower < -1)
+				MyDraw(tempX, tempY, robotJump[0], right);
+		}
+		else if (isMoving == 'I') {
+			MyDraw(tempX, tempY, parasite[drawCount / 8 % 8], right);
+			drawCount++;
+			if (drawCount >= 64) isMoving = 'N';
+		}
+		else if (isAttack) {
+			if (keyM.GetKeyFrame(KEY_INPUT_LEFT) == 0 && keyM.GetKeyFrame(KEY_INPUT_RIGHT) == 0) {
+				MyDraw(tempX, tempY, robotAttack[drawCount / 8 % 8], right);
+				drawCount++;
+				if (drawCount >= 64) isAttack = false;
+			}
+			else {
+				MyDraw(tempX, tempY, robotAttack[drawCount / 8 % 4], right);
+				drawCount++;
+				if (drawCount >= 32) isAttack = false;
+			}
+
+		}
+		else if (isMoving == 'D') {
+			MyDraw(tempX, tempY, robotDie[drawCount / 8 % 8], right);
+			drawCount++;
+			if (drawCount >= 64) isMoving = 'N';
+		}
+		else if (isDead) {
+			MyDraw(tempX, tempY, robotDie[7], right);
+		}
+		else if (keyM.GetKeyFrame(KEY_INPUT_RIGHT) >= 1) {
+			drawCount = keyM.GetKeyFrame(KEY_INPUT_RIGHT) / 15 % 8;
+			MyDraw(tempX, tempY, robotMove[drawCount], right);
+		}
+		else if (keyM.GetKeyFrame(KEY_INPUT_LEFT) >= 1) {
+			drawCount = keyM.GetKeyFrame(KEY_INPUT_LEFT) / 15 % 8;
+			MyDraw(tempX, tempY, robotMove[drawCount], right);
+		}
+		else {
+			MyDraw(tempX, tempY, robotWait, right);
+		}
+		break;
 	case'C':
 		if (isJumping) {
 
@@ -660,14 +767,15 @@ void Player::Draw(int drawX, int drawY) {
 		break;
 	}
 
+	//寄生解除バー
+	if (keyM.GetKeyFrame(KEY_INPUT_DOWN) >= 1 && plState != 'N') {
+		double size = 0;
+		if ((1 - (double)keyM.GetKeyFrame(KEY_INPUT_DOWN) / 45) > 0) {
+			size = (1 - (double)keyM.GetKeyFrame(KEY_INPUT_DOWN) / 45);
+		}
 
-	// DrawFormatString(100, 100, 0xFFFFFF, "%d,%d", tempX, tempY);
-	//d	DrawFormatString(100, 80, 0xFFFFFF, "Player:%d,%d", (int)x, (int)y);
-	//d DrawFormatString(100, 100, 0xFFFFFF, "MapChip:%d,%d", (int)(x / 32), (int)(y / 32));
-	//d if (isJumping) DrawFormatString(300, 80, 0xFFFFFF, "?W?????v??,%d",jumpPower);
-	//d if (isAttack) DrawFormatString(300, 100, 0xFFFFFF, "?A?^?b?N??");
-	//d if (isDead) DrawFormatString(300, 120, 0xFFFFFF, "????);
-
+		DrawExtendGraph(tempX + 16, tempY - 18, tempX + 16 + 50 * size, tempY - 4, img_gauge, false);
+	}
 
 
 }
@@ -711,7 +819,7 @@ void Player::PerDecision()
 		sizeY1 = 48;
 		sizeY2 = 63;
 	}
-	if (plState == 'A' || plState == 'B' || plState == 'C') {
+	if (plState == 'A' || plState == 'B' || plState == 'C' || plState == 'R') {
 		sizeX1 = 23;
 		sizeX2 = 45;
 		sizeY1 = 4;
@@ -726,20 +834,23 @@ void Player::PerDecision()
 }
 
 //体力の変更 ダメージを受けるときだけ120フレームの無敵時間
-void Player::modHp(int mod) {
+void Player::modHp(int mod, bool through) {
 	if (mod < 0) {
-		if (invalidDamageTime >= 120) {
+		if (through) {
+			hp += mod;
+		}
+		else if (invalidDamageTime >= 120) {
 			invalidDamageTime = 0;
 			hp += mod;
 		}
 	}
 	else {
 		hp += mod;
+		if (hp > 16) { hp = 15; }
 	}
 }
 
-void Player::LoadImg()
-{
+void Player::LoadImg() {
 
 	LoadDivGraph("data/img/eeyanWait.png", 4, 4, 1, 64, 64, wait);
 	LoadDivGraph("data/img/eeyanMove.png", 4, 4, 1, 64, 64, move);
@@ -751,17 +862,32 @@ void Player::LoadImg()
 	LoadDivGraph("data/img/eeyanParasiteOut.png", 8, 4, 2, 64, 64, &parasite[10]);
 	LoadDivGraph("data/img/eeyanDie.png", 16, 4, 4, 64, 64, die);
 
-	LoadDivGraph("data/img/enemy1WaitP.png", 1, 1, 1, 64, 64, &wait[10]);
-	LoadDivGraph("data/img/enemy1WalkP.png", 8, 4, 2, 64, 64, &move[10]);
-	LoadDivGraph("data/img/enemy1JumpP.png", 4, 4, 1, 64, 64, &jump[10]);
-	LoadDivGraph("data/img/enemy1WaitForAtackP.png", 4, 4, 1, 64, 64, &attack[10]);
-	LoadDivGraph("data/img/enemy1AtackP.png", 4, 4, 1, 64, 64, &attack[14]);
-	LoadDivGraph("data/img/enemy1DieP.png", 8, 4, 2, 64, 64, &die[20]);
+	enemyWait = LoadGraph("data/img/enemy1WaitP.png", 0);
+	LoadDivGraph("data/img/enemy1WalkP.png", 8, 4, 2, 64, 64, enemyMove);
+	LoadDivGraph("data/img/enemy1JumpP.png", 4, 4, 1, 64, 64, enemyJump);
+	LoadDivGraph("data/img/enemy1WaitForAtackP.png", 4, 4, 1, 64, 64, enemyAttack);
+	LoadDivGraph("data/img/enemy1AtackP.png", 4, 4, 1, 64, 64, &enemyAttack[4]);
+	LoadDivGraph("data/img/enemy1DieP.png", 8, 4, 2, 64, 64, enemyDie);
 
-	LoadDivGraph("data/img/enemy1WaitPoison.png", 1, 1, 1, 64, 64, poisonWait);
+	veteranWait = LoadGraph("data/img/enemy3WaitP.png", 0);
+	LoadDivGraph("data/img/enemy3WalkP.png", 8, 4, 2, 64, 64, veteranMove);
+	LoadDivGraph("data/img/enemy3JumpP.png", 4, 4, 1, 64, 64, veteranJump);
+	LoadDivGraph("data/img/enemy3WaitForAtackP.png", 4, 4, 1, 64, 64, veteranAttack);
+	LoadDivGraph("data/img/enemy3AtackP.png", 4, 4, 1, 64, 64, &veteranAttack[4]);
+	LoadDivGraph("data/img/enemy3DieP.png", 8, 4, 2, 64, 64, veteranDie);
+
+	robotWait = LoadGraph("data/img/enemy4WaitP.png", 0);
+	LoadDivGraph("data/img/enemy4WalkP.png", 8, 4, 2, 64, 64, robotMove);
+	LoadDivGraph("data/img/enemy4JumpP.png", 4, 4, 1, 64, 64, robotJump);
+	LoadDivGraph("data/img/enemy4WaitForAtackP.png", 4, 4, 1, 64, 64, robotAttack);
+	LoadDivGraph("data/img/enemy4AtackP.png", 4, 4, 1, 64, 64, &robotAttack[4]);
+	LoadDivGraph("data/img/enemy4DieP.png", 8, 4, 2, 64, 64, robotDie);
+
+	poisonWait = LoadGraph("data/img/enemy1WaitPoison.png", 0);
 	LoadDivGraph("data/img/enemy1WalkPoison.png", 8, 4, 2, 64, 64, poisonMove);
 	LoadDivGraph("data/img/enemy1JumpPoison.png", 4, 4, 1, 64, 64, poisonJump);
 	LoadDivGraph("data/img/enemy1WaitForAtackPoison.png", 4, 4, 1, 64, 64, poisonAttack);
 	LoadDivGraph("data/img/enemy1AtackPoison.png", 4, 4, 1, 64, 64, &poisonAttack[4]);
 	LoadDivGraph("data/img/enemy1DiePoison.png", 8, 4, 2, 64, 64, poisonDie);
+	img_gauge = LoadGraph("data/img/gauge.png");
 }

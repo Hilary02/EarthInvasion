@@ -5,12 +5,14 @@
 #include "Object.h"
 #include "Player.h"
 #include "Enemy.h"
+#include "RobotEnemy.h"
+#include "IStageBase.h"
 
 class ObjectManager :
 	private IObjectManager {
 public:
 	ObjectManager();
-	ObjectManager(std::vector<std::vector <int>> vmap, int stage);
+	ObjectManager(std::vector<std::vector <int>> vmap, int stage,IStageBase* stageBase);
 	~ObjectManager();
 
 	int readScenario(std::string file);
@@ -39,4 +41,5 @@ private:
 	std::vector<Object*> objects;
 	std::vector<Object*> terrain;
 	std::map<ObjectID, int> img;
+	IStageBase* stageBase;
 };
