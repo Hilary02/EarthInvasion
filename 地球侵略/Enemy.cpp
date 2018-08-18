@@ -199,7 +199,7 @@ void Enemy::collisionCheck(const Collision & target) {
 			isPlayerAtk = true;
 			modHp(mod);
 		}
-		else if (attackR) {
+		else if (attackR && id!=ObjectID::venomMan) {
 			if (noticed == 2) {		//î≠å©çœ
 				movedis = 0;
 				AttackCommon();
