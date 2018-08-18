@@ -14,12 +14,14 @@ struct paraImg {
 };
 
 //プレイヤーの寄生状態を表す
-enum class paraState {
-	None,
-	SoldierA,	//一般兵士
-	SoidierB,	//ベテラン
+enum class playerState {
+	Alien,
+	Soldier,	//一般兵士
+	Veteran,	//ベテラン
 	Venom,
 	Robot,
+	C,	//不明
+	W,	//不明 (魔女？)
 };
 
 class Player :
@@ -40,7 +42,7 @@ private:
 	bool MapHitCheck(int, int, char);
 	void MyDraw(int, int, int, bool);
 	void eeyanDrawImg(int tempX, int tempY);
-	void parasiteDrawImg(int tempX, int tempY, paraState plstate);
+	void parasiteDrawImg(int tempX, int tempY, playerState plstate);
 
 	IStageBase * Istage;
 	std::vector<std::vector <int>> vmap;
@@ -63,7 +65,7 @@ private:
 	bool isDead = false;
 	char isMoving = 'N';
 	char xyCheck = 'N';
-	char plState = 'N';
+	playerState plState = playerState::Alien;
 
 	paraImg soldier;
 	paraImg veteran;

@@ -66,7 +66,7 @@ int Player::update() {
 				SoundM.Se("data/se/Atack.wav");
 				drawCount = 0;
 			}
-			if (plState == 'N') {
+			if (plState == playerState::Alien) {
 				if (keyM.GetKeyFrame(KEY_INPUT_DOWN) >= 1) {
 					isLiquid = true;
 					isMoving = 'L';
@@ -86,7 +86,7 @@ int Player::update() {
 							{
 								Enemy* ene = (Enemy*)o;	//‚¢‚¢‚Ì‚©‚ÈH
 								if (ene->getDeadState() == true) {
-									plState = 'A';
+									plState = playerState::Soldier;
 									isMoving = 'I';
 									drawCount = 0;
 									preParasite = 1;
@@ -98,7 +98,7 @@ int Player::update() {
 							{
 								Enemy* ene = (Enemy*)o;
 								if (ene->getDeadState() == true) {
-									plState = 'B';
+									plState = playerState::Veteran;
 									isMoving = 'I';
 									drawCount = 0;
 									preParasite = 2;
@@ -110,7 +110,7 @@ int Player::update() {
 							{
 								Enemy* ene = (Enemy*)o;
 								if (ene->getDeadState() == true) {
-									plState = 'V';
+									plState = playerState::Venom;
 									isMoving = 'I';
 									drawCount = 0;
 									preParasite = 1;
@@ -123,7 +123,7 @@ int Player::update() {
 								Enemy* ene = (Enemy*)o;	//‚¢‚¢‚Ì‚©‚ÈH
 								if (ene->getDeadState() == true) {
 									removeCT = 0;
-									plState = 'R';
+									plState = playerState::Robot;
 									isMoving = 'I';
 									drawCount = 0;
 									preParasite = 1;
@@ -140,14 +140,14 @@ int Player::update() {
 			}
 
 			//Šñ¶‰ðœ
-			if (keyM.GetKeyFrame(KEY_INPUT_DOWN) >= 45 && plState != 'N' && plState != 'V') {
-				plState = 'N';
+			if (keyM.GetKeyFrame(KEY_INPUT_DOWN) >= 45 && plState != playerState::Alien && plState != playerState::Venom) {
+				plState = playerState::Alien;
 				isMoving = 'O';
 				drawCount = 0;
 				collision->playerParasite = 0;
 			}
-			else if (removeCT >= 900 && plState == 'R') {
-				plState = 'N';
+			else if (removeCT >= 900 && plState == playerState::Robot) {
+				plState = playerState::Alien;
 				isMoving = 'O';
 				drawCount = 0;
 				collision->playerParasite = 0;
@@ -206,7 +206,7 @@ int Player::update() {
 	collision->updatePos(x, y);
 
 	//’Êíó‘Ô‚ÌUŒ‚ˆ— 
-	if (isAttack && plState == 'N' && drawCount >= 25 && drawCount <= 32) {
+	if (isAttack && plState == playerState::Alien && drawCount >= 25 && drawCount <= 32) {
 		if (right)
 		{
 			collision->updatePos(x + 10, y);
@@ -226,7 +226,7 @@ int Player::update() {
 
 	//ˆê”Ê•ºó‘Ô‚ÌUŒ‚ˆ— 
 	bulletCT += 1;
-	if (isAttack && (plState == 'A' || plState == 'B' || plState == 'R') && drawCount >= 25 && drawCount <= 32)
+	if (isAttack && (plState == playerState::Soldier || plState == playerState::Veteran || plState == playerState::Robot) && drawCount >= 25 && drawCount <= 32)
 	{
 		if (bulletCT > 60)
 		{
@@ -238,7 +238,7 @@ int Player::update() {
 	}
 
 	//“Åó‘Ô
-	if (plState == 'V') {
+	if (plState == playerState::Venom) {
 		modHp(-1);
 	}
 
@@ -354,7 +354,7 @@ int Player::update() {
 				modHp(5);
 				break;
 			case ObjectID::detoxificationPot://“ÅÁ‚µ
-				plState = 'N';
+				plState = playerState::Alien;
 				isMoving = 'O';
 				drawCount = 0;
 				collision->playerParasite = 0;
@@ -479,22 +479,16 @@ void Player::Draw(int drawX, int drawY) {
 	int tempY = y - drawY;
 
 	switch (plState) {
-	case 'N'://‚¦‚¦‚â‚ñó‘Ô
+	case playerState::Alien://‚¦‚¦‚â‚ñó‘Ô
 		eeyanDrawImg(tempX, tempY);
 		break;
-	case 'A':
-		parasiteDrawImg(tempX, tempY, paraState::SoldierA);
+	case playerState::Soldier:
+	case playerState::Veteran:
+	case playerState::Venom:
+	case playerState::Robot:
+		parasiteDrawImg(tempX, tempY, plState);
 		break;
-	case 'B':
-		parasiteDrawImg(tempX, tempY, paraState::SoidierB);
-		break;
-	case 'V':
-		parasiteDrawImg(tempX, tempY, paraState::Venom);
-		break;
-	case 'R':
-		parasiteDrawImg(tempX, tempY, paraState::Robot);
-		break;
-	case'C':
+	case playerState::C:	//NOTE:—p“r•s–¾
 		if (isJumping) {
 
 		}
@@ -509,7 +503,7 @@ void Player::Draw(int drawX, int drawY) {
 		}
 		break;
 
-	case'W':
+	case playerState::W:	//NOTE:—p“r•s–¾
 		if (keyM.GetKeyFrame(KEY_INPUT_RIGHT) >= 1) {
 			drawCount = keyM.GetKeyFrame(KEY_INPUT_RIGHT) / 15 % 4;
 			DrawGraph(tempX, tempY, move[drawCount], TRUE);
@@ -523,16 +517,13 @@ void Player::Draw(int drawX, int drawY) {
 	}
 
 	//Šñ¶‰ðœƒo[
-	if (keyM.GetKeyFrame(KEY_INPUT_DOWN) >= 1 && plState != 'N') {
+	if (keyM.GetKeyFrame(KEY_INPUT_DOWN) >= 1 && plState != playerState::Alien) {
 		double size = 0;
 		if ((1 - (double)keyM.GetKeyFrame(KEY_INPUT_DOWN) / 45) > 0) {
 			size = (1 - (double)keyM.GetKeyFrame(KEY_INPUT_DOWN) / 45);
 		}
-
 		DrawExtendGraph(tempX + 16, tempY - 18, tempX + 16 + 50 * size, tempY - 4, img_gauge, false);
 	}
-
-
 }
 
 void Player::MyDraw(int tempX, int tempY, int movement, bool lrFlag) {
@@ -625,13 +616,13 @@ void Player::eeyanDrawImg(int tempX, int tempY) {
 	}
 }
 
-void Player::parasiteDrawImg(int tempX, int tempY, paraState plstate) {
+void Player::parasiteDrawImg(int tempX, int tempY, playerState plstate) {
 	paraImg* imgPath;
 	switch (plstate) {
-	case paraState::SoldierA:	imgPath = &soldier;	break;
-	case paraState::SoidierB:	imgPath = &veteran;	break;
-	case paraState::Venom:		imgPath = &venom;	break;
-	case paraState::Robot:		imgPath = &robot;	break;
+	case playerState::Soldier:	imgPath = &soldier;	break;
+	case playerState::Veteran:	imgPath = &veteran;	break;
+	case playerState::Venom:	imgPath = &venom;	break;
+	case playerState::Robot:	imgPath = &robot;	break;
 	default:					return;
 	}
 
@@ -696,7 +687,7 @@ void Player::PerDecision() {
 		sizeY1 = 48;
 		sizeY2 = 63;
 	}
-	if (plState == 'A' || plState == 'B' || plState == 'C' || plState == 'R') {
+	if (plState == playerState::Soldier || plState == playerState::Veteran || plState == playerState::C || plState == playerState::Robot) {
 		sizeX1 = 23;
 		sizeX2 = 45;
 		sizeY1 = 4;
