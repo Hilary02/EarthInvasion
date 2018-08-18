@@ -15,7 +15,7 @@ public:
 	virtual void Draw(int drawX, int drawY) override;
 	virtual	void collisionCheck(const Collision& target);
 	virtual void MoveCommon();
-	virtual void AtackCommon();
+	virtual void AttackCommon();
 	virtual void DeadCheck();
 	virtual bool IsRangeCheck();
 	int enemyID;
@@ -25,7 +25,7 @@ protected:
 	int minX = 0;
 	int maxX = 0;
 	int walkHandle[8];
-	int atackHandle[8];
+	int attackHandle[8];
 	int deadHandle[8];
 	int movespeed = 0;
 	int bulletHandle;
@@ -35,7 +35,7 @@ protected:
 
 	int drawcount = 0;
 	int iconHandle;
-	int atackRen = -128;
+	int attackRen = -128;
 	int invalidDamageTime = 60;
 	int dis = 0;
 	int movedis = 1;

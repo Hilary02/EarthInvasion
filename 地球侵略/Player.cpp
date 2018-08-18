@@ -63,7 +63,7 @@ int Player::update() {
 			}
 			if (keyM.GetKeyFrame(KEY_INPUT_Z) == 1) {
 				isAttack = true;
-				SoundM.Se("data/se/Atack.wav");
+				SoundM.Se("data/se/Attack.wav");
 				drawCount = 0;
 			}
 			if (plState == playerState::Alien) {
@@ -151,6 +151,9 @@ int Player::update() {
 				isMoving = 'O';
 				drawCount = 0;
 				collision->playerParasite = 0;
+			}
+			else {
+				removeCT++;
 			}
 
 		}
@@ -732,29 +735,29 @@ void Player::LoadImg() {
 	soldier.wait = LoadGraph("data/img/enemy1WaitP.png", 0);
 	LoadDivGraph("data/img/enemy1WalkP.png", 8, 4, 2, 64, 64, soldier.move);
 	LoadDivGraph("data/img/enemy1JumpP.png", 4, 4, 1, 64, 64, soldier.jump);
-	LoadDivGraph("data/img/enemy1WaitForAtackP.png", 4, 4, 1, 64, 64, soldier.attack);
-	LoadDivGraph("data/img/enemy1AtackP.png", 4, 4, 1, 64, 64, &soldier.attack[4]);
+	LoadDivGraph("data/img/enemy1WaitForAttackP.png", 4, 4, 1, 64, 64, soldier.attack);
+	LoadDivGraph("data/img/enemy1AttackP.png", 4, 4, 1, 64, 64, &soldier.attack[4]);
 	LoadDivGraph("data/img/enemy1DieP.png", 8, 4, 2, 64, 64, soldier.die);
 
 	veteran.wait = LoadGraph("data/img/enemy3WaitP.png", 0);
 	LoadDivGraph("data/img/enemy3WalkP.png", 8, 4, 2, 64, 64, veteran.move);
 	LoadDivGraph("data/img/enemy3JumpP.png", 4, 4, 1, 64, 64, veteran.jump);
-	LoadDivGraph("data/img/enemy3WaitForAtackP.png", 4, 4, 1, 64, 64, veteran.attack);
-	LoadDivGraph("data/img/enemy3AtackP.png", 4, 4, 1, 64, 64, &veteran.attack[4]);
+	LoadDivGraph("data/img/enemy3WaitForAttackP.png", 4, 4, 1, 64, 64, veteran.attack);
+	LoadDivGraph("data/img/enemy3AttackP.png", 4, 4, 1, 64, 64, &veteran.attack[4]);
 	LoadDivGraph("data/img/enemy3DieP.png", 8, 4, 2, 64, 64, veteran.die);
 
 	robot.wait = LoadGraph("data/img/enemy4WaitP.png", 0);
 	LoadDivGraph("data/img/enemy4WalkP.png", 8, 4, 2, 64, 64, robot.move);
 	LoadDivGraph("data/img/enemy4JumpP.png", 4, 4, 1, 64, 64, robot.jump);
-	LoadDivGraph("data/img/enemy4WaitForAtackP.png", 4, 4, 1, 64, 64, robot.attack);
-	LoadDivGraph("data/img/enemy4AtackP.png", 4, 4, 1, 64, 64, &robot.attack[4]);
+	LoadDivGraph("data/img/enemy4WaitForAttackP.png", 4, 4, 1, 64, 64, robot.attack);
+	LoadDivGraph("data/img/enemy4AttackP.png", 4, 4, 1, 64, 64, &robot.attack[4]);
 	LoadDivGraph("data/img/enemy4DieP.png", 8, 4, 2, 64, 64, robot.die);
 
 	venom.wait = LoadGraph("data/img/enemy1WaitPoison.png", 0);
 	LoadDivGraph("data/img/enemy1WalkPoison.png", 8, 4, 2, 64, 64, venom.move);
 	LoadDivGraph("data/img/enemy1JumpPoison.png", 4, 4, 1, 64, 64, venom.jump);
-	LoadDivGraph("data/img/enemy1WaitForAtackPoison.png", 4, 4, 1, 64, 64, venom.attack);
-	LoadDivGraph("data/img/enemy1AtackPoison.png", 4, 4, 1, 64, 64, &venom.attack[4]);
+	LoadDivGraph("data/img/enemy1WaitForAttackPoison.png", 4, 4, 1, 64, 64, venom.attack);
+	LoadDivGraph("data/img/enemy1AttackPoison.png", 4, 4, 1, 64, 64, &venom.attack[4]);
 	LoadDivGraph("data/img/enemy1DiePoison.png", 8, 4, 2, 64, 64, venom.die);
 
 	img_gauge = LoadGraph("data/img/gauge.png");

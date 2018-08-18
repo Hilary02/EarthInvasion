@@ -23,8 +23,8 @@ Enemy::Enemy(int x, int y, int img, ObjectID id, IObjectManager* Iobj) {
 		movespeed = 1;
 		atkInterval = 104;
 		LoadDivGraph("data/img/enemy1Walk.png", 8, 4, 2, 64, 64, walkHandle);
-		LoadDivGraph("data/img/enemy1WaitForAtack.png", 4, 4, 1, 64, 64, atackHandle);
-		LoadDivGraph("data/img/enemy1Atack.png", 4, 4, 1, 64, 64, &atackHandle[4]);
+		LoadDivGraph("data/img/enemy1WaitForAttack.png", 4, 4, 1, 64, 64, attackHandle);
+		LoadDivGraph("data/img/enemy1Attack.png", 4, 4, 1, 64, 64, &attackHandle[4]);
 		LoadDivGraph("data/img/enemy1Die.png", 8, 4, 2, 64, 64, deadHandle);
 		damegeHandle = LoadGraph("data/img/enemy1Damage.png");
 	}
@@ -36,8 +36,8 @@ Enemy::Enemy(int x, int y, int img, ObjectID id, IObjectManager* Iobj) {
 		atkInterval = 52;
 		addCount = 2;
 		LoadDivGraph("data/img/enemy3Walk.png", 8, 4, 2, 64, 64, walkHandle);
-		LoadDivGraph("data/img/enemy3WaitForAtack.png", 4, 4, 1, 64, 64, atackHandle);
-		LoadDivGraph("data/img/enemy3Atack.png", 4, 4, 1, 64, 64, &atackHandle[4]);
+		LoadDivGraph("data/img/enemy3WaitForAttack.png", 4, 4, 1, 64, 64, attackHandle);
+		LoadDivGraph("data/img/enemy3Attack.png", 4, 4, 1, 64, 64, &attackHandle[4]);
 		LoadDivGraph("data/img/enemy3Die.png", 8, 4, 2, 64, 64, deadHandle);
 		damegeHandle = LoadGraph("data/img/enemy3Damage.png");
 	}
@@ -46,6 +46,11 @@ Enemy::Enemy(int x, int y, int img, ObjectID id, IObjectManager* Iobj) {
 		setAtk(0);
 		movespeed = 1;
 		atkInterval = 104;
+		LoadDivGraph("data/img/enemy1Walk.png", 8, 4, 2, 64, 64, walkHandle);
+		LoadDivGraph("data/img/enemy1WaitForattack.png", 4, 4, 1, 64, 64, attackHandle);
+		LoadDivGraph("data/img/enemy1attack.png", 4, 4, 1, 64, 64, &attackHandle[4]);
+		LoadDivGraph("data/img/enemy1Die.png", 8, 4, 2, 64, 64, deadHandle);
+		damegeHandle = LoadGraph("data/img/enemy1Damage.png");
 	}
 
 
@@ -92,7 +97,7 @@ int Enemy::update(const Collision & playerCol) {
 			hp = 3;
 			break;
 		default:
-			printf("");	
+			printf("");
 			break;
 		}
 		hp = 3;
@@ -188,7 +193,6 @@ void Enemy::collisionCheck(const Collision & target) {
 	int attackR = AttackBox->doCollisonCheck((target.hitRange));
 
 	if (!isPlayerAtk) {
-
 		if (isCol && target.playerState) {
 			imgHandle = damegeHandle;
 			movedis = 0;
@@ -198,7 +202,7 @@ void Enemy::collisionCheck(const Collision & target) {
 		else if (attackR) {
 			if (noticed == 2) {		//”­Œ©Ï
 				movedis = 0;
-				AtackCommon();
+				AttackCommon();
 			}
 			else if (noticed == 0) {	//‰‰ñ‚Ì”­Œ©ˆ—
 				if (dis > maxX)dis = maxX - 5;
@@ -209,7 +213,6 @@ void Enemy::collisionCheck(const Collision & target) {
 			}
 		}
 		else {
-			//d DrawBox(10, 20, 100, 200, 0xFF0000, false);
 			MoveCommon();
 		}
 	}
@@ -247,7 +250,7 @@ void Enemy::MoveCommon()
 
 }
 
-void Enemy::AtackCommon()
+void Enemy::AttackCommon()
 {
 	if (dis > maxX)dis = maxX - 5;
 	else if (dis < minX) dis = minX + 5;
@@ -259,7 +262,7 @@ void Enemy::AtackCommon()
 		isAtacck = true;
 	}
 	movedis = 0;
-	imgHandle = atackHandle[(drawcount / 12) % 8];
+	imgHandle = attackHandle[(drawcount / 12) % 8];
 	hundleIndex = (drawcount / 12) % 8;
 	if (state == State::alive) drawcount += addCount;
 	if (atkCt > atkInterval && state == State::alive && hundleIndex == 5)
