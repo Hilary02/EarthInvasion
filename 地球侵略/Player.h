@@ -4,7 +4,8 @@
 #include <vector>
 #include "IStageBase.h"
 
-struct parasiteImg {
+//寄生しているときのキャラ画像
+struct paraImg {
 	int wait;
 	int move[8];
 	int attack[8];
@@ -13,7 +14,7 @@ struct parasiteImg {
 };
 
 //プレイヤーの寄生状態を表す
-enum class plState {
+enum class paraState {
 	None,
 	SoldierA,	//一般兵士
 	SoidierB,	//ベテラン
@@ -26,7 +27,6 @@ class Player :
 {
 public:
 	Player(const std::vector<std::vector <int>>  &vmap, IObjectManager* Iobj, IStageBase* stage);
-	//Player(int x, int y)
 	~Player();
 	int update();
 	void Draw(int, int);
@@ -35,6 +35,13 @@ public:
 	int getHp();
 	void modHp(int mod, bool through = false) override;
 private:
+	void LoadImg();
+	void PerDecision();
+	bool MapHitCheck(int, int, char);
+	void MyDraw(int, int, int, bool);
+	void eeyanDrawImg(int tempX, int tempY);
+	void parasiteDrawImg(int tempX, int tempY, paraState plstate);
+
 	IStageBase * Istage;
 	std::vector<std::vector <int>> vmap;
 	int clock = 0;
@@ -47,10 +54,6 @@ private:
 	const int MOVE = 3;
 	int drawCount = 0;
 	int cMove = 0;
-	void PerDecision();
-	void LoadImg();
-	bool MapHitCheck(int, int, char);
-	void MyDraw(int, int, int, bool);
 	double jumpPower = 0;
 	double speed = 10.0;
 	bool right = true;
@@ -61,33 +64,19 @@ private:
 	char isMoving = 'N';
 	char xyCheck = 'N';
 	char plState = 'N';
+
+	paraImg soldier;
+	paraImg veteran;
+	paraImg robot;
+	paraImg venom;
+
 	int wait[4];
-	int enemyWait;
-	int veteranWait;
-	int robotWait;
-	int poisonWait;
 	int move[4];
-	int enemyMove[8];
-	int veteranMove[8];
-	int robotMove[8];
-	int poisonMove[8];
 	int attack[8];
-	int enemyAttack[8];
-	int veteranAttack[8];
-	int robotAttack[8];
-	int poisonAttack[8];
 	int jump[4];
-	int enemyJump[4];
-	int veteranJump[4];
-	int robotJump[4];
-	int poisonJump[4];
 	int liquid[10];
 	int parasite[16];
 	int die[16];
-	int enemyDie[8];
-	int veteranDie[8];
-	int robotDie[8];
-	int poisonDie[8];
 
 	int img_gauge;
 	int invalidDamageTime = 120;
