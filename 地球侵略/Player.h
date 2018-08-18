@@ -24,6 +24,10 @@ enum class playerState {
 	W,	//•s–¾ (–‚—H)
 };
 
+enum class moveState {
+	//‚»‚ê‚¼‚ê‰½‚ğ¦‚µ‚Ä‚¢‚é‚Ì‚©•s–¾
+};
+
 class Player :
 	public Creature
 {

@@ -26,8 +26,6 @@ Player::~Player() {
 }
 
 int Player::update() {
-	//ロボット兵の強制寄生解除
-
 	if (preParasite != 0) {
 		collision->playerParasite = preParasite; //当たり判定に寄生状態を記録
 		preParasite = 0;
@@ -147,6 +145,7 @@ int Player::update() {
 				collision->playerParasite = 0;
 			}
 			else if (removeCT >= 900 && plState == playerState::Robot) {
+				//ロボット兵の強制寄生解除
 				plState = playerState::Alien;
 				isMoving = 'O';
 				drawCount = 0;
@@ -357,10 +356,12 @@ int Player::update() {
 				modHp(5);
 				break;
 			case ObjectID::detoxificationPot://毒消し
-				plState = playerState::Alien;
-				isMoving = 'O';
-				drawCount = 0;
-				collision->playerParasite = 0;
+				if (plState == playerState::Venom) {
+					plState = playerState::Alien;
+					isMoving = 'O';
+					drawCount = 0;
+					collision->playerParasite = 0;
+				}
 				break;
 			case ObjectID::spike: //とげとげ
 				modHp(-1);
