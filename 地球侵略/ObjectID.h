@@ -6,12 +6,12 @@ enum class ObjectID {
 	ground = 2, //地面
 	colorDifGround = 3, //色違い地面
 	spike = 4,		//とげとげ
-	reverseSpike = 5, //逆とげ
+	spike_flip = 5, //逆とげ
 	spark = 6, //ビリビリ
 	fire = 7, //炎
 	abyss = 9, //奈落（即死）
 
-	moveingFloor = 10,//動く床
+	movingFloor = 10,//動く床
 
 	difMoveGround = 11,//逆向きに動く地面（仮）
 	lockedDoor = 12,	//閉じている扉
@@ -26,6 +26,10 @@ enum class ObjectID {
 	healPot = 30,	//回復アイテム
 	detoxificationPot = 31, //解毒薬
 
+	DrG = 40,	//ボス1 Dr.G
+	robotEnemy = 41,
+
+	bgmChanger = 91,
 	goal = 99,		//ゴール
 	playerBullet = 100,	//プレイヤーが撃った弾
 	enemyBullet = 104,	//兵士が撃った弾

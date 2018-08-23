@@ -1,19 +1,22 @@
 #pragma once
 #include "Scene_Frame.h"
+#include <unordered_map>
+#include <String>
+
 enum Stype {
-	BGM,SE
+	BGM, SE
 };
 
-class SoundManager
-{
+class SoundManager {
 public:
 	SoundManager();
 	~SoundManager();
-	void SetSound(int bgm);
+	void SetMusic(int bgm,bool loopFlag = true);
 	void SoundVolume(Stype num);
 	int Volume(int number);
 	void SoundPlayer();
-	void Se(int se);
+	void Se(int handle);
+	void Se(std::string path);
 private:
 	// 音楽ハンドル
 	int bgm;
@@ -23,6 +26,7 @@ private:
 	int bgmVolume = 255;
 	int seVolume = 255;
 	int *volume;
+	std::unordered_map<std::string, int> seCache;
 
 	//11段階音量を255段階に変換してDXライブラリに
 	void myChangeVolumeSoundMem(int VolumePal, int SoundHandle);

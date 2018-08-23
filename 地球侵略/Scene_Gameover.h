@@ -10,20 +10,22 @@ class Scene_Gameover :
 	public Scene_Frame
 {
 public:
-	Scene_Gameover();
+	Scene_Gameover(int param = 0);
 	~Scene_Gameover();
 	void update();
 	void Draw();
 
 private:
 	std::string text = "GameOver...";
-	int moveTo = 200;
+	int moveTo = 0;
 	double speed = 0.6;
 	double acceleration = 0.5;
-	int y = 0;
+	int y = -600;
+	int img;
 	//Ç±ÇÍÇ‡Ç«Ç±Ç©Ç©ÇÁéùÇ¡ÇƒÇ≠ÇÈ
 	int Frame = 0;
+	int stage = 0;
 
-	bool canDrawButton=false;
+	bool canDrawButton = false;
 };
 

@@ -9,6 +9,7 @@ Scene_Config::Scene_Config() {
 }
 
 Scene_Config::~Scene_Config() {
+	InitGraph();
 }
 
 void Scene_Config::update() {
@@ -65,14 +66,10 @@ void Scene_Config::MoveCursor() {
 		}
 	}
 	if (keyM.GetKeyFrame(KEY_INPUT_ESCAPE) == 1) {
-		switch (nowSelect) {
-			//case KEY:
-			//case PAD:
-			//	isKeyConfig = false;
-			//	break;
-		default:
-			break;
-		}
+		SceneM.ChangeScene(scene::Title);
+	}
+	if (keyM.GetKeyFrame(KEY_INPUT_X) == 1) {
+		SceneM.ChangeScene(scene::Title);
 	}
 }
 

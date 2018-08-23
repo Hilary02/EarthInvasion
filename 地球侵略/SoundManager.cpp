@@ -4,9 +4,14 @@
 SoundManager SoundM;
 
 SoundManager::SoundManager() {
-	SaveData::get_instance().load();
-	bgmVolume = SaveData::get_instance().getBGMVol();
-	seVolume = SaveData::get_instance().getSEVol();
+	if (SaveData::get_instance().load() == 0) {
+		bgmVolume = SaveData::get_instance().getBGMVol();
+		seVolume = SaveData::get_instance().getSEVol();
+	}
+	else {
+		bgmVolume = 5;
+		seVolume = 5;
+	}
 }
 
 SoundManager::~SoundManager() {
@@ -15,13 +20,20 @@ SoundManager::~SoundManager() {
 	SaveData::get_instance().save();
 	DeleteSoundMem(bgm);
 	DeleteSoundMem(se);
+	seCache.clear();
 }
 
-void SoundManager::SetSound(int bgm) {					//SetSound(LoadSoundMem("File")
+void SoundManager::SetMusic(int bgm, bool loopFlag) {					//SetMusic(LoadSoundMem("File")
 	StopSoundMem(this->bgm);
 	DeleteSoundMem(this->bgm);		//後片付けは大事．解放しないとメモリリークの原因になる．
 	SoundManager::bgm = bgm;
-	myChangeVolumeSoundMem(bgmVolume, SoundManager::bgm);
+	myChangeVolumeSoundMem(bgmVolume, bgm);
+	if (loopFlag) {
+		PlaySoundMem(this->bgm, DX_PLAYTYPE_LOOP);
+	}
+	else {
+		PlaySoundMem(bgm, DX_PLAYTYPE_BACK);
+	}
 }
 
 void SoundManager::SoundVolume(Stype num) {
@@ -52,33 +64,41 @@ void SoundManager::SoundVolume(Stype num) {
 	}
 
 	if (isVolChanged) {
-		Se(LoadSoundMem("data/mc/pick up.wav"));
+		Se("data/mc/pick up.wav");
 		myChangeVolumeSoundMem(*volume, *sound);				//メモリ上の音量変更
 		isVolChanged = false;
 	}
 }
 
 int SoundManager::Volume(int number) {
-	if (number == 0) {
-		return bgmVolume;
-	}
-	else {
-		return seVolume;
-	}
+	if (number == 0) { return bgmVolume; }
+	else { return seVolume; }
 }
 
 void SoundManager::SoundPlayer() {
-	if (CheckSoundMem(bgm) == 0) {
-		PlaySoundMem(bgm, DX_PLAYTYPE_LOOP, TRUE);
-	}
+	//	if (CheckSoundMem(bgm) == 0) { PlaySoundMem(bgm, DX_PLAYTYPE_LOOP, TRUE); }
 }
 
-void SoundManager::Se(int se) {								
+void SoundManager::Se(int handle) {
 	//Se(LoadSoundMem("File");
-	myChangeVolumeSoundMem(SoundManager::seVolume, se);
-	PlaySoundMem(se, DX_PLAYTYPE_BACK, TRUE);
+	myChangeVolumeSoundMem(SoundManager::seVolume, handle);
+	PlaySoundMem(handle, DX_PLAYTYPE_BACK, TRUE);
+}
+
+void SoundManager::Se(std::string path) {
+	auto itr = seCache.find(path);
+	int handle;
+	if (itr != seCache.end()) {
+		handle = itr->second;
+	}
+	else {
+		seCache[path] = LoadSoundMem(path.c_str());
+		handle = seCache[path];
+	}
+	myChangeVolumeSoundMem(SoundManager::seVolume, handle);
+	PlaySoundMem(handle, DX_PLAYTYPE_BACK, TRUE);
 }
 
 void SoundManager::myChangeVolumeSoundMem(int vol, int handle) {
-	ChangeVolumeSoundMem(255 * vol / 10, handle);
+	ChangeVolumeSoundMem(255 * log10(vol), handle);
 }

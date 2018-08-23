@@ -15,7 +15,7 @@ Enemy::Enemy(int x, int y, int img, ObjectID id, IObjectManager* Iobj) {
 	this->imgHandle = img;
 	this->id = id;
 	IobjMgr->enemyMoveRangeCalc(x, y, &minX, &maxX);
-	
+
 	if (id == ObjectID::soldierA)
 	{
 		setHp(3);
@@ -23,8 +23,8 @@ Enemy::Enemy(int x, int y, int img, ObjectID id, IObjectManager* Iobj) {
 		movespeed = 1;
 		atkInterval = 104;
 		LoadDivGraph("data/img/enemy1Walk.png", 8, 4, 2, 64, 64, walkHandle);
-		LoadDivGraph("data/img/enemy1WaitForAtack.png", 4, 4, 1, 64, 64, atackHandle);
-		LoadDivGraph("data/img/enemy1Atack.png", 4, 4, 1, 64, 64, &atackHandle[4]);
+		LoadDivGraph("data/img/enemy1WaitForAttack.png", 4, 4, 1, 64, 64, attackHandle);
+		LoadDivGraph("data/img/enemy1Attack.png", 4, 4, 1, 64, 64, &attackHandle[4]);
 		LoadDivGraph("data/img/enemy1Die.png", 8, 4, 2, 64, 64, deadHandle);
 		damegeHandle = LoadGraph("data/img/enemy1Damage.png");
 	}
@@ -36,16 +36,27 @@ Enemy::Enemy(int x, int y, int img, ObjectID id, IObjectManager* Iobj) {
 		atkInterval = 52;
 		addCount = 2;
 		LoadDivGraph("data/img/enemy3Walk.png", 8, 4, 2, 64, 64, walkHandle);
-		LoadDivGraph("data/img/enemy3WaitForAtack.png", 4, 4, 1, 64, 64, atackHandle);
-		LoadDivGraph("data/img/enemy3Atack.png", 4, 4, 1, 64, 64, &atackHandle[4]);
+		LoadDivGraph("data/img/enemy3WaitForAttack.png", 4, 4, 1, 64, 64, attackHandle);
+		LoadDivGraph("data/img/enemy3Attack.png", 4, 4, 1, 64, 64, &attackHandle[4]);
 		LoadDivGraph("data/img/enemy3Die.png", 8, 4, 2, 64, 64, deadHandle);
 		damegeHandle = LoadGraph("data/img/enemy3Damage.png");
+	}
+	else if (id == ObjectID::venomMan) {
+		setHp(3);
+		setAtk(0);
+		movespeed = 1;
+		atkInterval = 104;
+		LoadDivGraph("data/img/enemy1Walk.png", 8, 4, 2, 64, 64, walkHandle);
+		LoadDivGraph("data/img/enemy1WaitForattack.png", 4, 4, 1, 64, 64, attackHandle);
+		LoadDivGraph("data/img/enemy1attack.png", 4, 4, 1, 64, 64, &attackHandle[4]);
+		LoadDivGraph("data/img/enemy1Die.png", 8, 4, 2, 64, 64, deadHandle);
+		damegeHandle = LoadGraph("data/img/enemy1Damage.png");
 	}
 
 
 	bulletHandle = LoadGraph("data/img/bullet.png");
 	iconHandle = LoadGraph("data/img/exclamation.png");
-	collision = new Collision(16, 0, 20, 64);
+	collision = new Collision(20, 0, 20, 64);
 	AttackBox = new Collision(32, colYOffset, -160, colYSize);
 	state = State::alive;
 }
@@ -82,6 +93,9 @@ int Enemy::update(const Collision & playerCol) {
 		case ObjectID::soldierB:
 			hp = 15;
 			break;
+		case ObjectID::venomMan:
+			hp = 3;
+			break;
 		default:
 			printf("");
 			break;
@@ -116,8 +130,8 @@ int Enemy::update(const Collision & playerCol) {
 		}
 	}
 
-	clsDx();
-	printfDx("%d", playerCol.playerParasite);
+	//clsDx();
+	//printfDx("%d", playerCol.playerParasite);
 
 	if (state == State::dead
 		&& keyM.GetKeyFrame(KEY_INPUT_X) >= 1
@@ -179,17 +193,16 @@ void Enemy::collisionCheck(const Collision & target) {
 	int attackR = AttackBox->doCollisonCheck((target.hitRange));
 
 	if (!isPlayerAtk) {
-
 		if (isCol && target.playerState) {
 			imgHandle = damegeHandle;
 			movedis = 0;
 			isPlayerAtk = true;
 			modHp(mod);
 		}
-		else if (attackR) {
+		else if (attackR && id!=ObjectID::venomMan) {
 			if (noticed == 2) {		//”­Œ©Ï
 				movedis = 0;
-				AtackCommon();
+				AttackCommon();
 			}
 			else if (noticed == 0) {	//‰‰ñ‚Ì”­Œ©ˆ—
 				if (dis > maxX)dis = maxX - 5;
@@ -200,7 +213,6 @@ void Enemy::collisionCheck(const Collision & target) {
 			}
 		}
 		else {
-			//d DrawBox(10, 20, 100, 200, 0xFF0000, false);
 			MoveCommon();
 		}
 	}
@@ -238,11 +250,11 @@ void Enemy::MoveCommon()
 
 }
 
-void Enemy::AtackCommon()
+void Enemy::AttackCommon()
 {
-	if (dis > maxX)dis =maxX - 5;
-	else if (dis < minX) dis =minX+ 5;
-	
+	if (dis > maxX)dis = maxX - 5;
+	else if (dis < minX) dis = minX + 5;
+
 	if (!isAtacck && state == State::alive)
 	{
 		drawcount = 0;
@@ -250,7 +262,7 @@ void Enemy::AtackCommon()
 		isAtacck = true;
 	}
 	movedis = 0;
-	imgHandle = atackHandle[(drawcount / 12) % 8];
+	imgHandle = attackHandle[(drawcount / 12) % 8];
 	hundleIndex = (drawcount / 12) % 8;
 	if (state == State::alive) drawcount += addCount;
 	if (atkCt > atkInterval && state == State::alive && hundleIndex == 5)

@@ -9,18 +9,18 @@ typedef struct {
 }RootmenuElement;
 
 const int TITLE_NUM = 4;
-const int DefaultPosX = 380;
+const int DefaultPosX = 340;
 int nowSelect = 0;
 
 RootmenuElement TitleMenu[TITLE_NUM] = {	//実際の値の設定
-	{ "体験版","ステージのデモが遊べます", DefaultPosX, 250 },
-	{ "ステージセレクト","まだステージはないのでUIだけ見ることができます", DefaultPosX, 300 },
-	{ "設定" ,"音量の調節ができます", DefaultPosX, 350 },
-	{ "Exit" ,"ゲーム終了",DefaultPosX, 400 },
+	{ "チュートリアル","はじめての方はこちら", DefaultPosX, 250 },
+	{ "侵略開始","ステージ選択してね", DefaultPosX, 300 },
+	{ "音量設定" ,"気に食わなければ調節してね", DefaultPosX, 350 },
+	{ "星に帰る" ,"ゲームをやめたい方はこちら",DefaultPosX, 400 },
 };
 
 Scene_Title::Scene_Title() {
-	SoundM.SetSound(LoadSoundMem("data/mc/menu1.ogg"));
+	SoundM.SetMusic(LoadSoundMem("data/mc/menu1.ogg"));
 	bg = LoadGraph("data/img/bg_title.png");
 	cursor = LoadGraph("data/img/cursor.png");
 }
@@ -36,7 +36,7 @@ void Scene_Title::update() {
 		if (nowSelect == 1 && false) {
 			nowSelect = (nowSelect + 1) % TITLE_NUM;				//選択状態を一つ下げる
 		}
-		SoundM.Se(LoadSoundMem("data/mc/pick up.wav"));
+		SoundM.Se("data/mc/pick up.wav");
 	}
 	if (keyM.GetKeyFrame(KEY_INPUT_UP) == 1 || (keyM.GetKeyFrame(KEY_INPUT_UP) >= 15 && keyM.GetKeyFrame(KEY_INPUT_UP) % 4 == 0)) {		//上キーが押されていたら
 		nowSelect = (nowSelect + (TITLE_NUM - 1)) % TITLE_NUM;	//選択状態を一つ上げる
@@ -44,7 +44,7 @@ void Scene_Title::update() {
 			nowSelect = (nowSelect + (TITLE_NUM - 1)) % TITLE_NUM;	//選択状態を一つ上げる
 
 		}
-		SoundM.Se(LoadSoundMem("data/mc/pick up.wav"));
+		SoundM.Se("data/mc/pick up.wav");
 	}
 	if (keyM.GetKeyFrame(KEY_INPUT_Z) == 1) {
 		switch (nowSelect) {
@@ -80,15 +80,8 @@ void Scene_Title::Draw() {
 	DrawGraph(DefaultPosX - 30, TitleMenu[nowSelect].y, cursor, TRUE);
 
 	for (int i = 0; i < TITLE_NUM; i++) { // メニュー項目を描画
-		if (i == 1) {
-			DrawString(TitleMenu[i].x, TitleMenu[i].y, TitleMenu[i].name, 0x777777);
-
-		}
-		else {
-
-			DrawString(TitleMenu[i].x, TitleMenu[i].y, TitleMenu[i].name, 0x000000);
-		}
+		DrawString(TitleMenu[i].x, TitleMenu[i].y, TitleMenu[i].name, 0xFFFFFF);
 	}
-	DrawString(20, 560, TitleMenu[nowSelect].explanation, 0x000000);
+	DrawString(20, 560, TitleMenu[nowSelect].explanation, 0xFFFFFF);
 	SetFontSize(-1);
 }

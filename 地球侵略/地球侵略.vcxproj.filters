@@ -91,6 +91,14 @@
     <ClCompile Include="Witch.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="DrG.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Witch.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="RobotEnemy.cpp" />
+    <ClCompile Include="BGMChanger.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Collision.cpp">
@@ -329,9 +337,20 @@
     <ClInclude Include="Abyss.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="Witch.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+=======
+    <ClInclude Include="DrG.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Witch.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="RobotEnemy.h" />
+    <ClInclude Include="BGMChanger.h" />
+>>>>>>> master
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ソース ファイル">
