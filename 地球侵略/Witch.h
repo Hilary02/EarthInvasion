@@ -7,9 +7,9 @@ public:
 	Witch(int x, int y, int img, IObjectManager* Iobj);
 	~Witch();
 	void Draw(int drawX, int drawY) override;
-	void Attack();
-	void Surfacung();
-	void Flight();
+	void attack();
+	void surfacung();
+	void risingOrDescent();
 	int update(const Collision & playerCol) override;
 
 	boolean isRight;
@@ -20,5 +20,6 @@ private:
 	int deadHandle[8];
 	int damegeHandle;
 	int bulletHandle;
+	bool isUnder;
 };
 

@@ -9,7 +9,7 @@ Witch::Witch(int x, int y, int img, IObjectManager* Iobj)
 	this->y = y;
 	this->imgHandle = img;
 	
-	setHp(20);
+	setHp(5);
 	setAtk(5);
 
 	LoadDivGraph("data/img/enemy2Walk.png", 8, 4, 2, 64, 64, moveHandle);
@@ -39,6 +39,18 @@ void Witch::Draw(int drawX, int drawY)
 		DrawGraph(x - drawX, y - drawY, imgHandle, true);
 	}
 
+}
+
+void Witch::risingOrDescent()
+{
+	if (isUnder)
+	{
+		y--;
+	}
+	else
+	{
+		y++;
+	}
 }
 
 int Witch::update(const Collision & playerCol)
