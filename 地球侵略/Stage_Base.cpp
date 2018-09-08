@@ -135,9 +135,25 @@ void Stage_Base::draw() {
 
 
 void Stage_Base::scrollMap() {
-	//TODO:”Žš‚Í‚¢‚¸‚êconst•Ï”‚É‚·‚é
-	int baseDrawX = player->getX() - 100;
-	int baseDrawY = player->getY() - 300;
+	//ƒvƒŒƒCƒ„[‚ÌŒü‚«‚É‰ž‚¶‚ÄŽ‹ŠE‚ð•Ï‰»
+	bool dir = player->getDirection();
+	int pX = player->getX();
+	int pY = player->getY();
+	if ((pX - befX) == 0 && (pY - befY) == 0) {
+		if (dir) {
+			visibleX -= AvisibleX;
+			if (visibleX <= MinvisibleX)visibleX = MinvisibleX;
+		}
+		else {
+			visibleX += AvisibleX;
+			if (visibleX >= MaxvisibleX)visibleX = MaxvisibleX;
+		}
+	}
+	befX = pX;
+	befY = pY;
+
+	int baseDrawX = player->getX() - visibleX;
+	int baseDrawY = player->getY() - visibleY;
 	int limitDrawX = MAP_WIDTH * CHIPSIZE - window.WINDOW_WIDTH;
 	int limitDrawY = MAP_HEIGHT * CHIPSIZE - window.WINDOW_HEIGHT + 150;
 

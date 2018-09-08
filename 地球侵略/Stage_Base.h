@@ -60,6 +60,14 @@ private:
 	ObjectManager *objectMgr;
 	SaveData &savedata = SaveData::get_instance();
 
+	//プレイヤー方向に応じて視界を変化させる変数
+	int visibleX;//左の視界
+	const int visibleY = 300; //上の視界
+	const int AvisibleX = 3;
+	const int MinvisibleX = 100;
+	const int MaxvisibleX = 500;
+	int befX, befY;
+
 	//地形などを描画する際の左上座標
 	int drawX, drawY;
 
