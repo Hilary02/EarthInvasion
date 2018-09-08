@@ -356,7 +356,7 @@ int Player::update() {
 			case ObjectID::healPot: //âÒïúÉ|ÉbÉh
 				modHp(5);
 				break;
-			case ObjectID::detoxificationPot://ì≈è¡Çµ
+			case ObjectID::detoxPot://ì≈è¡Çµ
 				plState = playerState::Alien;
 				isMoving = 'O';
 				drawCount = 0;
@@ -678,6 +678,7 @@ void Player::parasiteDrawImg(int tempX, int tempY, playerState plstate) {
 int Player::getX() { return x; }
 int Player::getY() { return y; }
 int Player::getHp() { return hp; }
+bool Player::getDirection() { return right; }
 
 void Player::PerDecision() {
 	int sizeX1 = 16;

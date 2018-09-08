@@ -1,22 +1,13 @@
 #include "Item.h"
 
+Item::Item(){}
+Item::~Item(){}
 
-
-Item::Item()
-{
-}
-
-
-Item::~Item()
-{
-}
-
-Item::Item(int x, int y, int img)
-{
+Item::Item(int x, int y, int img,ObjectID id){
 	this->x = x;
 	this->y = y;
 	this->imgHandle = img;
-	this->id = ObjectID::healPot;
+	this->id = id;
 
 	collision = new Collision(0, 0, 32, 32);
 }

@@ -24,7 +24,7 @@ enum class ObjectID {
 	caster = 24, //魔法使い
 
 	healPot = 30,	//回復アイテム
-	detoxificationPot = 31, //解毒薬
+	detoxPot = 31, //解毒薬
 
 	DrG = 40,	//ボス1 Dr.G
 	robotEnemy = 41,
