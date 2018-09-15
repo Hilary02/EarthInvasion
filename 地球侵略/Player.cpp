@@ -26,11 +26,35 @@ Player::~Player() {
 }
 
 int Player::update() {
+	//当たり判定に寄生状態を記録
 	if (preParasite != 0) {
-		collision->playerParasite = preParasite; //当たり判定に寄生状態を記録
+		collision->playerParasite = preParasite; 
 		preParasite = 0;
 	}
+
+	//寄生判定
+	if (keyM.GetKeyFrame(KEY_INPUT_DOWN) == 0 && isLiquid) {
+		xyCheck = 'N';
+		if (MapHitCheck(x1, y, xyCheck) && MapHitCheck(x2, y, xyCheck) && MapHitCheck(x3, y, xyCheck)) {
+			isLiquid = false;
+			isMoving = 'R';
+			drawCount = 0;
+		}
+	}
+
+	//液体判定
+	if (isLiquid) {
+		collision = liquidCol;
+	}
+	else {
+		collision = eeyanCol;
+	}
+	collision->updatePos(x, y);
+	
+	//当たり判定決定
 	PerDecision();
+
+	//左右移動
 	if (!isAttack && !isDead && isMoving == 'N') {
 		if (keyM.GetKeyFrame(KEY_INPUT_LEFT) >= 1) {
 			right = false;
@@ -137,7 +161,7 @@ int Player::update() {
 				}
 			}
 
-			//寄生解除
+			//毒、ロボット特殊寄生状態処理
 			if (keyM.GetKeyFrame(KEY_INPUT_DOWN) >= 45 && plState != playerState::Alien && plState != playerState::Venom) {
 				plState = playerState::Alien;
 				isMoving = 'O';
@@ -145,7 +169,6 @@ int Player::update() {
 				collision->playerParasite = 0;
 			}
 			else if (removeCT >= 900 && plState == playerState::Robot) {
-				//ロボット兵の強制寄生解除
 				plState = playerState::Alien;
 				isMoving = 'O';
 				drawCount = 0;
@@ -157,23 +180,13 @@ int Player::update() {
 
 		}
 	}
-	//寄生判定
-	if (keyM.GetKeyFrame(KEY_INPUT_DOWN) == 0 && isLiquid) {
-		xyCheck = 'N';
-		if (MapHitCheck(x1, y, xyCheck) && MapHitCheck(x2, y, xyCheck) && MapHitCheck(x3, y, xyCheck)) {
-			isLiquid = false;
-			isMoving = 'R';
-			drawCount = 0;
-		}
+	updateCT += 1;
+	if (collision->playerState && updateCT > 60)
+	{
+		collision->playerState = 0;
+		updateCT = 0;
 	}
 
-	if (isLiquid) {
-		collision = liquidCol;
-	}
-	else {
-		collision = eeyanCol;
-	}
-	collision->updatePos(x, y);
 
 	//ジャンプ中の処理
 	if (isJumping) {
@@ -301,6 +314,8 @@ int Player::update() {
 			}
 		}
 	}
+	collision->updatePos(x, y);
+
 
 	//地形オブジェクトとの当たり判定をとり，位置の修正
 	for (auto t : IobjMgr->getTerrainList()) {
@@ -355,13 +370,11 @@ int Player::update() {
 			case ObjectID::healPot: //回復ポッド
 				modHp(5);
 				break;
-			case ObjectID::detoxificationPot://毒消し
-				if (plState == playerState::Venom) {
-					plState = playerState::Alien;
-					isMoving = 'O';
-					drawCount = 0;
-					collision->playerParasite = 0;
-				}
+			case ObjectID::detoxPot://毒消し
+				plState = playerState::Alien;
+				isMoving = 'O';
+				drawCount = 0;
+				collision->playerParasite = 0;
 				break;
 			case ObjectID::spike: //とげとげ
 				modHp(-1);
@@ -410,13 +423,7 @@ int Player::update() {
 		}
 
 	}
-
-	updateCT += 1;
-	if (collision->playerState && updateCT > 60)
-	{
-		collision->playerState = 0;
-		updateCT = 0;
-	}
+	
 
 	if (hp <= 0 && !isDead) {
 		SoundM.Se("data/se/death.wav");
@@ -679,6 +686,7 @@ void Player::parasiteDrawImg(int tempX, int tempY, playerState plstate) {
 int Player::getX() { return x; }
 int Player::getY() { return y; }
 int Player::getHp() { return hp; }
+bool Player::getDirection() { return right; }
 
 void Player::PerDecision() {
 	int sizeX1 = 16;

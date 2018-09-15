@@ -82,6 +82,6 @@ void Scene_Title::Draw() {
 	for (int i = 0; i < TITLE_NUM; i++) { // ƒƒjƒ…[€–Ú‚ð•`‰æ
 		DrawString(TitleMenu[i].x, TitleMenu[i].y, TitleMenu[i].name, 0xFFFFFF);
 	}
-	DrawString(20, 560, TitleMenu[nowSelect].explanation, 0xFFFFFF);
+	DrawString(20, 560, TitleMenu[nowSelect].explanation, 0x000000);
 	SetFontSize(-1);
 }

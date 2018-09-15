@@ -39,6 +39,7 @@ public:
 	int getX();
 	int getY();
 	int getHp();
+	bool getDirection();
 	void modHp(int mod, bool through = false) override;
 private:
 	void LoadImg();
