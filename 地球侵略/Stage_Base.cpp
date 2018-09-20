@@ -139,7 +139,7 @@ void Stage_Base::scrollMap() {
 	bool dir = player->getDirection();
 	int pX = player->getX();
 	int pY = player->getY();
-	if ((pX - befX) == 0 && (pY - befY) == 0) {
+	if ((pX - befX) == 0 ) {
 		if (dir) {
 			visibleX -= AvisibleX;
 			if (visibleX <= MinvisibleX)visibleX = MinvisibleX;
