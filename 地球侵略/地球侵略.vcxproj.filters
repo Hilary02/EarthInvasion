@@ -96,6 +96,7 @@
     </ClCompile>
     <ClCompile Include="RobotEnemy.cpp" />
     <ClCompile Include="BGMChanger.cpp" />
+    <ClCompile Include="DaibutsuRobo.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Collision.cpp">
@@ -342,6 +343,7 @@
     </ClInclude>
     <ClInclude Include="RobotEnemy.h" />
     <ClInclude Include="BGMChanger.h" />
+    <ClInclude Include="DaibutsuRobo.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ソース ファイル">
