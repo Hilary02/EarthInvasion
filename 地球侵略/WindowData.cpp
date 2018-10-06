@@ -37,7 +37,7 @@ int WindowData::Init() {
 	}
 	if (DxLib_Init() == -1)	return -1;
 	SetBackgroundColor(0, 0, 0);					//背景色を黒に
-	//SetOutApplicationLogValidFlag(false);			//ログ出力
+	SetOutApplicationLogValidFlag(false);			//ログ出力
 	//SetTransColor(255, 0, 255);					//透過色未設定
 	SetAlwaysRunFlag(false);						//アクティブでないとき停止
 	SetUseDXArchiveFlag(true);						//DXアーカイブ機能を使う

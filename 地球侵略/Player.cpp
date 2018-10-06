@@ -325,16 +325,20 @@ int Player::update() {
 			switch (t->getId()) {
 			case ObjectID::lockedDoor: //”à
 			{
-				int leftTX = t->collision->hitRange.xPos + t->collision->hitRange.xOffset;
-				int leftPX = collision->hitRange.xPos + collision->hitRange.xOffset;
+				if (plState == playerState::Alien && !isAttack) {
+					int leftTX = t->collision->hitRange.xPos + t->collision->hitRange.xOffset;
+					int leftPX = collision->hitRange.xPos + collision->hitRange.xOffset;
 
-				if (leftPX < leftTX) {
-					x = leftTX - collision->hitRange.xSize - collision->hitRange.xOffset;
-				}
-				else if (leftPX > leftTX) {
-					x = leftTX + t->collision->hitRange.xSize - collision->hitRange.xOffset;
+					if (leftPX < leftTX) {
+						x = leftTX - collision->hitRange.xSize - collision->hitRange.xOffset;
+					}
+					else if (leftPX > leftTX) {
+						x = leftTX + t->collision->hitRange.xSize - collision->hitRange.xOffset;
+					}
+
 				}
 				isAttack = false;
+				nowAttacking = false;
 
 				break;
 			}
