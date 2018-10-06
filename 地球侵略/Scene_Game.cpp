@@ -20,6 +20,7 @@ Scene_Game::Scene_Game(int param) {
 	pauseBgL = LoadGraph("data/img/pausemenu.png");
 	pauseBgR = LoadGraph("data/img/pausemenu.png");
 	cursor = LoadGraph("data/img/cursor.png");
+	SceneM.isPausing = false;
 }
 
 Scene_Game::~Scene_Game() {
@@ -30,6 +31,7 @@ Scene_Game::~Scene_Game() {
 void Scene_Game::update() {
 	if (keyM.GetKeyFrame(KEY_INPUT_ESCAPE) == 1) {
 		isPause = !isPause;
+		SceneM.isPausing = isPause;
 		selecting = 0;
 	}
 	if (!isPause) {
@@ -66,7 +68,10 @@ void Scene_Game::UpdatePause() {
 		SoundM.Se("data/mc/pick up.wav");
 	}
 	if (keyM.GetKeyFrame(KEY_INPUT_Z) == 1) {
-		if (selecting == 0) isPause = !isPause;
+		if (selecting == 0) {
+			isPause = false;
+			SceneM.isPausing = false;
+		};
 		if (selecting == 1)	SceneM.ChangeScene(scene::Select, stageID);
 		if (selecting == 2) SceneM.ChangeScene(scene::Title);
 	}

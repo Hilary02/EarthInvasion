@@ -30,8 +30,9 @@ Stage_Base::Stage_Base(int stage) {
 
 
 	//制限時間 ttp://nanoappli.com/blog/archives/3229
-	//現在，一時停止とか完全に無視して時間が進む
-	timeLimit = GetNowCount() + time;
+	leftTime = time;
+	dTime = 0;
+	beforeTime = GetNowCount();
 
 }
 
@@ -44,7 +45,9 @@ Stage_Base::~Stage_Base() {
 void Stage_Base::update() {
 	if (!(isDeadAnimation || isClearAnimation)) { //どちらもFalse ->アニメなしなら
 		//タイマー
-		leftTime = int(timeLimit - GetNowCount());
+		if (!(SceneM.isPausing)) {
+			leftTime -= int(dTime);
+		}
 		if (leftTime <= 0) {
 			SceneM.ChangeScene(scene::GameOver);
 		}
@@ -60,6 +63,11 @@ void Stage_Base::update() {
 }
 
 void Stage_Base::draw() {
+	//タイマー
+	dTime = (GetNowCount() - beforeTime);
+	beforeTime = GetNowCount();
+
+
 	DrawGraphF(((800 - bgWidth) *((drawX) / (float)(MAP_WIDTH*CHIPSIZE))), -200, bgHand, false);	//背景の描画
 	int baseChipY = max(0, drawY - CHIPSIZE * 2);
 	int baseChipX = max(0, drawX - CHIPSIZE * 2);

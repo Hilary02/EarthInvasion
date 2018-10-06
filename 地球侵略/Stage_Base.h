@@ -82,9 +82,9 @@ private:
 	int img_tutorial;
 
 	//制限時間（）
-
-	LONGLONG timeLimit;
-	int leftTime;
+	int leftTime;	//残り時間
+	LONGLONG beforeTime;
+	int dTime;	//差分時間
 
 	//デバッグ用データ
 	int drawChipNum = 0;

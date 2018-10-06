@@ -28,6 +28,7 @@ public:
 	void ChangeScene(scene, int param = 0);
 	void update();
 	void Draw();
+	int isPausing;
 
 private:
 	Scene_Frame * nowScene;    //シーン管理ポインタ
