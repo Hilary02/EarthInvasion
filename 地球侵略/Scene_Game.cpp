@@ -21,6 +21,7 @@ Scene_Game::Scene_Game(int param) {
 	pauseBgR = LoadGraph("data/img/pausemenu.png");
 	cursor = LoadGraph("data/img/cursor.png");
 	SceneM.isPausing = false;
+
 }
 
 Scene_Game::~Scene_Game() {

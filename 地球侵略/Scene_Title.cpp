@@ -15,7 +15,7 @@ int nowSelect = 0;
 RootmenuElement TitleMenu[TITLE_NUM] = {	//実際の値の設定
 	{ "チュートリアル","はじめての方はこちら", DefaultPosX, 250 },
 	{ "侵略開始","ステージ選択してね", DefaultPosX, 300 },
-	{ "音量設定" ,"気に食わなければ調節してね", DefaultPosX, 350 },
+	{ "音量設定" ,"調節してね", DefaultPosX, 350 },
 	{ "星に帰る" ,"ゲームをやめたい方はこちら",DefaultPosX, 400 },
 };
 

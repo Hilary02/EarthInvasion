@@ -90,10 +90,6 @@ void Stage_Base::draw() {
 			}
 		}
 	}
-	//チュートリアルのやつ
-	if (stageId == 0) {
-		DrawRotaGraph(625, 88, 0.5, 0, img_tutorial, TRUE);
-	}
 	objectMgr->Draw(drawX, drawY);
 	drawInfo();
 
@@ -136,6 +132,11 @@ void Stage_Base::draw() {
 
 			SceneM.ChangeScene(scene::GameOver, stageId);
 		}
+	}
+
+	//チュートリアルのやつ
+	if (stageId == 0) {
+		DrawRotaGraph(625, 88, 0.5, 0, img_tutorial, TRUE);
 	}
 
 	//デバッグ情報
