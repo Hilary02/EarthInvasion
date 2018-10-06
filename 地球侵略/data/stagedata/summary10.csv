@@ -1,2 +1,2 @@
 /チップセット,背景,bgm,初期X,初期Y,制限時間(秒)
--1,data/img/bg_factory.png,data/mc/bossA_progless.ogg,100,50,24000
+-1,data/img/bg_building.png,data/mc/bossB_progless.ogg,100,650,240

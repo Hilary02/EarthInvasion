@@ -60,6 +60,7 @@ private:
 	int y3 = 0;
 	const int MOVE = 3;
 	int drawCount = 0;
+	int attackCount = 0;
 	int cMove = 0;
 	double jumpPower = 0;
 	double speed = 10.0;

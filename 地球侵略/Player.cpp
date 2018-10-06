@@ -26,6 +26,9 @@ Player::~Player() {
 }
 
 int Player::update() {
+	//アニメーション用
+	drawCount++;
+
 	//当たり判定に寄生状態を記録
 	if (preParasite != 0) {
 		collision->playerParasite = preParasite; 
@@ -234,6 +237,7 @@ int Player::update() {
 
 		}
 		collision->playerState = 1;
+		attackCount++;
 	}
 	else {
 		collision->hitRange.xSize = 32;
@@ -436,6 +440,7 @@ int Player::update() {
 	}
 
 	invalidDamageTime++;	//無敵時間
+
 	return 0;
 }
 
@@ -484,7 +489,7 @@ bool Player::MapHitCheck(int movedX, int movedY, char check)
 
 void Player::Draw(int drawX, int drawY) {
 
-	//DrawBox(collision->hitRange.xPos + collision->hitRange.xOffset - drawX, collision->hitRange.yPos + collision->hitRange.yOffset - drawY, collision->hitRange.xPos + collision->hitRange.xOffset + collision->hitRange.xSize - drawX, collision->hitRange.yPos + collision->hitRange.yOffset + collision->hitRange.ySize - drawY, 0xFF00FF, false);
+	DrawBox(collision->hitRange.xPos + collision->hitRange.xOffset - drawX, collision->hitRange.yPos + collision->hitRange.yOffset - drawY, collision->hitRange.xPos + collision->hitRange.xOffset + collision->hitRange.xSize - drawX, collision->hitRange.yPos + collision->hitRange.yOffset + collision->hitRange.ySize - drawY, 0xFF00FF, false);
 
 	int tempX = x - drawX;
 	int tempY = y - drawY;
@@ -509,7 +514,7 @@ void Player::Draw(int drawX, int drawY) {
 		}
 		else {
 			DrawGraph(tempX, tempY, wait[drawCount % 4], TRUE);
-			drawCount++;
+			
 			if (drawCount == 60) drawCount = 0;
 		}
 		break;
@@ -521,7 +526,7 @@ void Player::Draw(int drawX, int drawY) {
 		}
 		else {
 			DrawGraph(tempX, tempY, wait[drawCount % 4], TRUE);
-			drawCount++;
+			
 			if (drawCount == 60) drawCount = 0;
 		}
 		break;
@@ -572,12 +577,12 @@ void Player::eeyanDrawImg(int tempX, int tempY) {
 	}
 	else if (isMoving == 'L') {
 		MyDraw(tempX, tempY, liquid[drawCount / 5 % 4], right);
-		drawCount++;
+		
 		if (drawCount >= 20) isMoving = 'N';
 	}
 	else if (isMoving == 'R') {
 		MyDraw(tempX, tempY, liquid[3 - drawCount / 5 % 4], right);
-		drawCount++;
+		
 		if (drawCount >= 20) isMoving = 'N';
 	}
 	else if (isLiquid) {
@@ -596,17 +601,17 @@ void Player::eeyanDrawImg(int tempX, int tempY) {
 	}
 	else if (isAttack) {
 		MyDraw(tempX, tempY, attack[drawCount / 8 % 8], right);
-		drawCount++;
+		
 		if (drawCount >= 64) isAttack = false;
 	}
 	else if (isMoving == 'O') {
 		MyDraw(tempX, tempY, parasite[drawCount / 8 % 8 + 10], right);
-		drawCount++;
+		
 		if (drawCount >= 64) isMoving = 'N';
 	}
 	else if (isMoving == 'D') {
 		MyDraw(tempX, tempY, die[drawCount / 8 % 16], right);
-		drawCount++;
+		
 		if (drawCount >= 128) isMoving = 'N';
 	}
 	else if (isDead) {
@@ -623,7 +628,7 @@ void Player::eeyanDrawImg(int tempX, int tempY) {
 	else {
 		if (drawCount > 60) drawCount = 0;
 		MyDraw(tempX, tempY, wait[drawCount / 15 % 4], right);
-		drawCount++;
+		
 	}
 }
 
@@ -647,24 +652,24 @@ void Player::parasiteDrawImg(int tempX, int tempY, playerState plstate) {
 	}
 	else if (isMoving == 'I') {
 		MyDraw(tempX, tempY, parasite[drawCount / 8 % 8], right);
-		drawCount++;
+		
 		if (drawCount >= 64) isMoving = 'N';
 	}
 	else if (isAttack) {
 		if (keyM.GetKeyFrame(KEY_INPUT_LEFT) == 0 && keyM.GetKeyFrame(KEY_INPUT_RIGHT) == 0) {
 			MyDraw(tempX, tempY, imgPath->attack[drawCount / 8 % 8], right);
-			drawCount++;
+			
 			if (drawCount >= 64) isAttack = false;
 		}
 		else {
 			MyDraw(tempX, tempY, imgPath->attack[drawCount / 8 % 4], right);
-			drawCount++;
+			
 			if (drawCount >= 32) isAttack = false;
 		}
 	}
 	else if (isMoving == 'D') {
 		MyDraw(tempX, tempY, imgPath->die[drawCount / 8 % 8], right);
-		drawCount++;
+		
 		if (drawCount >= 64) isMoving = 'N';
 	}
 	else if (isDead) {

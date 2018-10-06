@@ -25,6 +25,8 @@ Stage_Base::Stage_Base(int stage) {
 	//プレイヤー呼び出し
 	this->player = objectMgr->getPlayer();
 	player->setAbsolutePos(playerX, playerY);
+	befX = player->getX();
+	befY = player->getY();
 
 
 	//制限時間 ttp://nanoappli.com/blog/archives/3229
@@ -139,7 +141,7 @@ void Stage_Base::scrollMap() {
 	bool dir = player->getDirection();
 	int pX = player->getX();
 	int pY = player->getY();
-	if ((pX - befX) == 0 ) {
+	if ((pX - befX) == 0) {
 		if (dir) {
 			visibleX -= AvisibleX;
 			if (visibleX <= MinvisibleX)visibleX = MinvisibleX;
