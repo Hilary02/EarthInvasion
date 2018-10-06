@@ -436,6 +436,17 @@ int Player::update() {
 	}
 
 	invalidDamageTime++;	//無敵時間
+
+		//寄生解除バー
+	if (keyM.GetKeyFrame(KEY_INPUT_DOWN) >= 1 && plState != playerState::Alien) {
+		if ((1 - (double)keyM.GetKeyFrame(KEY_INPUT_DOWN) / 45) > 0) {
+			gauge_length = (1 - (double)keyM.GetKeyFrame(KEY_INPUT_DOWN) / 45);
+		}
+	}
+	else {
+		gauge_length = 0;
+	}
+
 	return 0;
 }
 
@@ -528,12 +539,8 @@ void Player::Draw(int drawX, int drawY) {
 	}
 
 	//寄生解除バー
-	if (keyM.GetKeyFrame(KEY_INPUT_DOWN) >= 1 && plState != playerState::Alien) {
-		double size = 0;
-		if ((1 - (double)keyM.GetKeyFrame(KEY_INPUT_DOWN) / 45) > 0) {
-			size = (1 - (double)keyM.GetKeyFrame(KEY_INPUT_DOWN) / 45);
-		}
-		DrawExtendGraph(tempX + 16, tempY - 18, tempX + 16 + 50 * size, tempY - 4, img_gauge, false);
+	if (plState != playerState::Alien) {
+		DrawExtendGraph(tempX + 16, tempY - 18, tempX + 16 + 50 * gauge_length, tempY - 4, img_gauge, false);
 	}
 }
 

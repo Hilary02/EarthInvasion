@@ -87,6 +87,7 @@ private:
 	int die[16];
 
 	int img_gauge;
+	double gauge_length;
 	int invalidDamageTime = 120;
 	int preParasite = 0;
 
