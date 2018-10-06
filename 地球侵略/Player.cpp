@@ -86,6 +86,7 @@ int Player::update() {
 			if (keyM.GetKeyFrame(KEY_INPUT_Z) == 1) {
 				isAttack = true;
 				SoundM.Se("data/se/Attack.wav");
+				nowAttacking = true;
 				drawCount = 0;
 			}
 			if (plState == playerState::Alien) {
@@ -302,6 +303,7 @@ int Player::update() {
 	}
 	else {
 		collision->hitRange.xSize = 32;
+		nowAttacking = false;
 	}
 
 	//ˆê”Ê•ºó‘Ô‚ÌUŒ‚ˆ— 
@@ -365,7 +367,7 @@ int Player::update() {
 			switch (o->getId()) {
 			case ObjectID::soldierA: //•ºŽm
 			case ObjectID::soldierB:
-				if (o->state == State::alive && !(collision->playerState == 1))modHp(-1);
+				if (o->state == State::alive && !(collision->playerState == 1 && !nowAttacking))modHp(-1);
 				break;
 			case ObjectID::healPot: //‰ñ•œƒ|ƒbƒh
 				modHp(5);

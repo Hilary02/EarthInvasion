@@ -100,4 +100,6 @@ private:
 	Collision *eeyanCol;
 	Collision *liquidCol;
 	int removeCT = 0;
+
+	bool nowAttacking = false;
 };
