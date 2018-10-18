@@ -344,6 +344,7 @@
     <ClInclude Include="RobotEnemy.h" />
     <ClInclude Include="BGMChanger.h" />
     <ClInclude Include="DaibutsuRobo.h" />
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ソース ファイル">
@@ -352,5 +353,8 @@
     <Filter Include="ヘッダー ファイル">
       <UniqueIdentifier>{e785c8ea-0e09-4d38-a5fd-5cfe0e3498f9}</UniqueIdentifier>
     </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Resource.rc" />
   </ItemGroup>
 </Project>

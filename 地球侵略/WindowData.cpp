@@ -1,4 +1,5 @@
 #include "WindowData.h"
+#include "resource.h"
 
 //windowを用いて初期化など行う．
 WindowData window;
@@ -24,6 +25,7 @@ WindowData::~WindowData()
 
 //ウィンドウの初期化処理を行う．
 int WindowData::Init() {
+	SetWindowIconID(IDI_ICON1);
 	SetMainWindowText(TITLE.c_str());				//c_strでchar型にできる
 	//is_fullscreen = ask_screenmode();  //コメントアウトで強制ウィンドウ
 	if (is_fullscreen) {

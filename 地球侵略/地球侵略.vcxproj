@@ -83,6 +83,7 @@
     <ClInclude Include="ObjectID.h" />
     <ClInclude Include="ObjectManager.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="RobotEnemy.h" />
     <ClInclude Include="SaveData.h" />
     <ClInclude Include="SceneManager.h" />
@@ -100,6 +101,9 @@
     <ClInclude Include="TextBox.h" />
     <ClInclude Include="WindowData.h" />
     <ClInclude Include="Witch.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Resource.rc" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
