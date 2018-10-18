@@ -52,7 +52,7 @@ void Witch::attack()
 
 }
 
-void Witch::Floating()
+void Witch::floating()
 {
 	if (!isMove && state == State::alive)
 	{
@@ -90,6 +90,28 @@ void Witch::risingOrDescent()
 	}
 }
 
+void Witch::collsionCheck(const Collision & target)
+{
+
+	int isCol = collision->doCollisonCheck((target.hitRange));
+	int attackR = AttackBox->doCollisonCheck((target.hitRange));
+
+	if (!isPlayerAtk){
+		if (isCol && target.playerState) {
+			imgHandle = damegeHandle;
+			movedis = 0;
+			isPlayerAtk = true;
+			modHp(mod);
+		}
+		else if(attackR){
+			isFound = true;
+			risingOrDescent();
+		}
+	}
+
+
+}
+
 int Witch::update(const Collision & playerCol)
 {
 	Enemy::DeadCheck();
@@ -98,7 +120,7 @@ int Witch::update(const Collision & playerCol)
 		isRight = IsRangeCheck();
 		collision->updatePos(x, y);
 		AttackBox->updatePos(x, y);
-		Floating();
+		floating();
 	}
 	return 0;
 }

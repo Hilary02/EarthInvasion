@@ -8,8 +8,9 @@ public:
 	~Witch();
 	void Draw(int drawX, int drawY) override;
 	void attack();
-	void Floating();
+	void floating();
 	void risingOrDescent();
+	void collsionCheck(const Collision & target);
 	int update(const Collision & playerCol) override;
 
 
@@ -19,8 +20,8 @@ private:
 	int deadHandle[8];
 	int damegeHandle;
 	int bulletHandle;
-	/*int maxX;
-	int minX;*/
-	bool isUnder;
+	bool isFound = false;
+	bool isUnder = false;
+
 };
 

@@ -193,6 +193,8 @@ void Enemy::collisionCheck(const Collision & target) {
 	int attackR = AttackBox->doCollisonCheck((target.hitRange));
 
 	if (!isPlayerAtk) {
+		//スライム状態で攻撃されたときはダメージhandleが読み込まれるが
+		//弾で攻撃されたら読み込まれない
 		if (isCol && target.playerState) {
 			imgHandle = damegeHandle;
 			movedis = 0;

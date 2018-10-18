@@ -22,6 +22,8 @@ public:
 	bool getDeadState();
 
 protected:
+	const int mod = -1;
+
 	int minX = 0;
 	int maxX = 0;
 	int walkHandle[8];
@@ -64,5 +66,4 @@ protected:
 
 private:
 	int moveRange = 300;
-	const int mod = -1;
 };
