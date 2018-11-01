@@ -12,6 +12,9 @@ public:
 	void risingOrDescent();
 	void collsionCheck(const Collision & target);
 	int update(const Collision & playerCol) override;
+	int basePositionY;
+	int isPositionY;
+	int isUnderTarget;
 
 
 private:
@@ -20,8 +23,10 @@ private:
 	int deadHandle[8];
 	int damegeHandle;
 	int bulletHandle;
+	int targetY;
 	bool isFound = false;
 	bool isUnder = false;
+
 
 };
 

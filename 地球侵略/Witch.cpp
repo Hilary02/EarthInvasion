@@ -1,12 +1,12 @@
 #include "Witch.h"
 
 
-
 Witch::Witch(int x, int y, int img, IObjectManager* Iobj)
 {
 	this->IobjMgr = Iobj;
 	this->x = x;
 	this->y = y;
+	basePositionY = y;
 	this->imgHandle = img;
 	this->id = id;
 
@@ -80,14 +80,18 @@ void Witch::floating()
 
 void Witch::risingOrDescent()
 {
-	if (isUnder)
-	{
-		y--;
-	}
-	else
+	isPositionY = y > basePositionY;  //元のy座標より下ならtrue
+	isUnderTarget = y < targetY;   //ターゲットより上ならtrue
+
+	if (isUnder && isUnderTarget)
 	{
 		y++;
 	}
+	else if(!isUnder && isPositionY)
+	{
+		y--;
+	}
+	else{}
 }
 
 void Witch::collsionCheck(const Collision & target)
@@ -105,7 +109,12 @@ void Witch::collsionCheck(const Collision & target)
 		}
 		else if(attackR){
 			isFound = true;
-			risingOrDescent();
+			targetY = target.hitRange.yPos;
+			isUnder = true;
+		}
+		else
+		{
+			isUnder = false;
 		}
 	}
 
@@ -120,6 +129,8 @@ int Witch::update(const Collision & playerCol)
 		isRight = IsRangeCheck();
 		collision->updatePos(x, y);
 		AttackBox->updatePos(x, y);
+		collsionCheck(playerCol);
+		risingOrDescent();
 		floating();
 	}
 	return 0;
