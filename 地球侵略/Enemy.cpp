@@ -207,6 +207,7 @@ void Enemy::collisionCheck(const Collision & target) {
 				AttackCommon();
 			}
 			else if (noticed == 0) {	//初回の発見処理
+				//エネミーのrangeチェックの際にプレイヤーが発見するとくるくる回るバグを力技で修正（後で直す
 				if (dis > maxX)dis = maxX - 5;
 				else if (dis < minX) dis = minX + 5;
 				movedis = 0;
@@ -302,7 +303,7 @@ bool Enemy::IsRangeCheck() {
 	{
 		dis -= movedis;
 	}
-	rct++;
+	
 	if (maxX < dis || minX > dis) {
 		AttackBox->xFlip();
 		return !isRight;

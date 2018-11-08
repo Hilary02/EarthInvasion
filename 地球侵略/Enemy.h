@@ -57,8 +57,6 @@ protected:
 
 	int index = -1;
 
-	int rct = 100; //エネミーのrangeチェックの際にプレイヤーが発見するとくるくる回るバグを力技で修正（後で直す
-
 	std::vector<Bullet*> bullets;
 
 	bool remove = false;	//リスポーン関連

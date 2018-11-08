@@ -63,6 +63,15 @@ void Witch::floating()
 
 	//movedis = movespeed;
 	movedis = 1;
+	if (isFound)
+	{
+		if (x < targetX + 100 && !isRight) { movedis = 0; }
+		if (x > targetX - 100 && isRight) { movedis = 0; }
+		
+		//エネミーのrangeチェックの際にプレイヤーが発見するとくるくる回るバグを力技で修正（後で直す
+		if (dis > maxX)dis = maxX - 5;
+		else if (dis < minX) dis = minX + 5;
+	}
 	if (state == State::dead)movedis = 0;
 
 	if (isRight)
@@ -73,6 +82,7 @@ void Witch::floating()
 	{
 		x -= movedis;
 	}
+
 	imgHandle = moveHandle[(drawcount / 8) % 4];
 	if (state == State::alive) drawcount += addCount;
 
@@ -91,7 +101,6 @@ void Witch::risingOrDescent()
 	{
 		y--;
 	}
-	else{}
 }
 
 void Witch::collsionCheck(const Collision & target)
@@ -110,11 +119,13 @@ void Witch::collsionCheck(const Collision & target)
 		else if(attackR){
 			isFound = true;
 			targetY = target.hitRange.yPos;
+			targetX = target.hitRange.xPos;
 			isUnder = true;
 		}
 		else
 		{
 			isUnder = false;
+			isFound = false;
 		}
 	}
 
