@@ -49,7 +49,7 @@ void Witch::Draw(int drawX, int drawY)
 
 void Witch::attack()
 {
-
+	atkCt += addCount;
 }
 
 void Witch::floating()
@@ -100,6 +100,10 @@ void Witch::risingOrDescent()
 	else if(!isUnder && isPositionY)
 	{
 		y--;
+	}
+	else
+	{
+		isAssailable = true;
 	}
 }
 

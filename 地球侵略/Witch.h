@@ -11,6 +11,7 @@ public:
 	void floating();
 	void risingOrDescent();
 	void collsionCheck(const Collision & target);
+	void attack();
 	int update(const Collision & playerCol) override;
 
 private:
@@ -27,6 +28,7 @@ private:
 	bool isUnderTarget;
 	bool isFound = false;
 	bool isUnder = false;
+	bool isAssailable = false;
 
 
 };
