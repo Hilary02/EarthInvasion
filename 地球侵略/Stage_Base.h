@@ -40,7 +40,7 @@ private:
 	int MAP_WIDTH;	//横方向マップチップ数
 	const int CHIPSIZE = 32;//マップチップの大きさ
 
-	int chipImg[10];		//マップチップ格納用配列
+	int chipImg[100];		//マップチップ格納用配列
 	int bgHand;				//背景画像格納配列
 	int bgWidth;
 

@@ -71,6 +71,8 @@ void Stage_Base::draw() {
 	DrawGraphF(((800 - bgWidth) *((drawX) / (float)(MAP_WIDTH*CHIPSIZE))), -200, bgHand, false);	//背景の描画
 	int baseChipY = max(0, drawY - CHIPSIZE * 2);
 	int baseChipX = max(0, drawX - CHIPSIZE * 2);
+
+	//地形ブロックの描画
 	for (int y = baseChipY / CHIPSIZE; y < ((drawY + window.WINDOW_HEIGHT - 50) / CHIPSIZE); y++) {
 		for (int x = baseChipX / CHIPSIZE; x < ((drawX + CHIPSIZE + window.WINDOW_WIDTH) / CHIPSIZE); x++) {
 
@@ -82,15 +84,27 @@ void Stage_Base::draw() {
 					DrawGraph(tempX, tempY, chipImg[vmap[y][x]], TRUE);
 					drawChipNum++;
 				}
-
-				//if (vmap[y][x] == 9) {
-				//	DrawGraph(tempX, tempY + 16, chipImg[vmap[y][x]], TRUE);
-				//	drawChipNum++;
-				//}
 			}
 		}
 	}
 	objectMgr->Draw(drawX, drawY);
+
+	//前面地形ブロックの描画
+	for (int y = baseChipY / CHIPSIZE; y < ((drawY + window.WINDOW_HEIGHT - 50) / CHIPSIZE); y++) {
+		for (int x = baseChipX / CHIPSIZE; x < ((drawX + CHIPSIZE + window.WINDOW_WIDTH) / CHIPSIZE); x++) {
+
+			if (y < MAP_HEIGHT && x < MAP_WIDTH) {
+				int tempX = (x * CHIPSIZE) - drawX;
+				int tempY = (y * CHIPSIZE) - drawY;
+
+				if (50 <= vmap[y][x] && vmap[y][x] <= 59) {
+					DrawGraph(tempX, tempY, chipImg[vmap[y][x]], TRUE);
+					drawChipNum++;
+				}
+			}
+		}
+	}
+
 	drawInfo();
 
 	if (isClearAnimation) {
@@ -261,6 +275,8 @@ int Stage_Base::loadImg() {
 	//画像の設定
 	chipImg[2] = LoadGraph("data/img/groundFloor.png");
 	chipImg[3] = LoadGraph("data/img/airFloor.png");
+	chipImg[50] = LoadGraph("data/img/mapchip4.png");
+	chipImg[51] = LoadGraph("data/img/mapchip5.png");
 
 	bgHand = LoadGraph(bgPath.c_str());
 
