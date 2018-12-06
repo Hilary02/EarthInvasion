@@ -275,8 +275,12 @@ int Stage_Base::loadImg() {
 	//âÊëúÇÃê›íË
 	chipImg[2] = LoadGraph("data/img/groundFloor.png");
 	chipImg[3] = LoadGraph("data/img/airFloor.png");
-	chipImg[50] = LoadGraph("data/img/mapchip4.png");
-	chipImg[51] = LoadGraph("data/img/mapchip5.png");
+	chipImg[50] = LoadGraph("data/img/mapchipf0.png");
+	chipImg[51] = LoadGraph("data/img/mapchipf1.png");
+	chipImg[52] = LoadGraph("data/img/mapchipf2.png");
+	chipImg[53] = LoadGraph("data/img/mapchipf3.png");
+	chipImg[54] = LoadGraph("data/img/mapchipf4.png");
+	chipImg[55] = LoadGraph("data/img/mapchipf5.png");
 
 	bgHand = LoadGraph(bgPath.c_str());
 
