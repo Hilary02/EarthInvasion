@@ -7,7 +7,6 @@ public:
 	Witch(int x, int y, int img, IObjectManager* Iobj);
 	~Witch();
 	void Draw(int drawX, int drawY) override;
-	void attack();
 	void floating();
 	void risingOrDescent();
 	void collsionCheck(const Collision & target);
@@ -16,9 +15,6 @@ public:
 
 private:
 	int moveHandle[8];
-	int atackHandle[8];
-	int deadHandle[8];
-	int damegeHandle;
 	int bulletHandle;
 	int targetY;
 	int targetX;
@@ -28,8 +24,6 @@ private:
 	bool isUnderTarget;
 	bool isFound = false;
 	bool isUnder = false;
-	bool isAssailable = false;
-
 
 };
 

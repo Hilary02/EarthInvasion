@@ -16,8 +16,8 @@ Witch::Witch(int x, int y, int img, IObjectManager* Iobj)
 	setAtk(5);
 
 	LoadDivGraph("data/img/enemy2Walk.png", 4, 4, 1, 64, 64, moveHandle);
-	LoadDivGraph("data/img/enemy2WaitForAtack.png", 4, 4, 1, 64, 64, atackHandle);
-	LoadDivGraph("data/img/enemy2Atack.png", 4, 4, 1, 64, 64, &atackHandle[4]);
+	LoadDivGraph("data/img/enemy2WaitForAtack.png", 4, 4, 1, 64, 64, attackHandle);
+	LoadDivGraph("data/img/enemy2Atack.png", 4, 4, 1, 64, 64, &attackHandle[4]);
 	LoadDivGraph("data/img/enemy2Die.png", 8, 4, 2, 64, 64, deadHandle);
 	damegeHandle = LoadGraph("data/img/enemy2Damage.png");
 	bulletHandle = LoadGraph("data/img/bullet2.png");
@@ -49,17 +49,32 @@ void Witch::Draw(int drawX, int drawY)
 
 void Witch::attack()
 {
+
 	atkCt += addCount;
+
+	movedis = 0;
+	imgHandle = attackHandle[(drawcount / 12) % 8];
+	hundleIndex = (drawcount / 12) % 8;
+	if (state == State::alive) drawcount += addCount;
+	if (atkCt > atkInterval && state == State::alive && hundleIndex == 5)
+	{
+		atkCt = 0;
+		Bullet* objBull = new Bullet(x, y, getAtk(), bulletHandle, isRight, ObjectID::enemyBullet);
+		bullets.push_back(objBull);
+		IobjMgr->addObject(objBull);
+	}
+	if ((drawcount / 12) > 8 && hundleIndex == 0) {
+		drawcount = 0; //drawcount‚ÌƒŠƒZƒbƒg
+		if (!isFound)
+		{
+			isAtacck = false;
+			isMove = true;
+		}
+	}
 }
 
 void Witch::floating()
 {
-	if (!isMove && state == State::alive)
-	{
-		drawcount = 0;
-		isMove = true;
-		isAtacck = false;
-	}
 
 	//movedis = movespeed;
 	movedis = 1;
@@ -101,10 +116,10 @@ void Witch::risingOrDescent()
 	{
 		y--;
 	}
-	else
-	{
-		isAssailable = true;
-	}
+	else{
+		isAtacck = true;
+		isMove = false;
+	} 
 }
 
 void Witch::collsionCheck(const Collision & target)
@@ -120,16 +135,21 @@ void Witch::collsionCheck(const Collision & target)
 			isPlayerAtk = true;
 			modHp(mod);
 		}
+		//else if (attackR && !(isUnderTarget) && !(isPositionY)){
+		//	isAtacck = true;
+		//	isMove = false;
+		//}
 		else if(attackR){
 			isFound = true;
 			targetY = target.hitRange.yPos;
 			targetX = target.hitRange.xPos;
 			isUnder = true;
 		}
-		else
-		{
-			isUnder = false;
+		else{
+/*			isMove = true;
+	*/		isUnder = false;
 			isFound = false;
+			//isAtacck = false;
 		}
 	}
 
@@ -145,8 +165,15 @@ int Witch::update(const Collision & playerCol)
 		collision->updatePos(x, y);
 		AttackBox->updatePos(x, y);
 		collsionCheck(playerCol);
-		risingOrDescent();
-		floating();
+		if (isMove)
+		{
+			risingOrDescent();
+			floating();
+		}
+		else if(isAtacck)
+		{
+			attack();
+		}
 	}
 	return 0;
 }

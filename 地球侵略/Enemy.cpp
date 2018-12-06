@@ -83,6 +83,8 @@ int Enemy::update(const Collision & playerCol) {
 		}
 		index = -1;
 	}
+
+	//ƒŠƒXƒ|[ƒ“ˆ—
 	if (state == State::respawn
 		&& abs(playerCol.hitRange.xPos - this->x) >= 600) {
 		state = State::alive;
