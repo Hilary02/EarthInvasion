@@ -1,6 +1,7 @@
 #include "Scene_Select.h"
 
 Scene_Select::Scene_Select(int param) {
+	SoundM.SetMusic(LoadSoundMem("data/mc/menu1.ogg"));
 	int clearedNum = 0;
 	savedata.load();
 	for (unsigned int i = 0; i < clearState.size(); i++) {

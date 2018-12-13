@@ -25,6 +25,7 @@
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="Creature.cpp" />
+    <ClCompile Include="DaibutsuRobo.cpp" />
     <ClCompile Include="DrG.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Fire.cpp" />
@@ -64,6 +65,7 @@
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="Collision.h" />
     <ClInclude Include="Creature.h" />
+    <ClInclude Include="DaibutsuRobo.h" />
     <ClInclude Include="DrG.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Fire.h" />
@@ -81,6 +83,7 @@
     <ClInclude Include="ObjectID.h" />
     <ClInclude Include="ObjectManager.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="RobotEnemy.h" />
     <ClInclude Include="SaveData.h" />
     <ClInclude Include="SceneManager.h" />
@@ -98,6 +101,9 @@
     <ClInclude Include="TextBox.h" />
     <ClInclude Include="WindowData.h" />
     <ClInclude Include="Witch.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Resource.rc" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

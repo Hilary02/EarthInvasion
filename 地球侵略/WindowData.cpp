@@ -1,4 +1,5 @@
 #include "WindowData.h"
+#include "resource.h"
 
 //windowを用いて初期化など行う．
 WindowData window;
@@ -14,7 +15,7 @@ bool WindowData::ask_screenmode() {
 WindowData::WindowData() :
 	WINDOW_WIDTH(800),
 	WINDOW_HEIGHT(600),
-	TITLE("地球侵略だぁぁぁ！ ver1.0") {
+	TITLE("地球侵略だぁぁぁ！ ver1.1") {
 }
 
 
@@ -24,6 +25,7 @@ WindowData::~WindowData()
 
 //ウィンドウの初期化処理を行う．
 int WindowData::Init() {
+	SetWindowIconID(IDI_ICON1);
 	SetMainWindowText(TITLE.c_str());				//c_strでchar型にできる
 	//is_fullscreen = ask_screenmode();  //コメントアウトで強制ウィンドウ
 	if (is_fullscreen) {
@@ -37,7 +39,7 @@ int WindowData::Init() {
 	}
 	if (DxLib_Init() == -1)	return -1;
 	SetBackgroundColor(0, 0, 0);					//背景色を黒に
-	//SetOutApplicationLogValidFlag(false);			//ログ出力
+	SetOutApplicationLogValidFlag(false);			//ログ出力
 	//SetTransColor(255, 0, 255);					//透過色未設定
 	SetAlwaysRunFlag(false);						//アクティブでないとき停止
 	SetUseDXArchiveFlag(true);						//DXアーカイブ機能を使う

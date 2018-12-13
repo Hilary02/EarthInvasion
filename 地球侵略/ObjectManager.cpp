@@ -56,7 +56,7 @@ ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap, int stage, ISt
 					obje = new AntiAlienLaser(x, y, img[ObjectID::alienLaser], ObjectID::alienLaser);
 					break;
 				default:
-					obje = new Item(x, y, img[ObjectID::healPot]);	//ê∂ê¨Ç≥ÇÍÇÈÇ◊Ç´Ç≈Ç»Ç¢
+					obje = new Item(x, y, img[ObjectID::healPot],ObjectID::healPot);	//ê∂ê¨Ç≥ÇÍÇÈÇ◊Ç´Ç≈Ç»Ç¢
 					break;
 				}
 				terrain.push_back(obje);	//Ç±ÇøÇÁÇÕínå`Ç…ï€ë∂
@@ -107,7 +107,7 @@ void ObjectManager::Loadimg() {
 	img[ObjectID::soldierA] = LoadGraph("data/img/enemy1Wait.png");
 	img[ObjectID::soldierB] = LoadGraph("data/img/enemy1Wait.png");
 	img[ObjectID::healPot] = LoadGraph("data/img/healPot.png");
-	img[ObjectID::detoxificationPot] = LoadGraph("data/img/curePot.png");
+	img[ObjectID::detoxPot] = LoadGraph("data/img/detoxPot.png");
 	img[ObjectID::goal] = LoadGraph("data/img/clear.png");
 	img[ObjectID::alienLaser] = LoadGraph("data/img/LaserA_Wait.png");
 	img[ObjectID::robotEnemy] = LoadGraph("data/img/enemy4Wait.png");
@@ -188,10 +188,10 @@ void ObjectManager::addObject(int id, int x, int y, int hp, int moveUL, int move
 		obj = new Witch(x,y,img[ObjectID::witch],this);
 		break;
 	case ObjectID::healPot:
-		obj = new Item(x, y, img[ObjectID::healPot]);
+		obj = new Item(x, y, img[ObjectID::healPot],ObjectID::healPot);
 		break;
-	case ObjectID::detoxificationPot:
-		obj = new Item(x, y, img[ObjectID::detoxificationPot]);
+	case ObjectID::detoxPot:
+		obj = new Item(x, y, img[ObjectID::detoxPot],ObjectID::detoxPot);
 		break;
 	case ObjectID::alienLaser:
 		obj = new AntiAlienLaser(x, y, img[ObjectID::alienLaser], ObjectID::alienLaser);
@@ -207,7 +207,7 @@ void ObjectManager::addObject(int id, int x, int y, int hp, int moveUL, int move
 		obj = new Goal(x, y, img[ObjectID::goal], stageId, stageBase);
 		break;
 	default:
-		obj = new Item(x, y, img[ObjectID::healPot]);	//ê∂ê¨Ç≥ÇÍÇÈÇ◊Ç´Ç≈Ç»Ç¢
+		obj = new Item(x, y, img[ObjectID::healPot], ObjectID::healPot);	//ê∂ê¨Ç≥ÇÍÇÈÇ◊Ç´Ç≈Ç»Ç¢
 		break;
 	}
 	objects.push_back(obj);

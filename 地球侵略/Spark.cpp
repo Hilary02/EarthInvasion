@@ -15,13 +15,14 @@ Spark::Spark(int x, int y, int img) {
 int Spark::update(const Collision & playerCol) {
 	collision->updatePos(x, y);
 	collisionCheck(playerCol);
+	frame++;
+	if (frame > 60) frame = 0;
 	return 0;
 }
 
 void Spark::Draw(int drawX, int drawY) {
 	DrawGraph(x - drawX, y - drawY, biribiriHandle[frame / 6 % 4], true);
-	frame++;
-	if (frame > 60) frame = 0;
+
 }
 
 void Spark::collisionCheck(const Collision & target) {}

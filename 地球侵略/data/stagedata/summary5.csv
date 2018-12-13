@@ -1,0 +1,3 @@
+/チップセット,背景,bgm,初期X,初期Y,制限時間(秒)
+-1,data/img/bg_factory.png,data/mc/bossA.ogg,500,200,360
+,,data/mc/.wav,,,

@@ -25,11 +25,14 @@ Stage_Base::Stage_Base(int stage) {
 	//プレイヤー呼び出し
 	this->player = objectMgr->getPlayer();
 	player->setAbsolutePos(playerX, playerY);
+	befX = player->getX();
+	befY = player->getY();
 
 
 	//制限時間 ttp://nanoappli.com/blog/archives/3229
-	//現在，一時停止とか完全に無視して時間が進む
-	timeLimit = GetNowCount() + time;
+	leftTime = time;
+	dTime = 0;
+	beforeTime = GetNowCount();
 
 }
 
@@ -42,7 +45,9 @@ Stage_Base::~Stage_Base() {
 void Stage_Base::update() {
 	if (!(isDeadAnimation || isClearAnimation)) { //どちらもFalse ->アニメなしなら
 		//タイマー
-		leftTime = int(timeLimit - GetNowCount());
+		if (!(SceneM.isPausing)) {
+			leftTime -= int(dTime);
+		}
 		if (leftTime <= 0) {
 			SceneM.ChangeScene(scene::GameOver);
 		}
@@ -58,9 +63,16 @@ void Stage_Base::update() {
 }
 
 void Stage_Base::draw() {
+	//タイマー
+	dTime = (GetNowCount() - beforeTime);
+	beforeTime = GetNowCount();
+
+
 	DrawGraphF(((800 - bgWidth) *((drawX) / (float)(MAP_WIDTH*CHIPSIZE))), -200, bgHand, false);	//背景の描画
 	int baseChipY = max(0, drawY - CHIPSIZE * 2);
 	int baseChipX = max(0, drawX - CHIPSIZE * 2);
+
+	//地形ブロックの描画
 	for (int y = baseChipY / CHIPSIZE; y < ((drawY + window.WINDOW_HEIGHT - 50) / CHIPSIZE); y++) {
 		for (int x = baseChipX / CHIPSIZE; x < ((drawX + CHIPSIZE + window.WINDOW_WIDTH) / CHIPSIZE); x++) {
 
@@ -72,19 +84,27 @@ void Stage_Base::draw() {
 					DrawGraph(tempX, tempY, chipImg[vmap[y][x]], TRUE);
 					drawChipNum++;
 				}
-
-				//if (vmap[y][x] == 9) {
-				//	DrawGraph(tempX, tempY + 16, chipImg[vmap[y][x]], TRUE);
-				//	drawChipNum++;
-				//}
 			}
 		}
 	}
-	//チュートリアルのやつ
-	if (stageId == 0) {
-		DrawRotaGraph(625, 88, 0.5, 0, img_tutorial, TRUE);
-	}
 	objectMgr->Draw(drawX, drawY);
+
+	//前面地形ブロックの描画
+	for (int y = baseChipY / CHIPSIZE; y < ((drawY + window.WINDOW_HEIGHT - 50) / CHIPSIZE); y++) {
+		for (int x = baseChipX / CHIPSIZE; x < ((drawX + CHIPSIZE + window.WINDOW_WIDTH) / CHIPSIZE); x++) {
+
+			if (y < MAP_HEIGHT && x < MAP_WIDTH) {
+				int tempX = (x * CHIPSIZE) - drawX;
+				int tempY = (y * CHIPSIZE) - drawY;
+
+				if (50 <= vmap[y][x] && vmap[y][x] <= 59) {
+					DrawGraph(tempX, tempY, chipImg[vmap[y][x]], TRUE);
+					drawChipNum++;
+				}
+			}
+		}
+	}
+
 	drawInfo();
 
 	if (isClearAnimation) {
@@ -128,6 +148,11 @@ void Stage_Base::draw() {
 		}
 	}
 
+	//チュートリアルのやつ
+	if (stageId == 0) {
+		DrawRotaGraph(625, 88, 0.5, 0, img_tutorial, TRUE);
+	}
+
 	//デバッグ情報
 //d	DrawFormatString(0, 30, GetColor(255, 125, 255), "マップ表示原点：%d  ,%d", drawX, drawY);
 //d	DrawFormatString(0, 50, GetColor(255, 125, 255), "表示画像数：%d", drawChipNum);
@@ -135,9 +160,25 @@ void Stage_Base::draw() {
 
 
 void Stage_Base::scrollMap() {
-	//TODO:数字はいずれconst変数にする
-	int baseDrawX = player->getX() - 100;
-	int baseDrawY = player->getY() - 300;
+	//プレイヤーの向きに応じて視界を変化
+	bool dir = player->getDirection();
+	int pX = player->getX();
+	int pY = player->getY();
+	if ((pX - befX) == 0) {
+		if (dir) {
+			visibleX -= AvisibleX;
+			if (visibleX <= MinvisibleX)visibleX = MinvisibleX;
+		}
+		else {
+			visibleX += AvisibleX;
+			if (visibleX >= MaxvisibleX)visibleX = MaxvisibleX;
+		}
+	}
+	befX = pX;
+	befY = pY;
+
+	int baseDrawX = player->getX() - visibleX;
+	int baseDrawY = player->getY() - visibleY;
 	int limitDrawX = MAP_WIDTH * CHIPSIZE - window.WINDOW_WIDTH;
 	int limitDrawY = MAP_HEIGHT * CHIPSIZE - window.WINDOW_HEIGHT + 150;
 
@@ -234,6 +275,12 @@ int Stage_Base::loadImg() {
 	//画像の設定
 	chipImg[2] = LoadGraph("data/img/groundFloor.png");
 	chipImg[3] = LoadGraph("data/img/airFloor.png");
+	chipImg[50] = LoadGraph("data/img/mapchipf0.png");
+	chipImg[51] = LoadGraph("data/img/mapchipf1.png");
+	chipImg[52] = LoadGraph("data/img/mapchipf2.png");
+	chipImg[53] = LoadGraph("data/img/mapchipf3.png");
+	chipImg[54] = LoadGraph("data/img/mapchipf4.png");
+	chipImg[55] = LoadGraph("data/img/mapchipf5.png");
 
 	bgHand = LoadGraph(bgPath.c_str());
 

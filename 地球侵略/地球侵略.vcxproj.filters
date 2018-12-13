@@ -88,9 +88,6 @@
     <ClCompile Include="Abyss.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Witch.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="DrG.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -98,7 +95,12 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="RobotEnemy.cpp" />
-    <ClCompile Include="BGMChanger.cpp" />
+    <ClCompile Include="BGMChanger.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="DaibutsuRobo.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Collision.cpp">
@@ -337,11 +339,6 @@
     <ClInclude Include="Abyss.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-<<<<<<< HEAD
-    <ClInclude Include="Witch.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-=======
     <ClInclude Include="DrG.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -349,8 +346,13 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="RobotEnemy.h" />
-    <ClInclude Include="BGMChanger.h" />
->>>>>>> master
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="BGMChanger.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="DaibutsuRobo.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ソース ファイル">
@@ -359,5 +361,8 @@
     <Filter Include="ヘッダー ファイル">
       <UniqueIdentifier>{e785c8ea-0e09-4d38-a5fd-5cfe0e3498f9}</UniqueIdentifier>
     </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Resource.rc" />
   </ItemGroup>
 </Project>

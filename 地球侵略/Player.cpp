@@ -26,11 +26,35 @@ Player::~Player() {
 }
 
 int Player::update() {
+	//当たり判定に寄生状態を記録
 	if (preParasite != 0) {
-		collision->playerParasite = preParasite; //当たり判定に寄生状態を記録
+		collision->playerParasite = preParasite;
 		preParasite = 0;
 	}
+
+	//寄生判定
+	if (keyM.GetKeyFrame(KEY_INPUT_DOWN) == 0 && isLiquid) {
+		xyCheck = 'N';
+		if (MapHitCheck(x1, y, xyCheck) && MapHitCheck(x2, y, xyCheck) && MapHitCheck(x3, y, xyCheck)) {
+			isLiquid = false;
+			isMoving = 'R';
+			drawCount = 0;
+		}
+	}
+
+	//液体判定
+	if (isLiquid) {
+		collision = liquidCol;
+	}
+	else {
+		collision = eeyanCol;
+	}
+	collision->updatePos(x, y);
+
+	//当たり判定決定
 	PerDecision();
+
+	//左右移動
 	if (!isAttack && !isDead && isMoving == 'N') {
 		if (keyM.GetKeyFrame(KEY_INPUT_LEFT) >= 1) {
 			right = false;
@@ -62,6 +86,7 @@ int Player::update() {
 			if (keyM.GetKeyFrame(KEY_INPUT_Z) == 1) {
 				isAttack = true;
 				SoundM.Se("data/se/Attack.wav");
+				nowAttacking = true;
 				drawCount = 0;
 			}
 			if (plState == playerState::Alien) {
@@ -137,7 +162,7 @@ int Player::update() {
 				}
 			}
 
-			//寄生解除
+			//毒、ロボット特殊寄生状態処理
 			if (keyM.GetKeyFrame(KEY_INPUT_DOWN) >= 45 && plState != playerState::Alien && plState != playerState::Venom) {
 				plState = playerState::Alien;
 				isMoving = 'O';
@@ -145,7 +170,6 @@ int Player::update() {
 				collision->playerParasite = 0;
 			}
 			else if (removeCT >= 900 && plState == playerState::Robot) {
-				//ロボット兵の強制寄生解除
 				plState = playerState::Alien;
 				isMoving = 'O';
 				drawCount = 0;
@@ -157,23 +181,13 @@ int Player::update() {
 
 		}
 	}
-	//寄生判定
-	if (keyM.GetKeyFrame(KEY_INPUT_DOWN) == 0 && isLiquid) {
-		xyCheck = 'N';
-		if (MapHitCheck(x1, y, xyCheck) && MapHitCheck(x2, y, xyCheck) && MapHitCheck(x3, y, xyCheck)) {
-			isLiquid = false;
-			isMoving = 'R';
-			drawCount = 0;
-		}
+	updateCT += 1;
+	if (collision->playerState && updateCT > 60)
+	{
+		collision->playerState = 0;
+		updateCT = 0;
 	}
 
-	if (isLiquid) {
-		collision = liquidCol;
-	}
-	else {
-		collision = eeyanCol;
-	}
-	collision->updatePos(x, y);
 
 	//ジャンプ中の処理
 	if (isJumping) {
@@ -207,37 +221,6 @@ int Player::update() {
 
 	collision->updatePos(x, y);
 
-	//通常状態の攻撃処理 
-	if (isAttack && plState == playerState::Alien && drawCount >= 25 && drawCount <= 32) {
-		if (right)
-		{
-			collision->updatePos(x + 10, y);
-			collision->hitRange.xSize = 80;
-		}
-		else if (!right)
-		{
-			collision->updatePos(x - 70, y);
-			collision->hitRange.xSize = 60;
-
-		}
-		collision->playerState = 1;
-	}
-	else {
-		collision->hitRange.xSize = 32;
-	}
-
-	//一般兵状態の攻撃処理 
-	bulletCT += 1;
-	if (isAttack && (plState == playerState::Soldier || plState == playerState::Veteran || plState == playerState::Robot) && drawCount >= 25 && drawCount <= 32)
-	{
-		if (bulletCT > 60)
-		{
-			bulletCT = 0;
-			Bullet* objBull = new Bullet(x, y, getAtk(), bulletHandle, right, ObjectID::playerBullet);
-			bullets.push_back(objBull);
-			IobjMgr->addObject(objBull);
-		}
-	}
 
 	//毒状態
 	if (plState == playerState::Venom) {
@@ -301,6 +284,40 @@ int Player::update() {
 			}
 		}
 	}
+	collision->updatePos(x, y);
+
+	//通常状態の攻撃処理 
+	if (isAttack && plState == playerState::Alien && drawCount >= 25 && drawCount <= 32) {
+		if (right)
+		{
+			collision->updatePos(x + 10, y);
+			collision->hitRange.xSize = 80;
+		}
+		else if (!right)
+		{
+			collision->updatePos(x - 70, y);
+			collision->hitRange.xSize = 60;
+
+		}
+		collision->playerState = 1;
+	}
+	else {
+		collision->hitRange.xSize = 32;
+		nowAttacking = false;
+	}
+
+	//一般兵状態の攻撃処理 
+	bulletCT += 1;
+	if (isAttack && (plState == playerState::Soldier || plState == playerState::Veteran || plState == playerState::Robot) && drawCount >= 25 && drawCount <= 32)
+	{
+		if (bulletCT > 60)
+		{
+			bulletCT = 0;
+			Bullet* objBull = new Bullet(x, y, getAtk(), bulletHandle, right, ObjectID::playerBullet);
+			bullets.push_back(objBull);
+			IobjMgr->addObject(objBull);
+		}
+	}
 
 	//地形オブジェクトとの当たり判定をとり，位置の修正
 	for (auto t : IobjMgr->getTerrainList()) {
@@ -308,16 +325,22 @@ int Player::update() {
 			switch (t->getId()) {
 			case ObjectID::lockedDoor: //扉
 			{
-				int leftTX = t->collision->hitRange.xPos + t->collision->hitRange.xOffset;
-				int leftPX = collision->hitRange.xPos + collision->hitRange.xOffset;
-
-				if (leftPX < leftTX) {
-					x = leftTX - collision->hitRange.xSize - collision->hitRange.xOffset;
+				if (plState == playerState::Alien && isAttack) {
+					//攻撃中は座標移動なし
 				}
-				else if (leftPX > leftTX) {
-					x = leftTX + t->collision->hitRange.xSize - collision->hitRange.xOffset;
+				else {
+					int leftTX = t->collision->hitRange.xPos + t->collision->hitRange.xOffset;
+					int leftPX = collision->hitRange.xPos + collision->hitRange.xOffset;
+
+					if (leftPX < leftTX) {
+						x = leftTX - collision->hitRange.xSize - collision->hitRange.xOffset;
+					}
+					else if (leftPX > leftTX) {
+						x = leftTX + t->collision->hitRange.xSize - collision->hitRange.xOffset;
+					}
 				}
 				isAttack = false;
+				nowAttacking = false;
 
 				break;
 			}
@@ -350,18 +373,16 @@ int Player::update() {
 			switch (o->getId()) {
 			case ObjectID::soldierA: //兵士
 			case ObjectID::soldierB:
-				if (o->state == State::alive && !(collision->playerState == 1))modHp(-1);
+				if (o->state == State::alive && !(collision->playerState == 1 && !nowAttacking))modHp(-1);
 				break;
 			case ObjectID::healPot: //回復ポッド
 				modHp(5);
 				break;
-			case ObjectID::detoxificationPot://毒消し
-				if (plState == playerState::Venom) {
-					plState = playerState::Alien;
-					isMoving = 'O';
-					drawCount = 0;
-					collision->playerParasite = 0;
-				}
+			case ObjectID::detoxPot://毒消し
+				plState = playerState::Alien;
+				isMoving = 'O';
+				drawCount = 0;
+				collision->playerParasite = 0;
 				break;
 			case ObjectID::spike: //とげとげ
 				modHp(-1);
@@ -411,12 +432,6 @@ int Player::update() {
 
 	}
 
-	updateCT += 1;
-	if (collision->playerState && updateCT > 60)
-	{
-		collision->playerState = 0;
-		updateCT = 0;
-	}
 
 	if (hp <= 0 && !isDead) {
 		SoundM.Se("data/se/death.wav");
@@ -429,6 +444,17 @@ int Player::update() {
 	}
 
 	invalidDamageTime++;	//無敵時間
+
+		//寄生解除バー
+	if (keyM.GetKeyFrame(KEY_INPUT_DOWN) >= 1 && plState != playerState::Alien) {
+		if ((1 - (double)keyM.GetKeyFrame(KEY_INPUT_DOWN) / 45) > 0) {
+			gauge_length = (1 - (double)keyM.GetKeyFrame(KEY_INPUT_DOWN) / 45);
+		}
+	}
+	else {
+		gauge_length = 0;
+	}
+
 	return 0;
 }
 
@@ -521,12 +547,8 @@ void Player::Draw(int drawX, int drawY) {
 	}
 
 	//寄生解除バー
-	if (keyM.GetKeyFrame(KEY_INPUT_DOWN) >= 1 && plState != playerState::Alien) {
-		double size = 0;
-		if ((1 - (double)keyM.GetKeyFrame(KEY_INPUT_DOWN) / 45) > 0) {
-			size = (1 - (double)keyM.GetKeyFrame(KEY_INPUT_DOWN) / 45);
-		}
-		DrawExtendGraph(tempX + 16, tempY - 18, tempX + 16 + 50 * size, tempY - 4, img_gauge, false);
+	if (plState != playerState::Alien) {
+		DrawExtendGraph(tempX + 16, tempY - 18, tempX + 16 + 50 * gauge_length, tempY - 4, img_gauge, false);
 	}
 }
 
@@ -679,6 +701,7 @@ void Player::parasiteDrawImg(int tempX, int tempY, playerState plstate) {
 int Player::getX() { return x; }
 int Player::getY() { return y; }
 int Player::getHp() { return hp; }
+bool Player::getDirection() { return right; }
 
 void Player::PerDecision() {
 	int sizeX1 = 16;

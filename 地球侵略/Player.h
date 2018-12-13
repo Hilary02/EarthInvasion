@@ -39,6 +39,7 @@ public:
 	int getX();
 	int getY();
 	int getHp();
+	bool getDirection();
 	void modHp(int mod, bool through = false) override;
 private:
 	void LoadImg();
@@ -59,6 +60,7 @@ private:
 	int y3 = 0;
 	const int MOVE = 3;
 	int drawCount = 0;
+	int attackCount = 0;
 	int cMove = 0;
 	double jumpPower = 0;
 	double speed = 10.0;
@@ -85,6 +87,7 @@ private:
 	int die[16];
 
 	int img_gauge;
+	double gauge_length;
 	int invalidDamageTime = 120;
 	int preParasite = 0;
 
@@ -97,4 +100,6 @@ private:
 	Collision *eeyanCol;
 	Collision *liquidCol;
 	int removeCT = 0;
+
+	bool nowAttacking = false;
 };
