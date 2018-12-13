@@ -107,6 +107,7 @@ void Witch::risingOrDescent()
 {
 	isPositionY = y > basePositionY;  //元のy座標より下ならtrue
 	isUnderTarget = y < targetY;   //ターゲットより上ならtrue
+	bool isSamePosition = (y == targetY);  //やっつけ処理の同じy座標の場合true
 
 	if (isUnder && isUnderTarget)
 	{
@@ -116,7 +117,7 @@ void Witch::risingOrDescent()
 	{
 		y--;
 	}
-	else{
+	else if(isSamePosition){
 		isAtacck = true;
 		isMove = false;
 	} 
@@ -135,10 +136,6 @@ void Witch::collsionCheck(const Collision & target)
 			isPlayerAtk = true;
 			modHp(mod);
 		}
-		//else if (attackR && !(isUnderTarget) && !(isPositionY)){
-		//	isAtacck = true;
-		//	isMove = false;
-		//}
 		else if(attackR){
 			isFound = true;
 			targetY = target.hitRange.yPos;
@@ -146,10 +143,8 @@ void Witch::collsionCheck(const Collision & target)
 			isUnder = true;
 		}
 		else{
-/*			isMove = true;
-	*/		isUnder = false;
+			isUnder = false;
 			isFound = false;
-			//isAtacck = false;
 		}
 	}
 
