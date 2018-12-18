@@ -4,13 +4,13 @@ Scene_Select::Scene_Select(int param) {
 	SoundM.SetMusic(LoadSoundMem("data/mc/menu1.ogg"));
 	int clearedNum = 0;
 	savedata.load();
-	for (unsigned int i = 0; i < clearState.size(); i++) {
+	for (unsigned int i = 0; i < stage_num; i++) {
 		clearState[i] = savedata.getClearFlag(i);
 	}
 	//ロードした段階では，クリア済みは1，そうでないものは0となっている．これを挑戦可能なものと不可能なものに分ける．
 
 	clearState[0] = 1;	//挑戦できないステージ．基本的にアクセスしない
-	for (unsigned int i = 1; i < clearState.size(); i++) {
+	for (unsigned int i = 1; i < stage_num; i++) {
 		int r1 = stageFrameData[i].requireStage1;
 		int r2 = stageFrameData[i].requireStage2;
 		if (clearState[i] == 0) {
@@ -27,8 +27,11 @@ Scene_Select::Scene_Select(int param) {
 	2:未クリア(挑戦可)
 	3:うっすら表示(直近のボスステージ)
 	*/
-	bg = LoadGraph("data/img/bg_stageselect.png");
-	if (1 <= param && param <= 13) {
+	bg = LoadGraph("data/img/stageselect.png");
+	over = LoadGraph("data/img/stageselect_over.png");
+	eeyan = LoadGraph("data/img/eeyan_map.png");
+
+	if (1 <= param && param <= stage_num) {
 		selecting = param;
 	}
 }
@@ -62,10 +65,10 @@ void Scene_Select::update() {
 	if (keyM.GetKeyFrame(KEY_INPUT_X) == 1) {
 		SceneM.ChangeScene(scene::Title);
 	}
+	printfDx("%d", selecting);
 }
 
-void Scene_Select::Draw()
-{
+void Scene_Select::Draw() {
 	DrawGraph(0, 0, bg, TRUE);
 	int textColor = 0x000000;
 	for (unsigned int i = 0; i < clearState.size(); i++) {
@@ -93,7 +96,7 @@ void Scene_Select::Draw()
 	int col_red = 0xFF0000;
 	int col_yel = 0xFFFF00;
 
-	for (int i = 1; i <= 13; i++) {
+	for (int i = 1; i <= stage_num; i++) {
 		int bx = stageFrameData[i].x;
 		int by = stageFrameData[i].y;
 		int color = col_blk;
@@ -119,12 +122,17 @@ void Scene_Select::Draw()
 			break;
 		}
 
-		DrawBox(bx, by, bx + stageFrameData[i].w, by + stageFrameData[i].h, color, true);
+		DrawBox(bx, by, bx + 100, by + 100, color, true);
 	}
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	int bx = stageFrameData[selecting].x;
 	int by = stageFrameData[selecting].y;
-	DrawThickBox(bx, by, bx + stageFrameData[selecting].w, by + stageFrameData[selecting].h, 0xFF0000, 3);
+	//	DrawThickBox(bx, by, bx + stageFrameData[selecting].w, by + stageFrameData[selecting].h, 0xFF0000, 3);
+	//NOTE ええやんの表示
+
+
+	DrawGraph(0, 0, over, TRUE);
+	DrawGraph(stageFrameData[selecting].x - 15, stageFrameData[selecting].y - 60, eeyan, TRUE);
 }
 
 void Scene_Select::DrawThickBox(int x1, int y1, int x2, int y2, unsigned int Color, int Thickness) {
