@@ -281,6 +281,10 @@ int Stage_Base::loadImg() {
 	chipImg[53] = LoadGraph("data/img/mapchipf3.png");
 	chipImg[54] = LoadGraph("data/img/mapchipf4.png");
 	chipImg[55] = LoadGraph("data/img/mapchipf5.png");
+	chipImg[56] = LoadGraph("data/img/mapchipf6.png");
+	chipImg[57] = LoadGraph("data/img/mapchipf7.png");
+	chipImg[58] = LoadGraph("data/img/mapchipf8.png");
+	chipImg[59] = LoadGraph("data/img/mapchipf9.png");
 
 	bgHand = LoadGraph(bgPath.c_str());
 

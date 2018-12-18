@@ -4,17 +4,17 @@ Scene_Select::Scene_Select(int param) {
 	SoundM.SetMusic(LoadSoundMem("data/mc/menu1.ogg"));
 	int clearedNum = 0;
 	savedata.load();
-	for (unsigned int i = 0; i < stage_num; i++) {
+	for (unsigned int i = 0; i <= stage_num; i++) {
 		clearState[i] = savedata.getClearFlag(i);
 	}
 	//ロードした段階では，クリア済みは1，そうでないものは0となっている．これを挑戦可能なものと不可能なものに分ける．
 
 	clearState[0] = 1;	//挑戦できないステージ．基本的にアクセスしない
-	for (unsigned int i = 1; i < stage_num; i++) {
+	for (unsigned int i = 1; i <= stage_num; i++) {
 		int r1 = stageFrameData[i].requireStage1;
 		int r2 = stageFrameData[i].requireStage2;
 		if (clearState[i] == 0) {
-			if (i >= 9 && i <= 12 && clearState[i - 1] == 1) {
+			if (i >= 9 && i <= 10 && clearState[i - 1] == 1) {
 				clearState[i] = 3;	//未クリアのボスステージのうち一番小さいステージを3番に
 			}
 			if ((clearState[r1] & clearState[r2]) == 1) {	//ビット演算．要求ステージが両方1なら条件を満たす
@@ -65,7 +65,6 @@ void Scene_Select::update() {
 	if (keyM.GetKeyFrame(KEY_INPUT_X) == 1) {
 		SceneM.ChangeScene(scene::Title);
 	}
-	printfDx("%d", selecting);
 }
 
 void Scene_Select::Draw() {
@@ -106,15 +105,15 @@ void Scene_Select::Draw() {
 			color = col_blk;
 			break;
 		case 1:
-			SetDrawBlendMode(DX_BLENDMODE_ALPHA, 50);	//薄い
+			SetDrawBlendMode(DX_BLENDMODE_ALPHA, 170);	//薄い
 			color = col_yel;
 			break;
 		case 2:
-			SetDrawBlendMode(DX_BLENDMODE_ALPHA, 100);	//結構見える
+			SetDrawBlendMode(DX_BLENDMODE_ALPHA, 200);	//結構見える
 			color = col_blue;
 			break;
 		case 3:
-			SetDrawBlendMode(DX_BLENDMODE_ALPHA, 50);	//うっすらと
+			SetDrawBlendMode(DX_BLENDMODE_ALPHA, 210);	//うっすらと
 			color = col_blk;
 			break;
 		default:
@@ -133,6 +132,10 @@ void Scene_Select::Draw() {
 
 	DrawGraph(0, 0, over, TRUE);
 	DrawGraph(stageFrameData[selecting].x - 15, stageFrameData[selecting].y - 60, eeyan, TRUE);
+	SetFontSize(20);
+	DrawFormatString(25,570,0xFFFFFF,"Stage%2d", selecting);
+	SetFontSize(-1);
+
 }
 
 void Scene_Select::DrawThickBox(int x1, int y1, int x2, int y2, unsigned int Color, int Thickness) {
