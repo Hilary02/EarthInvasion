@@ -80,7 +80,7 @@ void Stage_Base::draw() {
 				int tempX = (x * CHIPSIZE) - drawX;
 				int tempY = (y * CHIPSIZE) - drawY;
 
-				if (1 <= vmap[y][x] && vmap[y][x] <= 9) {
+				if (1 <= vmap[y][x] && vmap[y][x] <= 9 || 60 <= vmap[y][x] && vmap[y][x] <= 69) {
 					DrawGraph(tempX, tempY, chipImg[vmap[y][x]], TRUE);
 					drawChipNum++;
 				}
@@ -285,6 +285,16 @@ int Stage_Base::loadImg() {
 	chipImg[57] = LoadGraph("data/img/mapchipf7.png");
 	chipImg[58] = LoadGraph("data/img/mapchipf8.png");
 	chipImg[59] = LoadGraph("data/img/mapchipf9.png");
+	chipImg[60] = LoadGraph("data/img/mapchip_60.png");
+	chipImg[61] = LoadGraph("data/img/mapchip_61.png");
+	chipImg[62] = LoadGraph("data/img/mapchip_62.png");
+	chipImg[63] = LoadGraph("data/img/mapchip_63.png");
+	chipImg[64] = LoadGraph("data/img/mapchip_64.png");
+	chipImg[65] = LoadGraph("data/img/mapchip_65.png");
+	chipImg[66] = LoadGraph("data/img/mapchip_66.png");
+	chipImg[67] = LoadGraph("data/img/mapchip_67.png");
+	chipImg[68] = LoadGraph("data/img/mapchip_68.png");
+	chipImg[69] = LoadGraph("data/img/mapchip_69.png");
 
 	bgHand = LoadGraph(bgPath.c_str());
 
