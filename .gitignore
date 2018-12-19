@@ -265,3 +265,4 @@ __pycache__/
 地球侵略/save.dat
 地球侵略/除外されたもの/*
 *.zip
+/CollisionPosVer2.csv
