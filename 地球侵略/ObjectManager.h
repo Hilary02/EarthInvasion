@@ -6,6 +6,7 @@
 #include "Player.h"
 #include "Enemy.h"
 #include "RobotEnemy.h"
+#include "Witch.h"
 #include "IStageBase.h"
 
 class ObjectManager :
@@ -25,8 +26,10 @@ public:
 	void addObject(Object* obj) override;
 	//Objectパラメータ指定で追加
 	void addObject(int id, int x, int y, int hp = -1, int moveUL = -1, int moveRD = -1, int etc1 = -1, int etc2 = -1);
-	//謨ｵ蜈ｵ縺ｮ蜍輔￥遽・峇險育ｮ・
+	//エネミーの移動範囲設定する
 	void enemyMoveRangeCalc(int x, int y, int *minX, int *maxX);
+	//魔女の移動範囲を設定する
+	void witchMoveRangeCalc(int x, int y, int *minX, int *maxX);
 
 	std::vector<Object*>& getObjectList() override;
 	std::vector<Object*>& getTerrainList() override;

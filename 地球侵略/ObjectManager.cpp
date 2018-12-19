@@ -111,6 +111,7 @@ void ObjectManager::Loadimg() {
 	img[ObjectID::goal] = LoadGraph("data/img/clear.png");
 	img[ObjectID::alienLaser] = LoadGraph("data/img/LaserA_Wait.png");
 	img[ObjectID::robotEnemy] = LoadGraph("data/img/enemy4Wait.png");
+	img[ObjectID::witch] = LoadGraph("data/img/enemy2Wait.png");
 }
 
 void ObjectManager::update() {
@@ -183,6 +184,9 @@ void ObjectManager::addObject(int id, int x, int y, int hp, int moveUL, int move
 	case ObjectID::robotEnemy:
 		obj = new RobotEnemy(x, y, img[ObjectID::robotEnemy], ObjectID::robotEnemy, this);
 		break;
+	case ObjectID::witch:	
+		obj = new Witch(x,y,img[ObjectID::witch],this);
+		break;
 	case ObjectID::healPot:
 		obj = new Item(x, y, img[ObjectID::healPot],ObjectID::healPot);
 		break;
@@ -230,6 +234,32 @@ void ObjectManager::enemyMoveRangeCalc(int x, int y, int *minX, int *maxX)
 		if (vmap[indexY][indexX + i] > 0 && vmap[indexY][indexX + i] < 20 ||
 			vmap[indexY + 1][indexX + i] > 0 && vmap[indexY + 1][indexX + i] < 20 ||
 			vmap[indexY + 2][indexX + i] == 0) {
+			*minX = i * 32;
+			break;
+		}
+	}
+
+}
+
+void ObjectManager::witchMoveRangeCalc(int x, int y, int * minX, int * maxX)
+{
+	int indexX = x / 32;
+	int indexY = y / 32;
+	*maxX = 5 * 32;
+	*minX = -5 * 32;
+
+	for (int i = 0; i <= 5; i++) {
+		if (vmap[indexY][indexX + i] > 0 && vmap[indexY][indexX + i] < 20 ||
+			vmap[indexY + 1][indexX + i] > 0 && vmap[indexY + 1][indexX + i] < 20 ) {
+			//‚Í‚Ýo‚È‚¢‚æ‚¤‚É(i-1)‚µ‚Ä‚é‚Í‚¸‚È‚ñ‚¾‚¯‚Ç‚È
+			*maxX = (i - 1) * 32;
+			break;
+		}
+	}
+
+	for (int i = 0; i >= -5; i--) {
+		if (vmap[indexY][indexX + i] > 0 && vmap[indexY][indexX + i] < 20 ||
+			vmap[indexY + 1][indexX + i] > 0 && vmap[indexY + 1][indexX + i] < 20 ) {
 			*minX = i * 32;
 			break;
 		}

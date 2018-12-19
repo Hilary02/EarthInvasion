@@ -83,6 +83,8 @@ int Enemy::update(const Collision & playerCol) {
 		}
 		index = -1;
 	}
+
+	//リスポーン処理
 	if (state == State::respawn
 		&& abs(playerCol.hitRange.xPos - this->x) >= 600) {
 		state = State::alive;
@@ -193,6 +195,8 @@ void Enemy::collisionCheck(const Collision & target) {
 	int attackR = AttackBox->doCollisonCheck((target.hitRange));
 
 	if (!isPlayerAtk) {
+		//スライム状態で攻撃されたときはダメージhandleが読み込まれるが
+		//弾で攻撃されたら読み込まれない
 		if (isCol && target.playerState) {
 			imgHandle = damegeHandle;
 			movedis = 0;
@@ -205,6 +209,7 @@ void Enemy::collisionCheck(const Collision & target) {
 				AttackCommon();
 			}
 			else if (noticed == 0) {	//初回の発見処理
+				//エネミーのrangeチェックの際にプレイヤーが発見するとくるくる回るバグを力技で修正（後で直す
 				if (dis > maxX)dis = maxX - 5;
 				else if (dis < minX) dis = minX + 5;
 				movedis = 0;
@@ -300,7 +305,7 @@ bool Enemy::IsRangeCheck() {
 	{
 		dis -= movedis;
 	}
-	rct++;
+	
 	if (maxX < dis || minX > dis) {
 		AttackBox->xFlip();
 		return !isRight;

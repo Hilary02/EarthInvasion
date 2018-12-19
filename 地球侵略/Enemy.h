@@ -22,6 +22,8 @@ public:
 	bool getDeadState();
 
 protected:
+	const int mod = -1;
+
 	int minX = 0;
 	int maxX = 0;
 	int walkHandle[8];
@@ -55,8 +57,6 @@ protected:
 
 	int index = -1;
 
-	int rct = 100; //エネミーのrangeチェックの際にプレイヤーが発見するとくるくる回るバグを力技で修正（後で直す
-
 	std::vector<Bullet*> bullets;
 
 	bool remove = false;	//リスポーン関連
@@ -64,5 +64,4 @@ protected:
 
 private:
 	int moveRange = 300;
-	const int mod = -1;
 };
