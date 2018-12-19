@@ -11,6 +11,7 @@ public:
 	~Enemy();
 	Enemy(int x, int y, int img, ObjectID id, IObjectManager* Iobj);
 
+
 	virtual int update(const Collision & playerCol) override;
 	virtual void Draw(int drawX, int drawY) override;
 	virtual	void collisionCheck(const Collision& target);
@@ -18,6 +19,7 @@ public:
 	virtual void AttackCommon();
 	virtual void DeadCheck();
 	virtual bool IsRangeCheck();
+	void checkObjectHit(const Collision & playerCol);
 	int enemyID;
 	bool getDeadState();
 

@@ -12,7 +12,7 @@ Witch::Witch(int x, int y, int img, IObjectManager* Iobj)
 	this->atkInterval = 52;
 
 	IobjMgr->witchMoveRangeCalc(x, y, &minX, &maxX);
-	
+
 	setHp(5);
 	setAtk(5);
 
@@ -29,14 +29,14 @@ Witch::Witch(int x, int y, int img, IObjectManager* Iobj)
 }
 
 
-Witch::~Witch()
-{
+Witch::~Witch() {
+	delete AttackBox;
 }
 
 void Witch::Draw(int drawX, int drawY)
 {
-	DrawBox(collision->hitRange.xPos + collision->hitRange.xOffset - drawX, collision->hitRange.yPos + collision->hitRange.yOffset - drawY, collision->hitRange.xPos + collision->hitRange.xOffset + collision->hitRange.xSize - drawX, collision->hitRange.yPos + collision->hitRange.yOffset + collision->hitRange.ySize - drawY, 0xFF00FF, false);
-	DrawBox(AttackBox->hitRange.xPos + AttackBox->hitRange.xOffset - drawX, AttackBox->hitRange.yPos + AttackBox->hitRange.yOffset - drawY, AttackBox->hitRange.xPos + AttackBox->hitRange.xOffset - drawX + AttackBox->hitRange.xSize, AttackBox->hitRange.yPos + AttackBox->hitRange.yOffset - drawY + AttackBox->hitRange.ySize, 0x00FF00, false);
+	//	DrawBox(collision->hitRange.xPos + collision->hitRange.xOffset - drawX, collision->hitRange.yPos + collision->hitRange.yOffset - drawY, collision->hitRange.xPos + collision->hitRange.xOffset + collision->hitRange.xSize - drawX, collision->hitRange.yPos + collision->hitRange.yOffset + collision->hitRange.ySize - drawY, 0xFF00FF, false);
+	//	DrawBox(AttackBox->hitRange.xPos + AttackBox->hitRange.xOffset - drawX, AttackBox->hitRange.yPos + AttackBox->hitRange.yOffset - drawY, AttackBox->hitRange.xPos + AttackBox->hitRange.xOffset - drawX + AttackBox->hitRange.xSize, AttackBox->hitRange.yPos + AttackBox->hitRange.yOffset - drawY + AttackBox->hitRange.ySize, 0x00FF00, false);
 	if (isRight)
 	{
 		DrawTurnGraph(x - drawX, y - drawY, imgHandle, true);
@@ -48,10 +48,10 @@ void Witch::Draw(int drawX, int drawY)
 
 }
 
-void Witch::attack()
-{
-
+void Witch::attack() {
 	atkCt += addCount;
+	HpCt += addCount;
+
 
 	movedis = 0;
 	imgHandle = attackHandle[(drawcount / 12) % 8];
@@ -83,7 +83,7 @@ void Witch::floating()
 	{
 		if (x < targetX + 100 && !isRight) { movedis = 0; }
 		if (x > targetX - 100 && isRight) { movedis = 0; }
-		
+
 		//エネミーのrangeチェックの際にプレイヤーが発見するとくるくる回るバグを力技で修正（後で直す
 		if (dis > maxX)dis = maxX - 5;
 		else if (dis < minX) dis = minX + 5;
@@ -114,38 +114,41 @@ void Witch::risingOrDescent()
 	{
 		y++;
 	}
-	else if(!isUnder && isPositionY)
+	else if (!isUnder && isPositionY)
 	{
 		y--;
 	}
-	else if(isSamePosition){
+	else if (isSamePosition) {
 		isAtacck = true;
 		isMove = false;
-	} 
+	}
 }
 
-void Witch::collsionCheck(const Collision & target)
-{
-
+void Witch::collsionCheck(const Collision & target) {
 	int isCol = collision->doCollisonCheck((target.hitRange));
 	int attackR = AttackBox->doCollisonCheck((target.hitRange));
 
-	if (!isPlayerAtk){
+	if (!isPlayerAtk) {
 		if (isCol && target.playerState) {
 			imgHandle = damegeHandle;
 			movedis = 0;
 			isPlayerAtk = true;
 			modHp(mod);
 		}
-		else if(attackR){
+		else if (attackR) {
 			isFound = true;
 			targetY = target.hitRange.yPos;
 			targetX = target.hitRange.xPos;
 			isUnder = true;
 		}
-		else{
+		else {
 			isUnder = false;
 			isFound = false;
+			count += 1;
+			if (count > 60) {
+				count = 0;
+				isPlayerAtk = false;
+			}
 		}
 	}
 
@@ -155,6 +158,8 @@ void Witch::collsionCheck(const Collision & target)
 int Witch::update(const Collision & playerCol)
 {
 	Enemy::DeadCheck();
+	Enemy::checkObjectHit(playerCol);
+
 	if (state == State::alive)
 	{
 		isRight = IsRangeCheck();
@@ -166,7 +171,7 @@ int Witch::update(const Collision & playerCol)
 			risingOrDescent();
 			floating();
 		}
-		else if(isAtacck)
+		else if (isAtacck)
 		{
 			attack();
 		}

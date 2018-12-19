@@ -61,9 +61,8 @@ Enemy::Enemy(int x, int y, int img, ObjectID id, IObjectManager* Iobj) {
 	state = State::alive;
 }
 
-int Enemy::update(const Collision & playerCol) {
-	DeadCheck();
 
+void Enemy::checkObjectHit(const Collision & playerCol) {
 	//オブジェクトとの当たり判定をとり，自身に影響する処理を行う
 	for (auto o : IobjMgr->getObjectList()) {
 		if (collision->doCollisonCheck(o->collision->hitRange)) { //当たり判定をとる
@@ -79,6 +78,12 @@ int Enemy::update(const Collision & playerCol) {
 			}
 		}
 	}
+}
+
+int Enemy::update(const Collision & playerCol) {
+	DeadCheck();
+	checkObjectHit(playerCol);
+
 	if (state == State::alive)
 	{
 		atkCt += addCount;
