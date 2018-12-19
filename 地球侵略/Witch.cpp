@@ -53,6 +53,8 @@ void Witch::attack() {
 	atkCt += addCount;
 	HpCt += addCount;
 
+	isSamePosition = (y == targetY);  //無理くりフラグ更新　ここではやりたくはない
+
 
 	movedis = 0;
 	imgHandle = attackHandle[(drawcount / 12) % 8];
@@ -67,7 +69,7 @@ void Witch::attack() {
 	}
 	if ((drawcount / 12) > 8 && hundleIndex == 0) {
 		drawcount = 0; //drawcountのリセット
-		if (!isFound)
+		if (!isFound || !isSamePosition)
 		{
 			isAtacck = false;
 			isMove = true;
@@ -109,7 +111,7 @@ void Witch::risingOrDescent()
 {
 	isPositionY = y > basePositionY;  //元のy座標より下ならtrue
 	isUnderTarget = y < targetY;   //ターゲットより上ならtrue
-	bool isSamePosition = (y == targetY);  //やっつけ処理の同じy座標の場合true
+	isSamePosition = (y == targetY);  //やっつけ処理:同じy座標の場合true
 
 	if (isUnder && isUnderTarget)
 	{

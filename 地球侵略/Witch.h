@@ -27,6 +27,7 @@ private:
 	bool isUnderTarget;
 	bool isFound = false;
 	bool isUnder = false;
+	bool isSamePosition;
 
 	int stageId;
 	SaveData &savedata = SaveData::get_instance();

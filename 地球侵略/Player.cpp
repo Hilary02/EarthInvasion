@@ -239,8 +239,7 @@ int Player::update() {
 				case ObjectID::soldierA:
 				case ObjectID::soldierB:
 				case ObjectID::DrG:
-					if (o->state == State::alive)bull->setState(-1);
-					break;
+				case ObjectID::witch:
 				case ObjectID::robotEnemy:
 					if (o->state == State::alive)bull->setState(-1);
 					break;
