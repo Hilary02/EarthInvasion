@@ -63,6 +63,22 @@ Enemy::Enemy(int x, int y, int img, ObjectID id, IObjectManager* Iobj) {
 
 int Enemy::update(const Collision & playerCol) {
 	DeadCheck();
+
+	//オブジェクトとの当たり判定をとり，自身に影響する処理を行う
+	for (auto o : IobjMgr->getObjectList()) {
+		if (collision->doCollisonCheck(o->collision->hitRange)) { //当たり判定をとる
+			switch (o->getId()) {
+			case ObjectID::playerBullet: //プレイヤーの弾
+				if (state == State::alive && HpCt > 30) {
+					modHp(-((Bullet*)o)->getAtk());
+					HpCt = 0;
+				}
+				break;
+			default:
+				break;
+			}
+		}
+	}
 	if (state == State::alive)
 	{
 		atkCt += addCount;
@@ -116,21 +132,6 @@ int Enemy::update(const Collision & playerCol) {
 	}
 
 
-	//オブジェクトとの当たり判定をとり，プレイヤー自身に影響する処理を行う
-	for (auto o : IobjMgr->getObjectList()) {
-		if (collision->doCollisonCheck(o->collision->hitRange)) { //当たり判定をとる
-			switch (o->getId()) {
-			case ObjectID::playerBullet: //プレイヤーの弾
-				if (state == State::alive && HpCt > 30) {
-					modHp(-((Bullet*)o)->getAtk());
-					HpCt = 0;
-				}
-				break;
-			default:
-				break;
-			}
-		}
-	}
 
 	//clsDx();
 	//printfDx("%d", playerCol.playerParasite);
@@ -305,7 +306,7 @@ bool Enemy::IsRangeCheck() {
 	{
 		dis -= movedis;
 	}
-	
+
 	if (maxX < dis || minX > dis) {
 		AttackBox->xFlip();
 		return !isRight;

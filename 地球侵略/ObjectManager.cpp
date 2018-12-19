@@ -56,7 +56,7 @@ ObjectManager::ObjectManager(std::vector<std::vector <int>> vmap, int stage, ISt
 					obje = new AntiAlienLaser(x, y, img[ObjectID::alienLaser], ObjectID::alienLaser);
 					break;
 				default:
-					obje = new Item(x, y, img[ObjectID::healPot],ObjectID::healPot);	//¶¬‚³‚ê‚é‚×‚«‚Å‚È‚¢
+					obje = new Item(x, y, img[ObjectID::healPot], ObjectID::healPot);	//¶¬‚³‚ê‚é‚×‚«‚Å‚È‚¢
 					break;
 				}
 				terrain.push_back(obje);	//‚±‚¿‚ç‚Í’nŒ`‚É•Û‘¶
@@ -117,16 +117,36 @@ void ObjectManager::Loadimg() {
 void ObjectManager::update() {
 	player->update();
 
+
 	std::vector<Object*>::iterator it;
-	for (it = objects.begin(); it != objects.end();) {
+	/*
+	for (it = objects.begin(); it != objects.end(); it++) {
 		int n = (*it)->update(*(player->collision));
 		if (n == -1) {
-			it = objects.erase(it);
+			objects.erase(it);
 		}
-		else {
-			it++;
+
+	}
+	*/
+
+	int num = 0;
+
+	for (int i = 0; i < objects.size(); i++) {
+		int n = (*(objects.begin() + i))->update(*(player->collision));
+		if (n == -1) {
+			objects.erase(objects.begin() + i);
+			i--;
 		}
 	}
+	for (int i = 0; i < terrain.size(); i++) {
+		int n = (*(terrain.begin() + i))->update(*(player->collision));
+		if (n == -1) {
+			terrain.erase(terrain.begin() + i);
+			i--;
+		}
+	}
+
+	/*
 	for (it = terrain.begin(); it != terrain.end();) {
 		int n = (*it)->update(*(player->collision));
 		if (n == -1) {
@@ -135,7 +155,7 @@ void ObjectManager::update() {
 		else {
 			it++;
 		}
-	}
+	}*/
 }
 
 void ObjectManager::Draw(int drawX, int drawY) {
@@ -184,14 +204,14 @@ void ObjectManager::addObject(int id, int x, int y, int hp, int moveUL, int move
 	case ObjectID::robotEnemy:
 		obj = new RobotEnemy(x, y, img[ObjectID::robotEnemy], ObjectID::robotEnemy, this);
 		break;
-	case ObjectID::witch:	
-		obj = new Witch(x,y,img[ObjectID::witch],this);
+	case ObjectID::witch:
+		obj = new Witch(x, y, img[ObjectID::witch], this);
 		break;
 	case ObjectID::healPot:
-		obj = new Item(x, y, img[ObjectID::healPot],ObjectID::healPot);
+		obj = new Item(x, y, img[ObjectID::healPot], ObjectID::healPot);
 		break;
 	case ObjectID::detoxPot:
-		obj = new Item(x, y, img[ObjectID::detoxPot],ObjectID::detoxPot);
+		obj = new Item(x, y, img[ObjectID::detoxPot], ObjectID::detoxPot);
 		break;
 	case ObjectID::alienLaser:
 		obj = new AntiAlienLaser(x, y, img[ObjectID::alienLaser], ObjectID::alienLaser);
@@ -250,7 +270,7 @@ void ObjectManager::witchMoveRangeCalc(int x, int y, int * minX, int * maxX)
 
 	for (int i = 0; i <= 5; i++) {
 		if (vmap[indexY][indexX + i] > 0 && vmap[indexY][indexX + i] < 20 ||
-			vmap[indexY + 1][indexX + i] > 0 && vmap[indexY + 1][indexX + i] < 20 ) {
+			vmap[indexY + 1][indexX + i] > 0 && vmap[indexY + 1][indexX + i] < 20) {
 			//‚Í‚Ýo‚È‚¢‚æ‚¤‚É(i-1)‚µ‚Ä‚é‚Í‚¸‚È‚ñ‚¾‚¯‚Ç‚È
 			*maxX = (i - 1) * 32;
 			break;
@@ -259,7 +279,7 @@ void ObjectManager::witchMoveRangeCalc(int x, int y, int * minX, int * maxX)
 
 	for (int i = 0; i >= -5; i--) {
 		if (vmap[indexY][indexX + i] > 0 && vmap[indexY][indexX + i] < 20 ||
-			vmap[indexY + 1][indexX + i] > 0 && vmap[indexY + 1][indexX + i] < 20 ) {
+			vmap[indexY + 1][indexX + i] > 0 && vmap[indexY + 1][indexX + i] < 20) {
 			*minX = i * 32;
 			break;
 		}
