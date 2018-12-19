@@ -204,8 +204,8 @@ void ObjectManager::addObject(int id, int x, int y, int hp, int moveUL, int move
 	case ObjectID::robotEnemy:
 		obj = new RobotEnemy(x, y, img[ObjectID::robotEnemy], ObjectID::robotEnemy, this);
 		break;
-	case ObjectID::witch:
-		obj = new Witch(x, y, img[ObjectID::witch], this);
+	case ObjectID::witch:	//É{ÉXÇQ
+		obj = new Witch(x, y, img[ObjectID::witch], this, stageId, stageBase);
 		break;
 	case ObjectID::healPot:
 		obj = new Item(x, y, img[ObjectID::healPot], ObjectID::healPot);

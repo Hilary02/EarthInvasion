@@ -1,10 +1,13 @@
 #pragma once
 #include "Enemy.h"
+#include "SaveData.h"
+#include "IStageBase.h"
+
 class Witch :
 	public Enemy
 {
 public:
-	Witch(int x, int y, int img, IObjectManager* Iobj);
+	Witch(int x, int y, int img, IObjectManager* Iobj, int stageID, IStageBase* stage);
 	~Witch();
 	void Draw(int drawX, int drawY) override;
 	void floating();
@@ -24,6 +27,10 @@ private:
 	bool isUnderTarget;
 	bool isFound = false;
 	bool isUnder = false;
+
+	int stageId;
+	SaveData &savedata = SaveData::get_instance();
+	IStageBase* Istage;
 
 };
 
