@@ -296,7 +296,6 @@ int Player::update() {
 		{
 			collision->updatePos(x - 70, y);
 			collision->hitRange.xSize = 60;
-
 		}
 		collision->playerState = 1;
 	}
@@ -372,6 +371,7 @@ int Player::update() {
 			switch (o->getId()) {
 			case ObjectID::soldierA: //•ºŽm
 			case ObjectID::soldierB:
+			case ObjectID::witch:
 				if (o->state == State::alive && !(collision->playerState == 1 && !nowAttacking))modHp(-1);
 				break;
 			case ObjectID::healPot: //‰ñ•œƒ|ƒbƒh

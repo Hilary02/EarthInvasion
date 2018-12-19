@@ -7,7 +7,7 @@ Witch::Witch(int x, int y, int img, IObjectManager* Iobj, int stageID, IStageBas
 	this->y = y;
 	basePositionY = y;
 	this->imgHandle = img;
-	this->id = id;
+	this->id = ObjectID::witch;
 	this->atkInterval = 52;
 
 	IobjMgr->witchMoveRangeCalc(x, y, &minX, &maxX);
