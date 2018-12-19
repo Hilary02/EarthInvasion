@@ -93,7 +93,7 @@ int Enemy::update(const Collision & playerCol) {
 		AttackBox->updatePos(x, y);
 		collisionCheck(playerCol);
 
-		for (auto &bull : bullets)
+		for (auto &bull : bullets)   //‚±‚ÌƒNƒ‰ƒXŒp³‚µ‚½‚·‚×‚Ä“G‚Ì’e‚Ìˆ—‚±‚±‚Å‚â‚Á‚Ä‚½(Î)
 		{
 			index++;
 			if (!bull->isOutOfRange() || bull->collisionCheck(playerCol))

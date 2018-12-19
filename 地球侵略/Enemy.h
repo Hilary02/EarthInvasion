@@ -19,7 +19,7 @@ public:
 	virtual void AttackCommon();
 	virtual void DeadCheck();
 	virtual bool IsRangeCheck();
-	void checkObjectHit(const Collision & playerCol);
+	virtual void checkObjectHit(const Collision & playerCol);
 	int enemyID;
 	bool getDeadState();
 
