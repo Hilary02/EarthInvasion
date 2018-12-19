@@ -1,8 +1,7 @@
 #include "Witch.h"
 
 
-Witch::Witch(int x, int y, int img, IObjectManager* Iobj)
-{
+Witch::Witch(int x, int y, int img, IObjectManager* Iobj, int stageID, IStageBase* stage) {
 	this->IobjMgr = Iobj;
 	this->x = x;
 	this->y = y;
@@ -26,6 +25,9 @@ Witch::Witch(int x, int y, int img, IObjectManager* Iobj)
 	collision = new Collision(16, 0, 32, 64);
 	AttackBox = new Collision(30, 0, -300, 256);
 	state = State::alive;
+
+	this->stageId = stageID;
+	this->Istage = stage;
 }
 
 
@@ -33,8 +35,7 @@ Witch::~Witch() {
 	delete AttackBox;
 }
 
-void Witch::Draw(int drawX, int drawY)
-{
+void Witch::Draw(int drawX, int drawY) {
 	//	DrawBox(collision->hitRange.xPos + collision->hitRange.xOffset - drawX, collision->hitRange.yPos + collision->hitRange.yOffset - drawY, collision->hitRange.xPos + collision->hitRange.xOffset + collision->hitRange.xSize - drawX, collision->hitRange.yPos + collision->hitRange.yOffset + collision->hitRange.ySize - drawY, 0xFF00FF, false);
 	//	DrawBox(AttackBox->hitRange.xPos + AttackBox->hitRange.xOffset - drawX, AttackBox->hitRange.yPos + AttackBox->hitRange.yOffset - drawY, AttackBox->hitRange.xPos + AttackBox->hitRange.xOffset - drawX + AttackBox->hitRange.xSize, AttackBox->hitRange.yPos + AttackBox->hitRange.yOffset - drawY + AttackBox->hitRange.ySize, 0x00FF00, false);
 	if (isRight)
@@ -176,6 +177,16 @@ int Witch::update(const Collision & playerCol)
 			attack();
 		}
 	}
+
+
+	if (hp <= 0) {
+		//‚ß‚¿‚á‚­‚¿‚á
+		savedata.setClearFlag(stageId, 1);
+		savedata.save();
+		Istage->PlayAnimation(clearAnime);	//ƒNƒŠƒA‰‰o‚É“ü‚é
+	}
+
+
 	return 0;
 }
 
