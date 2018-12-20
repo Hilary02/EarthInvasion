@@ -117,7 +117,7 @@ void Witch::risingOrDescent()
 	{
 		y++;
 	}
-	else if (!isUnder && isPositionY)
+	else if ( (!isUnder && isPositionY) || y > targetY)
 	{
 		y--;
 	}
