@@ -100,5 +100,5 @@ void SoundManager::Se(std::string path) {
 }
 
 void SoundManager::myChangeVolumeSoundMem(int vol, int handle) {
-	ChangeVolumeSoundMem(255 * log10(vol), handle);
+	ChangeVolumeSoundMem(static_cast<int>(255 * log10(vol)), handle);
 }
