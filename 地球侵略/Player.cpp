@@ -356,7 +356,7 @@ int Player::update() {
 			}
 			break;
 			case ObjectID::alienLaser:
-				modHp(-100);
+				modHp(-6);
 				break;
 
 			default:
@@ -371,8 +371,9 @@ int Player::update() {
 			switch (o->getId()) {
 			case ObjectID::soldierA: //兵士
 			case ObjectID::soldierB:
+			case ObjectID::venomMan:
 			case ObjectID::witch:
-				if (o->state == State::alive && !(collision->playerState == 1 && !nowAttacking))modHp(-1);
+				if (o->state == State::alive && !(collision->playerState == 1 && !nowAttacking))modHp(-3);
 				break;
 			case ObjectID::healPot: //回復ポッド
 				modHp(5);
@@ -384,7 +385,7 @@ int Player::update() {
 				collision->playerParasite = 0;
 				break;
 			case ObjectID::spike: //とげとげ
-				modHp(-1);
+				modHp(-4);
 				break;
 			case ObjectID::abyss:	//奈落。ゲームオーバー
 				//isDead = true;
@@ -396,14 +397,14 @@ int Player::update() {
 				modHp(-((Bullet*)o)->getAtk());
 				break;
 			case ObjectID::fire:
-				modHp(-1);
+				modHp(-4);
 				break;
 			case ObjectID::alienLaser:
-				modHp(-1);
+				modHp(-6);
 				break;
 			case ObjectID::spark: //ビリビリ
 			{
-				modHp(-1);
+				modHp(-4);
 				int leftTX = o->collision->hitRange.xPos + o->collision->hitRange.xOffset;
 				int leftPX = collision->hitRange.xPos + collision->hitRange.xOffset;
 				int topTY = o->collision->hitRange.yPos + o->collision->hitRange.yOffset;

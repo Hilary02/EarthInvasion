@@ -12,8 +12,8 @@ Witch::Witch(int x, int y, int img, IObjectManager* Iobj, int stageID, IStageBas
 
 	IobjMgr->witchMoveRangeCalc(x, y, &minX, &maxX);
 
-	setHp(20);
-	setAtk(5);
+	setHp(15);
+	setAtk(4);
 
 	LoadDivGraph("data/img/enemy2Walk.png", 4, 4, 1, 64, 64, moveHandle);
 	LoadDivGraph("data/img/enemy2WaitForAtack.png", 4, 4, 1, 64, 64, attackHandle);

@@ -18,7 +18,7 @@ Enemy::Enemy(int x, int y, int img, ObjectID id, IObjectManager* Iobj) {
 
 	if (id == ObjectID::soldierA)
 	{
-		setHp(3);
+		setHp(2);
 		setAtk(3);
 		movespeed = 1;
 		atkInterval = 104;
@@ -30,10 +30,10 @@ Enemy::Enemy(int x, int y, int img, ObjectID id, IObjectManager* Iobj) {
 	}
 	else if (id == ObjectID::soldierB)
 	{
-		setHp(15);
+		setHp(10);
 		setAtk(5);
 		movespeed = 2;
-		atkInterval = 52;
+		atkInterval = 72;
 		addCount = 2;
 		LoadDivGraph("data/img/enemy3Walk.png", 8, 4, 2, 64, 64, walkHandle);
 		LoadDivGraph("data/img/enemy3WaitForAttack.png", 4, 4, 1, 64, 64, attackHandle);
@@ -42,10 +42,10 @@ Enemy::Enemy(int x, int y, int img, ObjectID id, IObjectManager* Iobj) {
 		damegeHandle = LoadGraph("data/img/enemy3Damage.png");
 	}
 	else if (id == ObjectID::venomMan) {
-		setHp(3);
-		setAtk(0);
+		setHp(2);
+		setAtk(1);
 		movespeed = 1;
-		atkInterval = 104;
+		atkInterval = 52;
 		LoadDivGraph("data/img/enemy1Walk.png", 8, 4, 2, 64, 64, walkHandle);
 		LoadDivGraph("data/img/enemy1WaitForattack.png", 4, 4, 1, 64, 64, attackHandle);
 		LoadDivGraph("data/img/enemy1attack.png", 4, 4, 1, 64, 64, &attackHandle[4]);
@@ -111,13 +111,13 @@ int Enemy::update(const Collision & playerCol) {
 		state = State::alive;
 		switch (id) {
 		case ObjectID::soldierA:
-			hp = 3;
+			hp = 2;
 			break;
 		case ObjectID::soldierB:
-			hp = 15;
+			hp = 9;
 			break;
 		case ObjectID::venomMan:
-			hp = 3;
+			hp = 2;
 			break;
 		default:
 			printf("");
